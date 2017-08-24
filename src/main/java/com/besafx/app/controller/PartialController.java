@@ -39,9 +39,9 @@ public class PartialController {
             Person person = personService.findByEmail(principal.getName());
             Options options = JSONConverter.toObject(person.getOptions(), Options.class);
             if(options.getLang().equals("AR")){
-                modelAndView.addObject("title", "شركة صرخة للبرمجيات | الصيدلية الذكية");
+                modelAndView.addObject("title", "مركز السلطان للصقور | الصيدلية الذكية");
             }else{
-                modelAndView.addObject("title", "SARHA TECH. | Pharmacy");
+                modelAndView.addObject("title", "SULTAN CENTER | Smart Pharmacy");
             }
             return modelAndView;
         }
