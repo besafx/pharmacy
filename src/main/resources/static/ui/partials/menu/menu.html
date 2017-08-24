@@ -188,6 +188,33 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">assignment</i>
+                            <p ng-if="lang==='AR'">نتائج الفحص</p>
+                            <p ng-if="lang==='EN'">DETECTION RESULTS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">favorite</i>
+                            <p ng-if="lang==='AR'">الدواء</p>
+                            <p ng-if="lang==='EN'">DRUGS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">shopping_cart</i>
+                            <p ng-if="lang==='AR'">فواتير البيع</p>
+                            <p ng-if="lang==='EN'">BILL BUYS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
                         <a href="" ng-click="goToTeam()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">security</i>
