@@ -249,7 +249,7 @@ p {
 }
 
 a, a:hover, a:focus {
-    color: #1C2674;
+    color: #313534;
     text-decoration: underline;
     font-weight: bolder;
 }
@@ -2646,11 +2646,11 @@ ul, ol {
 }
 
 .mdl-color-text--blue-grey {
-    color: #1C2674 !important
+    color: #313534 !important
 }
 
 .mdl-color--blue-grey {
-    background-color: #1C2674 !important
+    background-color: #313534 !important
 }
 
 .mdl-color-text--blue-grey-50 {
@@ -2694,11 +2694,11 @@ ul, ol {
 }
 
 .mdl-color-text--blue-grey-500 {
-    color: #1C2674 !important
+    color: #313534 !important
 }
 
 .mdl-color--blue-grey-500 {
-    background-color: #1C2674 !important
+    background-color: #313534 !important
 }
 
 .mdl-color-text--blue-grey-600 {
@@ -2750,7 +2750,7 @@ ul, ol {
 }
 
 .mdl-color--primary {
-    background-color: #1C2674 !important
+    background-color: #313534 !important
 }
 
 .mdl-color--primary-contrast {
@@ -2770,7 +2770,7 @@ ul, ol {
 }
 
 .mdl-color-text--primary {
-    color: #1C2674 !important
+    color: #313534 !important
 }
 
 .mdl-color-text--primary-contrast {
@@ -2931,7 +2931,7 @@ ul, ol {
 }
 
 .mdl-button.mdl-button--colored {
-    color: #1C2674
+    color: #313534
 }
 
 .mdl-button.mdl-button--colored:focus:not(:active) {
@@ -2958,20 +2958,20 @@ input.mdl-button[type="submit"] {
 }
 
 .mdl-button--raised.mdl-button--colored {
-    background: #1C2674;
+    background: #313534;
     color: rgb(255, 255, 255)
 }
 
 .mdl-button--raised.mdl-button--colored:hover {
-    background-color: #1C2674
+    background-color: #313534
 }
 
 .mdl-button--raised.mdl-button--colored:active {
-    background-color: #1C2674
+    background-color: #313534
 }
 
 .mdl-button--raised.mdl-button--colored:focus:not(:active) {
-    background-color: #1C2674
+    background-color: #313534
 }
 
 .mdl-button--raised.mdl-button--colored .mdl-ripple {
@@ -3101,7 +3101,7 @@ input.mdl-button[type="submit"] {
 }
 
 .mdl-button--primary.mdl-button--primary {
-    color: #1C2674
+    color: #313534
 }
 
 .mdl-button--primary.mdl-button--primary .mdl-ripple {
@@ -3110,7 +3110,7 @@ input.mdl-button[type="submit"] {
 
 .mdl-button--primary.mdl-button--primary.mdl-button--raised, .mdl-button--primary.mdl-button--primary.mdl-button--fab {
     color: rgb(255, 255, 255);
-    background-color: #1C2674
+    background-color: #313534
 }
 
 .mdl-button--accent.mdl-button--accent {
@@ -3318,7 +3318,7 @@ input.mdl-button[type="submit"] {
 }
 
 .mdl-checkbox.is-checked .mdl-checkbox__box-outline {
-    border: 2px solid #1C2674
+    border: 2px solid #313534
 }
 
 fieldset[disabled] .mdl-checkbox .mdl-checkbox__box-outline, .mdl-checkbox.is-disabled .mdl-checkbox__box-outline {
@@ -3363,7 +3363,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__box-outline, .mdl-checkbox.is-di
 }
 
 .mdl-checkbox.is-checked .mdl-checkbox__tick-outline {
-    background: #1C2674 url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMSAxIgogICBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICA8cGF0aAogICAgIGQ9Ik0gMC4wNDAzODA1OSwwLjYyNjc3NjcgMC4xNDY0NDY2MSwwLjUyMDcxMDY4IDAuNDI5Mjg5MzIsMC44MDM1NTMzOSAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IE0gMC4yMTcxNTcyOSwwLjgwMzU1MzM5IDAuODUzNTUzMzksMC4xNjcxNTcyOSAwLjk1OTYxOTQxLDAuMjczMjIzMyAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IgogICAgIGlkPSJyZWN0Mzc4MCIKICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lIiAvPgo8L3N2Zz4K")
+    background: #313534 url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMSAxIgogICBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICA8cGF0aAogICAgIGQ9Ik0gMC4wNDAzODA1OSwwLjYyNjc3NjcgMC4xNDY0NDY2MSwwLjUyMDcxMDY4IDAuNDI5Mjg5MzIsMC44MDM1NTMzOSAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IE0gMC4yMTcxNTcyOSwwLjgwMzU1MzM5IDAuODUzNTUzMzksMC4xNjcxNTcyOSAwLjk1OTYxOTQxLDAuMjczMjIzMyAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IgogICAgIGlkPSJyZWN0Mzc4MCIKICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lIiAvPgo8L3N2Zz4K")
 }
 
 fieldset[disabled] .mdl-checkbox.is-checked .mdl-checkbox__tick-outline, .mdl-checkbox.is-checked.is-disabled .mdl-checkbox__tick-outline {
@@ -3398,7 +3398,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__label, .mdl-checkbox.is-disabled
 }
 
 .mdl-checkbox__ripple-container .mdl-ripple {
-    background: #1C2674
+    background: #313534
 }
 
 fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container, .mdl-checkbox.is-disabled .mdl-checkbox__ripple-container {
@@ -3991,7 +3991,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
 }
 
 .mdl-icon-toggle.is-checked .mdl-icon-toggle__label {
-    color: #1C2674
+    color: #313534
 }
 
 .mdl-icon-toggle.is-disabled .mdl-icon-toggle__label {
@@ -4404,13 +4404,13 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
 }
 
 .mdl-progress > .progressbar {
-    background-color: #1C2674;
+    background-color: #313534;
     z-index: 1;
     left: 0
 }
 
 .mdl-progress > .bufferbar {
-    background-image: linear-gradient(to right, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), linear-gradient(to right, #1C2674, #1C2674);
+    background-image: linear-gradient(to right, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), linear-gradient(to right, #313534, #313534);
     z-index: 0;
     left: 0
 }
@@ -4421,14 +4421,14 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
 
 @supports (-webkit-appearance:none) {
     .mdl-progress:not(.mdl-progress--indeterminate):not(.mdl-progress--indeterminate) > .auxbar, .mdl-progress:not(.mdl-progress__indeterminate):not(.mdl-progress__indeterminate) > .auxbar {
-        background-image: linear-gradient(to right, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), linear-gradient(to right, #1C2674, #1C2674);
+        background-image: linear-gradient(to right, rgba(255, 255, 255, .7), rgba(255, 255, 255, .7)), linear-gradient(to right, #313534, #313534);
         -webkit-mask: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjEyIiBoZWlnaHQ9IjQiIHZpZXdQb3J0PSIwIDAgMTIgNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxlbGxpcHNlIGN4PSIyIiBjeT0iMiIgcng9IjIiIHJ5PSIyIj4KICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9ImN4IiBmcm9tPSIyIiB0bz0iLTEwIiBkdXI9IjAuNnMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPgogIDwvZWxsaXBzZT4KICA8ZWxsaXBzZSBjeD0iMTQiIGN5PSIyIiByeD0iMiIgcnk9IjIiIGNsYXNzPSJsb2FkZXIiPgogICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iY3giIGZyb209IjE0IiB0bz0iMiIgZHVyPSIwLjZzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICA8L2VsbGlwc2U+Cjwvc3ZnPgo=");
         mask: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjEyIiBoZWlnaHQ9IjQiIHZpZXdQb3J0PSIwIDAgMTIgNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxlbGxpcHNlIGN4PSIyIiBjeT0iMiIgcng9IjIiIHJ5PSIyIj4KICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9ImN4IiBmcm9tPSIyIiB0bz0iLTEwIiBkdXI9IjAuNnMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPgogIDwvZWxsaXBzZT4KICA8ZWxsaXBzZSBjeD0iMTQiIGN5PSIyIiByeD0iMiIgcnk9IjIiIGNsYXNzPSJsb2FkZXIiPgogICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iY3giIGZyb209IjE0IiB0bz0iMiIgZHVyPSIwLjZzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICA8L2VsbGlwc2U+Cjwvc3ZnPgo=")
     }
 }
 
 .mdl-progress:not(.mdl-progress--indeterminate) > .auxbar, .mdl-progress:not(.mdl-progress__indeterminate) > .auxbar {
-    background-image: linear-gradient(to right, rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), linear-gradient(to right, #1C2674, #1C2674)
+    background-image: linear-gradient(to right, rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), linear-gradient(to right, #313534, #313534)
 }
 
 .mdl-progress.mdl-progress--indeterminate > .bar1, .mdl-progress.mdl-progress__indeterminate > .bar1 {
@@ -4437,7 +4437,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
 }
 
 .mdl-progress.mdl-progress--indeterminate > .bar1, .mdl-progress.mdl-progress__indeterminate > .bar1, .mdl-progress.mdl-progress--indeterminate > .bar3, .mdl-progress.mdl-progress__indeterminate > .bar3 {
-    background-color: #1C2674;
+    background-color: #313534;
     -webkit-animation-duration: 2s;
     animation-duration: 2s;
     -webkit-animation-iteration-count: infinite;
@@ -4762,7 +4762,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
     min-height: 64px;
     max-height: 1000px;
     z-index: 3;
-    background-color: #1C2674;
+    background-color: #313534;
     color: rgb(255, 255, 255);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     transition-duration: .2s;
@@ -5027,7 +5027,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    background-color: #1C2674;
+    background-color: #313534;
     overflow-y: hidden;
     overflow-x: scroll
 }
@@ -5096,7 +5096,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
     width: 56px;
     z-index: 4;
     text-align: center;
-    background-color: #1C2674;
+    background-color: #313534;
     color: transparent;
     cursor: pointer;
     -webkit-user-select: none;
@@ -5273,7 +5273,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
 }
 
 .mdl-radio.is-checked .mdl-radio__outer-circle {
-    border: 2px solid #1C2674
+    border: 2px solid #313534
 }
 
 .mdl-radio__outer-circle fieldset[disabled] .mdl-radio, .mdl-radio.is-disabled .mdl-radio__outer-circle {
@@ -5298,7 +5298,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
     -webkit-transform: scale(0, 0);
     transform: scale(0, 0);
     border-radius: 50%;
-    background: #1C2674
+    background: #313534
 }
 
 .mdl-radio.is-checked .mdl-radio__inner-circle {
@@ -5339,7 +5339,7 @@ fieldset[disabled] .mdl-radio .mdl-radio__label, .mdl-radio.is-disabled .mdl-rad
 }
 
 .mdl-radio__ripple-container .mdl-ripple {
-    background: #1C2674
+    background: #313534
 }
 
 fieldset[disabled] .mdl-radio .mdl-radio__ripple-container, .mdl-radio.is-disabled .mdl-radio__ripple-container {
@@ -5373,7 +5373,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
     user-select: none;
     outline: 0;
     padding: 0;
-    color: #1C2674;
+    color: #313534;
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     -ms-grid-row-align: center;
@@ -5409,7 +5409,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 
 .mdl-slider.is-upgraded::-ms-fill-lower {
     padding: 0;
-    background: linear-gradient(to right, transparent, transparent 16px, #1C2674 16px, #1C2674 0)
+    background: linear-gradient(to right, transparent, transparent 16px, #313534 16px, #313534 0)
 }
 
 .mdl-slider.is-upgraded::-ms-fill-upper {
@@ -5423,7 +5423,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
     height: 12px;
     box-sizing: border-box;
     border-radius: 50%;
-    background: #1C2674;
+    background: #313534;
     border: none;
     transition: transform .18s cubic-bezier(.4, 0, .2, 1), border .18s cubic-bezier(.4, 0, .2, 1), box-shadow .18s cubic-bezier(.4, 0, .2, 1), background .28s cubic-bezier(.4, 0, .2, 1);
     transition: transform .18s cubic-bezier(.4, 0, .2, 1), border .18s cubic-bezier(.4, 0, .2, 1), box-shadow .18s cubic-bezier(.4, 0, .2, 1), background .28s cubic-bezier(.4, 0, .2, 1), -webkit-transform .18s cubic-bezier(.4, 0, .2, 1)
@@ -5436,7 +5436,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
     box-sizing: border-box;
     border-radius: 50%;
     background-image: none;
-    background: #1C2674;
+    background: #313534;
     border: none
 }
 
@@ -5450,14 +5450,14 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 
 .mdl-slider.is-upgraded:active::-webkit-slider-thumb {
     background-image: none;
-    background: #1C2674;
+    background: #313534;
     -webkit-transform: scale(1.5);
     transform: scale(1.5)
 }
 
 .mdl-slider.is-upgraded:active::-moz-range-thumb {
     background-image: none;
-    background: #1C2674;
+    background: #313534;
     transform: scale(1.5)
 }
 
@@ -5466,19 +5466,19 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
     height: 32px;
     border: none;
     border-radius: 50%;
-    background: #1C2674;
+    background: #313534;
     transform: scale(.375);
     transition: transform .18s cubic-bezier(.4, 0, .2, 1), background .28s cubic-bezier(.4, 0, .2, 1);
     transition: transform .18s cubic-bezier(.4, 0, .2, 1), background .28s cubic-bezier(.4, 0, .2, 1), -webkit-transform .18s cubic-bezier(.4, 0, .2, 1)
 }
 
 .mdl-slider.is-upgraded:focus:not(:active)::-ms-thumb {
-    background: radial-gradient(circle closest-side, #1C2674 0%, #1C2674 37.5%, rgba(96, 125, 139, .26) 37.5%, rgba(96, 125, 139, .26) 100%);
+    background: radial-gradient(circle closest-side, #313534 0%, #313534 37.5%, rgba(96, 125, 139, .26) 37.5%, rgba(96, 125, 139, .26) 100%);
     transform: scale(1)
 }
 
 .mdl-slider.is-upgraded:active::-ms-thumb {
-    background: #1C2674;
+    background: #313534;
     transform: scale(.5625)
 }
 
@@ -5645,7 +5645,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 }
 
 .mdl-slider__background-lower {
-    background: #1C2674
+    background: #313534
 }
 
 .mdl-slider__background-lower, .mdl-slider__background-upper {
@@ -5802,7 +5802,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 }
 
 .mdl-spinner--single-color .mdl-spinner__layer-1 {
-    border-color: #1C2674
+    border-color: #313534
 }
 
 .mdl-spinner.is-active .mdl-spinner__layer-1 {
@@ -5815,7 +5815,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 }
 
 .mdl-spinner--single-color .mdl-spinner__layer-2 {
-    border-color: #1C2674
+    border-color: #313534
 }
 
 .mdl-spinner.is-active .mdl-spinner__layer-2 {
@@ -5828,7 +5828,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 }
 
 .mdl-spinner--single-color .mdl-spinner__layer-3 {
-    border-color: #1C2674
+    border-color: #313534
 }
 
 .mdl-spinner.is-active .mdl-spinner__layer-3 {
@@ -5841,7 +5841,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 }
 
 .mdl-spinner--single-color .mdl-spinner__layer-4 {
-    border-color: #1C2674
+    border-color: #313534
 }
 
 .mdl-spinner.is-active .mdl-spinner__layer-4 {
@@ -6228,7 +6228,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 }
 
 .mdl-switch.is-checked .mdl-switch__thumb {
-    background: #1C2674;
+    background: #313534;
     left: 16px;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .14), 0 3px 3px -2px rgba(0, 0, 0, .2), 0 1px 8px 0 rgba(0, 0, 0, .12)
 }
@@ -6294,7 +6294,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 }
 
 .mdl-switch__ripple-container .mdl-ripple {
-    background: #1C2674
+    background: #313534
 }
 
 .mdl-switch__ripple-container fieldset[disabled] .mdl-switch, .mdl-switch.is-disabled .mdl-switch__ripple-container {
@@ -6366,7 +6366,7 @@ fieldset[disabled] .mdl-switch .mdl-switch__ripple-container .mdl-ripple, .mdl-s
     bottom: 0;
     left: 0;
     position: absolute;
-    background: #1C2674;
+    background: #313534;
     -webkit-animation: border-expand .2s cubic-bezier(.4, 0, .4, 1) .01s alternate forwards;
     animation: border-expand .2s cubic-bezier(.4, 0, .4, 1) .01s alternate forwards;
     transition: all 1s cubic-bezier(.4, 0, 1, 1)
@@ -6384,7 +6384,7 @@ fieldset[disabled] .mdl-switch .mdl-switch__ripple-container .mdl-ripple, .mdl-s
 }
 
 .mdl-tabs__tab .mdl-tabs__ripple-container .mdl-ripple {
-    background: #1C2674
+    background: #313534
 }
 
 .mdl-tabs__panel {
@@ -6531,7 +6531,7 @@ fieldset[disabled] .mdl-textfield .mdl-textfield__label, .mdl-textfield.is-disab
 }
 
 .mdl-textfield--floating-label.is-focused .mdl-textfield__label, .mdl-textfield--floating-label.is-dirty .mdl-textfield__label, .mdl-textfield--floating-label.has-placeholder .mdl-textfield__label {
-    color: #1C2674;
+    color: #313534;
     font-size: 12px;
     top: 4px;
     visibility: visible
@@ -6547,7 +6547,7 @@ fieldset[disabled] .mdl-textfield .mdl-textfield__label, .mdl-textfield.is-disab
 }
 
 .mdl-textfield__label:after {
-    background-color: #1C2674;
+    background-color: #313534;
     bottom: 20px;
     content: '';
     height: 2px;
@@ -7641,13 +7641,13 @@ iframe.heightSet {
 }
 
 .card-square > .title-card {
-    background-color: #1C2674;
+    background-color: #313534;
 }
 
 .card-square {
     margin: 10px;
     min-height: 150px;
-    background-color: #1C2674;
+    background-color: #313534;
 }
 
 .card-square, .card-square:hover, .card-square:focus {
