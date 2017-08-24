@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- META SECTION -->
+    <title>طيف العربية | إدارة المهام</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="icon" th:href="@{~/ui/layout/joli/img/favicon/favicon.ico}" type="image/x-icon"/>
+    <!-- END META SECTION -->
+
+    <!-- CSS INCLUDE -->
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{~/ui/css/theme-black.css}"/>
+    <!-- EOF CSS INCLUDE -->
+</head>
+<body>
+
+<div class="container">
+    <div class="error-container">
+        <div class="error-code" style="font-family: 'Agency FB'; font-size: 150px" th:text="${errorCode}"></div>
+        <div class="error-text">الدعم الفني</div>
+        <div class="error-subtext" th:text="${message}"></div>
+        <div class="error-actions">
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="home" class="btn btn-info btn-block btn-lg">الرئيسية</a>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block btn-lg" onClick="history.back();">الرجوع للصفحة السابقة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

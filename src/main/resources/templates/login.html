@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="body-full-height" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- META SECTION -->
+    <title>الصيدلية الذكية | شاشة الدخول</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="icon" th:href="@{~/ui/img/favicon.ico}" type="image/x-icon"/>
+    <!-- END META SECTION -->
+
+    <!-- Material Design fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{~/ui/css/theme-black.css}"/>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <!-- EOF CSS INCLUDE -->
+
+    <style>
+        input[type=checkbox] {
+            transform: scale(2) !important;
+            -ms-transform: scale(2) !important;
+            -webkit-transform: scale(2) !important;
+            padding: 10px !important;
+            margin-left: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div dir="rtl" class="login-container">
+    <div class="login-box animated fadeInDown">
+        <div class="login-logo" hidden="hidden"></div>
+        <div class="login-body">
+            <div class="login-title text-center">شركة صرخة للبرمجيات | الصيدلية الذكية</div>
+            <div th:if="${param.error}">
+                <div class="alert alert-danger" role="alert">
+                    <strong>هناك خطأ فى الدخول: </strong>
+                    <ul>
+                        <li>تأكد من البريد الإلكتروني أو كلمة المرور</li>
+                        <li>يجب أن يكون المستخدم يشغل منصب داخل النظام</li>
+                        <li>مصرح للدعم الفني الدخول مباشرة</li>
+                    </ul>
+                </div>
+            </div>
+            <div th:if="${param.logout}">
+                <div class="alert alert-success" role="alert">تم تسجيل بيانات الخروج بنجاح</div>
+            </div>
+            <form class="form-horizontal text-right" th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input dir="ltr" id="email" class="form-control" type="email"
+                               name="email" placeholder="ادخل بريدك الإلكتروني"
+                               required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div dir="ltr" class="col-md-12">
+                        <input id="password" class="form-control" type="password"
+                               name="password" placeholder="ادخل الرقم السري"
+                               required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="help-block">
+                            <input style="height: 10px !important;" type="checkbox" checked="checked" name="remember-me"/>
+                            <span>قم باختيار هذا الحقل فى حال اردت تذكر بيانات الدخول</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <button class="btn btn-info btn-block" type="submit">دخول</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" class="btn btn-link btn-block">هل نسيت كلمة المرور؟</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="login-footer">
+            <div class="pull-left">
+                <a href="http://www.ararhni.com/" target="_blank">عن الشركة</a> |
+                <a href="http://www.ararhni.com/" target="_blank">الخصوصية</a> |
+                <a href="http://www.ararhni.com/" target="_blank">اتصل بنا</a>
+            </div>
+            <div dir="ltr" class="pull-right lobster">
+                &copy; SPH version 0.1 2016
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

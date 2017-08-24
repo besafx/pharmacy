@@ -1,0 +1,33 @@
+*:focus {
+    outline: none !important;
+}
+
+.focus-highlight {
+    position: fixed;
+    display: block;
+    -webkit-transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
+    -moz-transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
+    -o-transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
+    transition: left 100ms ease-out, top 100ms ease-out, width 100ms ease-out, height 100ms ease-out;
+    pointer-events: none;
+    margin-left: 0px;
+    margin-top: 0px;
+    pointer-events: none;
+    z-index: 1000;
+
+    box-shadow: 0 0 2pt 2pt #f39c12;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.focus-highlight-inactive {
+    box-shadow: 0 0 2pt 2pt #c8c8c8;
+}
+
+.focus-highlight-disabled {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+}

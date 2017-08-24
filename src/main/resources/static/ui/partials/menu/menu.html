@@ -1,0 +1,187 @@
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout-icon">
+            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                <i class="material-icons">{{MDLIcon}}</i>
+            </a>
+        </div>
+        <div class="mdl-layout__header-row">
+
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+
+            <div class="mdl-layout-spacer"></div>
+
+            <div id="tasks-closed-menu-lower-left" class="material-icons mdl-badge mdl-badge--overlap mdl-icon-margin" data-badge="{{me.tasksClosedThisWeek.length}}">alarm</div>
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+                for="tasks-closed-menu-lower-left">
+                <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
+                    <span ng-if="lang==='AR'">لديك {{me.tasksClosedThisWeek.length}} مهمة مغلقة هذا الاسبوع</span>
+                    <span ng-if="lang==='EN'">{{me.tasksClosedThisWeek.length}} Tasks will be closed this week</span>
+                </li>
+                <li ng-repeat="taskClosed in me.tasksClosedThisWeek"
+                    class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="ModalProvider.openTaskDetailsModel(taskClosed)">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">assignment</i>
+                        <span style="text-overflow: ellipsis;white-space: nowrap;width: 200px; overflow: hidden">[{{taskClosed.code}}] {{taskClosed.title}}</span>
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <button href="" ng-click="ModalProvider.openTasksClosedSoonModel()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                        <span ng-if="lang==='AR'">طباعة تقرير</span>
+                        <span ng-if="lang==='EN'">Print...</span>
+                    </button>
+                </li>
+            </ul>
+
+            <button id="options-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin">
+                <i class="material-icons">settings_applications</i>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+                for="options-menu-lower-left">
+                <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
+                    <span ng-if="lang==='AR'">خيارات البرنامج</span>
+                    <span ng-if="lang==='EN'">PREFERENCES</span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="switchDateType()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">timer</i>
+                        <span ng-if="dateType==='H' && lang==='AR'">تطبيق التاريخ الميلادي</span>
+                        <span ng-if="dateType==='H' && lang==='EN'">GREGORIAN DATE</span>
+                        <span ng-if="dateType==='G' && lang==='AR'">تطبيق التاريخ الهجري</span>
+                        <span ng-if="dateType==='G' && lang==='EN'">HIJRI DATE</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="switchLang()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">language</i>
+                        <span ng-if="lang==='EN'">ARABIC GUI</span>
+                        <span ng-if="lang==='AR'">تطبيق الواجهة الإنجليزية</span>
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <button href="" ng-click="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                        <span ng-if="lang==='AR'">المزيد من الخيارات</span>
+                        <span ng-if="lang==='EN'">MORE...</span>
+                    </button>
+                </li>
+            </ul>
+
+            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+                for="menu-lower-left">
+                <li class="mdl-list__item mdl-list__item--two-line mdl-menu__item--full-bleed-divider">
+                    <span class="mdl-list__item-primary-content">
+                        <span class="material-icons mdl-list__item-avatar"
+                              ng-style="{'background-image': 'url(' + me.img + ')'}"></span>
+                        <span>{{me.name}}</span>
+                        <span class="mdl-list__item-sub-title">{{me.email}}</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item" ng-click="goToHelp()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">help</i>
+                        <span ng-if="lang==='AR'">المساعدة</span>
+                        <span ng-if="lang==='EN'">HELP</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item" ng-click="goToAbout()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">info</i>
+                        <span ng-if="lang==='AR'">عن البرنامج</span>
+                        <span ng-if="lang==='EN'">ABOUT</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider" ng-click="goToProfile()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">account_box</i>
+                        <span ng-if="lang==='AR'">الملف الشخصي</span>
+                        <span ng-if="lang==='EN'">PROFILE</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item" ng-click="logout()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">exit_to_app</i>
+                        <span ng-if="lang==='AR'">تسجيل الخروج</span>
+                        <span ng-if="lang==='EN'">SIGN OUT</span>
+                    </span>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+
+        <div class="row" dir="rtl" style="margin-top: 10px">
+
+            <div class="container">
+
+                <div class="form-group row">
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                        <a href="" ng-click="goToHome()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">dashboard</i>
+                            <p ng-if="lang==='AR'">الرئيسية</p>
+                            <p ng-if="lang==='EN'">DASHBOARD</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">business</i>
+                            <p ng-if="lang==='AR'">الشركة</p>
+                            <p ng-if="lang==='EN'">COMPANY</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
+                        <a href="" ng-click="goToTeam()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">security</i>
+                            <p ng-if="lang==='AR'">الصلاحيات</p>
+                            <p ng-if="lang==='EN'">PRIVILEGES</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_PERSON_CREATE', 'ROLE_PERSON_UPDATE', 'ROLE_PERSON_DELETE', 'ROLE_PERSON_REPORT'])">
+                        <a href="" ng-click="goToPerson()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">lock</i>
+                            <p ng-if="lang==='AR'">المستخدمون</p>
+                            <p ng-if="lang==='EN'">USERS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                        <a href="" ng-click="goToAbout()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">info</i>
+                            <p ng-if="lang==='AR'">عن البرنامج</p>
+                            <p ng-if="lang==='EN'">ABOUT</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                        <a href="" ng-click="goToProfile()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">account_circle</i>
+                            <p ng-if="lang==='AR'">الحساب الشخصي</p>
+                            <p ng-if="lang==='EN'">PROFILE</p>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>

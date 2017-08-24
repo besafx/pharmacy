@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+    <fontFamily name="PT Bold Heading">
+        <normal>fonts/PT Bold Heading.ttf</normal>
+        <italic>fonts/PT Bold Heading.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'PT Bold Heading', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'PT Bold Heading', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="Agency FB">
+        <normal>fonts/Agency FB.ttf</normal>
+        <italic>fonts/Agency FB.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Agency FB', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'Agency FB', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="ae_AlArabiya">
+        <normal>fonts/ae_AlArabiya.ttf</normal>
+        <italic>fonts/ae_AlArabiya.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'ae_AlArabiya', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'ae_AlArabiya', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="HacenBeirut">
+        <normal>fonts/Hacen Beirut.ttf</normal>
+        <italic>fonts/Hacen Beirut.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Hacen Beirut', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'Hacen Beirut', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="stc">
+        <normal>fonts/stc.otf</normal>
+        <italic>fonts/stc.otf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'GE SS Text Light', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'GE SS Text Light', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="Diwani Bent">
+        <normal>fonts/Diwani Bent.ttf</normal>
+        <italic>fonts/Diwani Bent.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Diwani Bent', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'Diwani Bent', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="Edwardian Script ITC">
+        <normal>fonts/Edwardian Script ITC.ttf</normal>
+        <italic>fonts/Edwardian Script ITC.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Edwardian Script ITC', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'Edwardian Script ITC', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="Arial">
+        <normal>fonts/Arial.ttf</normal>
+        <italic>fonts/Arial.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Arial', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'Arial', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+    <fontFamily name="Cairo">
+        <normal>fonts/Cairo-Regular.ttf</normal>
+        <italic>fonts/Cairo-Regular.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Cairo', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'Cairo', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
+</fontFamilies>

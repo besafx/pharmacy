@@ -1,0 +1,407 @@
+.ui-view-container {
+    position: relative;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    /*-webkit-transition: all .5s ease-in-out;*/
+    /*-moz-transition: all .5s ease-in-out;*/
+    /*-o-transition: all .5s ease-in-out;*/
+    /*transition: all .5s ease-in-out;*/
+}
+
+[ui-view].ng-enter {
+    -webkit-animation: 1s fadeIn ease-in-out;
+    animation: 1s fadeIn ease-in-out;
+}
+
+[ui-view].ng-leave {
+    /*-webkit-animation: 0.5s zoomOut ease-in-out;*/
+    /*animation: 0.5s zoomOut ease-in-out;*/
+}
+
+/**************************************************************
+ *                                                            *
+ * General Animation                                          *
+ *                                                            *
+ *************************************************************/
+/* when hiding the thing */
+/*.ng-hide-add {
+    -webkit-animation: 0.5s zoomOut ease;
+    animation: 0.5s zoomOut ease;
+}*/
+
+/* when showing the thing */
+/*.ng-hide-remove {
+    -webkit-animation: 0.5s zoomIn ease;
+    animation: 0.5s zoomIn ease;
+}*/
+
+/**************************************************************
+ *                                                            *
+ * Div Animation                                              *
+ *                                                            *
+ *************************************************************/
+/* when hiding the thing */
+/*div.ng-hide-add {
+    -webkit-animation: 0.5s zoomOut ease;
+    animation: 0.5s zoomOut ease;
+}*/
+
+/* when showing the thing */
+/*div.ng-hide-remove {
+    -webkit-animation: 0.5s zoomIn ease;
+    animation: 0.5s zoomIn ease;
+}*/
+/**************************************************************
+ *                                                            *
+ * canvas Animation                                           *
+ *                                                            *
+ *************************************************************/
+/* when hiding the thing */
+/*canvas.ng-hide-add {
+    -webkit-animation: 0.5s fadeOut ease;
+    animation: 0.5s fadeOut ease;
+}*/
+
+/* when showing the thing */
+canvas.ng-hide-remove {
+    -webkit-animation: 0.5s fadeIn ease;
+    animation: 0.5s fadeIn ease;
+}
+
+/**************************************************************
+ *                                                            *
+ * Animation                                                  *
+ *                                                            *
+ *************************************************************/
+@-webkit-keyframes bounceOutLeft {
+    20% {
+        opacity: 1;
+        -webkit-transform: translate3d(20px, 0, 0);
+        transform: translate3d(20px, 0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translate3d(-2000px, 0, 0);
+        transform: translate3d(-2000px, 0, 0);
+    }
+}
+
+@keyframes bounceOutLeft {
+    20% {
+        opacity: 1;
+        -webkit-transform: translate3d(20px, 0, 0);
+        transform: translate3d(20px, 0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translate3d(-2000px, 0, 0);
+        transform: translate3d(-2000px, 0, 0);
+    }
+}
+
+@-webkit-keyframes bounceOutLeft {
+    20% {
+        opacity: 1;
+        -webkit-transform: translate3d(20px, 0, 0);
+        transform: translate3d(20px, 0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translate3d(-2000px, 0, 0);
+        transform: translate3d(-2000px, 0, 0);
+    }
+}
+
+@keyframes bounceOutLeft {
+    20% {
+        opacity: 1;
+        -webkit-transform: translate3d(20px, 0, 0);
+        transform: translate3d(20px, 0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translate3d(-2000px, 0, 0);
+        transform: translate3d(-2000px, 0, 0);
+    }
+}
+
+@-webkit-keyframes bounceInRight {
+    0%, 60%, 75%, 90%, 100% {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(3000px, 0, 0);
+        transform: translate3d(3000px, 0, 0);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: translate3d(-25px, 0, 0);
+        transform: translate3d(-25px, 0, 0);
+    }
+
+    75% {
+        -webkit-transform: translate3d(10px, 0, 0);
+        transform: translate3d(10px, 0, 0);
+    }
+
+    90% {
+        -webkit-transform: translate3d(-5px, 0, 0);
+        transform: translate3d(-5px, 0, 0);
+    }
+
+    100% {
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes bounceInRight {
+    0%, 60%, 75%, 90%, 100% {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(3000px, 0, 0);
+        transform: translate3d(3000px, 0, 0);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: translate3d(-25px, 0, 0);
+        transform: translate3d(-25px, 0, 0);
+    }
+
+    75% {
+        -webkit-transform: translate3d(10px, 0, 0);
+        transform: translate3d(10px, 0, 0);
+    }
+
+    90% {
+        -webkit-transform: translate3d(-5px, 0, 0);
+        transform: translate3d(-5px, 0, 0);
+    }
+
+    100% {
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+/**************************************************************
+ *                                                            *
+ * zoomOut Animation                                          *
+ *                                                            *
+ *************************************************************/
+@-webkit-keyframes zoomOut {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes zoomOut {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/**************************************************************
+ *                                                            *
+ * zoomIn Animation                                           *
+ *                                                            *
+ *************************************************************/
+@-webkit-keyframes zoomIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/**************************************************************
+ *                                                            *
+ * slideInLeft Animation                                      *
+ *                                                            *
+ *************************************************************/
+@-webkit-keyframes slideInLeft {
+    0% {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInLeft {
+    0% {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/**************************************************************
+ *                                                            *
+ * slideOutRight Animation                                    *
+ *                                                            *
+ *************************************************************/
+@-webkit-keyframes slideOutRight {
+    0% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+        visibility: hidden;
+        -webkit-transform: translate3d(100%, 0, 0);
+        transform: translate3d(100%, 0, 0);
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+        visibility: hidden;
+        -webkit-transform: translate3d(100%, 0, 0);
+        transform: translate3d(100%, 0, 0);
+    }
+}
+
+/**************************************************************
+ *                                                            *
+ * slideInUp Animation                                        *
+ *                                                            *
+ *************************************************************/
+@-webkit-keyframes slideInUp {
+    0% {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInUp {
+    0% {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/**************************************************************
+ *                                                            *
+ * fadeIn Animation                                           *
+ *                                                            *
+ *************************************************************/
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/**************************************************************
+ *                                                            *
+ * pulse Animation                                            *
+ *                                                            *
+ *************************************************************/
+/*.pulse {*/
+/*-webkit-animation-duration: 2s;*/
+/*-webkit-animation-delay: 2s;*/
+/*-webkit-animation-iteration-count: infinite;*/
+/*}*/
+
+.box-select {
+    box-shadow: 0px 0px 20px 10px rgba(169, 137, 24, 0.3) !important;
+}
+
+.box-select .panel {
+    border-top: 0px solid #E5E5E5 !important;
+}
+
+

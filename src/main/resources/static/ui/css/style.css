@@ -1,0 +1,374 @@
+@charset "UTF-8";
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.st-sort-ascent:before {
+    content: '\25B2';
+}
+
+.st-sort-descent:before {
+    content: '\25BC';
+}
+
+html * {
+    font-family: 'Cairo', sans-serif;
+}
+
+html,
+body {
+    background: #f5f5f5 url('/ui/img/bg.png') left top repeat;
+}
+
+.xlg .modal-dialog {
+    width: 80%;
+}
+
+/*.chosen-container-multi .chosen-choices,*/
+.chosen-container-single .chosen-single {
+    height: 40px !important;
+}
+
+.chosen-container-multi .chosen-choices span,
+.chosen-container-single .chosen-single span {
+    margin-top: 5px !important;
+    height: 40px !important;
+    font-size: 15px;
+}
+
+.chosen-container-multi .chosen-choices div,
+.chosen-container-single .chosen-single div {
+    top: 5px !important;
+    left: 5px !important;
+    right: auto !important;
+}
+
+.chosen-container-multi .chosen-choices li{
+    float: right !important;
+    text-align: right !important;
+}
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+input, .btn {
+    height: 40px !important;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: white !important;
+}
+
+.form-control[disabled], .form-control[readonly] {
+    color: black !important;
+}
+
+.panel-green {
+    border-color: #5cb85c;
+}
+
+.panel-green > .panel-heading {
+    border-color: #5cb85c;
+    color: white;
+    background-color: #5cb85c;
+}
+
+.panel-green > a {
+    color: #5cb85c;
+}
+
+.panel-green > a:hover {
+    color: #3d8b3d;
+}
+
+.panel-red {
+    border-color: #d9534f;
+}
+
+.panel-red > .panel-heading {
+    border-color: #d9534f;
+    color: white;
+    background-color: #d9534f;
+}
+
+.panel-red > a {
+    color: #d9534f;
+}
+
+.panel-red > a:hover {
+    color: #b52b27;
+}
+
+.panel-yellow {
+    border-color: #f0ad4e;
+}
+
+.panel-yellow > .panel-heading {
+    border-color: #f0ad4e;
+    color: white;
+    background-color: #f0ad4e;
+}
+
+.panel-yellow > a {
+    color: #f0ad4e;
+}
+
+.panel-yellow > a:hover {
+    color: #df8a13;
+}
+
+.mCSB_scrollTools {
+    right: auto !important;
+    left: 0 !important;
+}
+
+.ng-pageslide {
+    background: white;
+    opacity: 0;
+    box-shadow: 2px 0px 20px 20px rgba(0, 0, 0, 0.1);
+}
+
+.panel .panel-title {
+    float: right !important;
+}
+
+.panel {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2) !important;
+}
+
+.panel .panel-body.profile {
+    border-radius: 0px !important;
+}
+
+.profile .profile-data {
+    height: 20px !important;
+}
+
+.profile .profile-data .profile-data-name {
+    /*font-size: 5vw !important;*/
+}
+
+input[type=checkbox] {
+    transform: scale(2) !important;
+    -ms-transform: scale(2) !important;
+    -webkit-transform: scale(2) !important;
+    padding: 10px !important;
+    margin: 0px 5px 0px !important;
+}
+
+.mdl-layout__header > .mdl-layout-icon {
+    left: auto !important;
+    right: 15px !important;
+}
+
+.mdl-layout__header {
+    min-height: 50px !important;
+    direction: rtl !important;
+}
+
+.mdl-layout__header-row .mdl-navigation {
+    height: 50px !important;
+}
+
+.mdl-layout__header > .mdl-layout-icon {
+    top: 10px !important;
+}
+
+.mdl-layout__header-row {
+    padding: 0px 50px 0px 20px !important;
+    height: 50px !important;
+}
+
+.mdl-layout__title, .mdl-layout-title, .mdl-button {
+    font-family: 'Cairo', serif;
+    font-weight: bold;
+}
+
+.mdl-menu {
+    width: 310px;
+}
+
+.mdl-list__item--two-line .mdl-list__item-primary-content {
+    text-align: right !important;
+}
+
+.mdl-list__item--two-line .mdl-list__item-primary-content .mdl-list__item-avatar {
+    float: right;
+}
+
+.mdl-list__item .mdl-list__item-primary-content .mdl-list__item-avatar {
+    margin-right: 0px !important;
+    margin-left: 16px !important;
+    background-size: cover;
+}
+
+.mdl-badge {
+    cursor: pointer;
+}
+
+.mdl-menu, .mdl-menu__item {
+    text-align: right;
+    direction: rtl;
+}
+
+.mdl-list__item .mdl-list__item-primary-content .mdl-list__item-icon {
+    margin-left: 10px !important;
+    margin-right: 0px !important;
+}
+
+.mdl-data-table {
+    width: 100%;
+}
+
+.mdl-data-table th {
+    font-size: 15px;
+}
+
+.mdl-data-table tbody tr td {
+    font-size: 12px;
+}
+
+.mdl-data-table thead tr {
+    background-color: lightgray;
+}
+
+.mdl-data-table th, .mdl-data-table tbody tr, .mdl-data-table tbody tr td {
+    line-height: 15px;
+    height: 30px;
+}
+
+.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
+}
+
+.material-icons.md-120 {
+    font-size: 120px;
+}
+
+.panel {
+    border-radius: 0px !important;
+}
+
+.full-width-menu {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin: 2px;
+}
+
+.full-width-menu .mdl-menu__container,
+.full-width-menu .mdl-menu__container .mdl-menu__outline,
+.full-width-menu .mdl-menu__container .mdl-menu {
+    width: 100% !important;
+}
+
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9,
+.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9 {
+    float: right !important;
+}
+
+.noty_buttons {
+    text-align: left !important;
+}
+
+.noty_close {
+    right: auto !important;
+    left: 0.25rem !important;
+}
+
+.activity {
+    direction: rtl !important;
+}
+
+.label {
+    line-height: 2 !important;
+}
+
+.label-default {
+    margin: 0px 0px 10px 10px !important;
+}
+
+/*********/
+ul.breadcrumb {
+    padding: 10px 16px;
+    list-style: none;
+    background-color: #eee;
+    font-size: 17px !important;
+}
+
+ul.breadcrumb li {
+    display: inline;
+}
+
+ul.breadcrumb li + li:before {
+    padding: 8px;
+    color: black;
+    content: "/\00a0";
+}
+
+ul.breadcrumb li a {
+    color: #0275d8;
+    text-decoration: none;
+}
+
+ul.breadcrumb li a:hover {
+    color: #01447e;
+    text-decoration: underline;
+}
+
+select {
+    height: 40px !important;
+}
+
+.drop-menu {
+    cursor: pointer;
+    padding: 10px;
+    text-align: right;
+}
+
+.drop-menu .fa{
+    margin-left: 10px;
+}
+
+.drop-menu:hover{
+    background-color: lightgrey;
+}
+
+.mdl-icon-margin{
+    margin-right: 15px !important;
+}
+
+.mdl-layout__content{
+    direction: rtl !important;
+}
+
+.form-group, .form-control{
+    text-align: right !important;
+}
+
+.mdl-data-table thead th,
+.mdl-data-table tbody tr,
+.mdl-data-table tbody tr td{
+    text-align: right !important;
+}
