@@ -48,7 +48,7 @@ public class CompanyRest {
                     .builder()
                     .title(lang.equals("AR") ? "العمليات على قواعد البيانات" : "Data Processing")
                     .message(lang.equals("AR") ? "تم تعديل بيانات الشركة بنجاح" : "Update company information successfully")
-                    .type("warn")
+                    .type("warning")
                     .icon("fa-edit")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
