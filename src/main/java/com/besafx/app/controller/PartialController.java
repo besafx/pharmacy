@@ -41,7 +41,7 @@ public class PartialController {
             if(options.getLang().equals("AR")){
                 modelAndView.addObject("title", "مركز السلطان للصقور | الصيدلية الذكية");
             }else{
-                modelAndView.addObject("title", "SULTAN CENTER | Smart Pharmacy");
+                modelAndView.addObject("title", "SULTAN CENTER | SMART PHARMACY");
             }
             return modelAndView;
         }

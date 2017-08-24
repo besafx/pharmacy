@@ -143,6 +143,51 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">account_circle</i>
+                            <p ng-if="lang==='AR'">العملاء</p>
+                            <p ng-if="lang==='EN'">CUSTOMERS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">local_hospital</i>
+                            <p ng-if="lang==='AR'">الاطباء</p>
+                            <p ng-if="lang==='EN'">DOCTORS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">person_pin_circle</i>
+                            <p ng-if="lang==='AR'">الموظفون</p>
+                            <p ng-if="lang==='EN'">EMPLOYEES</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">spa</i>
+                            <p ng-if="lang==='AR'">أنواع الفحص</p>
+                            <p ng-if="lang==='EN'">DETECTION TYPES</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">burst_mode</i>
+                            <p ng-if="lang==='AR'">طلبات الفحص</p>
+                            <p ng-if="lang==='EN'">DETECTION ORDERS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
                         <a href="" ng-click="goToTeam()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">security</i>
