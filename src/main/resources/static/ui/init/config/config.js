@@ -105,13 +105,35 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
-         * Person State                                               *
+         * Customer State                                             *
          *                                                            *
          *************************************************************/
-        $stateProvider.state("person", {
-            url: "/person",
-            templateUrl: "/ui/partials/person/person.html",
-            controller: "personCtrl"
+        $stateProvider.state("customer", {
+            url: "/customer",
+            templateUrl: "/ui/partials/customer/customer.html",
+            controller: "customerCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
+         * Doctor State                                               *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("doctor", {
+            url: "/doctor",
+            templateUrl: "/ui/partials/doctor/doctor.html",
+            controller: "doctorCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
+         * Employee State                                             *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("employee", {
+            url: "/employee",
+            templateUrl: "/ui/partials/employee/employee.html",
+            controller: "employeeCtrl"
         });
 
         /**************************************************************

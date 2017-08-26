@@ -5,8 +5,8 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
      * Person Model                                               *
      *                                                            *
      *************************************************************/
-    this.openPersonCreateModel = function () {
-        $uibModal.open({
+    this.openPersonCreateModel = function (person) {
+        return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
@@ -17,20 +17,27 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             size: 'lg',
             resolve: {
                 title: function () {
-                    return $rootScope.lang === 'AR' ? 'انشاء مستخدم جديد' : 'New User';
+                    switch (person.personType){
+                        case "Customer":
+                            return $rootScope.lang === 'AR' ? 'انشاء حساب عميل جديد' : 'New Customer';
+                        case "Doctor":
+                            return $rootScope.lang === 'AR' ? 'انشاء حساب طبيب جديد' : 'New Doctor';
+                        case "Employee":
+                            return $rootScope.lang === 'AR' ? 'انشاء حساب موظف جديد' : 'New Employee';
+                    }
                 },
                 action: function () {
                     return 'create';
                 },
                 person: function () {
-                    return undefined;
+                    return person;
                 }
             }
         });
     };
 
     this.openPersonUpdateModel = function (person) {
-        $uibModal.open({
+        return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
@@ -41,7 +48,14 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             size: 'lg',
             resolve: {
                 title: function () {
-                    return $rootScope.lang === 'AR' ? 'تعديل بيانات مستخدم' : 'Update User';
+                    switch (person.personType){
+                        case "Customer":
+                            return $rootScope.lang === 'AR' ? 'تعديل حساب عميل' : 'Update Customer Information';
+                        case "Doctor":
+                            return $rootScope.lang === 'AR' ? 'تعديل حساب طبيب' : 'Update Doctor Information';
+                        case "Employee":
+                            return $rootScope.lang === 'AR' ? 'تعديل حساب موظف' : 'Update Employee Information';
+                    }
                 },
                 action: function () {
                     return 'update';
@@ -59,7 +73,7 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
      *                                                            *
      *************************************************************/
     this.openTeamCreateModel = function () {
-        $uibModal.open({
+        return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
@@ -83,7 +97,7 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
     };
 
     this.openTeamUpdateModel = function (team) {
-        $uibModal.open({
+        return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
@@ -107,7 +121,7 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
     };
 
     this.openPersonsReportModel = function (persons) {
-        $uibModal.open({
+        return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',

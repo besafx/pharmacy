@@ -112,7 +112,8 @@ gulp.task('scripts', function () {
         './partials/company/company.js',
         './partials/team/team.js',
         './partials/team/teamCreateUpdate.js',
-        './partials/person/person.js',
+        './partials/customer/customer.js',
+        './partials/customer/customerCreateUpdate.js',
         './partials/person/personCreateUpdate.js',
 
         './partials/report/person/personsIn.js',

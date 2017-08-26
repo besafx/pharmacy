@@ -55,9 +55,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
-                case 'person': {
+                case 'customer': {
                     $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'lock';
+                    $rootScope.MDLIcon = 'account_circle';
                     $css.removeAll();
                     $css.add([
                         '/ui/css/mdl-style-brown-deep_orange.css',
@@ -66,9 +66,31 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
-                case 'profile': {
+                case 'doctor': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'local_hospital';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-brown-deep_orange.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
+                case 'customer': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'account_circle';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-brown-deep_orange.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
+                case 'employee': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'person_pin_circle';
                     $css.removeAll();
                     $css.add([
                         '/ui/css/mdl-style-light_green-lime.css',
@@ -181,11 +203,25 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'Privileges';
                         }
                         break;
-                    case 'person':
+                    case 'customer':
                         if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'المستخدمون';
+                            $rootScope.pageTitle = 'العملاء';
                         } else {
-                            $rootScope.pageTitle = 'Users';
+                            $rootScope.pageTitle = 'Customers';
+                        }
+                        break;
+                    case 'doctor':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'الاطباء';
+                        } else {
+                            $rootScope.pageTitle = 'Doctors';
+                        }
+                        break;
+                    case 'employee':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'الموظفون';
+                        } else {
+                            $rootScope.pageTitle = 'Employees';
                         }
                         break;
                     case 'profile':
@@ -387,8 +423,14 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         $rootScope.goToTeam = function () {
             $state.go('team');
         };
-        $rootScope.goToPerson = function () {
-            $state.go('person');
+        $rootScope.goToCustomer = function () {
+            $state.go('customer');
+        };
+        $rootScope.goToDoctor = function () {
+            $state.go('doctor');
+        };
+        $rootScope.goToEmployee = function () {
+            $state.go('employee');
         };
         $rootScope.goToHome = function () {
             $state.go('home');

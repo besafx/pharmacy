@@ -67,7 +67,9 @@ public class PartialController {
             "/menu",
             "/company",
             "/team",
-            "/person",
+            "/customer",
+            "/doctor",
+            "/employee",
             "/help",
             "/profile",
             "/about"

@@ -134,7 +134,7 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_UPDATE'])">
                         <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">business</i>
                             <p ng-if="lang==='AR'">الشركة</p>
@@ -143,8 +143,8 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
-                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                         ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE', 'ROLE_CUSTOMER_UPDATE', 'ROLE_CUSTOMER_DELETE'])">
+                        <a href="" ng-click="goToCustomer()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">account_circle</i>
                             <p ng-if="lang==='AR'">العملاء</p>
                             <p ng-if="lang==='EN'">CUSTOMERS</p>
@@ -152,8 +152,8 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
-                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                         ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE', 'ROLE_DOCTOR_UPDATE', 'ROLE_DOCTOR_DELETE'])">
+                        <a href="" ng-click="goToDoctor()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">local_hospital</i>
                             <p ng-if="lang==='AR'">الاطباء</p>
                             <p ng-if="lang==='EN'">DOCTORS</p>
@@ -161,8 +161,8 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
-                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                         ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE', 'ROLE_EMPLOYEE_UPDATE', 'ROLE_EMPLOYEE_DELETE'])">
+                        <a href="" ng-click="goToEmployee()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">person_pin_circle</i>
                             <p ng-if="lang==='AR'">الموظفون</p>
                             <p ng-if="lang==='EN'">EMPLOYEES</p>
@@ -170,7 +170,7 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE'])">
                         <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">spa</i>
                             <p ng-if="lang==='AR'">أنواع الفحص</p>
@@ -179,7 +179,7 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE'])">
                         <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">burst_mode</i>
                             <p ng-if="lang==='AR'">طلبات الفحص</p>
@@ -188,7 +188,7 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE'])">
                         <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">assignment</i>
                             <p ng-if="lang==='AR'">نتائج الفحص</p>
@@ -197,7 +197,7 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE'])">
                         <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">favorite</i>
                             <p ng-if="lang==='AR'">الدواء</p>
@@ -206,7 +206,7 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                         ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE'])">
                         <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">shopping_cart</i>
                             <p ng-if="lang==='AR'">فواتير البيع</p>
@@ -215,20 +215,11 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
+                         ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE'])">
                         <a href="" ng-click="goToTeam()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">security</i>
                             <p ng-if="lang==='AR'">الصلاحيات</p>
                             <p ng-if="lang==='EN'">PRIVILEGES</p>
-                        </a>
-                    </div>
-
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
-                         ng-if="contains(me.team.authorities, ['ROLE_PERSON_CREATE', 'ROLE_PERSON_UPDATE', 'ROLE_PERSON_DELETE', 'ROLE_PERSON_REPORT'])">
-                        <a href="" ng-click="goToPerson()" class="card-square mdl-card mdl-shadow--8dp">
-                            <i class="material-icons md-120">lock</i>
-                            <p ng-if="lang==='AR'">المستخدمون</p>
-                            <p ng-if="lang==='EN'">USERS</p>
                         </a>
                     </div>
 

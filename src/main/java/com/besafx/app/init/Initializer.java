@@ -2,6 +2,7 @@ package com.besafx.app.init;
 import com.besafx.app.entity.Company;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Team;
+import com.besafx.app.entity.enums.PersonType;
 import com.besafx.app.service.CompanyService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TeamService;
@@ -75,6 +76,7 @@ public class Initializer implements CommandLineRunner {
         person.setActive(false);
         person.setTechnicalSupport(true);
         person.setTeam(team);
+        person.setPersonType(PersonType.Employee);
         person.setOptions(JSONConverter.toString(Options.builder().lang("AR").dateType("H")));
         log.info(JSONConverter.toString(Options.builder().lang("AR").dateType("H")));
         personService.save(person);

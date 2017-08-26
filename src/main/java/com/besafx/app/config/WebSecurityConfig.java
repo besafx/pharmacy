@@ -53,7 +53,9 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/company").access("hasRole('ROLE_COMPANY_UPDATE')")
                 .antMatchers("/team").access("hasRole('ROLE_TEAM_CREATE') or hasRole('ROLE_TEAM_UPDATE') or hasRole('ROLE_TEAM_DELETE')")
-                .antMatchers("/person").access("hasRole('ROLE_PERSON_CREATE') or hasRole('ROLE_PERSON_UPDATE') or hasRole('ROLE_PERSON_DELETE')")
+                .antMatchers("/customer").access("hasRole('ROLE_CUSTOMER_CREATE') or hasRole('ROLE_CUSTOMER_UPDATE') or hasRole('ROLE_CUSTOMER_DELETE')")
+                .antMatchers("/doctor").access("hasRole('ROLE_DOCTOR_CREATE') or hasRole('ROLE_DOCTOR_UPDATE') or hasRole('ROLE_DOCTOR_DELETE')")
+                .antMatchers("/employee").access("hasRole('ROLE_EMPLOYEE_CREATE') or hasRole('ROLE_EMPLOYEE_UPDATE') or hasRole('ROLE_EMPLOYEE_DELETE')")
                 .anyRequest().authenticated();
         http.formLogin()
                 .loginPage("/login")

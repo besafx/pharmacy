@@ -1,29 +1,36 @@
 package com.besafx.app.rest;
+
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.*;
-import com.besafx.app.service.*;
+import com.besafx.app.entity.Person;
+import com.besafx.app.entity.enums.PersonType;
+import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.bohnman.squiggly.Squiggly;
+import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/person/")
 public class PersonRest {
+
+    public static final String FILTER_ALL = "**";
+    public static final String FILTER_TABLE = "**,-password,-hiddenPassword,team[id,code,name,authorities]";
+    public static final String FILTER_PERSON_COMBO = "id,nickname,name";
 
     @Autowired
     private PersonService personService;
@@ -36,56 +43,63 @@ public class PersonRest {
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_PERSON_CREATE')")
-    public Person create(@RequestBody Person person, Principal principal) {
-        if (personService.findByEmail(person.getEmail()) != null) {
-            throw new CustomException("هذا البريد الإلكتروني غير متاح ، فضلاً ادخل بريد آخر غير مستخدم");
+    @PreAuthorize("hasRole('ROLE_CUSTOMER_CREATE') or hasRole('ROLE_DOCTOR_CREATE') or hasRole('ROLE_EMPLOYEE_CREATE')")
+    public String create(@RequestBody Person person, Principal principal) {
+        if(!person.getPersonType().equals(PersonType.Customer)){
+            if (personService.findByEmail(person.getEmail()) != null) {
+                throw new CustomException("هذا البريد الإلكتروني غير متاح ، فضلاً ادخل بريد آخر غير مستخدم");
+            }
+            person.setHiddenPassword(person.getPassword());
+            person.setPassword(passwordEncoder.encode(person.getPassword()));
+            person.setTokenExpired(false);
+            person.setActive(false);
+            person.setTechnicalSupport(false);
+            person.setOptions(JSONConverter.toString(Options.builder().lang("AR").dateType("H")));
         }
-        person.setHiddenPassword(person.getPassword());
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
         person.setEnabled(true);
-        person.setTokenExpired(false);
-        person.setActive(false);
-        person.setTechnicalSupport(false);
-        person.setOptions(JSONConverter.toString(Options.builder().lang("AR").dateType("H")));
         person = personService.save(person);
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
-                .title("العمليات على حسابات المستخدمين")
-                .message("تم اضافة مستخدم جديد بنجاح")
-                .type("success")
-                .icon("fa-plus-circle")
+                .title(lang.equals("AR") ? "العمليات على قواعد البيانات" : "Data Processing")
+                .message(lang.equals("AR") ? "تم انشاء الحساب بنجاح" : "Create Account successfully")
+                .type("warning")
+                .icon("fa-edit")
+                .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        return person;
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), person);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_PERSON_UPDATE') or hasRole('ROLE_PROFILE_UPDATE')")
-    public Person update(@RequestBody Person person, Principal principal) {
+    @PreAuthorize("hasRole('ROLE_CUSTOMER_UPDATE') or hasRole('ROLE_CUSTOMER_UPDATE') or hasRole('ROLE_CUSTOMER_UPDATE') or hasRole('ROLE_PROFILE_UPDATE')")
+    public String update(@RequestBody Person person, Principal principal) {
         Person object = personService.findOne(person.getId());
-        String lang = JSONConverter.toObject(person.getOptions(), Options.class).getLang();
         if (object != null) {
-            if (!object.getPassword().equals(person.getPassword())) {
-                person.setHiddenPassword(person.getPassword());
-                person.setPassword(passwordEncoder.encode(person.getPassword()));
-            } else {
-                person.setHiddenPassword(object.getHiddenPassword());
+            if(!object.getPersonType().equals(PersonType.Customer)){
+                if (!object.getPassword().equals(person.getPassword())) {
+                    person.setHiddenPassword(person.getPassword());
+                    person.setPassword(passwordEncoder.encode(person.getPassword()));
+                } else {
+                    person.setHiddenPassword(object.getHiddenPassword());
+                }
+                person.setTokenExpired(false);
+                person.setActive(false);
+                person.setTechnicalSupport(false);
             }
-            person.setEnabled(true);
-            person.setTokenExpired(false);
-            person.setActive(false);
-            person.setTechnicalSupport(false);
             person = personService.save(person);
+            Person caller = personService.findByEmail(principal.getName());
+            String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العمليات على قواعد البيانات" : "Data Processing")
-                    .message(lang.equals("AR") ? "تم تعديل بيانات الحساب بنجاح" : "Update account information successfully")
+                    .message(lang.equals("AR") ? "تم تعديل بيانات الحساب بنجاح" : "Update Account Information Successfully")
                     .type("warning")
                     .icon("fa-edit")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
-            return person;
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), person);
         } else {
             return null;
         }
@@ -125,34 +139,46 @@ public class PersonRest {
 
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Person> findAll() {
-        List<Person> list = Lists.newArrayList(personService.findAll());
+    public String findAll() {
+        List<Person> list = Lists.newArrayList(personService.findAll((root, cq, cb) -> cb.isTrue(root.get("enabled"))));
         list.sort(Comparator.comparing(Person::getName));
-        return list;
-    }
-
-    @RequestMapping(value = "findAllSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<Person> findAllSummery() {
-        return findAll();
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Person findOne(@PathVariable Long id) {
-        return personService.findOne(id);
+    public String findOne(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), personService.findOne(id));
     }
 
     @RequestMapping(value = "findByEmail/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Person findByEmail(@PathVariable(value = "email") String email) {
-        return personService.findByEmail(email);
+    public String findByEmail(@PathVariable(value = "email") String email) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), personService.findByEmail(email));
+    }
+
+    @RequestMapping(value = "findByPersonType/{personType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByPersonType(@PathVariable(value = "personType") PersonType personType) {
+        Specification result = Specifications
+                .where((root, cq, cb) -> cb.isTrue(root.get("enabled")))
+                .and((root, cq, cb) -> cb.equal(root.get("personType"), personType));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), personService.findAll(result));
+    }
+
+    @RequestMapping(value = "findByPersonTypeCombo/{personType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByPersonTypeCombo(@PathVariable(value = "personType") PersonType personType) {
+        Specification result = Specifications
+                .where((root, cq, cb) -> cb.isTrue(root.get("enabled")))
+                .and((root, cq, cb) -> cb.equal(root.get("personType"), personType));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_PERSON_COMBO), personService.findAll(result));
     }
 
     @RequestMapping("findActivePerson")
     @ResponseBody
-    public Person findActivePerson(Principal principal) {
-        return personService.findByEmail(principal.getName());
+    public String findActivePerson(Principal principal) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), personService.findByEmail(principal.getName()));
     }
 
 }

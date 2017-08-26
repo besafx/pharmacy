@@ -6,11 +6,6 @@ app.factory("PersonService",
                     return response.data;
                 });
             },
-            findAllSummery: function () {
-                return $http.get("/api/person/findAllSummery").then(function (response) {
-                    return response.data;
-                });
-            },
             findOne: function (id) {
                 return $http.get("/api/person/findOne/" + id).then(function (response) {
                     return response.data;
@@ -44,8 +39,13 @@ app.factory("PersonService",
                     return response.data;
                 });
             },
-            findAuthorities: function () {
-                return $http.get("/api/person/findAuthorities").then(function (response) {
+            findByPersonType: function (personType) {
+                return $http.get("/api/person/findByPersonType/" + personType).then(function (response) {
+                    return response.data;
+                });
+            },
+            findByPersonTypeCombo: function (personType) {
+                return $http.get("/api/person/findByPersonTypeCombo/" + personType).then(function (response) {
                     return response.data;
                 });
             }

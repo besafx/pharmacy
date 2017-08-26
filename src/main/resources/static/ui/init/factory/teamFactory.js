@@ -6,8 +6,8 @@ app.factory("TeamService",
                     return response.data;
                 });
             },
-            findAllSummery: function () {
-                return $http.get("/api/team/findAllSummery").then(function (response) {
+            findAllCombo: function () {
+                return $http.get("/api/team/findAllCombo").then(function (response) {
                     return response.data;
                 });
             },

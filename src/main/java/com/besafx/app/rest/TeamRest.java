@@ -5,6 +5,9 @@ import com.besafx.app.entity.Team;
 import com.besafx.app.service.TeamService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.bohnman.squiggly.Squiggly;
+import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,6 +22,10 @@ import java.util.List;
 @RequestMapping(value = "/api/team/")
 public class TeamRest {
 
+    public static final String FILTER_ALL = "**";
+    public static final String FILTER_TABLE = "**,persons[id]";
+    public static final String FILTER_TEAM_COMBO = "**,-persons";
+
     @Autowired
     private TeamService teamService;
 
@@ -28,7 +35,7 @@ public class TeamRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_TEAM_CREATE')")
-    public Team create(@RequestBody Team team, Principal principal) {
+    public String create(@RequestBody Team team, Principal principal) {
         if (teamService.findByAuthorities(team.getAuthorities()) != null) {
             throw new CustomException("هذة المجموعة موجودة بالفعل.");
         }
@@ -46,13 +53,13 @@ public class TeamRest {
                 .type("success")
                 .icon("fa-plus-circle")
                 .build(), principal.getName());
-        return team;
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), team);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_TEAM_UPDATE')")
-    public Team update(@RequestBody Team team, Principal principal) {
+    public String update(@RequestBody Team team, Principal principal) {
         if (teamService.findByCodeAndIdIsNot(team.getCode(), team.getId()) != null) {
             throw new CustomException("هذا الكود مستخدم سابقاً، فضلاً قم بتغير الكود.");
         }
@@ -66,7 +73,7 @@ public class TeamRest {
                     .type("success")
                     .icon("fa-edit")
                     .build(), principal.getName());
-            return team;
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), team);
         } else {
             return null;
         }
@@ -94,21 +101,23 @@ public class TeamRest {
 
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Team> findAll() {
+    public String findAll() {
         List<Team> list = Lists.newArrayList(teamService.findAll());
         list.sort(Comparator.comparing(Team::getCode));
-        return list;
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
-    @RequestMapping(value = "findAllSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "findAllCombo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Team> findAllSummery() {
-        return findAll();
+    public String findAllCombo() {
+        List<Team> list = Lists.newArrayList(teamService.findAll());
+        list.sort(Comparator.comparing(Team::getCode));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TEAM_COMBO), list);
     }
 
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Team findOne(@PathVariable Long id) {
-        return teamService.findOne(id);
+    public String findOne(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), teamService.findOne(id));
     }
 }

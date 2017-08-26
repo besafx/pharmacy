@@ -1,4 +1,5 @@
 package com.besafx.app.entity;
+import com.besafx.app.entity.enums.PersonType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -72,7 +73,6 @@ public class Person implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private Boolean active;
 
-    @JsonIgnore
     private String hiddenPassword;
 
     private Date lastLoginDate;
@@ -81,9 +81,12 @@ public class Person implements Serializable {
 
     private String ipAddress;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 32, columnDefinition = "varchar(32) default 'Employee'")
+    private PersonType personType;
+
     @ManyToOne
     @JoinColumn(name = "team")
-    @JsonIgnoreProperties(value = {"persons"}, allowSetters = true)
     private Team team;
 
     @JsonCreator

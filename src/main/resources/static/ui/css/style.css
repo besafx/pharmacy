@@ -365,10 +365,15 @@ select {
 
 .form-group, .form-control{
     text-align: right !important;
+    direction: rtl !important;
 }
 
 .mdl-data-table thead th,
 .mdl-data-table tbody tr,
 .mdl-data-table tbody tr td{
     text-align: right !important;
+}
+
+.help-block, .modal-header {
+    direction: rtl !important;
 }
