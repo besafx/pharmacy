@@ -64,6 +64,10 @@ input, .btn {
     height: 40px !important;
 }
 
+input{
+    direction: rtl !important;
+}
+
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
     background-color: white !important;
 }
@@ -342,17 +346,22 @@ select {
 }
 
 .drop-menu {
-    cursor: pointer;
     padding: 10px;
     text-align: right;
+    cursor: pointer;
 }
 
-.drop-menu .fa{
+.drop-menu .fa {
     margin-left: 10px;
 }
 
-.drop-menu:hover{
+.drop-menu:hover {
     background-color: lightgrey;
+}
+
+.disabled > .drop-menu {
+    opacity: 0.5 !important;
+    cursor: not-allowed;
 }
 
 .mdl-icon-margin{

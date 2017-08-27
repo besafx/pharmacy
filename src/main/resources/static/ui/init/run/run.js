@@ -44,17 +44,6 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
-                case 'team': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'security';
-                    $css.removeAll();
-                    $css.add([
-                        '/ui/css/mdl-style-green-orange.css',
-                        '/ui/css/theme-black.css'
-                    ]);
-                    $rootScope.applyCssLang();
-                    break;
-                }
                 case 'customer': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'account_circle';
@@ -77,23 +66,34 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
-                case 'customer': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'account_circle';
-                    $css.removeAll();
-                    $css.add([
-                        '/ui/css/mdl-style-brown-deep_orange.css',
-                        '/ui/css/theme-black.css'
-                    ]);
-                    $rootScope.applyCssLang();
-                    break;
-                }
                 case 'employee': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'person_pin_circle';
                     $css.removeAll();
                     $css.add([
                         '/ui/css/mdl-style-light_green-lime.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
+                case 'team': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'security';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-green-orange.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
+                case 'profile': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'book';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-green-orange.css',
                         '/ui/css/theme-black.css'
                     ]);
                     $rootScope.applyCssLang();
@@ -417,11 +417,11 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
          * Navigation Callers                                         *
          *                                                            *
          *************************************************************/
+        $rootScope.goToHome = function () {
+            $state.go('home');
+        };
         $rootScope.goToCompany = function () {
             $state.go('company');
-        };
-        $rootScope.goToTeam = function () {
-            $state.go('team');
         };
         $rootScope.goToCustomer = function () {
             $state.go('customer');
@@ -432,8 +432,8 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         $rootScope.goToEmployee = function () {
             $state.go('employee');
         };
-        $rootScope.goToHome = function () {
-            $state.go('home');
+        $rootScope.goToTeam = function () {
+            $state.go('team');
         };
         $rootScope.goToHelp = function () {
             $state.go('help');

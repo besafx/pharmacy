@@ -46,7 +46,7 @@
                                            disable-validation-message=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر اللقب...' : 'Type Person Nickname...'}}"
-                                           ng-model="person.nickname">
+                                           ng-model="doctor.person.nickname">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -60,7 +60,7 @@
                                            disable-validation-message=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر الاسم رباعي...' : 'Type Person Name...'}}"
-                                           ng-model="person.name">
+                                           ng-model="doctor.person.name">
                                 </div>
                             </div>
 
@@ -76,7 +76,7 @@
                                            required="required"
                                            disable-validation-message=""
                                            placeholder="{{lang==='AR' ? 'اذكر الجنسية...' : 'Type Person Nationality...'}}"
-                                           ng-model="person.nationality">
+                                           ng-model="doctor.person.nationality">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -88,7 +88,7 @@
                                            type="text"
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر رقم البطاقة...' : 'Type Person ID...'}}"
-                                           ng-model="person.identityNumber">
+                                           ng-model="doctor.person.identityNumber">
                                 </div>
                             </div>
 
@@ -104,22 +104,20 @@
                                            disable-validation-message=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر رقم الجوال...' : 'Type Person Mobile...'}}"
-                                           ng-model="person.mobile">
+                                           ng-model="doctor.person.mobile">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
                                     <label for="qualification" class="control-label">
-                                        <span ng-if="lang==='AR'">المؤهل</span>
-                                        <span ng-if="lang==='EN'">Qualification</span>
+                                        <span ng-if="lang==='AR'">المهنة</span>
+                                        <span ng-if="lang==='EN'">Job</span>
                                     </label>
                                     <input id="qualification"
                                            type="text"
-                                           required="required"
-                                           disable-validation-message=""
                                            class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر المؤهل العلمي...' : 'Type Person Qualification...'}}"
-                                           ng-model="person.qualification">
+                                           placeholder="{{lang==='AR' ? 'اذكر المهنة...' : 'Type Person Job...'}}"
+                                           ng-model="doctor.person.qualification">
                                 </div>
                             </div>
 
@@ -132,7 +130,7 @@
                                        type="text"
                                        class="form-control"
                                        placeholder="{{lang==='AR' ? 'اذكر العنوان الحالي...' : 'Type Person Address...'}}"
-                                       ng-model="person.address">
+                                       ng-model="doctor.person.address">
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -145,7 +143,7 @@
                                         placeholder-text-single="'{{lang==='AR' ? 'اختر المجموعة' : 'Please Select Team...'}}'"
                                         class="form-control"
                                         chosen=""
-                                        ng-model="person.team"
+                                        ng-model="doctor.person.team"
                                         required="required"
                                         disable-validation-message=""
                                         ng-options="team.name for team in teams track by team.id">
@@ -164,7 +162,7 @@
                                            disable-validation-message=""
                                            placeholder="{{lang==='AR' ? 'اذكر البريد الإلكتروني...' : 'Type Account Email...'}}"
                                            class="form-control"
-                                           ng-model="person.email">
+                                           ng-model="doctor.person.email">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -178,10 +176,9 @@
                                            disable-validation-message=""
                                            placeholder="{{lang==='AR' ? 'اذكر كلمة المرور...' : 'Type Account Password...'}}"
                                            class="form-control"
-                                           ng-model="person.password">
+                                           ng-model="doctor.person.password">
                                 </div>
                             </div>
-
 
                         </div>
                     </div>

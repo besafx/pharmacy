@@ -99,6 +99,9 @@ gulp.task('scripts', function () {
 
         './init/config/config.js',
         './init/factory/companyFactory.js',
+        './init/factory/customerFactory.js',
+        './init/factory/doctorFactory.js',
+        './init/factory/employeeFactory.js',
         './init/factory/personFactory.js',
         './init/factory/teamFactory.js',
 
@@ -114,7 +117,10 @@ gulp.task('scripts', function () {
         './partials/team/teamCreateUpdate.js',
         './partials/customer/customer.js',
         './partials/customer/customerCreateUpdate.js',
-        './partials/person/personCreateUpdate.js',
+        './partials/doctor/doctor.js',
+        './partials/doctor/doctorCreateUpdate.js',
+        './partials/employee/employee.js',
+        './partials/employee/employeeCreateUpdate.js',
 
         './partials/report/person/personsIn.js',
 

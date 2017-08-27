@@ -23,18 +23,30 @@ app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scop
             }
         };
 
+        $scope.newTeam = function () {
+            ModalProvider.openTeamCreateModel().result.then(function (data) {
+                $scope.teams.splice(0,0,data);
+            }, function () {
+                console.info('TeamCreateModel Closed.');
+            });
+        };
+
         $scope.delete = function (team) {
             if (team) {
                 $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف المجموعة فعلاً؟", "error", "fa-trash", function () {
                     TeamService.remove(team.id).then(function () {
-
+                        var index = $scope.teams.indexOf(team);
+                        $scope.teams.splice(index, 1);
+                        $scope.setSelected($scope.teams[0]);
                     });
                 });
                 return;
             }
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف المجموعة فعلاً؟", "error", "fa-trash", function () {
                 TeamService.remove($scope.selected.id).then(function () {
-
+                    var index = $scope.teams.indexOf(selected);
+                    $scope.teams.splice(index, 1);
+                    $scope.setSelected($scope.teams[0]);
                 });
             });
         };
@@ -46,7 +58,7 @@ app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scop
                     return true
                 },
                 click: function ($itemScope, $event, value) {
-                    ModalProvider.openTeamCreateModel();
+                    $scope.newTeam();
                 }
             },
             {

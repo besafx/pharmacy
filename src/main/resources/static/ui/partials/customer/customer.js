@@ -1,10 +1,10 @@
-app.controller("customerCtrl", ['PersonService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (PersonService, ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
+    function (CustomerService, ModalProvider, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            PersonService.findByPersonType('Customer').then(function (data) {
+            CustomerService.findAll().then(function (data) {
                 $scope.customers = data;
                 $scope.setSelected(data[0]);
             });
@@ -26,7 +26,7 @@ app.controller("customerCtrl", ['PersonService', 'ModalProvider', '$scope', '$ro
         $scope.delete = function (customer) {
             if (customer) {
                 $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل فعلاً؟", "error", "fa-trash", function () {
-                    PersonService.remove(customer.id).then(function () {
+                    CustomerService.remove(customer.id).then(function () {
                         var index = $scope.customers.indexOf(customer);
                         $scope.customers.splice(index, 1);
                         $scope.setSelected($scope.customers[0]);
@@ -36,7 +36,7 @@ app.controller("customerCtrl", ['PersonService', 'ModalProvider', '$scope', '$ro
             }
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل فعلاً؟", "error", "fa-trash", function () {
-                PersonService.remove($scope.selected.id).then(function () {
+                CustomerService.remove($scope.selected.id).then(function () {
                     var index = $scope.customers.indexOf(selected);
                     $scope.customers.splice(index, 1);
                     $scope.setSelected($scope.customers[0]);
@@ -45,28 +45,30 @@ app.controller("customerCtrl", ['PersonService', 'ModalProvider', '$scope', '$ro
         };
 
         $scope.newCustomer = function () {
-            var person = {};
-            person.personType = 'Customer';
-            ModalProvider.openPersonCreateModel(person).result.then(function (data) {
-                $scope.customers.splice(0,0,data);
+            ModalProvider.openCustomerCreateModel().result.then(function (data) {
+                $scope.customers.splice(0, 0, data);
             }, function () {
                 console.info('CustomerCreateModel Closed.');
             });
         };
 
-        $scope.updateCustomer = function (customer) {
-            if(customer){
-                ModalProvider.openPersonUpdateModel(customer);
-            }else {
-                ModalProvider.openPersonUpdateModel(selected);
-            }
+        $scope.enable = function () {
+            CustomerService.enable($scope.selected).then(function (data) {
+                $scope.fetchTableData();
+            });
+        };
+
+        $scope.disable = function () {
+            CustomerService.disable($scope.selected).then(function (data) {
+                $scope.fetchTableData();
+            });
         };
 
         $scope.rowMenu = [
             {
                 html: '<div class="drop-menu">انشاء عميل جديد<span class="fa fa-pencil fa-lg"></span></div>',
                 enabled: function () {
-                    return true
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_CREATE']);
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.newCustomer();
@@ -75,16 +77,16 @@ app.controller("customerCtrl", ['PersonService', 'ModalProvider', '$scope', '$ro
             {
                 html: '<div class="drop-menu">تعديل بيانات العميل<span class="fa fa-edit fa-lg"></span></div>',
                 enabled: function () {
-                    return true
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_UPDATE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.updateCustomer($itemScope.customer);
+                    ModalProvider.openCustomerUpdateModel($itemScope.customer);
                 }
             },
             {
                 html: '<div class="drop-menu">حذف العميل<span class="fa fa-trash fa-lg"></span></div>',
                 enabled: function () {
-                    return true
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_DELETE']);
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.customer);

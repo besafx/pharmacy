@@ -81,7 +81,7 @@
                         <span class="material-icons mdl-list__item-avatar"
                               ng-style="{'background-image': 'url(' + me.img + ')'}"></span>
                         <span>{{me.name}}</span>
-                        <span class="mdl-list__item-sub-title">{{me.email}}</span>
+                        <span class="mdl-list__item-sub-title">{{me.qualification}}</span>
                     </span>
                 </li>
                 <li class="mdl-menu__item mdl-list__item" ng-click="goToHelp()">
@@ -233,7 +233,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
                         <a href="" ng-click="goToProfile()" class="card-square mdl-card mdl-shadow--8dp">
-                            <i class="material-icons md-120">account_circle</i>
+                            <i class="material-icons md-120">book</i>
                             <p ng-if="lang==='AR'">الحساب الشخصي</p>
                             <p ng-if="lang==='EN'">PROFILE</p>
                         </a>

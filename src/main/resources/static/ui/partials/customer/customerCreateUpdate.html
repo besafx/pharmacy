@@ -34,6 +34,7 @@
                             </div>
 
                             <div class="row">
+
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     <label for="nickname" class="control-label">
                                         <span ng-if="lang==='AR'">اللقب</span>
@@ -46,7 +47,7 @@
                                            disable-validation-message=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر اللقب...' : 'Type Person Nickname...'}}"
-                                           ng-model="person.nickname">
+                                           ng-model="customer.nickname">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -60,8 +61,9 @@
                                            disable-validation-message=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر الاسم رباعي...' : 'Type Person Name...'}}"
-                                           ng-model="person.name">
+                                           ng-model="customer.name">
                                 </div>
+
                             </div>
 
                             <div class="row">
@@ -76,7 +78,7 @@
                                            required="required"
                                            disable-validation-message=""
                                            placeholder="{{lang==='AR' ? 'اذكر الجنسية...' : 'Type Person Nationality...'}}"
-                                           ng-model="person.nationality">
+                                           ng-model="customer.nationality">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -88,7 +90,7 @@
                                            type="text"
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر رقم البطاقة...' : 'Type Person ID...'}}"
-                                           ng-model="person.identityNumber">
+                                           ng-model="customer.identityNumber">
                                 </div>
                             </div>
 
@@ -104,22 +106,20 @@
                                            disable-validation-message=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر رقم الجوال...' : 'Type Person Mobile...'}}"
-                                           ng-model="person.mobile">
+                                           ng-model="customer.mobile">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
                                     <label for="qualification" class="control-label">
-                                        <span ng-if="lang==='AR'">المؤهل</span>
-                                        <span ng-if="lang==='EN'">Qualification</span>
+                                        <span ng-if="lang==='AR'">المهنة</span>
+                                        <span ng-if="lang==='EN'">Job</span>
                                     </label>
                                     <input id="qualification"
                                            type="text"
-                                           required="required"
-                                           disable-validation-message=""
                                            class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر المؤهل العلمي...' : 'Type Person Qualification...'}}"
-                                           ng-model="person.qualification">
+                                           placeholder="{{lang==='AR' ? 'اذكر المهنة...' : 'Type Person Job...'}}"
+                                           ng-model="customer.job">
                                 </div>
                             </div>
 
@@ -132,56 +132,8 @@
                                        type="text"
                                        class="form-control"
                                        placeholder="{{lang==='AR' ? 'اذكر العنوان الحالي...' : 'Type Person Address...'}}"
-                                       ng-model="person.address">
+                                       ng-model="customer.address">
                             </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="team" class="control-label">
-                                    <span ng-if="lang==='AR'">مجموعة الصلاحيات</span>
-                                    <span ng-if="lang==='EN'">Team</span>
-                                </label>
-                                <select id="team" data-placeholder="{{lang==='AR' ? 'ابحث عن المجموعة' : 'Search For Team...'}}"
-                                        no-results-text="'{{lang==='AR' ? 'لا توجد مجموعات توافق بحثك' : 'No Results.'}}'"
-                                        placeholder-text-single="'{{lang==='AR' ? 'اختر المجموعة' : 'Please Select Team...'}}'"
-                                        class="form-control"
-                                        chosen=""
-                                        ng-model="person.team"
-                                        required="required"
-                                        disable-validation-message=""
-                                        ng-options="team.name for team in teams track by team.id">
-                                </select>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="email" class="control-label">
-                                        <span ng-if="lang==='AR'">البريد الإلكتروني</span>
-                                        <span ng-if="lang==='EN'">Email</span>
-                                    </label>
-                                    <input id="email"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           placeholder="{{lang==='AR' ? 'اذكر البريد الإلكتروني...' : 'Type Account Email...'}}"
-                                           class="form-control"
-                                           ng-model="person.email">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="password" class="control-label">
-                                        <span ng-if="lang==='AR'">الرقم السري</span>
-                                        <span ng-if="lang==='EN'">Password</span>
-                                    </label>
-                                    <input id="password"
-                                           type="password"
-                                           required="required"
-                                           disable-validation-message=""
-                                           placeholder="{{lang==='AR' ? 'اذكر كلمة المرور...' : 'Type Account Password...'}}"
-                                           class="form-control"
-                                           ng-model="person.password">
-                                </div>
-                            </div>
-
 
                         </div>
                     </div>

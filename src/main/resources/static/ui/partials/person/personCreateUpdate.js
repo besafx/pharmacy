@@ -1,13 +1,18 @@
-app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'person',
+app.controller('personCreateUpdateCtrl',
+    ['TeamService', 'PersonService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'person',
         function (TeamService, PersonService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, person) {
 
             $timeout(function () {
-                TeamService.findAllCombo().then(function (data) {
+                TeamService.findAllSummery().then(function (data) {
                     $scope.teams = data;
                 });
             }, 2000);
 
-            $scope.person = person;
+            if (person) {
+                $scope.person = person;
+            } else {
+                $scope.person = {};
+            }
 
             $scope.title = title;
 
@@ -17,7 +22,8 @@ app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', '$scop
                 switch ($scope.action) {
                     case 'create' :
                         PersonService.create($scope.person).then(function (data) {
-                            $uibModalInstance.close(data);
+                            $scope.person = {};
+                            $scope.from.$setPristine();
                         });
                         break;
                     case 'update' :

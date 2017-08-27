@@ -1,29 +1,6 @@
 app.factory("PersonService",
     ['$http', '$log', function ($http, $log) {
         return {
-            findAll: function () {
-                return $http.get("/api/person/findAll").then(function (response) {
-                    return response.data;
-                });
-            },
-            findOne: function (id) {
-                return $http.get("/api/person/findOne/" + id).then(function (response) {
-                    return response.data;
-                });
-            },
-            create: function (person) {
-                return $http.post("/api/person/create", person).then(function (response) {
-                    return response.data;
-                });
-            },
-            remove: function (id) {
-                return $http.delete("/api/person/delete/" + id);
-            },
-            update: function (person) {
-                return $http.put("/api/person/update", person).then(function (response) {
-                    return response.data;
-                });
-            },
             setGUILang: function (lang) {
                 return $http.get("/api/person/setGUILang/" + lang).then(function (response) {
                     return response.data;
@@ -36,16 +13,6 @@ app.factory("PersonService",
             },
             findActivePerson: function () {
                 return $http.get("/api/person/findActivePerson").then(function (response) {
-                    return response.data;
-                });
-            },
-            findByPersonType: function (personType) {
-                return $http.get("/api/person/findByPersonType/" + personType).then(function (response) {
-                    return response.data;
-                });
-            },
-            findByPersonTypeCombo: function (personType) {
-                return $http.get("/api/person/findByPersonTypeCombo/" + personType).then(function (response) {
                     return response.data;
                 });
             }

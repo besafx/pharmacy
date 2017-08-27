@@ -65,7 +65,7 @@ input, .btn {
 }
 
 input{
-    direction: rtl !important;
+    direction: ltr !important;
 }
 
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
@@ -369,7 +369,7 @@ select {
 
 .form-group, .form-control{
     text-align: left !important;
-    direction: rtl !important;
+    direction: ltr !important;
 }
 
 .mdl-data-table thead th,
