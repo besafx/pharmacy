@@ -138,6 +138,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Detection Type State                                       *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("detectionType", {
+            url: "/detectionType",
+            templateUrl: "/ui/partials/detectionType/detectionType.html",
+            controller: "detectionTypeCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Team State                                                 *
          *                                                            *
          *************************************************************/

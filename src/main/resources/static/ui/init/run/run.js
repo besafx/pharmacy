@@ -77,6 +77,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'detectionType': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'spa';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-light_green-lime.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'team': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'security';
@@ -222,6 +233,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'الموظفون';
                         } else {
                             $rootScope.pageTitle = 'Employees';
+                        }
+                        break;
+                    case 'detectionType':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'انواع الفحوصات';
+                        } else {
+                            $rootScope.pageTitle = 'Detection Types';
                         }
                         break;
                     case 'profile':
@@ -431,6 +449,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToEmployee = function () {
             $state.go('employee');
+        };
+        $rootScope.goToDetectionType = function () {
+            $state.go('detectionType');
         };
         $rootScope.goToTeam = function () {
             $state.go('team');

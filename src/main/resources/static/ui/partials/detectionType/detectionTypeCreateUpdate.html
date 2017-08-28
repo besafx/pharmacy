@@ -1,0 +1,159 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong>{{title}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <span ng-if="lang==='AR'">البيانات الاساسية</span>
+                        <span ng-if="lang==='EN'">Basic Information</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="name_ar" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم عربي</span>
+                                        <span ng-if="lang==='EN'">Arabic Name</span>
+                                    </label>
+                                    <input id="name_ar"
+                                           type="text"
+                                           focus-autofocus="1"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control arabic-control"
+                                           placeholder="اذكر الاسم..."
+                                           ng-model="detectionType.name_ar">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="name_en" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم إنجليزي</span>
+                                        <span ng-if="lang==='EN'">English Name</span>
+                                    </label>
+                                    <input id="name_en"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control english-control"
+                                           placeholder="Type Name..."
+                                           ng-model="detectionType.name_en">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="description_ar" class="control-label">
+                                        <span ng-if="lang==='AR'">الوصف عربي</span>
+                                        <span ng-if="lang==='EN'">Arabic Description</span>
+                                    </label>
+                                    <input id="description_ar"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control arabic-control"
+                                           placeholder="اذكر وصفاً مختصراً..."
+                                           ng-model="detectionType.description_ar">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="description_en" class="control-label">
+                                        <span ng-if="lang==='AR'">الوصف إنجليزي</span>
+                                        <span ng-if="lang==='EN'">English Description</span>
+                                    </label>
+                                    <input id="description_en"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control english-control"
+                                           placeholder="Type Description..."
+                                           ng-model="detectionType.description_en">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="cost" class="control-label">التكلفة</label>
+                                <div dir="ltr" class="input-group" id="cost">
+                                    <span class="input-group-addon">ريال سعودي</span>
+                                    <input dir="rtl"
+                                           type="number"
+                                           min="0"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-right "
+                                           ng-model="detectionType.cost">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button ng-if="action=='create'"
+                    uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button ng-if="action=='update'"
+                    uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

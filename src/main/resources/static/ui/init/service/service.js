@@ -161,66 +161,52 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
-     * Person Model                                               *
+     * DetectionType Model                                        *
      *                                                            *
      *************************************************************/
-    this.openPersonCreateModel = function (person) {
+    this.openDetectionTypeCreateModel = function () {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/person/personCreateUpdate.html',
-            controller: 'personCreateUpdateCtrl',
+            templateUrl: '/ui/partials/detectionType/detectionTypeCreateUpdate.html',
+            controller: 'detectionTypeCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
             resolve: {
                 title: function () {
-                    switch (person.personType){
-                        case "Customer":
-                            return $rootScope.lang === 'AR' ? 'انشاء حساب عميل جديد' : 'New Customer';
-                        case "Doctor":
-                            return $rootScope.lang === 'AR' ? 'انشاء حساب طبيب جديد' : 'New Doctor';
-                        case "Employee":
-                            return $rootScope.lang === 'AR' ? 'انشاء حساب موظف جديد' : 'New Employee';
-                    }
+                    return $rootScope.lang === 'AR' ? 'انشاء نوع فحص جديد' : 'New Detection Type';
                 },
                 action: function () {
                     return 'create';
                 },
-                person: function () {
-                    return person;
+                detectionType: function () {
+                    return {};
                 }
             }
         });
     };
 
-    this.openPersonUpdateModel = function (person) {
+    this.openDetectionTypeUpdateModel = function (detectionType) {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/person/personCreateUpdate.html',
-            controller: 'personCreateUpdateCtrl',
+            templateUrl: '/ui/partials/detectionType/detectionTypeCreateUpdate.html',
+            controller: 'detectionTypeCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
             resolve: {
                 title: function () {
-                    switch (person.personType){
-                        case "Customer":
-                            return $rootScope.lang === 'AR' ? 'تعديل حساب عميل' : 'Update Customer Information';
-                        case "Doctor":
-                            return $rootScope.lang === 'AR' ? 'تعديل حساب طبيب' : 'Update Doctor Information';
-                        case "Employee":
-                            return $rootScope.lang === 'AR' ? 'تعديل حساب موظف' : 'Update Employee Information';
-                    }
+                    return $rootScope.lang === 'AR' ? 'تعديل نوع فحص' : 'Update Detection Type Information';
                 },
                 action: function () {
                     return 'update';
                 },
-                person: function () {
-                    return person;
+                detectionType: function () {
+                    return detectionType;
                 }
             }
         });

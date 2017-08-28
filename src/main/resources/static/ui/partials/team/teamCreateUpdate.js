@@ -18,9 +18,12 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
             {id: 14, name: $rootScope.lang==='AR' ? 'حذف حسابات الموظفون' : 'Delete Employees' , value: 'ROLE_EMPLOYEE_DELETE', selected: false},
             {id: 15, name: $rootScope.lang==='AR' ? 'تفعيل حسابات الموظفون' : 'Enable Employees' , value: 'ROLE_EMPLOYEE_ENABLE', selected: false},
             {id: 16, name: $rootScope.lang==='AR' ? 'تعطيل حسابات الموظفون' : 'Disable Employees' , value: 'ROLE_EMPLOYEE_DISABLE', selected: false},
-            {id: 17, name: $rootScope.lang==='AR' ? 'إنشاء الصلاحيات' : 'Create Privileges' , value: 'ROLE_TEAM_CREATE', selected: false},
-            {id: 18, name: $rootScope.lang==='AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges' , value: 'ROLE_TEAM_UPDATE', selected: false},
-            {id: 19, name: $rootScope.lang==='AR' ? 'حذف الصلاحيات' : 'Delete Privileges' , value: 'ROLE_TEAM_DELETE', selected: false}
+            {id: 17, name: $rootScope.lang==='AR' ? 'إنشاء أنواع الفحوصات' : 'Create Detection Types' , value: 'ROLE_DETECTION_TYPE_CREATE', selected: false},
+            {id: 18, name: $rootScope.lang==='AR' ? 'تعديل بيانات أنواع الفحوصات' : 'Update Detection Types Information' , value: 'ROLE_DETECTION_TYPE_UPDATE', selected: false},
+            {id: 19, name: $rootScope.lang==='AR' ? 'حذف أنواع الفحوصات' : 'Delete Detection Types' , value: 'ROLE_DETECTION_TYPE_DELETE', selected: false},
+            {id: 20, name: $rootScope.lang==='AR' ? 'إنشاء الصلاحيات' : 'Create Privileges' , value: 'ROLE_TEAM_CREATE', selected: false},
+            {id: 21, name: $rootScope.lang==='AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges' , value: 'ROLE_TEAM_UPDATE', selected: false},
+            {id: 22, name: $rootScope.lang==='AR' ? 'حذف الصلاحيات' : 'Delete Privileges' , value: 'ROLE_TEAM_DELETE', selected: false}
         ];
 
 

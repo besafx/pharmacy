@@ -100,6 +100,7 @@ gulp.task('scripts', function () {
         './init/config/config.js',
         './init/factory/companyFactory.js',
         './init/factory/customerFactory.js',
+        './init/factory/detectionTypeFactory.js',
         './init/factory/doctorFactory.js',
         './init/factory/employeeFactory.js',
         './init/factory/personFactory.js',
@@ -121,6 +122,8 @@ gulp.task('scripts', function () {
         './partials/doctor/doctorCreateUpdate.js',
         './partials/employee/employee.js',
         './partials/employee/employeeCreateUpdate.js',
+        './partials/detectionType/detectionType.js',
+        './partials/detectionType/detectionTypeCreateUpdate.js',
 
         './partials/report/person/personsIn.js',
 

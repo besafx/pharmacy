@@ -70,6 +70,7 @@ public class PartialController {
             "/customer",
             "/doctor",
             "/employee",
+            "/detectionType",
             "/help",
             "/profile",
             "/about"
