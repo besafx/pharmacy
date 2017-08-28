@@ -21,9 +21,12 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
             {id: 17, name: $rootScope.lang==='AR' ? 'إنشاء أنواع الفحوصات' : 'Create Detection Types' , value: 'ROLE_DETECTION_TYPE_CREATE', selected: false},
             {id: 18, name: $rootScope.lang==='AR' ? 'تعديل بيانات أنواع الفحوصات' : 'Update Detection Types Information' , value: 'ROLE_DETECTION_TYPE_UPDATE', selected: false},
             {id: 19, name: $rootScope.lang==='AR' ? 'حذف أنواع الفحوصات' : 'Delete Detection Types' , value: 'ROLE_DETECTION_TYPE_DELETE', selected: false},
-            {id: 20, name: $rootScope.lang==='AR' ? 'إنشاء الصلاحيات' : 'Create Privileges' , value: 'ROLE_TEAM_CREATE', selected: false},
-            {id: 21, name: $rootScope.lang==='AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges' , value: 'ROLE_TEAM_UPDATE', selected: false},
-            {id: 22, name: $rootScope.lang==='AR' ? 'حذف الصلاحيات' : 'Delete Privileges' , value: 'ROLE_TEAM_DELETE', selected: false}
+            {id: 20, name: $rootScope.lang==='AR' ? 'إنشاء حسابات الصقور' : 'Create Falcon Account' , value: 'ROLE_FALCON_CREATE', selected: false},
+            {id: 21, name: $rootScope.lang==='AR' ? 'تعديل بيانات حسابات الصقور' : 'Update Falcon Account Information' , value: 'ROLE_FALCON_UPDATE', selected: false},
+            {id: 22, name: $rootScope.lang==='AR' ? 'حذف حسابات الصقور' : 'Delete Falcon Account' , value: 'ROLE_FALCON_DELETE', selected: false},
+            {id: 23, name: $rootScope.lang==='AR' ? 'إنشاء الصلاحيات' : 'Create Privileges' , value: 'ROLE_TEAM_CREATE', selected: false},
+            {id: 24, name: $rootScope.lang==='AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges' , value: 'ROLE_TEAM_UPDATE', selected: false},
+            {id: 25, name: $rootScope.lang==='AR' ? 'حذف الصلاحيات' : 'Delete Privileges' , value: 'ROLE_TEAM_DELETE', selected: false}
         ];
 
 

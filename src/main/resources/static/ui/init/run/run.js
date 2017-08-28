@@ -55,6 +55,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'falcon': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'adb';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-brown-deep_orange.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'doctor': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'local_hospital';
@@ -219,6 +230,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'العملاء';
                         } else {
                             $rootScope.pageTitle = 'Customers';
+                        }
+                        break;
+                    case 'falcon':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'حسابات الصقور';
+                        } else {
+                            $rootScope.pageTitle = 'Falcons';
                         }
                         break;
                     case 'doctor':
@@ -443,6 +461,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToCustomer = function () {
             $state.go('customer');
+        };
+        $rootScope.goToFalcon = function () {
+            $state.go('falcon');
         };
         $rootScope.goToDoctor = function () {
             $state.go('doctor');

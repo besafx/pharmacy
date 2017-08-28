@@ -116,6 +116,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Falcon State                                               *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("falcon", {
+            url: "/falcon",
+            templateUrl: "/ui/partials/falcon/falcon.html",
+            controller: "falconCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Doctor State                                               *
          *                                                            *
          *************************************************************/

@@ -152,6 +152,15 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE', 'ROLE_FALCON_UPDATE', 'ROLE_FALCON_DELETE'])">
+                        <a href="" ng-click="goToFalcon()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">adb</i>
+                            <p ng-if="lang==='AR'">حسابات الصقور</p>
+                            <p ng-if="lang==='EN'">FALCONS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE', 'ROLE_DOCTOR_UPDATE', 'ROLE_DOCTOR_DELETE'])">
                         <a href="" ng-click="goToDoctor()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-120">local_hospital</i>

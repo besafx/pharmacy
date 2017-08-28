@@ -214,6 +214,57 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * Falcon Model                                               *
+     *                                                            *
+     *************************************************************/
+    this.openFalconCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/falcon/falconCreateUpdate.html',
+            controller: 'falconCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء حساب صقر جديد' : 'New Falcon Account';
+                },
+                action: function () {
+                    return 'create';
+                },
+                falcon: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openFalconUpdateModel = function (falcon) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/falcon/falconCreateUpdate.html',
+            controller: 'falconCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل حساب الصقر' : 'Update Falcon Account Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                falcon: function () {
+                    return falcon;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
      * Team Model                                                 *
      *                                                            *
      *************************************************************/
