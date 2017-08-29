@@ -9,6 +9,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -43,6 +46,9 @@ public class Customer implements Serializable {
 
     private String identityNumber;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registerDate;
+
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String photo;
@@ -53,6 +59,9 @@ public class Customer implements Serializable {
 
     @Column(columnDefinition = "boolean default true")
     private Boolean enabled;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Falcon> falcons = new ArrayList<>();
 
     @JsonCreator
     public static Customer Create(String jsonString) throws IOException {

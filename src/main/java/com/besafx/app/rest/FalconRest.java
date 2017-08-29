@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -47,6 +48,7 @@ public class FalconRest {
         if (falconService.findByCode(falcon.getCode()) != null) {
             throw new CustomException("هذا الكود مسجل بالفعل");
         }
+        falcon.setRegisterDate(new Date());
         falcon = falconService.save(falcon);
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -129,5 +131,11 @@ public class FalconRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), falconService.findOne(id));
+    }
+
+    @RequestMapping(value = "findByCustomer/{customerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByCustomer(@PathVariable Long customerId) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), falconService.findByCustomerId(customerId));
     }
 }

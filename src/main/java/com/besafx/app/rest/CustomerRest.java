@@ -5,6 +5,7 @@ import com.besafx.app.entity.Customer;
 import com.besafx.app.entity.Doctor;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.CustomerService;
+import com.besafx.app.service.FalconService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,11 +34,14 @@ public class CustomerRest {
 
     private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
 
-    public static final String FILTER_TABLE = "**";
+    public static final String FILTER_TABLE = "**,falcons[**,-customer]";
     public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name";
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private FalconService falconService;
 
     @Autowired
     private PersonService personService;
@@ -55,6 +60,7 @@ public class CustomerRest {
         } else {
             customer.setCode(topCustomer.getCode() + 1);
         }
+        customer.setRegisterDate(new Date());
         customer.setEnabled(true);
         customer = customerService.save(customer);
         Person caller = personService.findByEmail(principal.getName());
@@ -132,13 +138,14 @@ public class CustomerRest {
     public void delete(@PathVariable Long id, Principal principal) {
         Customer customer = customerService.findOne(id);
         if (customer != null) {
+            falconService.delete(customer.getFalcons());
             customerService.delete(id);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العمليات على حسابات العملاء" : "Data Processing")
-                    .message(lang.equals("AR") ? "تم حذف حساب العميل بنجاح" : "Delete Customer Account Successfully")
+                    .message(lang.equals("AR") ? "تم حذف حساب العميل وكل ما يتعلق به من حسابات بنجاح" : "Delete Customer Account With All Related Successfully")
                     .type("error")
                     .icon("fa-trash")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")

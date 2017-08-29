@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -38,6 +39,9 @@ public class Falcon implements Serializable {
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String photo;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registerDate;
 
     @JoinColumn(name = "customer")
     @ManyToOne

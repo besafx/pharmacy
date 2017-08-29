@@ -16,6 +16,11 @@ app.factory("FalconService",
                     return response.data;
                 });
             },
+            findByCustomer: function (customer) {
+                return $http.get("/api/falcon/findByCustomer/" + customer.id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (falcon) {
                 return $http.post("/api/falcon/create", falcon).then(function (response) {
                     return response.data;

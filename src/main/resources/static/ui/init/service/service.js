@@ -53,6 +53,24 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openCustomerDetailsModel = function (customer) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/customer/customerDetails.html',
+            controller: 'customerDetailsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                customer: function () {
+                    return customer;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Doctor Model                                               *

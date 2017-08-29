@@ -1,0 +1,186 @@
+<div>
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong ng-if="lang==='AR'">تفاصيل العملاء</strong>
+                <strong ng-if="lang==='EN'">Customers Details</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshCustomer()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
+                            <h3 ng-if="lang==='EN'">Basic Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span ng-if="lang==='AR'">اسم العميل</span>
+                                            <span ng-if="lang==='EN'">Name</span>
+                                        </td>
+                                        <td>{{customer.nickname}} {{customer.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span ng-if="lang==='AR'">تاريخ التسجيل</span>
+                                            <span ng-if="lang==='EN'">Register Date</span>
+                                        </td>
+                                        <td>
+                                            {{customer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                            <span class="label label-success">{{customer.registerDate | date:'h:m a'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span ng-if="lang==='AR'">الجوال</span>
+                                            <span ng-if="lang==='EN'">Mobile</span>
+                                        </td>
+                                        <td>{{customer.mobile}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span ng-if="lang==='AR'">رقم الهوية</span>
+                                            <span ng-if="lang==='EN'">Identity Card Number</span>
+                                        </td>
+                                        <td>{{customer.identityNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span ng-if="lang==='AR'">الجنسية</span>
+                                            <span ng-if="lang==='EN'">Nationality</span>
+                                        </td>
+                                        <td>{{customer.nationality}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span ng-if="lang==='AR'">المهنة</span>
+                                            <span ng-if="lang==='EN'">Job</span>
+                                        </td>
+                                        <td>{{customer.job}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <li>
+                                <a href="" ng-click="refreshFalcons()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">الصقور المسجلة</h3>
+                            <h3 ng-if="lang==='EN'">Registered Falcons</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collectionFalcons" st-safe-src="customer.falcons" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th st-sort="code" class="text-center">
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+                                    <th st-sort="registerDate" class="text-center">
+                                        <span ng-if="lang==='AR'">تاريخ التسجيل</span>
+                                        <span ng-if="lang==='EN'">Register Date</span>
+                                    </th>
+                                    <th st-sort="weight" class="text-center">
+                                        <span ng-if="lang==='AR'">الوزن</span>
+                                        <span ng-if="lang==='EN'">Weight</span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="offer in collectionFalcons">
+                                    <td>{{offer.code}}</td>
+                                    <td>
+                                        <span>{{offer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span class="label label-success">{{offer.registerDate | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{offer.weight | currency:'KG':0.0}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;" ng-show="!collectionFalcons || collectionFalcons.length ==0">
+                                    <td colspan="3">
+                                        <span ng-if="lang==='AR'">لا توجد صقور مسجلة لهذا العميل</span>
+                                        <span ng-if="lang==='EN'">No Falcons Registered For This Customer</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'تعديل...' : 'Edit...'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_UPDATE'])"
+                    ng-click="ModalProvider.openCustomerUpdateModel(customer)"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <i class="material-icons">account_circle</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'تسجيل حساب صقر جديد...' : 'New Falcon...'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
+                    ng-click="newFalcon(customer)"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <i class="material-icons">adb</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</div>

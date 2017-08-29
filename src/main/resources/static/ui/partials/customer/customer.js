@@ -1,5 +1,5 @@
-app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (CustomerService, ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (CustomerService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
 
@@ -25,7 +25,7 @@ app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$
 
         $scope.delete = function (customer) {
             if (customer) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل وكل ما يتعلق به من حسابات فعلاً؟", "error", "fa-trash", function () {
                     CustomerService.remove(customer.id).then(function () {
                         var index = $scope.customers.indexOf(customer);
                         $scope.customers.splice(index, 1);
@@ -35,7 +35,7 @@ app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$
                 return;
             }
 
-            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل فعلاً؟", "error", "fa-trash", function () {
+            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل وكل ما يتعلق به من حسابات فعلاً؟", "error", "fa-trash", function () {
                 CustomerService.remove($scope.selected.id).then(function () {
                     var index = $scope.customers.indexOf(selected);
                     $scope.customers.splice(index, 1);
@@ -47,8 +47,41 @@ app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$
         $scope.newCustomer = function () {
             ModalProvider.openCustomerCreateModel().result.then(function (data) {
                 $scope.customers.splice(0, 0, data);
+                $scope.newFalcon(data);
             }, function () {
                 console.info('CustomerCreateModel Closed.');
+            });
+        };
+
+        $scope.newFalcon = function (customer) {
+            $rootScope.showConfirmNotify("العمليات على قواعد البيانات", "هل تود ربط حساب صقر جديد بالعميل؟", "information", "fa-database", function () {
+                $uibModal.open({
+                    animation: true,
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: '/ui/partials/customer/customerFalconCreateUpdate.html',
+                    controller: 'customerFalconCreateUpdateCtrl',
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        title: function () {
+                            return $rootScope.lang === 'AR' ? 'انشاء حساب صقر جديد للعميل' : 'New Falcon Account By Account';
+                        },
+                        action: function () {
+                            return 'create';
+                        },
+                        falcon: function () {
+                            var falcon = {};
+                            falcon.customer = customer;
+                            return falcon;
+                        }
+                    }
+                }).result.then(function (data) {
+                    ///////////////////////// TO DO ///////////////////////////////
+                    console.info(data);
+                }, function () {
+                    console.info('CustomerFalconCreateModel Closed.');
+                });
             });
         };
 
@@ -90,6 +123,15 @@ app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.customer);
+                }
+            },
+            {
+                html: '<div class="drop-menu">التفاصيل<span class="fa fa-info fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_READ']);
+                },
+                click: function ($itemScope, $event, value) {
+                    ModalProvider.openCustomerDetailsModel($itemScope.customer);
                 }
             }
         ];
