@@ -56,7 +56,7 @@ public class DrugCategoryRest {
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العمليات على الصيدلية" : "Data Processing")
-                .message(lang.equals("AR") ? "تم انشاء تصنيف جديد بنجاح" : "Create DrugCategory Successfully")
+                .message(lang.equals("AR") ? "تم انشاء تصنيف جديد بنجاح" : "Create Drug Category Successfully")
                 .type("success")
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
@@ -80,7 +80,7 @@ public class DrugCategoryRest {
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العمليات على الصيدلية" : "Data Processing")
-                    .message(lang.equals("AR") ? "تم تعديل بيانات التصنيف بنجاح" : "Update DrugCategory Successfully")
+                    .message(lang.equals("AR") ? "تم تعديل بيانات التصنيف بنجاح" : "Update Drug Category Successfully")
                     .type("warning")
                     .icon("fa-edit")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")

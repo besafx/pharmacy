@@ -275,7 +275,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'الدواء';
                         } else {
-                            $rootScope.pageTitle = 'Drug';
+                            $rootScope.pageTitle = 'Drugs';
                         }
                         break;
                     case 'profile':
