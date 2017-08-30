@@ -213,24 +213,6 @@
                                            disable-validation-message=""/>
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
-                                    <p class="input-group">
-                                        <input type="text" class="form-control"
-                                               uib-datepicker-popup="dd-MM-yyyy"
-                                               ng-model="dt"
-                                               is-open="popup.opened"
-                                               datepicker-options="dateOptions"
-                                               ng-required="true"
-                                               close-text="Close"
-                                               alt-input-formats="['M!/d!/yyyy']"/>
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="popup.opened=true;">
-                                                <i class="glyphicon glyphicon-calendar"></i>
-                                            </button>
-                                        </span>
-                                    </p>
-                                </div>
-
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
                                     <label for="expireDate" class="control-label">
                                         <span ng-if="lang==='AR'">تاريخ الإنتهاء</span>

@@ -1,41 +1,45 @@
 app.controller('drugCreateUpdateCtrl', ['DrugService', 'DrugCategoryService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'drug',
-        function (DrugService, DrugCategoryService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, drug) {
+    function (DrugService, DrugCategoryService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, drug) {
 
-            $timeout(function () {
-                DrugCategoryService.findAllCombo().then(function (data) {
-                    $scope.drugCategories = data;
-                });
-            }, 2000);
+        $timeout(function () {
+            DrugCategoryService.findAllCombo().then(function (data) {
+                $scope.drugCategories = data;
+            });
+        }, 2000);
 
-            $scope.dateOptions = {
-                maxDate: new Date(2030, 1, 1),
-                minDate: new Date(),
-                startingDay: 1
-            };
+        $scope.drug = drug;
 
-            $scope.drug = drug;
+        $scope.buffer = {};
 
-            $scope.title = title;
+        if (drug.productionDate) {
+            $scope.buffer.productionDate = new Date(drug.productionDate);
+        }
 
-            $scope.action = action;
+        if (drug.expireDate) {
+            $scope.buffer.expireDate = new Date(drug.expireDate);
+        }
 
-            $scope.submit = function () {
-                switch ($scope.action) {
-                    case 'create' :
-                        DrugService.create($scope.drug).then(function (data) {
-                            $uibModalInstance.close(data);
-                        });
-                        break;
-                    case 'update' :
-                        DrugService.update($scope.drug).then(function (data) {
-                            $scope.drug = data;
-                        });
-                        break;
-                }
-            };
+        $scope.title = title;
 
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
+        $scope.action = action;
 
-        }]);
+        $scope.submit = function () {
+            switch ($scope.action) {
+                case 'create' :
+                    DrugService.create($scope.drug).then(function (data) {
+                        $uibModalInstance.close(data);
+                    });
+                    break;
+                case 'update' :
+                    DrugService.update($scope.drug).then(function (data) {
+                        $scope.drug = data;
+                    });
+                    break;
+            }
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+    }]);

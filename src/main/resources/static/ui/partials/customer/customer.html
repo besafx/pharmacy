@@ -354,7 +354,10 @@
                                     </p>
                                     <hr>
                                     <p>
-                                        <a href="" ng-click="ModalProvider.openCustomerDetailsModel(customer);"><strong>المزيد...</strong></a>
+                                        <a href="" ng-click="ModalProvider.openCustomerDetailsModel(customer);">
+                                            <strong ng-if="lang==='AR'">المزيد...</strong>
+                                            <strong ng-if="lang==='EN'">More...</strong>
+                                        </a>
                                     </p>
                                 </div>
                             </div>

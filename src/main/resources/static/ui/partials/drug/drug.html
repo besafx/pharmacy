@@ -268,12 +268,10 @@
                                 <td st-select-row-custom="drug">
                                     <span ng-show="dateType==='H'">{{drug.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                     <span ng-show="dateType==='G'">{{drug.productionDate | date: 'yyyy-MM-dd'}}</span>
-                                    <span class="label label-success">{{drug.productionDate | date:'h:m a'}}</span>
                                 </td>
                                 <td st-select-row-custom="drug">
                                     <span ng-show="dateType==='H'">{{drug.expireDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                     <span ng-show="dateType==='G'">{{drug.expireDate | date: 'yyyy-MM-dd'}}</span>
-                                    <span class="label label-success">{{drug.expireDate | date:'h:m a'}}</span>
                                 </td>
                                 <td st-select-row-custom="drug">
                                     <span class="label label-danger">{{drug.cost | currency:'SAR':0.0}}</span>
