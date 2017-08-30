@@ -7,6 +7,12 @@ app.controller('drugCreateUpdateCtrl', ['DrugService', 'DrugCategoryService', '$
                 });
             }, 2000);
 
+            $scope.dateOptions = {
+                maxDate: new Date(2030, 1, 1),
+                minDate: new Date(),
+                startingDay: 1
+            };
+
             $scope.drug = drug;
 
             $scope.title = title;

@@ -26,7 +26,7 @@
                     <div class="panel-body">
                         <div class="row">
 
-                            <div class="form-group col-xs-12 col-sm-6 col-md-12 col-lg-12"
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
                                  ng-show="form.$invalid && form.$submitted">
                                 <div class="alert alert-danger" role="alert">
                                     <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
@@ -169,6 +169,108 @@
                                             ng-options="drugCategory.code for drugCategory in drugCategories track by drugCategory.id">
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                                    <label for="productionDate" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
+                                        <span ng-if="lang==='EN'">Production Date</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group">
+                                        <input dir="rtl"
+                                               id="productionDate"
+                                               type="text"
+                                               class="form-control is-calendarPicker"
+                                               ng-model="drug.productionDate"
+                                               ng-required="dateType==='H'"
+                                               disable-validation-message=""
+                                               calendarType="ummalqura"
+                                               language="en"
+                                               dateFormat="yyyy/mm/dd"
+                                               showOnFocus="false"
+                                               readonly="readonly"
+                                               kdatepicker>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                                    <label for="G-productionDate" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
+                                        <span ng-if="lang==='EN'">Production Date</span>
+                                    </label>
+                                    <input id="G-productionDate"
+                                           class="form-control "
+                                           type="date"
+                                           name="input"
+                                           ng-model="buffer.productionDate"
+                                           ng-change="drug.productionDate=buffer.productionDate.toISOString()"
+                                           placeholder="yyyy-MM-dd"
+                                           min="2017-01-01"
+                                           max="2030-12-31"
+                                           ng-required="dateType==='G'"
+                                           disable-validation-message=""/>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                                    <p class="input-group">
+                                        <input type="text" class="form-control"
+                                               uib-datepicker-popup="dd-MM-yyyy"
+                                               ng-model="dt"
+                                               is-open="popup.opened"
+                                               datepicker-options="dateOptions"
+                                               ng-required="true"
+                                               close-text="Close"
+                                               alt-input-formats="['M!/d!/yyyy']"/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="popup.opened=true;">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                                    <label for="expireDate" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ الإنتهاء</span>
+                                        <span ng-if="lang==='EN'">Expire Date</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group">
+                                        <input dir="rtl"
+                                               id="expireDate"
+                                               type="text"
+                                               class="form-control is-calendarPicker"
+                                               ng-model="drug.expireDate"
+                                               ng-required="dateType==='H'"
+                                               disable-validation-message=""
+                                               calendarType="ummalqura"
+                                               language="en"
+                                               dateFormat="yyyy/mm/dd"
+                                               showOnFocus="false"
+                                               readonly="readonly"
+                                               kdatepicker>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                                    <label for="G-expireDate" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ الإنتهاء</span>
+                                        <span ng-if="lang==='EN'">Expire Date</span>
+                                    </label>
+                                    <input id="G-expireDate"
+                                           class="form-control "
+                                           type="date"
+                                           name="input"
+                                           ng-model="buffer.expireDate"
+                                           ng-change="drug.expireDate=buffer.expireDate.toISOString()"
+                                           placeholder="yyyy-MM-dd"
+                                           min="2017-01-01"
+                                           max="2030-12-31"
+                                           ng-required="dateType==='G'"
+                                           disable-validation-message=""/>
+                                </div>
+
                             </div>
 
                         </div>
