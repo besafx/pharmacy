@@ -1,6 +1,8 @@
 package com.besafx.app.config;
 
 import com.besafx.app.entity.Person;
+import com.besafx.app.service.DoctorService;
+import com.besafx.app.service.EmployeeService;
 import com.besafx.app.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +44,12 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private DoctorService doctorService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -116,6 +124,16 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             if (person == null) {
                                 log.info("هذا المستخدم غير موجود");
                                 throw new UsernameNotFoundException("هذا المستخدم غير موجود");
+                            }
+                            log.info("فحص إذا كان المستخدم ليس دعماً فنياً");
+                            if (person.getTechnicalSupport()) {
+                                log.info("السماح بمرور الدعم الفني");
+                            } else {
+                                log.info("فحص هل هذا المستخدم دكتور أو موظف");
+                                if (employeeService.findByPerson(person) == null && doctorService.findByPerson(person) == null) {
+                                    log.info("هذا المستخدم لا يشغل مناصب وظيفية داخل النظام");
+                                    throw new UsernameNotFoundException("هذا المستخدم لا يشغل مناصب وظيفية داخل النظام");
+                                }
                             }
                             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
                             person.setLastLoginDate(new Date());
