@@ -160,6 +160,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Drug State                                                 *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("drug", {
+            url: "/drug",
+            templateUrl: "/ui/partials/drug/drug.html",
+            controller: "drugCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Team State                                                 *
          *                                                            *
          *************************************************************/

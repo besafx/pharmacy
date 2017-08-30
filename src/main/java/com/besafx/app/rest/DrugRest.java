@@ -1,9 +1,9 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.DetectionType;
+import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.Person;
-import com.besafx.app.service.DetectionTypeService;
+import com.besafx.app.service.DrugService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -24,14 +24,14 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/detectionType/")
-public class DetectionTypeRest {
+@RequestMapping(value = "/api/drug/")
+public class DrugRest {
     
     public static final String FILTER_TABLE = "**";
-    public static final String FILTER_DETECTION_TYPE_COMBO = "id,code,nameArabic,nameEnglish";
+    public static final String FILTER_DRUG_COMBO = "id,code,nameArabic,nameEnglish";
 
     @Autowired
-    private DetectionTypeService detectionTypeService;
+    private DrugService drugService;
 
     @Autowired
     private PersonService personService;
@@ -41,51 +41,51 @@ public class DetectionTypeRest {
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_DETECTION_TYPE_CREATE')")
+    @PreAuthorize("hasRole('ROLE_DRUG_CREATE')")
     @Transactional
-    public String create(@RequestBody DetectionType detectionType, Principal principal) {
-        DetectionType topDetectionType = detectionTypeService.findTopByOrderByCodeDesc();
-        if (topDetectionType == null) {
-            detectionType.setCode(1);
+    public String create(@RequestBody Drug drug, Principal principal) {
+        Drug topDrug = drugService.findTopByOrderByCodeDesc();
+        if (topDrug == null) {
+            drug.setCode(1);
         } else {
-            detectionType.setCode(topDetectionType.getCode() + 1);
+            drug.setCode(topDrug.getCode() + 1);
         }
-        detectionType = detectionTypeService.save(detectionType);
+        drug = drugService.save(drug);
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
-                .title(lang.equals("AR") ? "العمليات على انواع الفحوصات" : "Data Processing")
-                .message(lang.equals("AR") ? "تم انشاء نوع فحص جديد بنجاح" : "Create Detection Type Successfully")
+                .title(lang.equals("AR") ? "العمليات على الصيدلية" : "Data Processing")
+                .message(lang.equals("AR") ? "تم انشاء دواء جديد بنجاح" : "Create Drug Successfully")
                 .type("success")
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), detectionType);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drug);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_DETECTION_TYPE_UPDATE')")
+    @PreAuthorize("hasRole('ROLE_DRUG_UPDATE')")
     @Transactional
-    public String update(@RequestBody DetectionType detectionType, Principal principal) {
-        if (detectionTypeService.findByCodeAndIdIsNot(detectionType.getCode(), detectionType.getId()) != null) {
+    public String update(@RequestBody Drug drug, Principal principal) {
+        if (drugService.findByCodeAndIdIsNot(drug.getCode(), drug.getId()) != null) {
             throw new CustomException("هذا الكود مستخدم سابقاً، فضلاً قم بتغير الكود.");
         }
-        DetectionType object = detectionTypeService.findOne(detectionType.getId());
+        Drug object = drugService.findOne(drug.getId());
         if (object != null) {
-            detectionType = detectionTypeService.save(detectionType);
+            drug = drugService.save(drug);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "العمليات على انواع الفحوصات" : "Data Processing")
-                    .message(lang.equals("AR") ? "تم تعديل نوع الفحص بنجاح" : "Update Detection Type Successfully")
+                    .title(lang.equals("AR") ? "العمليات على الصيدلية" : "Data Processing")
+                    .message(lang.equals("AR") ? "تم تعديل بيانات الدواء بنجاح" : "Update Drug Successfully")
                     .type("warning")
                     .icon("fa-edit")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
-            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), detectionType);
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drug);
         } else {
             return null;
         }
@@ -93,18 +93,18 @@ public class DetectionTypeRest {
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_DETECTION_TYPE_DELETE')")
+    @PreAuthorize("hasRole('ROLE_DRUG_DELETE')")
     @Transactional
     public void delete(@PathVariable Long id, Principal principal) {
-        DetectionType detectionType = detectionTypeService.findOne(id);
-        if (detectionType != null) {
-            detectionTypeService.delete(id);
+        Drug drug = drugService.findOne(id);
+        if (drug != null) {
+            drugService.delete(id);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "العمليات على انواع الفحوصات" : "Data Processing")
-                    .message(lang.equals("AR") ? "تم حذف نوع فحص بنجاح" : "Delete Detection Type Successfully")
+                    .title(lang.equals("AR") ? "العمليات على الصيدلية" : "Data Processing")
+                    .message(lang.equals("AR") ? "تم حذف الدواء بنجاح" : "Delete Drug Successfully")
                     .type("error")
                     .icon("fa-trash")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
@@ -115,22 +115,22 @@ public class DetectionTypeRest {
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAll() {
-        List<DetectionType> list = Lists.newArrayList(detectionTypeService.findAll());
-        list.sort(Comparator.comparing(DetectionType::getCode));
+        List<Drug> list = Lists.newArrayList(drugService.findAll());
+        list.sort(Comparator.comparing(Drug::getCode));
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
     @RequestMapping(value = "findAllCombo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAllCombo() {
-        List<DetectionType> list = Lists.newArrayList(detectionTypeService.findAll());
-        list.sort(Comparator.comparing(DetectionType::getCode));
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_DETECTION_TYPE_COMBO), list);
+        List<Drug> list = Lists.newArrayList(drugService.findAll());
+        list.sort(Comparator.comparing(Drug::getCode));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_DRUG_COMBO), list);
     }
 
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOne(@PathVariable Long id) {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), detectionTypeService.findOne(id));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drugService.findOne(id));
     }
 }

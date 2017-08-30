@@ -36,32 +36,32 @@
                             <div class="form-group row">
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="name_ar" class="control-label">
+                                    <label for="nameArabic" class="control-label">
                                         <span ng-if="lang==='AR'">الاسم عربي</span>
                                         <span ng-if="lang==='EN'">Arabic Name</span>
                                     </label>
-                                    <input id="name_ar"
+                                    <input id="nameArabic"
                                            type="text"
                                            focus-autofocus="1"
                                            required="required"
                                            disable-validation-message=""
                                            class="form-control arabic-control"
                                            placeholder="اذكر الاسم..."
-                                           ng-model="detectionType.name_ar">
+                                           ng-model="drugCategory.nameArabic">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="name_en" class="control-label">
+                                    <label for="nameEnglish" class="control-label">
                                         <span ng-if="lang==='AR'">الاسم إنجليزي</span>
                                         <span ng-if="lang==='EN'">English Name</span>
                                     </label>
-                                    <input id="name_en"
+                                    <input id="nameEnglish"
                                            type="text"
                                            required="required"
                                            disable-validation-message=""
                                            class="form-control english-control"
                                            placeholder="Type Name..."
-                                           ng-model="detectionType.name_en">
+                                           ng-model="drugCategory.nameEnglish">
                                 </div>
 
                             </div>
@@ -69,53 +69,33 @@
                             <div class="form-group row">
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="description_ar" class="control-label">
+                                    <label for="descriptionArabic" class="control-label">
                                         <span ng-if="lang==='AR'">الوصف عربي</span>
                                         <span ng-if="lang==='EN'">Arabic Description</span>
                                     </label>
-                                    <input id="description_ar"
+                                    <input id="descriptionArabic"
                                            type="text"
                                            required="required"
                                            disable-validation-message=""
                                            class="form-control arabic-control"
                                            placeholder="اذكر وصفاً مختصراً..."
-                                           ng-model="detectionType.description_ar">
+                                           ng-model="drugCategory.descriptionArabic">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="description_en" class="control-label">
+                                    <label for="descriptionEnglish" class="control-label">
                                         <span ng-if="lang==='AR'">الوصف إنجليزي</span>
                                         <span ng-if="lang==='EN'">English Description</span>
                                     </label>
-                                    <input id="description_en"
+                                    <input id="descriptionEnglish"
                                            type="text"
                                            required="required"
                                            disable-validation-message=""
                                            class="form-control english-control"
                                            placeholder="Type Description..."
-                                           ng-model="detectionType.description_en">
+                                           ng-model="drugCategory.descriptionEnglish">
                                 </div>
 
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="cost" class="control-label">
-                                    <span ng-if="lang==='AR'">التكلفة</span>
-                                    <span ng-if="lang==='EN'">Cost</span>
-                                </label>
-                                <div dir="ltr" class="input-group" id="cost">
-                                    <span class="input-group-addon">
-                                        <span ng-if="lang==='AR'">ريال سعودي</span>
-                                        <span ng-if="lang==='EN'">SAR</span>
-                                    </span>
-                                    <input dir="rtl"
-                                           type="number"
-                                           min="0"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           ng-model="detectionType.cost">
-                                </div>
                             </div>
 
                         </div>

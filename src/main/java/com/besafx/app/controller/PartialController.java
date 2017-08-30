@@ -71,6 +71,8 @@ public class PartialController {
             "/doctor",
             "/employee",
             "/detectionType",
+            "/drug",
+            "/drugCategory",
             "/falcon",
             "/help",
             "/profile",

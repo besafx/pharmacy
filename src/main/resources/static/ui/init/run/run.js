@@ -99,6 +99,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'drug': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'favorite';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-light_green-lime.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'team': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'security';
@@ -258,6 +269,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'انواع الفحوصات';
                         } else {
                             $rootScope.pageTitle = 'Detection Types';
+                        }
+                        break;
+                    case 'drug':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'الدواء';
+                        } else {
+                            $rootScope.pageTitle = 'Drug';
                         }
                         break;
                     case 'profile':
@@ -473,6 +491,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToDetectionType = function () {
             $state.go('detectionType');
+        };
+        $rootScope.goToDrug = function () {
+            $state.go('drug');
         };
         $rootScope.goToTeam = function () {
             $state.go('team');

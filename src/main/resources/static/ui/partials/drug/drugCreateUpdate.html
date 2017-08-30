@@ -1,0 +1,218 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong>{{title}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <span ng-if="lang==='AR'">البيانات الاساسية</span>
+                        <span ng-if="lang==='EN'">Basic Information</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-12 col-lg-12"
+                                 ng-show="form.$invalid && form.$submitted">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="nameArabic" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم التجاري عربي</span>
+                                        <span ng-if="lang==='EN'">Arabic Commercial Name</span>
+                                    </label>
+                                    <input id="nameArabic"
+                                           type="text"
+                                           focus-autofocus="1"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control arabic-control"
+                                           placeholder="اذكر الاسم..."
+                                           ng-model="drug.nameArabic">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="nameEnglish" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم التجاري إنجليزي</span>
+                                        <span ng-if="lang==='EN'">English Commercial Name</span>
+                                    </label>
+                                    <input id="nameEnglish"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control english-control"
+                                           placeholder="Type Name..."
+                                           ng-model="drug.nameEnglish">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="medicalNameArabic" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم العلمي عربي</span>
+                                        <span ng-if="lang==='EN'">Arabic Medical Name</span>
+                                    </label>
+                                    <input id="medicalNameArabic"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control arabic-control"
+                                           placeholder="اذكر الاسم..."
+                                           ng-model="drug.medicalNameArabic">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="medicalNameEnglish" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم العلمي إنجليزي</span>
+                                        <span ng-if="lang==='EN'">English Medical Name</span>
+                                    </label>
+                                    <input id="medicalNameEnglish"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control english-control"
+                                           placeholder="Type Name..."
+                                           ng-model="drug.medicalNameEnglish">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="descriptionArabic" class="control-label">
+                                        <span ng-if="lang==='AR'">الوصف عربي</span>
+                                        <span ng-if="lang==='EN'">Arabic Description</span>
+                                    </label>
+                                    <input id="descriptionArabic"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control arabic-control"
+                                           placeholder="اذكر وصفاً مختصراً..."
+                                           ng-model="drug.descriptionArabic">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="descriptionEnglish" class="control-label">
+                                        <span ng-if="lang==='AR'">الوصف إنجليزي</span>
+                                        <span ng-if="lang==='EN'">English Description</span>
+                                    </label>
+                                    <input id="descriptionEnglish"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control english-control"
+                                           placeholder="Type Description..."
+                                           ng-model="drug.descriptionEnglish">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="cost" class="control-label">
+                                        <span ng-if="lang==='AR'">التكلفة</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group" id="cost">
+                                        <span class="input-group-addon">
+                                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                                            <span ng-if="lang==='EN'">SAR</span>
+                                        </span>
+                                        <input dir="rtl"
+                                               type="number"
+                                               min="0"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="drug.cost">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="drugCategory" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم الصنف</span>
+                                        <span ng-if="lang==='EN'">Category Code</span>
+                                    </label>
+                                    <select id="drugCategory"
+                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الصنف' : 'Search For Category...'}}"
+                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الصنف' : 'Please Select Category...'}}'"
+                                            class="form-control"
+                                            chosen=""
+                                            ng-model="drug.drugCategory"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-options="drugCategory.code for drugCategory in drugCategories track by drugCategory.id">
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button ng-if="action=='create'"
+                    uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button ng-if="action=='update'"
+                    uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

@@ -232,6 +232,83 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * Drug Model                                                 *
+     *                                                            *
+     *************************************************************/
+    this.openDrugCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drug/drugCreateUpdate.html',
+            controller: 'drugCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء دواء جديد' : 'New Drug';
+                },
+                action: function () {
+                    return 'create';
+                },
+                drug: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openDrugUpdateModel = function (drug) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drug/drugCreateUpdate.html',
+            controller: 'drugCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل بيانات دواء' : 'Update Drug Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                drug: function () {
+                    return drug;
+                }
+            }
+        });
+    };
+
+    this.openDrugCategoryCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drug/drugCategoryCreateUpdate.html',
+            controller: 'drugCategoryCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء صنف دواء جديد' : 'New Drug Category';
+                },
+                action: function () {
+                    return 'create';
+                },
+                drugCategory: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
      * Falcon Model                                               *
      *                                                            *
      *************************************************************/
