@@ -330,6 +330,14 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
             $rootScope.state.reload();
         });
 
+        $rootScope.goFullscreen = function () {
+
+            if (Fullscreen.isEnabled())
+                Fullscreen.cancel();
+            else
+                Fullscreen.all();
+        };
+
         $rootScope.showNotify = function (title, message, type, icon, layout) {
             noty({
                 layout: layout,

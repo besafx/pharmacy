@@ -49,6 +49,14 @@
                     ng-click="switchDateType()">
                     <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon">timer</i>
+                        <span ng-if="dateType==='H' && lang==='AR'">تطبيق وضع ملء الشاشة</span>
+                        <span ng-if="dateType==='H' && lang==='EN'">Go To Full Screen</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="switchDateType()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">timer</i>
                         <span ng-if="dateType==='H' && lang==='AR'">تطبيق التاريخ الميلادي</span>
                         <span ng-if="dateType==='H' && lang==='EN'">GREGORIAN DATE</span>
                         <span ng-if="dateType==='G' && lang==='AR'">تطبيق التاريخ الهجري</span>
