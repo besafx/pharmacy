@@ -1,0 +1,67 @@
+package com.besafx.app.entity;
+
+import com.besafx.app.entity.enums.DrugUnit;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Date;
+
+@Data
+@Entity
+public class TransactionBuy implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @GenericGenerator(
+            name = "transactionBuySequenceGenerator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "TRANSACTION_BUY_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
+    @Id
+    @GeneratedValue(generator = "transactionBuySequenceGenerator")
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private DrugUnit unit;
+
+    private Double unitCost;
+
+    private Double discount;
+
+    private Double quantity;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date productionDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expireDate;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String note;
+
+    @JoinColumn(name = "drug")
+    @ManyToOne
+    private Drug drug;
+
+    @JoinColumn(name = "billBuy")
+    @ManyToOne
+    private BillBuy billBuy;
+
+    @JsonCreator
+    public static TransactionBuy Create(String jsonString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        TransactionBuy transactionBuy = mapper.readValue(jsonString, TransactionBuy.class);
+        return transactionBuy;
+    }
+}

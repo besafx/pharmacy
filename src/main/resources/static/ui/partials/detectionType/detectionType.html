@@ -200,17 +200,17 @@
                                     <span ng-if="lang==='EN'">#</span>
                                 </th>
 
-                                <th st-sort="name">
+                                <th st-sort="nameArabic">
                                     <span ng-if="lang==='AR'">اسم النوع</span>
                                     <span ng-if="lang==='EN'">Name</span>
                                 </th>
 
-                                <th st-sort="mobile">
+                                <th st-sort="descriptionArabic">
                                     <span ng-if="lang==='AR'">الوصف</span>
                                     <span ng-if="lang==='EN'">Description</span>
                                 </th>
 
-                                <th st-sort="qualification">
+                                <th st-sort="cost">
                                     <span ng-if="lang==='AR'">التكلفة</span>
                                     <span ng-if="lang==='EN'">Cost</span>
                                 </th>
@@ -234,12 +234,12 @@
                                 ng-class="{'mdl-color--blue-grey-100':detectionType.isSelected}">
                                 <td st-select-row-custom="detectionType">{{$index+1}}</td>
                                 <td st-select-row-custom="detectionType">
-                                    <span ng-if="lang==='AR'">{{detectionType.name_ar}}</span>
-                                    <span ng-if="lang==='EN'">{{detectionType.name_en}}</span>
+                                    <span ng-if="lang==='AR'">{{detectionType.nameArabic}}</span>
+                                    <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
                                 </td>
                                 <td st-select-row-custom="detectionType">
-                                    <span ng-if="lang==='AR'">{{detectionType.description_ar}}</span>
-                                    <span ng-if="lang==='EN'">{{detectionType.description_en}}</span>
+                                    <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
+                                    <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
                                 </td>
                                 <td st-select-row-custom="detectionType">
                                     <span class="label label-danger">{{detectionType.cost | currency:'SAR':0.0}}</span>
@@ -267,12 +267,12 @@
                                 <div class="profile-image">
                                     <img width="100" height="100"
                                          src="/ui/img/no-image.jpg"
-                                         alt="{{detectionType.name_ar}}"/>
+                                         alt="{{detectionType.nameArabic}}"/>
                                 </div>
                                 <div class="profile-data">
                                     <div class="profile-data-name">
-                                        <span ng-if="lang==='AR'">{{detectionType.name_ar}}</span>
-                                        <span ng-if="lang==='EN'">{{detectionType.name_en}}</span>
+                                        <span ng-if="lang==='AR'">{{detectionType.nameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
                                     </div>
                                 </div>
                                 <div class="profile-controls">
@@ -285,8 +285,8 @@
                                     <p>
                                         <strong ng-if="lang==='AR'">الوصف</strong>
                                         <strong ng-if="lang==='EN'">Description</strong>
-                                        <span ng-if="lang==='AR'">{{detectionType.description_ar}}</span>
-                                        <span ng-if="lang==='EN'">{{detectionType.description_en}}</span>
+                                        <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
                                     </p>
                                     <hr>
                                     <p>

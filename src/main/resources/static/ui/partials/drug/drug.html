@@ -223,16 +223,6 @@
                                     <span ng-if="lang==='EN'">Medical Name</span>
                                 </th>
 
-                                <th st-sort="productionDate">
-                                    <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                    <span ng-if="lang==='EN'">Production Date</span>
-                                </th>
-
-                                <th st-sort="expireDate">
-                                    <span ng-if="lang==='AR'">تاريخ الإنتهاء</span>
-                                    <span ng-if="lang==='EN'">Expire Date</span>
-                                </th>
-
                                 <th st-sort="cost">
                                     <span ng-if="lang==='AR'">التكلفة</span>
                                     <span ng-if="lang==='EN'">Cost</span>
@@ -240,7 +230,7 @@
 
                             </tr>
                             <tr>
-                                <th colspan="7">
+                                <th colspan="5">
                                     <input st-search=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
@@ -266,20 +256,12 @@
                                     <span ng-if="lang==='EN'">{{drug.medicalNameEnglish}}</span>
                                 </td>
                                 <td st-select-row-custom="drug">
-                                    <span ng-show="dateType==='H'">{{drug.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                    <span ng-show="dateType==='G'">{{drug.productionDate | date: 'yyyy-MM-dd'}}</span>
-                                </td>
-                                <td st-select-row-custom="drug">
-                                    <span ng-show="dateType==='H'">{{drug.expireDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                    <span ng-show="dateType==='G'">{{drug.expireDate | date: 'yyyy-MM-dd'}}</span>
-                                </td>
-                                <td st-select-row-custom="drug">
                                     <span class="label label-danger">{{drug.cost | currency:'SAR':0.0}}</span>
                                 </td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="7">
+                                <td colspan="5">
                                     <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                     <span ng-if="lang==='EN'">No Data Found.</span>
                                 </td>

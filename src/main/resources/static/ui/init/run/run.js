@@ -1,5 +1,5 @@
-app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider',
-    function ($http, $location, $state, $timeout, $window, PersonService, $rootScope, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider) {
+app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider', 'Fullscreen',
+    function ($http, $location, $state, $timeout, $window, PersonService, $rootScope, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider, Fullscreen) {
 
         $rootScope.state = $state;
 
@@ -331,7 +331,6 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         });
 
         $rootScope.goFullscreen = function () {
-
             if (Fullscreen.isEnabled())
                 Fullscreen.cancel();
             else
