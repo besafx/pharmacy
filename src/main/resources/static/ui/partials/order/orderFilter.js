@@ -1,7 +1,14 @@
-app.controller('orderFilterCtrl', ['$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title',
-    function ($scope, $rootScope, $timeout, $log, $uibModalInstance, title) {
+app.controller('orderFilterCtrl', ['FalconService', 'DoctorService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
+    function (FalconService, DoctorService, $scope, $rootScope, $timeout, $log, $uibModalInstance) {
 
-        $scope.modalTitle = title;
+        $timeout(function () {
+            FalconService.findAllCombo().then(function (data) {
+               $scope.falcons = data;
+            });
+            DoctorService.findAllCombo().then(function (data) {
+               $scope.doctors = data;
+            });
+        }, 2000);
 
         $scope.submit = function () {
             $uibModalInstance.close($scope.buffer);

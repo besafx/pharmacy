@@ -107,6 +107,7 @@ gulp.task('scripts', function () {
         './init/factory/employeeFactory.js',
         './init/factory/falconFactory.js',
         './init/factory/orderAttachFactory.js',
+        './init/factory/orderDetectionTypeFactory.js',
         './init/factory/orderFactory.js',
         './init/factory/personFactory.js',
         './init/factory/teamFactory.js',

@@ -350,23 +350,25 @@
                 <input id="uploader" style="display: none" type="file" onchange="angular.element(this).scope().initFiles(this.files);" multiple/>
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
                             <li>
                                 <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_ATTACH_CREATE'])"
                                    ng-click="uploadFiles()"
                                    tooltip-append-to-body="true"
-                                   uib-tooltip="مرفق جديد">
+                                   uib-tooltip="{{lang==='AR' ? 'مرفق جديد' : 'New Attachment...'}}">
                                     <span class="fa fa-paperclip"></span>
                                 </a>
                                 <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_ATTACH_CREATE'])"
                                    ng-click="scanToJpg()"
                                    tooltip-append-to-body="true"
-                                   uib-tooltip="فحص">
+                                   uib-tooltip="{{lang==='AR' ? 'فحص ملف' : 'Scan File...'}}">
                                     <span class="fa fa-file-image-o"></span>
                                 </a>
                             </li>
                         </ul>
-                        <div class="panel-title-box pull-right">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
                             <h3 ng-if="lang==='AR'">المرفقات والمستندات</h3>
                             <h3 ng-if="lang==='EN'">Documents & Attachments</h3>
                             <span ng-if="lang==='AR'">مستندات المريض</span>
@@ -380,13 +382,23 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th class="text-center">م</th>
-                                        <th class="text-center">اسم الملف</th>
-                                        <th class="text-center">حجم الملف</th>
+                                        <th class="text-center">
+                                            <span ng-if="lang==='AR'">م</span>
+                                            <span ng-if="lang==='EN'">#</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span ng-if="lang==='AR'">اسم الملف</span>
+                                            <span ng-if="lang==='EN'">File Name</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span ng-if="lang==='AR'">حجم الملف</span>
+                                            <span ng-if="lang==='EN'">File Size</span>
+                                        </th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="text-right" ng-repeat="wrapper in wrappers" ng-class="{'success':wrapper.link, 'danger' : !wrapper.link}">
+                                    <tr ng-repeat="wrapper in wrappers"
+                                        ng-class="{'success':wrapper.link, 'danger' : !wrapper.link}">
                                         <td>{{$index+1}}</td>
                                         <td>{{wrapper.name}}</td>
                                         <td>{{wrapper.size/1024/1024|number:2}} MB</td>
@@ -394,7 +406,10 @@
                                     <tr class="blank_row"
                                         style="height: 10px !important; background-color: #FFFFFF;"
                                         ng-show="!wrappers || wrappers.length ==0">
-                                        <td colspan="3">فضلاً قم برفع الملفات</td>
+                                        <td colspan="3">
+                                            <span ng-if="lang==='AR'">فضلاً قم برفع الملفات</span>
+                                            <span ng-if="lang==='EN'">Please Upload Files.</span>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>

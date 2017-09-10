@@ -383,6 +383,10 @@ select {
     direction: ltr !important;
 }
 
+.lang-dir{
+    direction: ltr !important;
+}
+
 .mdl-data-table thead th,
 .mdl-data-table tbody tr,
 .mdl-data-table tbody tr td{

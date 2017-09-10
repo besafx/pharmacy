@@ -2,6 +2,7 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
     function (OrderService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
+        $scope.buffer = {};
 
         $scope.items = [];
         $scope.items.push(
@@ -31,12 +32,7 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                 controller: 'orderFilterCtrl',
                 scope: $scope,
                 backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    title: function () {
-                        return 'عرض طلبات الفحص';
-                    }
-                }
+                keyboard: false
             });
 
             modalInstance.result.then(function (buffer) {
@@ -53,10 +49,10 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                     search.push('&');
                 }
                 //
-                if (buffer.orderConditions) {
+                if (buffer.orderConditionsList) {
                     var orderConditions = [];
-                    for (var i = 0; i < buffer.orderConditions.length; i++) {
-                        orderConditions[i] = buffer.orderConditions[i].id;
+                    for (var i = 0; i < buffer.orderConditionsList.length; i++) {
+                        orderConditions.push(buffer.orderConditionsList[i]);
                     }
                     search.push('orderConditions=');
                     search.push(orderConditions);
@@ -74,20 +70,20 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                     search.push('&');
                 }
                 //
-                if (buffer.falcons) {
+                if (buffer.falconsList) {
                     var falcons = [];
-                    for (var i = 0; i < buffer.falcons.length; i++) {
-                        falcons[i] = buffer.falcons[i].id;
+                    for (var i = 0; i < buffer.falconsList.length; i++) {
+                        falcons.push(buffer.falconsList[i].id);
                     }
                     search.push('falcons=');
                     search.push(falcons);
                     search.push('&');
                 }
                 //
-                if (buffer.doctors) {
+                if (buffer.doctorsList) {
                     var doctors = [];
-                    for (var i = 0; i < buffer.doctors.length; i++) {
-                        doctors[i] = buffer.doctors[i].id;
+                    for (var i = 0; i < buffer.doctorsList.length; i++) {
+                        doctors.push(buffer.doctorsList[i].id);
                     }
                     search.push('doctors=');
                     search.push(doctors);
@@ -124,7 +120,9 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
         $scope.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
-                $scope.orders.splice(0, 0, data);
+                if($scope.orders){
+                    $scope.orders.splice(0, 0, data);
+                }
             }, function () {
                 console.info('OrderCreateModel Closed.');
             });

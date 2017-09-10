@@ -10,6 +10,9 @@ import com.besafx.app.service.PersonService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.bohnman.squiggly.Squiggly;
+import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +33,8 @@ public class OrderAttachRest {
 
     private final static Logger log = LoggerFactory.getLogger(OrderAttachRest.class);
 
+    public static final String FILTER_TABLE = "id,order[id],attach[id]";
+
     @Autowired
     private PersonService personService;
 
@@ -48,10 +53,10 @@ public class OrderAttachRest {
     @Autowired
     private NotificationService notificationService;
 
-    @RequestMapping(value = "upload/{orderId}/{attachTypeId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_ATTACH_CREATE')")
-    public OrderAttach upload(@PathVariable(value = "orderId") Long orderId,
+    public String upload(@RequestParam(value = "orderId") Long orderId,
                                 @RequestParam(value = "fileName") String fileName,
                                 @RequestParam(value = "mimeType") String mimeType,
                                 @RequestParam(value = "description") String description,
@@ -70,9 +75,9 @@ public class OrderAttachRest {
         attach.setDate(new DateTime().toDate());
         attach.setPerson(personService.findByEmail(principal.getName()));
 
-        Future<Boolean> uploadTask = dropboxManager.uploadFile(file, "/Pharmacy4Falcon/Orders/" + orderId + "/" + fileName);
+        Future<Boolean> uploadTask = dropboxManager.uploadFile(file, "/Pharmacy4Falcon/Orders/" + orderId + "/" + fileName + "." + mimeType);
         if (uploadTask.get()) {
-            Future<String> shareTask = dropboxManager.shareFile("/Pharmacy4Falcon/Orders/" + orderId + "/" + fileName);
+            Future<String> shareTask = dropboxManager.shareFile("/Pharmacy4Falcon/Orders/" + orderId + "/" + fileName + "." + mimeType);
             attach.setLink(shareTask.get());
             notificationService.notifyOne(Notification
                     .builder()
@@ -84,7 +89,7 @@ public class OrderAttachRest {
 
             attach = attachService.save(attach);
             orderAttach.setAttach(attach);
-            return orderAttachService.save(orderAttach);
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.save(orderAttach));
         } else {
             return null;
         }
@@ -96,7 +101,7 @@ public class OrderAttachRest {
     public Boolean delete(@PathVariable Long id, Principal principal) throws ExecutionException, InterruptedException {
         OrderAttach orderAttach = orderAttachService.findOne(id);
         if (orderAttach != null) {
-            Future<Boolean> deleteTask = dropboxManager.deleteFile("/Pharmacy4Falcon/Orders/" + orderAttach.getOrder().getId() + "/" + orderAttach.getAttach().getName());
+            Future<Boolean> deleteTask = dropboxManager.deleteFile("/Pharmacy4Falcon/Orders/" + orderAttach.getOrder().getId() + "/" + orderAttach.getAttach().getName() + "." + orderAttach.getAttach().getMimeType());
             if (deleteTask.get()) {
                 orderAttachService.delete(orderAttach);
                 notificationService.notifyOne(Notification
@@ -141,7 +146,7 @@ public class OrderAttachRest {
 
     @RequestMapping(value = "findByAccount/{orderId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<OrderAttach> findByAccount(@PathVariable(value = "orderId") Long orderId) {
-        return orderAttachService.findByOrderId(orderId);
+    public String findByAccount(@PathVariable(value = "orderId") Long orderId) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.findByOrderId(orderId));
     }
 }

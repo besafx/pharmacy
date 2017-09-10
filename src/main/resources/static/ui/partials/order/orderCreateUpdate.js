@@ -1,5 +1,5 @@
-app.controller('orderCreateUpdateCtrl', ['OrderService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'order',
-    function (OrderService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, order) {
+app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService','CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'order',
+    function (OrderService, OrderDetectionTypeService, OrderAttachService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, order) {
 
         $timeout(function () {
             $scope.refreshCustomers();
@@ -130,12 +130,7 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'CustomerService', 'Fal
                 controller: 'orderAttachUploadCtrl',
                 scope: $scope,
                 backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    title: function () {
-                        return 'رفع المستندات';
-                    }
-                }
+                keyboard: false
             });
 
             modalInstance.result.then(function () {
@@ -198,6 +193,19 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'CustomerService', 'Fal
             switch ($scope.action) {
                 case 'create' :
                     OrderService.create($scope.order).then(function (data) {
+                        angular.forEach($scope.buffer.detectionTypeList, function (detectionType) {
+                            var orderDetectionType = {};
+                            orderDetectionType.detectionType = detectionType;
+                            orderDetectionType.order = data;
+                            OrderDetectionTypeService.create(orderDetectionType).then(function (data) {
+
+                            });
+                        });
+                        angular.forEach($scope.wrappers, function (wrapper) {
+                            OrderAttachService.upload(data, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
+
+                            });
+                        });
                         $uibModalInstance.close(data);
                     });
                     break;

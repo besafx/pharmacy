@@ -364,30 +364,18 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 dismissQueue: true, // [boolean] If you want to use queue feature set this true
                 force: true, // [boolean] adds notification to the beginning of queue when set to true
                 maxVisible: 3, // [integer] you can set max visible notification count for dismissQueue true option,
-                template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+                template: '<div class="noty_message"><span class="noty_text"></span></div>',
                 timeout: 1500, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
                 progressBar: true, // [boolean] - displays a progress bar
                 animation: {
                     open: 'animated fadeIn',
                     close: 'animated fadeOut',
                     easing: 'swing',
-                    speed: 500 // opening & closing animation speed
+                    speed: 100 // opening & closing animation speed
                 },
                 closeWith: ['hover'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
                 modal: false, // [boolean] if true adds an overlay
                 killer: false, // [boolean] if true closes all notifications and shows itself
-                callback: {
-                    onShow: function () {
-                    },
-                    afterShow: function () {
-                    },
-                    onClose: function () {
-                    },
-                    afterClose: function () {
-                    },
-                    onCloseClick: function () {
-                    },
-                },
                 buttons: false // [boolean|array] an array of buttons, for creating confirmation dialogs.
             });
         };
@@ -438,6 +426,31 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     }
                     }
                 ]
+            });
+        };
+
+        $rootScope.showIndicatorNotify = function (message, type) {
+            noty({
+                layout: 'center',
+                theme: 'metroui', // or relax
+                type: type, // success, error, warning, information, notification
+                text: '<div class="activity-item text-center"><strong class="activity">' + message + '</strong></div>',
+                dismissQueue: true, // [boolean] If you want to use queue feature set this true
+                force: false, // [boolean] adds notification to the beginning of queue when set to true
+                maxVisible: 1, // [integer] you can set max visible notification count for dismissQueue true option,
+                template: '<div class="noty_message lang-dir"><span class="noty_text"></span></div>',
+                timeout: false, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
+                progressBar: false, // [boolean] - displays a progress bar
+                animation: {
+                    open: 'animated fadeIn',
+                    close: 'animated fadeOut',
+                    easing: 'swing',
+                    speed: 100 // opening & closing animation speed
+                },
+                closeWith: ['button'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+                modal: true, // [boolean] if true adds an overlay
+                killer: true, // [boolean] if true closes all notifications and shows itself
+                buttons: false // [boolean|array] an array of buttons, for creating confirmation dialogs.
             });
         };
 

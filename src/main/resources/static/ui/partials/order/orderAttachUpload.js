@@ -1,7 +1,5 @@
-app.controller('orderAttachUploadCtrl', ['$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title',
-    function ($scope, $rootScope, $timeout, $log, $uibModalInstance, title) {
-
-        $scope.modalTitle = title;
+app.controller('orderAttachUploadCtrl', ['$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
+    function ($scope, $rootScope, $timeout, $log, $uibModalInstance) {
 
         $scope.submit = function () {
             $uibModalInstance.close();

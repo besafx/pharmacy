@@ -1,14 +1,15 @@
-<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
       focus-group-head="loop" focus-group-tail="loop">
 
     <div class="modal-header">
-        <a class="pull-left" href="" ng-click="cancel()">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
             <span class="fa fa-close fa-2x"></span>
         </a>
-        <h3 class="panel-title mdl-list__item pull-right">
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
             <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">file_upload</i>
-                <strong>{{modalTitle}}</strong>
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong ng-if="lang==='AR'">تخصيص الملفات</strong>
+                <strong ng-if="lang==='EN'">Files Customization</strong>
             </span>
         </h3>
     </div>
@@ -17,22 +18,28 @@
 
         <div class="row" ng-repeat="wrapper in wrappers">
 
-            <div class="form-group text-right col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <label for="name" class="control-label">اسم المستند</label>
+            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <label for="name" class="control-label">
+                    <span ng-if="lang==='AR'">اسم المستند</span>
+                    <span ng-if="lang==='EN'">File Name</span>
+                </label>
                 <input id="name"
                        type="text"
-                       class="form-control text-right "
-                       placeholder="اذكر اسما مختصرا يعبر عن الملف غير مكرر..."
+                       class="form-control "
+                       placeholder="{{lang==='AR' ? 'اذكر اسما مختصرا يعبر عن الملف غير مكرر...' : 'Please Type File Name...'}}"
                        ng-model="wrapper.name">
             </div>
 
-            <div class="form-group text-right col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <label for="description" class="control-label">وصف مختصر لمحتويات المستند</label>
+            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <label for="description" class="control-label">
+                    <span ng-if="lang==='AR'">وصف مختصر لمحتويات المستند</span>
+                    <span ng-if="lang==='EN'">File Description</span>
+                </label>
                 <textarea id="description"
                           type="text"
                           msd-elastic="\n"
-                          class="form-control text-right"
-                          placeholder="اذكر باختصار وصف مختصر لمحتويات المستند..."
+                          class="form-control"
+                          placeholder="{{lang==='AR' ? 'اذكر وصفاً مختصرا يعبر عن محتويات الملف...' : 'Please Type File Description...'}}"
                           ng-model="wrapper.description">
                 </textarea>
             </div>
@@ -46,24 +53,24 @@
     <div class="modal-footer">
 
         <div class="row">
-            <button uib-tooltip="حفظ"
+            <button uib-tooltip="{{lang==='AR' ? 'حفظ' : 'Save'}}"
                     tooltip-append-to-body="true"
                     type="submit"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
-                <i class="material-icons">file_upload</i>
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <i class="material-icons">save</i>
             </button>
-            <button uib-tooltip="مسح الحقول"
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
                     tooltip-append-to-body="true"
                     type="reset"
                     ng-click="form.$setPristine();"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <i class="material-icons">delete</i>
             </button>
-            <button uib-tooltip="خروج"
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
                     tooltip-append-to-body="true"
                     type="button"
                     ng-click="cancel()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <i class="material-icons">power_settings_new</i>
             </button>
         </div>

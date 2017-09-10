@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,6 @@ public class OrderSearch {
             final List<Long> falcons,
             final List<Long> doctors
     ) {
-
         List<Specification> predicates = new ArrayList<>();
         Optional.ofNullable(orderConditions).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("orderCondition").in(value)));
         Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
@@ -46,7 +46,9 @@ public class OrderSearch {
             for (int i = 1; i < predicates.size(); i++) {
                 result = Specifications.where(result).and(predicates.get(i));
             }
-            return orderService.findAll(result);
+            List list = orderService.findAll(result);
+            list.sort(Comparator.comparing(Order::getCode).reversed());
+            return list;
         } else {
             return null;
         }

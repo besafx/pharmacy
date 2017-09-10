@@ -24,11 +24,6 @@ app.factory("OrderService",
             remove: function (id) {
                 return $http.delete("/api/order/delete/" + id);
             },
-            update: function (order) {
-                return $http.put("/api/order/update", order).then(function (response) {
-                    return response.data;
-                });
-            },
             filter: function (search) {
                 return $http.get("/api/order/filter?" + search).then(function (response) {
                     return response.data;

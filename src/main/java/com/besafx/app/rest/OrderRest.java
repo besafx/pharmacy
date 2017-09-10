@@ -1,6 +1,5 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Order;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.enums.OrderCondition;
@@ -11,11 +10,13 @@ import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,9 +30,11 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/order/")
 public class OrderRest {
-    
-    public static final String FILTER_TABLE = "**";
-    public static final String FILTER_ORDER_COMBO = "id,code,nameArabic,nameEnglish";
+
+    private final Logger log = LoggerFactory.getLogger(OrderRest.class);
+
+    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,nickname,name,mobile]],doctor[**,person[id,nickname,name,mobile,identityNumber]]";
+    public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id]],doctor[id,person[id]]";
 
     @Autowired
     private OrderService orderService;
@@ -56,6 +59,8 @@ public class OrderRest {
         } else {
             order.setCode(topOrder.getCode() + 1);
         }
+        order.setOrderCondition(OrderCondition.Pending);
+        order.setDate(new DateTime().toDate());
         order = orderService.save(order);
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -68,33 +73,6 @@ public class OrderRest {
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), order);
-    }
-
-    @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_ORDER_UPDATE')")
-    @Transactional
-    public String update(@RequestBody Order order, Principal principal) {
-        if (orderService.findByCodeAndIdIsNot(order.getCode(), order.getId()) != null) {
-            throw new CustomException("هذا الكود مستخدم سابقاً، فضلاً قم بتغير الكود.");
-        }
-        Order object = orderService.findOne(order.getId());
-        if (object != null) {
-            order = orderService.save(order);
-            Person caller = personService.findByEmail(principal.getName());
-            String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-            notificationService.notifyOne(Notification
-                    .builder()
-                    .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                    .message(lang.equals("AR") ? "تم تعديل بيانات الطلب بنجاح" : "Update Order Successfully")
-                    .type("warning")
-                    .icon("fa-edit")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
-                    .build(), principal.getName());
-            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), order);
-        } else {
-            return null;
-        }
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
@@ -148,8 +126,8 @@ public class OrderRest {
             @RequestParam(value = "orderConditions", required = false) final List<OrderCondition> orderConditions,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
-            @RequestParam(value = "falcons") final List<Long> falcons,
-            @RequestParam(value = "doctors") final List<Long> doctors,
+            @RequestParam(value = "falcons", required = false) final List<Long> falcons,
+            @RequestParam(value = "doctors", required = false) final List<Long> doctors,
             Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -161,6 +139,15 @@ public class OrderRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.filter(codeFrom, codeTo, orderConditions, dateFrom, dateTo, falcons, doctors));
+        List<Order> list = orderSearch.filter(codeFrom, codeTo, orderConditions, dateFrom, dateTo, falcons, doctors);
+        notificationService.notifyOne(Notification
+                .builder()
+                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
+                .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done.")
+                .type("success")
+                .icon("fa-plus-square")
+                .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                .build(), principal.getName());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }
