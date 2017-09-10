@@ -1,0 +1,447 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong>{{title}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshCustomers()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_UPDATE'])"
+                                   ng-click="ModalProvider.openCustomerUpdateModel(buffer.customer);"
+                                   ng-hide="!customers || customers.length==0 || !buffer.customer"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تعديل بيانات العميل' : 'Edit Customer Information...'}}">
+                                    <span class="fa fa-edit"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
+                                   ng-click="newCustomer()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'عميل جديد' : 'New Customer...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">بيانات العملاء</h3>
+                            <h3 ng-if="lang==='EN'">Customers Information</h3>
+                            <span ng-if="lang==='AR'">بحث متعدد عن العملاء</span>
+                            <span ng-if="lang==='EN'">Multi-Search For Customers</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <label for="name" class="control-label">
+                                    <span ng-if="lang==='AR'">الاسم</span>
+                                    <span ng-if="lang==='EN'">Name</span>
+                                </label>
+                                <select id="name"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم' : 'Search For Name...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم' : 'Please Select Name...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="buffer.customer"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="customer.name for customer in customers | orderBy:'name' track by customer.id">
+                                </select>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <label for="identityNumber" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم البطاقة</span>
+                                    <span ng-if="lang==='EN'">Identity Number</span>
+                                </label>
+                                <select id="identityNumber"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن رقم البطاقة' : 'Search For ID...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر رقم البطاقة' : 'Please Select ID...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="buffer.customer"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="customer.identityNumber for customer in customers | orderBy:'identityNumber' track by customer.id">
+                                </select>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <label for="mobile" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم الجوال</span>
+                                    <span ng-if="lang==='EN'">Mobile</span>
+                                </label>
+                                <select id="mobile"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن رقم الجوال' : 'Search For Mobile...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر رقم الجوال' : 'Please Select Mobile...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="buffer.customer"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="customer.mobile for customer in customers | orderBy:'mobile' track by customer.id">
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshFalconsByCustomer()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_FALCON_UPDATE'])"
+                                   ng-click="ModalProvider.openFalconUpdateModel(order.falcon);"
+                                   ng-hide="!buffer.customer.falcons || buffer.customer.falcons.length==0 || !order.falcon"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تعديل بيانات الحساب' : 'Edit Falcon Information...'}}">
+                                    <span class="fa fa-edit"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
+                                   ng-click="newFalcon()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'حساب جديد' : 'New Falcon...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">بيانات الصقور</h3>
+                            <h3 ng-if="lang==='EN'">Falcons Information</h3>
+                            <fieldset ng-if="buffer.customer.name">
+                                <span ng-if="lang==='AR'">العميل / {{buffer.customer.name}}</span>
+                                <span ng-if="lang==='EN'">Customer / {{buffer.customer.name}}</span>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <label for="code" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم الصقر</span>
+                                    <span ng-if="lang==='EN'">Code</span>
+                                </label>
+                                <select id="code"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر الرقم' : 'Please Select Code...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="order.falcon"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="falcon.code for falcon in buffer.customer.falcons | orderBy:'code' track by falcon.id">
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshDetectionTypes()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
+                                   ng-click="newDetectionType()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء نوع جديد' : 'New Detection Type...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">الفحوصات المطلوبة(اختيار متعدد)</h3>
+                            <h3 ng-if="lang==='EN'">Required Detections(Multi Choice)</h3>
+                            <fieldset ng-if="order.falcon">
+                                <span ng-if="lang==='AR'">رقم الصقر / {{order.falcon.code}}</span>
+                                <span ng-if="lang==='EN'">Falcon Code / {{order.falcon.code}}</span>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="detectionType" class="control-label">
+                                    <span ng-if="lang==='AR'">نوع الفحص</span>
+                                    <span ng-if="lang==='EN'">Detection Type</span>
+                                </label>
+                                <select id="detectionType"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن النوع' : 'Search For Type...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-multiple="'{{lang==='AR' ? 'اختر النوع' : 'Please Select Type...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        multiple=""
+                                        ng-change="calculateCostSum()"
+                                        ng-model="buffer.detectionTypeList"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="('[ ' + detectionType.code + ' ] ' + (lang==='AR' ? detectionType.nameArabic : detectionType.nameEnglish) + ' [ ' + detectionType.cost + ' ] ') for detectionType in detectionTypes | orderBy:'code' track by detectionType.id">
+                                </select>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="total > 0">
+                                <div class="alert alert-info" role="alert">
+                                    <strong ng-if="lang==='AR'">الإجمالي = {{total}} ريال سعودي</strong>
+                                    <strong ng-if="lang==='EN'">Total Cost = {{total}} SAR</strong>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshDoctors()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_UPDATE'])"
+                                   ng-click="ModalProvider.openDoctorUpdateModel(order.doctor);"
+                                   ng-hide="!doctors || doctors.length==0 || !order.doctor"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تعديل بيانات الطبيب' : 'Edit Doctor Information...'}}">
+                                    <span class="fa fa-edit"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE'])"
+                                   ng-click="newDoctor()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'طبيب جديد' : 'New Doctor...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">بيانات الأطباء</h3>
+                            <h3 ng-if="lang==='EN'">Doctors Information</h3>
+                            <span ng-if="lang==='AR'">بحث متعدد عن الأطباء</span>
+                            <span ng-if="lang==='EN'">Multi-Search For Doctors</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <label for="doctorName" class="control-label">
+                                    <span ng-if="lang==='AR'">الاسم</span>
+                                    <span ng-if="lang==='EN'">Name</span>
+                                </label>
+                                <select id="doctorName"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم' : 'Search For Name...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم' : 'Please Select Name...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="order.doctor"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="doctor.person.name for doctor in doctors | orderBy:'person.name' track by doctor.id">
+                                </select>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <label for="doctorIdentityNumber" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم البطاقة</span>
+                                    <span ng-if="lang==='EN'">Identity Number</span>
+                                </label>
+                                <select id="doctorIdentityNumber"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن رقم البطاقة' : 'Search For ID...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر رقم البطاقة' : 'Please Select ID...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="order.doctor"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="doctor.person.identityNumber for doctor in doctors | orderBy:'person.identityNumber' track by doctor.id">
+                                </select>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <label for="doctorMobile" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم الجوال</span>
+                                    <span ng-if="lang==='EN'">Mobile</span>
+                                </label>
+                                <select id="doctorMobile"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن رقم الجوال' : 'Search For Mobile...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر رقم الجوال' : 'Please Select Mobile...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="order.doctor"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="doctor.person.mobile for doctor in doctors | orderBy:'person.mobile' track by doctor.id">
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <input id="uploader" style="display: none" type="file" onchange="angular.element(this).scope().initFiles(this.files);" multiple/>
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="uploadFiles()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="مرفق جديد">
+                                    <span class="fa fa-paperclip"></span>
+                                </a>
+                                <a href=""
+                                   ng-click="scanToJpg()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="فحص">
+                                    <span class="fa fa-file-image-o"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box pull-right">
+                            <h3 ng-if="lang==='AR'">المرفقات والمستندات</h3>
+                            <h3 ng-if="lang==='EN'">Documents & Attachments</h3>
+                            <span ng-if="lang==='AR'">مستندات المريض</span>
+                            <span ng-if="lang==='EN'">Patient Documents</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">م</th>
+                                        <th class="text-center">اسم الملف</th>
+                                        <th class="text-center">حجم الملف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="text-right" ng-repeat="wrapper in wrappers" ng-class="{'success':wrapper.link, 'danger' : !wrapper.link}">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{wrapper.name}}</td>
+                                        <td>{{wrapper.size/1024/1024|number:2}} MB</td>
+                                    </tr>
+                                    <tr class="blank_row"
+                                        style="height: 10px !important; background-color: #FFFFFF;"
+                                        ng-show="!wrappers || wrappers.length ==0">
+                                        <td colspan="3">فضلاً قم برفع الملفات</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button ng-if="action=='create'"
+                    uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button ng-if="action=='update'"
+                    uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

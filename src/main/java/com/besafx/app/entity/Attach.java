@@ -1,7 +1,7 @@
 package com.besafx.app.entity;
-
-import com.besafx.app.entity.enums.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,43 +14,50 @@ import java.util.Date;
 
 @Data
 @Entity
-public class BillSell implements Serializable {
+public class Attach implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @GenericGenerator(
-            name = "billSellSequenceGenerator",
+            name = "attachSequenceGenerator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "BILL_SELL_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ATTACH_SEQUENCE"),
                     @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
     @Id
-    @GeneratedValue(generator = "billSellSequenceGenerator")
+    @GeneratedValue(generator = "attachSequenceGenerator")
     private Long id;
 
-    private Integer code;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String name;
 
-    @JoinColumn(name = "customer")
-    @ManyToOne
-    private Customer customer;
+    private String mimeType;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String description;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String link;
+
+    private Long size;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    private String note;
+    @ManyToOne
+    @JoinColumn(name = "person")
+    private Person person;
 
     @JsonCreator
-    public static BillSell Create(String jsonString) throws IOException {
+    public static Attach Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        BillSell billSell = mapper.readValue(jsonString, BillSell.class);
-        return billSell;
+        Attach attach = mapper.readValue(jsonString, Attach.class);
+        return attach;
     }
 }

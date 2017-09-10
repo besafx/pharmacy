@@ -1,0 +1,125 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">{{modalTitle}}</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                    <label for="dateFrom" class="control-label">
+                        <span ng-if="lang==='AR'">تاريخ الطلب من</span>
+                        <span ng-if="lang==='EN'">Order Date From</span>
+                    </label>
+                    <div dir="ltr" class="input-group">
+                        <input dir="rtl"
+                               id="dateFrom"
+                               type="text"
+                               class="form-control is-calendarPicker"
+                               ng-model="buffer.dateFrom"
+                               ng-required="dateType==='H'"
+                               disable-validation-message=""
+                               calendarType="ummalqura"
+                               language="en"
+                               dateFormat="yyyy/mm/dd"
+                               showOnFocus="false"
+                               readonly="readonly"
+                               kdatepicker>
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                    <label for="G-dateFrom" class="control-label">
+                        <span ng-if="lang==='AR'">تاريخ الطلب من</span>
+                        <span ng-if="lang==='EN'">Order Date From</span>
+                    </label>
+                    <input id="G-dateFrom"
+                           class="form-control "
+                           type="date"
+                           name="input"
+                           ng-model="buffer.dateFrom"
+                           placeholder="yyyy-MM-dd"
+                           min="2017-01-01"
+                           max="2030-12-31"
+                           ng-required="dateType==='G'"
+                           disable-validation-message=""/>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                    <label for="dateTo" class="control-label">
+                        <span ng-if="lang==='AR'">تاريخ الطلب إلى</span>
+                        <span ng-if="lang==='EN'">Order Date To</span>
+                    </label>
+                    <div dir="ltr" class="input-group">
+                        <input dir="rtl"
+                               id="dateTo"
+                               type="text"
+                               class="form-control is-calendarPicker"
+                               ng-model="buffer.dateTo"
+                               ng-required="dateType==='H'"
+                               disable-validation-message=""
+                               calendarType="ummalqura"
+                               language="en"
+                               dateFormat="yyyy/mm/dd"
+                               showOnFocus="false"
+                               readonly="readonly"
+                               kdatepicker>
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                    <label for="G-dateTo" class="control-label">
+                        <span ng-if="lang==='AR'">تاريخ الطلب إلى</span>
+                        <span ng-if="lang==='EN'">Order Date To</span>
+                    </label>
+                    <input id="G-dateTo"
+                           class="form-control "
+                           type="date"
+                           name="input"
+                           ng-model="buffer.dateTo"
+                           placeholder="yyyy-MM-dd"
+                           min="2017-01-01"
+                           max="2030-12-31"
+                           ng-required="dateType==='G'"
+                           disable-validation-message=""/>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">search</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

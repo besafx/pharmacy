@@ -35,7 +35,7 @@ public class CustomerRest {
     private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
 
     public static final String FILTER_TABLE = "**,falcons[**,-customer]";
-    public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name";
+    public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name,mobile,identityNumber";
 
     @Autowired
     private CustomerService customerService;

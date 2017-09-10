@@ -232,6 +232,59 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * Order Model                                                *
+     *                                                            *
+     *************************************************************/
+    this.openOrderCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/order/orderCreateUpdate.html',
+            controller: 'orderCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء طلب جديد' : 'New Order';
+                },
+                action: function () {
+                    return 'create';
+                },
+                order: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openOrderUpdateModel = function (order) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/order/orderCreateUpdate.html',
+            controller: 'orderCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل بيانات طلب' : 'Update Order Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                order: function () {
+                    return order;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
      * Drug Model                                                 *
      *                                                            *
      *************************************************************/

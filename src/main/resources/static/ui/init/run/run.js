@@ -99,6 +99,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'order': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'burst_mode';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-light_green-lime.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'drug': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'favorite';
@@ -269,6 +280,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'انواع الفحوصات';
                         } else {
                             $rootScope.pageTitle = 'Detection Types';
+                        }
+                        break;
+                    case 'order':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'طلبات الفحص';
+                        } else {
+                            $rootScope.pageTitle = 'Detection Orders';
                         }
                         break;
                     case 'drug':
@@ -498,6 +516,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToDetectionType = function () {
             $state.go('detectionType');
+        };
+        $rootScope.goToOrder = function () {
+            $state.go('order');
         };
         $rootScope.goToDrug = function () {
             $state.go('drug');

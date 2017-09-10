@@ -160,6 +160,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Order State                                                *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("order", {
+            url: "/order",
+            templateUrl: "/ui/partials/order/order.html",
+            controller: "orderCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Drug State                                                 *
          *                                                            *
          *************************************************************/

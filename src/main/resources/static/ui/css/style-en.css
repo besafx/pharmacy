@@ -392,3 +392,7 @@ select {
 .help-block, .modal-header {
     direction: ltr !important;
 }
+
+.panel-controls li a{
+    float: right !important;
+}

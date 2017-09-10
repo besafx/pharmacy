@@ -64,6 +64,7 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/doctor").access("hasRole('ROLE_DOCTOR_READ') or hasRole('ROLE_DOCTOR_CREATE') or hasRole('ROLE_DOCTOR_UPDATE') or hasRole('ROLE_DOCTOR_DELETE')")
                 .antMatchers("/employee").access("hasRole('ROLE_EMPLOYEE_READ') or hasRole('ROLE_EMPLOYEE_CREATE') or hasRole('ROLE_EMPLOYEE_UPDATE') or hasRole('ROLE_EMPLOYEE_DELETE')")
                 .antMatchers("/detectionType").access("hasRole('ROLE_DETECTION_TYPE_READ') or hasRole('ROLE_DETECTION_TYPE_CREATE') or hasRole('ROLE_DETECTION_TYPE_UPDATE') or hasRole('ROLE_DETECTION_TYPE_DELETE')")
+                .antMatchers("/order").access("hasRole('ROLE_ORDER_READ') or hasRole('ROLE_ORDER_CREATE') or hasRole('ROLE_ORDER_UPDATE') or hasRole('ROLE_ORDER_DELETE')")
                 .antMatchers("/drug").access("hasRole('ROLE_DRUG_READ') or hasRole('ROLE_DRUG_CREATE') or hasRole('ROLE_DRUG_UPDATE') or hasRole('ROLE_DRUG_DELETE')")
                 .antMatchers("/drugCategory").access("hasRole('ROLE_DRUG_CATEGORY_READ') or hasRole('ROLE_DRUG_CATEGORY_CREATE') or hasRole('ROLE_DRUG_CATEGORY_UPDATE') or hasRole('ROLE_DRUG_CATEGORY_DELETE')")
                 .antMatchers("/falcon").access("hasRole('ROLE_FALCON_READ') or hasRole('ROLE_FALCON_CREATE') or hasRole('ROLE_FALCON_UPDATE') or hasRole('ROLE_FALCON_DELETE')")

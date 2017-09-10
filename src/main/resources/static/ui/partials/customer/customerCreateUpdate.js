@@ -10,7 +10,6 @@ app.controller('customerCreateUpdateCtrl', ['CustomerService', '$scope', '$rootS
             $scope.submit = function () {
                 switch ($scope.action) {
                     case 'create' :
-                        console.info($scope.customer);
                         CustomerService.create($scope.customer).then(function (data) {
                             $uibModalInstance.close(data);
                         });

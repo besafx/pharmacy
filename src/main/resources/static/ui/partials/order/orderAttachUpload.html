@@ -1,0 +1,73 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a class="pull-left" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 class="panel-title mdl-list__item pull-right">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">file_upload</i>
+                <strong>{{modalTitle}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row" ng-repeat="wrapper in wrappers">
+
+            <div class="form-group text-right col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <label for="name" class="control-label">اسم المستند</label>
+                <input id="name"
+                       type="text"
+                       class="form-control text-right "
+                       placeholder="اذكر اسما مختصرا يعبر عن الملف غير مكرر..."
+                       ng-model="wrapper.name">
+            </div>
+
+            <div class="form-group text-right col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <label for="description" class="control-label">وصف مختصر لمحتويات المستند</label>
+                <textarea id="description"
+                          type="text"
+                          msd-elastic="\n"
+                          class="form-control text-right"
+                          placeholder="اذكر باختصار وصف مختصر لمحتويات المستند..."
+                          ng-model="wrapper.description">
+                </textarea>
+            </div>
+
+            <hr>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="حفظ"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">file_upload</i>
+            </button>
+            <button uib-tooltip="مسح الحقول"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine();"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

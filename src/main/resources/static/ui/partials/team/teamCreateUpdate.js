@@ -21,18 +21,21 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
             {id: 17, name: $rootScope.lang==='AR' ? 'إنشاء أنواع الفحوصات' : 'Create Detection Types' , value: 'ROLE_DETECTION_TYPE_CREATE', selected: false},
             {id: 18, name: $rootScope.lang==='AR' ? 'تعديل بيانات أنواع الفحوصات' : 'Update Detection Types Information' , value: 'ROLE_DETECTION_TYPE_UPDATE', selected: false},
             {id: 19, name: $rootScope.lang==='AR' ? 'حذف أنواع الفحوصات' : 'Delete Detection Types' , value: 'ROLE_DETECTION_TYPE_DELETE', selected: false},
-            {id: 20, name: $rootScope.lang==='AR' ? 'إنشاء حسابات الصقور' : 'Create Falcon Account' , value: 'ROLE_FALCON_CREATE', selected: false},
-            {id: 21, name: $rootScope.lang==='AR' ? 'تعديل بيانات حسابات الصقور' : 'Update Falcon Account Information' , value: 'ROLE_FALCON_UPDATE', selected: false},
-            {id: 22, name: $rootScope.lang==='AR' ? 'حذف حسابات الصقور' : 'Delete Falcon Account' , value: 'ROLE_FALCON_DELETE', selected: false},
-            {id: 23, name: $rootScope.lang==='AR' ? 'إنشاء الدواء' : 'Create Medicine' , value: 'ROLE_DRUG_CREATE', selected: false},
-            {id: 24, name: $rootScope.lang==='AR' ? 'تعديل بيانات الدواء' : 'Update Medicine Information' , value: 'ROLE_DRUG_UPDATE', selected: false},
-            {id: 25, name: $rootScope.lang==='AR' ? 'حذف الدواء' : 'Delete Medicine' , value: 'ROLE_DRUG_DELETE', selected: false},
-            {id: 26, name: $rootScope.lang==='AR' ? 'إنشاء اصناف الدواء' : 'Create Medicine Category' , value: 'ROLE_DRUG_CATEGORY_CREATE', selected: false},
-            {id: 27, name: $rootScope.lang==='AR' ? 'تعديل بيانات اصناف الدواء' : 'Update Medicine Category Information' , value: 'ROLE_DRUG_CATEGORY_UPDATE', selected: false},
-            {id: 28, name: $rootScope.lang==='AR' ? 'حذف اصناف الدواء' : 'Delete Medicine Category' , value: 'ROLE_DRUG_CATEGORY_DELETE', selected: false},
-            {id: 29, name: $rootScope.lang==='AR' ? 'إنشاء الصلاحيات' : 'Create Privileges' , value: 'ROLE_TEAM_CREATE', selected: false},
-            {id: 30, name: $rootScope.lang==='AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges' , value: 'ROLE_TEAM_UPDATE', selected: false},
-            {id: 31, name: $rootScope.lang==='AR' ? 'حذف الصلاحيات' : 'Delete Privileges' , value: 'ROLE_TEAM_DELETE', selected: false}
+            {id: 20, name: $rootScope.lang==='AR' ? 'إنشاء طلبات الفحص' : 'Create Orders' , value: 'ROLE_ORDER_CREATE', selected: false},
+            {id: 21, name: $rootScope.lang==='AR' ? 'تعديل بيانات طلبات الفحص' : 'Update Orders Information' , value: 'ROLE_ORDER_UPDATE', selected: false},
+            {id: 22, name: $rootScope.lang==='AR' ? 'حذف طلبات الفحص' : 'Delete Orders' , value: 'ROLE_ORDER_DELETE', selected: false},
+            {id: 23, name: $rootScope.lang==='AR' ? 'إنشاء حسابات الصقور' : 'Create Falcon Account' , value: 'ROLE_FALCON_CREATE', selected: false},
+            {id: 24, name: $rootScope.lang==='AR' ? 'تعديل بيانات حسابات الصقور' : 'Update Falcon Account Information' , value: 'ROLE_FALCON_UPDATE', selected: false},
+            {id: 25, name: $rootScope.lang==='AR' ? 'حذف حسابات الصقور' : 'Delete Falcon Account' , value: 'ROLE_FALCON_DELETE', selected: false},
+            {id: 26, name: $rootScope.lang==='AR' ? 'إنشاء الدواء' : 'Create Medicine' , value: 'ROLE_DRUG_CREATE', selected: false},
+            {id: 27, name: $rootScope.lang==='AR' ? 'تعديل بيانات الدواء' : 'Update Medicine Information' , value: 'ROLE_DRUG_UPDATE', selected: false},
+            {id: 28, name: $rootScope.lang==='AR' ? 'حذف الدواء' : 'Delete Medicine' , value: 'ROLE_DRUG_DELETE', selected: false},
+            {id: 29, name: $rootScope.lang==='AR' ? 'إنشاء اصناف الدواء' : 'Create Medicine Category' , value: 'ROLE_DRUG_CATEGORY_CREATE', selected: false},
+            {id: 30, name: $rootScope.lang==='AR' ? 'تعديل بيانات اصناف الدواء' : 'Update Medicine Category Information' , value: 'ROLE_DRUG_CATEGORY_UPDATE', selected: false},
+            {id: 31, name: $rootScope.lang==='AR' ? 'حذف اصناف الدواء' : 'Delete Medicine Category' , value: 'ROLE_DRUG_CATEGORY_DELETE', selected: false},
+            {id: 32, name: $rootScope.lang==='AR' ? 'إنشاء الصلاحيات' : 'Create Privileges' , value: 'ROLE_TEAM_CREATE', selected: false},
+            {id: 33, name: $rootScope.lang==='AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges' , value: 'ROLE_TEAM_UPDATE', selected: false},
+            {id: 34, name: $rootScope.lang==='AR' ? 'حذف الصلاحيات' : 'Delete Privileges' , value: 'ROLE_TEAM_DELETE', selected: false}
         ];
 
 
