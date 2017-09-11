@@ -3,6 +3,7 @@ package com.besafx.app.search;
 import com.besafx.app.entity.Order;
 import com.besafx.app.entity.enums.OrderCondition;
 import com.besafx.app.service.OrderService;
+import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,9 @@ public class OrderSearch {
             list.sort(Comparator.comparing(Order::getCode).reversed());
             return list;
         } else {
-            return null;
+            List<Order> list = Lists.newArrayList(orderService.findAll());
+            list.sort(Comparator.comparing(Order::getCode).reversed());
+            return list;
         }
 
     }

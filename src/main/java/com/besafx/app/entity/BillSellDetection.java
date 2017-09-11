@@ -42,6 +42,8 @@ public class BillSellDetection implements Serializable {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
+    private Integer checkCode;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 

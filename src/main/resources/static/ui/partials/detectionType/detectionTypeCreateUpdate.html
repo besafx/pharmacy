@@ -26,7 +26,8 @@
                     <div class="panel-body">
                         <div class="row">
 
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                 ng-show="form.$invalid && form.$submitted">
                                 <div class="alert alert-danger" role="alert">
                                     <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
                                     <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
@@ -121,21 +122,21 @@
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <label for="orderCondition" class="control-label">
-                                    <span ng-if="lang==='AR'">وحدة القياس</span>
-                                    <span ng-if="lang==='EN'">Unit</span>
-                                </label>
-                                <select id="orderCondition"
-                                        class="form-control"
-                                        required="required"
-                                        disable-validation-message=""
-                                        ng-model="detectionType.unit">
-                                    <option ng-if="lang==='AR'" value="Pill">الحبة</option>
-                                    <option ng-if="lang==='EN'" value="Pill">Pill</option>
-                                    <option ng-if="lang==='AR'" value="Pillbox">العلبة</option>
-                                    <option ng-if="lang==='EN'" value="Pillbox">Pillbox</option>
-                                </select>
-                            </div>
+                                    <label for="orderCondition" class="control-label">
+                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                                        <span ng-if="lang==='EN'">Payment Method</span>
+                                    </label>
+                                    <select id="orderCondition"
+                                            class="form-control"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-model="detectionType.unit">
+                                        <option ng-if="lang==='AR'" value="Pill">الحبة</option>
+                                        <option ng-if="lang==='EN'" value="Pill">Pill</option>
+                                        <option ng-if="lang==='AR'" value="Pillbox">العلبة</option>
+                                        <option ng-if="lang==='EN'" value="Pillbox">Pillbox</option>
+                                    </select>
+                                </div>
 
                             </div>
 

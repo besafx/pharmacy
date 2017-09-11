@@ -1,5 +1,5 @@
-app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService','CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'order',
-    function (OrderService, OrderDetectionTypeService, OrderAttachService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, order) {
+app.controller('orderCreateUpdateCtrl', ['OrderService', 'TransactionSellDetectionService', 'OrderDetectionTypeService', 'OrderAttachService', 'BillSellDetectionService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'order',
+    function (OrderService, TransactionSellDetectionService, OrderDetectionTypeService, OrderAttachService, BillSellDetectionService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, order) {
 
         $timeout(function () {
             $scope.refreshCustomers();
@@ -8,6 +8,8 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
         }, 2000);
 
         $scope.order = order;
+
+        $scope.billSellDetection = {};
 
         $scope.buffer = {};
 
@@ -147,7 +149,8 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
                 angular.forEach($scope.wrappers, function (wrapper) {
                     console.info(wrapper);
                 });
-            }, function () {});
+            }, function () {
+            });
 
         };
 
@@ -217,6 +220,21 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
             switch ($scope.action) {
                 case 'create' :
                     OrderService.create($scope.order).then(function (data) {
+                        //انشاء رأس الفاتورة الخاصة بالفحوصات
+                        $scope.billSellDetection.order = data;
+                        BillSellDetectionService.create($scope.billSellDetection).then(function (data_billSellDetection) {
+                            //انشاء تفاصيل الفاتورة
+                            angular.forEach($scope.buffer.detectionTypeList, function (detectionType) {
+                                var transactionSellDetection = {};
+                                transactionSellDetection.detectionType = detectionType;
+                                transactionSellDetection.billSellDetection = data_billSellDetection;
+                                transactionSellDetection.discount = detectionType.discount;
+                                TransactionSellDetectionService.create(transactionSellDetection).then(function (data) {
+
+                                });
+                            });
+                        });
+                        //ربط الفحوصات مع الطلب
                         angular.forEach($scope.buffer.detectionTypeList, function (detectionType) {
                             var orderDetectionType = {};
                             orderDetectionType.detectionType = detectionType;
@@ -225,6 +243,7 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
 
                             });
                         });
+                        //رفع الملفات
                         angular.forEach($scope.wrappers, function (wrapper) {
                             OrderAttachService.upload(data, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
 

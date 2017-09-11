@@ -1,6 +1,5 @@
 package com.besafx.app.entity;
 
-import com.besafx.app.entity.enums.DrugUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -30,16 +29,7 @@ public class TransactionSellDetection implements Serializable {
     @GeneratedValue(generator = "transactionSellDetectionSequenceGenerator")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private DrugUnit unit;
-
-    private Double unitCost;
-
     private Double discount;
-
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    private String note;
 
     @JoinColumn(name = "detectionType")
     @ManyToOne
