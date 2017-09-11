@@ -141,6 +141,15 @@
                                 <span ng-if="lang==='EN'">New...</span>
                             </span>
                         </li>
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="ModalProvider.openDetectionTypeHeavyWorkModel()"
+                            ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">build</i>
+                                <span ng-if="lang==='AR'">انشاء دفعة من أنواع الفحوصات</span>
+                                <span ng-if="lang==='EN'">New Group...</span>
+                            </span>
+                        </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="ModalProvider.openDetectionTypeUpdateModel(selected);"
                             ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_UPDATE']) && toggleList===1"
                             ng-hide="!detectionTypes || detectionTypes.length==0">
@@ -210,14 +219,19 @@
                                     <span ng-if="lang==='EN'">Description</span>
                                 </th>
 
-                                <th st-sort="cost">
+                                <th st-sort="unitCost">
                                     <span ng-if="lang==='AR'">التكلفة</span>
                                     <span ng-if="lang==='EN'">Cost</span>
                                 </th>
 
+                                <th st-sort="cost">
+                                    <span ng-if="lang==='AR'">وحدة القياس</span>
+                                    <span ng-if="lang==='EN'">Unit</span>
+                                </th>
+
                             </tr>
                             <tr>
-                                <th colspan="4">
+                                <th colspan="5">
                                     <input st-search=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
@@ -242,12 +256,13 @@
                                     <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
                                 </td>
                                 <td st-select-row-custom="detectionType">
-                                    <span class="label label-danger">{{detectionType.cost | currency:'SAR':0.0}}</span>
+                                    <span class="label label-danger">{{detectionType.unitCost | currency:'SAR':0.0}}</span>
                                 </td>
+                                <td st-select-row-custom="detectionType">{{detectionType.unit}}</td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="4">
+                                <td colspan="5">
                                     <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                     <span ng-if="lang==='EN'">No Data Found.</span>
                                 </td>
@@ -292,7 +307,8 @@
                                     <p>
                                         <strong ng-if="lang==='AR'">التكلفة</strong>
                                         <strong ng-if="lang==='EN'">Cost</strong>
-                                        <span class="label label-danger">{{detectionType.cost | currency:'SAR':0.0}}</span>
+                                        {{detectionType.unitCost | currency:'SAR':0.0}}
+                                        <span class="label label-danger">{{detectionType.unit}}</span>
                                     </p>
                                 </div>
                             </div>

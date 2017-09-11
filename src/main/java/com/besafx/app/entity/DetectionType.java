@@ -1,5 +1,6 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.enums.DrugUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -39,7 +40,10 @@ public class DetectionType implements Serializable {
 
     private String descriptionEnglish;
 
-    private Double cost;
+    @Enumerated(EnumType.STRING)
+    private DrugUnit unit;
+
+    private Double unitCost;
 
     @JsonCreator
     public static DetectionType Create(String jsonString) throws IOException {

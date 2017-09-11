@@ -9,5 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface DetectionTypeService extends PagingAndSortingRepository<DetectionType, Long>, JpaSpecificationExecutor<DetectionType> {
     DetectionType findTopByOrderByCodeDesc();
+    DetectionType findByCode(Integer code);
     DetectionType findByCodeAndIdIsNot(Integer code, Long id);
 }

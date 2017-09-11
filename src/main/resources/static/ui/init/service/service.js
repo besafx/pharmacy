@@ -230,6 +230,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openDetectionTypeHeavyWorkModel = function () {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/detectionType/detectionTypeHeavyWork.html',
+            controller: 'detectionTypeHeavyWorkCtrl',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Order Model                                                *

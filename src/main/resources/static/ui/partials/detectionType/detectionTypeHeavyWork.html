@@ -1,0 +1,96 @@
+<form name="from" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-group-head="stop"
+      focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">build</i>
+                <strong ng-if="lang==='AR'">إنشاء دفعات من أنواع الفحوصات</strong>
+                <strong ng-if="lang==='EN'">Building Group Of detection Types</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="alert alert-info" role="alert">
+                    <strong ng-if="lang==='AR'">يمكنك القيام بأكثر من عملية انشاء فى ذات الوقت دفعة واحدة وذلك عن طريق تحميل ملف الجداول
+                        الإلكترونية الخاص بأنواع الفحوصات ومن ثم ملء كل الحقول وفى النهاية إعادة رفع الملف إلى الموقع مرة
+                        اخرى</strong>
+                    <strong ng-if="lang==='EN'">You Can Building A Group Of Data By Downloading Excel File Anf Fill It With Required Data, Then Upload Again Here.</strong>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="rowCount">
+                    <span ng-if="lang==='AR'">عدد الصفوف</span>
+                    <span ng-if="lang==='EN'">Rows</span>
+                </label>
+                <div dir="ltr" class="input-group" id="rowCount">
+                    <span class="input-group-addon">
+                        <span ng-if="lang==='AR'">صف</span>
+                        <span ng-if="lang==='EN'">Row</span>
+                    </span>
+                    <input required="required"
+                           disable-validation-message=""
+                           type="number"
+                           min="10"
+                           max="10000"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control text-right "
+                           ng-model="buffer.rowCount">
+                </div>
+            </div>
+
+            <input id="input" type="file" style="display: none;" class="mdl-textfield__input" nv-file-select=""
+                   uploader="uploader" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="uploader.queue.length > 0"
+                 ng-hide="uploader.queue[0].isSuccess">
+                <div class="progress" style="margin-bottom: 0;">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar"
+                         ng-style="{ 'width': uploader.queue[0].progress + '%' }"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'تحميل' : 'Download'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="downloadExcelFile()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">file_download</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'رفع' : 'Upload'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="uploadExcelFile()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">file_upload</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

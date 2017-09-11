@@ -11,6 +11,10 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
 
         $scope.buffer = {};
 
+        $scope.buffer.discount = 0;
+
+        $scope.buffer.selectedDetectionType = {};
+
         $scope.buffer.detectionTypeList = [];
 
         $scope.wrappers = [];
@@ -28,6 +32,7 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
         $scope.newCustomer = function () {
             ModalProvider.openCustomerCreateModel().result.then(function (data) {
                 $scope.customers.splice(0, 0, data);
+                $scope.buffer.customer = data;
             }, function () {
                 console.info('CustomerCreateModel Closed.');
             });
@@ -63,6 +68,7 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
                 }
             }).result.then(function (data) {
                 $scope.buffer.customer.falcons.splice(0, 0, data);
+                $scope.order.falcon = data;
             }, function () {
                 console.info('CustomerFalconCreateModel Closed.');
             });
@@ -77,17 +83,20 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
         $scope.newDetectionType = function () {
             ModalProvider.openDetectionTypeCreateModel().result.then(function (data) {
                 $scope.detectionTypes.splice(0, 0, data);
+                $scope.buffer.selectedDetectionType = data;
             }, function () {
                 console.info('DetectionTypeCreateModel Closed.');
             });
         };
 
         $scope.calculateCostSum = function () {
-            $scope.total = 0;
+            $scope.totalCost = 0;
+            $scope.totalDiscount = 0;
             if ($scope.buffer.detectionTypeList) {
                 for (var i = 0; i < $scope.buffer.detectionTypeList.length; i++) {
                     var detectionType = $scope.buffer.detectionTypeList[i];
-                    $scope.total = $scope.total + detectionType.cost;
+                    $scope.totalCost = $scope.totalCost + detectionType.unitCost;
+                    $scope.totalDiscount = $scope.totalDiscount + detectionType.discount;
                 }
             }
         };
@@ -102,6 +111,7 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
         $scope.newDoctor = function () {
             ModalProvider.openDoctorCreateModel().result.then(function (data) {
                 $scope.doctors.splice(0, 0, data);
+                $scope.order.doctor = data;
             }, function () {
                 console.info('DoctorCreateModel Closed.');
             });
@@ -188,6 +198,20 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
         }
 
         //////////////////////////Scan Manager///////////////////////////////////
+
+        $scope.addDetectionTypeToList = function () {
+            //Add To Table
+            $scope.buffer.selectedDetectionType.discount = $scope.buffer.discount;
+            $scope.buffer.detectionTypeList.push($scope.buffer.selectedDetectionType);
+            $scope.buffer.selectedDetectionType = {};
+            $scope.buffer.discount = 0;
+            $scope.calculateCostSum();
+        };
+
+        $scope.removeDetectionTypeFromList = function (index) {
+            $scope.buffer.detectionTypeList.splice(index, 1);
+            $scope.calculateCostSum();
+        };
 
         $scope.submit = function () {
             switch ($scope.action) {
