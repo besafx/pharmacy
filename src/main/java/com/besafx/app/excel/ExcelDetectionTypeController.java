@@ -2,7 +2,6 @@ package com.besafx.app.excel;
 
 import com.besafx.app.entity.DetectionType;
 import com.besafx.app.entity.Person;
-import com.besafx.app.entity.enums.DrugUnit;
 import com.besafx.app.service.DetectionTypeService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
@@ -12,7 +11,6 @@ import com.besafx.app.ws.NotificationService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -287,7 +285,7 @@ public class ExcelDetectionTypeController {
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "مركز السلطان للصقور" : "SULTAN CENTER")
-                    .message(lang.equals("AR") ? "تم اضافة عدد " +  detectionTypeList.size()  + " من الفحوصات بنجاح." : "Create " + detectionTypeList.size() + " Of Detection Types" + "Successfully")
+                    .message(lang.equals("AR") ? "تم اضافة عدد " + detectionTypeList.size() + " من الفحوصات بنجاح." : "Create " + detectionTypeList.size() + " Of Detection Types" + "Successfully")
                     .type("information")
                     .icon("fa-plus-square")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
