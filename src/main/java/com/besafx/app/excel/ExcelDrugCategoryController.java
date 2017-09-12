@@ -2,7 +2,6 @@ package com.besafx.app.excel;
 
 import com.besafx.app.entity.DrugCategory;
 import com.besafx.app.entity.Person;
-import com.besafx.app.entity.enums.DrugUnit;
 import com.besafx.app.service.DrugCategoryService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
@@ -12,7 +11,6 @@ import com.besafx.app.ws.NotificationService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -266,7 +264,7 @@ public class ExcelDrugCategoryController {
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "مركز السلطان للصقور" : "SULTAN CENTER")
-                    .message(lang.equals("AR") ? "تم اضافة عدد " +  drugCategoryList.size()  + " من تصنيفات منتجات الصيدلية بنجاح." : "Create " + drugCategoryList.size() + " Of Categories" + "Successfully")
+                    .message(lang.equals("AR") ? "تم اضافة عدد " + drugCategoryList.size() + " من تصنيفات منتجات الصيدلية بنجاح." : "Create " + drugCategoryList.size() + " Of Categories" + "Successfully")
                     .type("information")
                     .icon("fa-plus-square")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
