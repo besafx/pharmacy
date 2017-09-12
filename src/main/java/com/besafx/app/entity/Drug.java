@@ -42,10 +42,6 @@ public class Drug implements Serializable {
 
     private String descriptionEnglish;
 
-    private Double pillCost;
-
-    private Double pillboxCost;
-
     @ManyToOne
     @JoinColumn(name = "drugCategory")
     private DrugCategory drugCategory;

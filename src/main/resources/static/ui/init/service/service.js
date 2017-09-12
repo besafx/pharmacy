@@ -324,6 +324,24 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openDrugDetailsModel = function (drug) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drug/drugDetails.html',
+            controller: 'drugDetailsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                drug: function () {
+                    return drug;
+                }
+            }
+        });
+    };
+
     this.openDrugHeavyWorkModel = function () {
         $uibModal.open({
             animation: true,

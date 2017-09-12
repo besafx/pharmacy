@@ -185,6 +185,16 @@
                                 <span ng-if="lang==='EN'">Delete</span>
                             </span>
                         </li>
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="ModalProvider.openDrugDetailsModel(selected);"
+                            ng-if="toggleList===1"
+                            ng-hide="!drugs || drugs.length==0">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">info</i>
+                                <span ng-if="lang==='AR'">التفاصيل</span>
+                                <span ng-if="lang==='EN'">Details...</span>
+                            </span>
+                        </li>
                     </ul>
                 </div>
 
@@ -217,7 +227,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
                 <div class="panel panel-body">
                     <div class="table-responsive">
-                        <table st-table="collection" st-safe-src="drugs"
+                        <table st-table="collection1" st-safe-src="drugs"
                                class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                             <thead>
                             <tr>
@@ -233,17 +243,12 @@
 
                                 <th st-sort="nameArabic">
                                     <span ng-if="lang==='AR'">الاسم التجاري</span>
-                                    <span ng-if="lang==='EN'">Commercial Name</span>
+                                    <span ng-if="lang==='EN'">Trade Name</span>
                                 </th>
 
                                 <th st-sort="medicalNameArabic">
                                     <span ng-if="lang==='AR'">الاسم العلمي</span>
                                     <span ng-if="lang==='EN'">Medical Name</span>
-                                </th>
-
-                                <th st-sort="cost">
-                                    <span ng-if="lang==='AR'">التكلفة</span>
-                                    <span ng-if="lang==='EN'">Cost</span>
                                 </th>
 
                                 <th st-sort="category">
@@ -253,7 +258,7 @@
 
                             </tr>
                             <tr>
-                                <th colspan="6">
+                                <th colspan="5">
                                     <input st-search=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
@@ -262,7 +267,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="drug in collection"
+                            <tr ng-repeat="drug in collection1"
                                 st-select-mode="single"
                                 context-menu="rowMenu"
                                 ng-click="setSelected(drug)"
@@ -278,39 +283,42 @@
                                     <span ng-if="lang==='AR'">{{drug.medicalNameArabic}}</span>
                                     <span ng-if="lang==='EN'">{{drug.medicalNameEnglish}}</span>
                                 </td>
-                                <td st-select-row-custom="drug">
-                                    <span class="label label-danger">{{drug.unitCost | currency:'SAR':0.0}}</span>
-                                </td>
                                 <td>
                                     <span ng-if="lang==='AR'">{{drug.drugCategory.nameArabic}}</span>
                                     <span ng-if="lang==='EN'">{{drug.drugCategory.nameEnglish}}</span>
                                 </td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                ng-show="!collection || collection.length ==0">
-                                <td colspan="6">
+                                ng-show="!collection1 || collection1.length ==0">
+                                <td colspan="5">
                                     <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                     <span ng-if="lang==='EN'">No Data Found.</span>
                                 </td>
                             </tr>
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
 
-
-
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div st-table="collection" st-safe-src="drugs">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="drug in collection">
+                <div class="panel panel-body">
+                    <div st-table="collection2" st-safe-src="drugs">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="drug in collection2">
                         <!-- CONTACT ITEM -->
                         <div class="panel panel-default">
                             <div class="panel-body profile">
                                 <div class="profile-image">
                                     <img width="100" height="100"
                                          src="/ui/img/no-image.jpg"
-                                         alt="{{drug.nameArabic}}"/>
+                                         alt="{{drug.code}}"/>
                                 </div>
                                 <div class="profile-data">
                                     <div class="profile-data-name">
@@ -333,9 +341,10 @@
                                     </p>
                                     <hr>
                                     <p>
-                                        <strong ng-if="lang==='AR'">التكلفة</strong>
-                                        <strong ng-if="lang==='EN'">Cost</strong>
-                                        <span class="label label-danger">{{drug.cost | currency:'SAR':0.0}}</span>
+                                        <a href="" ng-click="ModalProvider.openDrugDetailsModel(drug);">
+                                            <strong ng-if="lang==='AR'">المزيد...</strong>
+                                            <strong ng-if="lang==='EN'">More...</strong>
+                                        </a>
                                     </p>
                                 </div>
                             </div>
@@ -370,6 +379,14 @@
                         </div>
                         <!-- END CONTACT ITEM -->
                     </div>
+                    <tfoot>
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <div st-pagination="" st-items-by-page="3" st-displayed-pages="10"></div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </div>
                 </div>
             </div>
 

@@ -13,52 +13,35 @@ import java.util.Date;
 
 @Data
 @Entity
-public class TransactionBuy implements Serializable {
+public class DrugUnit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @GenericGenerator(
-            name = "transactionBuySequenceGenerator",
+            name = "drugUnitSequenceGenerator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "TRANSACTION_BUY_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "DRUG_UNIT_SEQUENCE"),
                     @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
     @Id
-    @GeneratedValue(generator = "transactionBuySequenceGenerator")
+    @GeneratedValue(generator = "drugUnitSequenceGenerator")
     private Long id;
 
-    private Double unitCost;
+    private String name;
 
-    private Double quantity;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date productionDate;
-
-    private Integer warrantInMonth;
-
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    private String note;
+    private Integer factor;
 
     @JoinColumn(name = "drugUnit")
     @ManyToOne
     private DrugUnit drugUnit;
 
-    @JoinColumn(name = "drug")
-    @ManyToOne
-    private Drug drug;
-
-    @JoinColumn(name = "billBuy")
-    @ManyToOne
-    private BillBuy billBuy;
-
     @JsonCreator
-    public static TransactionBuy Create(String jsonString) throws IOException {
+    public static DrugUnit Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        TransactionBuy transactionBuy = mapper.readValue(jsonString, TransactionBuy.class);
-        return transactionBuy;
+        DrugUnit drugUnit = mapper.readValue(jsonString, DrugUnit.class);
+        return drugUnit;
     }
 }

@@ -3,7 +3,6 @@ package com.besafx.app.excel;
 import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.DrugCategory;
 import com.besafx.app.entity.Person;
-import com.besafx.app.entity.enums.DrugUnit;
 import com.besafx.app.service.DrugCategoryService;
 import com.besafx.app.service.DrugService;
 import com.besafx.app.service.PersonService;
@@ -136,13 +135,13 @@ public class ExcelDrugController {
         sheet.setColumnWidth(2, 20 * 256);
         //
         cell = row.createCell(3);
-        cell.setCellValue(lang.equals("AR") ? "الاسم العلمي عربي" : "Arabic Name");
+        cell.setCellValue(lang.equals("AR") ? "الاسم العلمي عربي" : "Medical Arabic Name");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(3, 20 * 256);
         //
         cell = row.createCell(4);
-        cell.setCellValue(lang.equals("AR") ? "الاسم العلمي إنجليزي" : "English Name");
+        cell.setCellValue(lang.equals("AR") ? "الاسم العلمي إنجليزي" : "Medical English Name");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(4, 20 * 256);
@@ -160,28 +159,16 @@ public class ExcelDrugController {
         sheet.setColumnWidth(6, 20 * 256);
         //
         cell = row.createCell(7);
-        cell.setCellValue(lang.equals("AR") ? "سعر بيع الحبة" : "Pill Cost");
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(styleColumnHeader);
-        sheet.setColumnWidth(7, 20 * 256);
-        //
-        cell = row.createCell(8);
-        cell.setCellValue(lang.equals("AR") ? "سعر بيع العلبة" : "Pillbox Cost");
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(styleColumnHeader);
-        sheet.setColumnWidth(8, 20 * 256);
-        //
-        cell = row.createCell(9);
         cell.setCellValue(lang.equals("AR") ? "رقم التصنيف" : "Code");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
-        sheet.setColumnWidth(9, 20 * 256);
+        sheet.setColumnWidth(7, 20 * 256);
         //
         for (int i = 1; i <= rowCount; i++) {
             row = sheet.createRow(i);
             row.setHeightInPoints((short) 25);
             //
-            for (int j = 0; j <= 9; j++) {
+            for (int j = 0; j <= 7; j++) {
                 cell = row.createCell(j);
                 cell.setCellType(CellType.STRING);
                 cell.setCellValue("---");
@@ -293,36 +280,6 @@ public class ExcelDrugController {
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 7:
-                            if (excelCellHelper.getCellValue(nextCell) == null) {
-                                accept = false;
-                            }
-                            nextCell.setCellType(CellType.STRING);
-                            Double pillCost;
-                            try {
-                                 pillCost = Double.parseDouble((String) excelCellHelper.getCellValue(nextCell));
-                            } catch (Exception ex) {
-                                accept = false;
-                                break;
-                            }
-                            drug.setPillCost(pillCost);
-                            log.info((String) excelCellHelper.getCellValue(nextCell));
-                            break;
-                        case 8:
-                            if (excelCellHelper.getCellValue(nextCell) == null) {
-                                accept = false;
-                            }
-                            nextCell.setCellType(CellType.STRING);
-                            Double pillboxCost;
-                            try {
-                                pillboxCost = Double.parseDouble((String) excelCellHelper.getCellValue(nextCell));
-                            } catch (Exception ex) {
-                                accept = false;
-                                break;
-                            }
-                            drug.setPillboxCost(pillboxCost);
-                            log.info((String) excelCellHelper.getCellValue(nextCell));
-                            break;
-                        case 9:
                             if (excelCellHelper.getCellValue(nextCell) == null) {
                                 accept = false;
                             }
