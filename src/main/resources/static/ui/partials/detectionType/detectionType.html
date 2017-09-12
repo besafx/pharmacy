@@ -214,24 +214,20 @@
                                     <span ng-if="lang==='EN'">Name</span>
                                 </th>
 
+                                <th st-sort="cost">
+                                    <span ng-if="lang==='AR'">التكلفة</span>
+                                    <span ng-if="lang==='EN'">Cost</span>
+                                </th>
+
+
                                 <th st-sort="descriptionArabic">
                                     <span ng-if="lang==='AR'">الوصف</span>
                                     <span ng-if="lang==='EN'">Description</span>
                                 </th>
 
-                                <th st-sort="unitCost">
-                                    <span ng-if="lang==='AR'">التكلفة</span>
-                                    <span ng-if="lang==='EN'">Cost</span>
-                                </th>
-
-                                <th st-sort="cost">
-                                    <span ng-if="lang==='AR'">وحدة القياس</span>
-                                    <span ng-if="lang==='EN'">Unit</span>
-                                </th>
-
                             </tr>
                             <tr>
-                                <th colspan="5">
+                                <th colspan="4">
                                     <input st-search=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
@@ -252,17 +248,16 @@
                                     <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
                                 </td>
                                 <td st-select-row-custom="detectionType">
+                                    <span class="label label-danger">{{detectionType.cost | currency:'SAR':0.0}}</span>
+                                </td>
+                                <td st-select-row-custom="detectionType">
                                     <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
                                     <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
                                 </td>
-                                <td st-select-row-custom="detectionType">
-                                    <span class="label label-danger">{{detectionType.unitCost | currency:'SAR':0.0}}</span>
-                                </td>
-                                <td st-select-row-custom="detectionType">{{detectionType.unit}}</td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="5">
+                                <td colspan="4">
                                     <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                     <span ng-if="lang==='EN'">No Data Found.</span>
                                 </td>
@@ -307,8 +302,7 @@
                                     <p>
                                         <strong ng-if="lang==='AR'">التكلفة</strong>
                                         <strong ng-if="lang==='EN'">Cost</strong>
-                                        {{detectionType.unitCost | currency:'SAR':0.0}}
-                                        <span class="label label-danger">{{detectionType.unit}}</span>
+                                        {{detectionType.cost | currency:'SAR':0.0}}
                                     </p>
                                 </div>
                             </div>

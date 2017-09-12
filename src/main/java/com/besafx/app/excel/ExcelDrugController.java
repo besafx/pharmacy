@@ -1,9 +1,11 @@
 package com.besafx.app.excel;
 
-import com.besafx.app.entity.DetectionType;
+import com.besafx.app.entity.Drug;
+import com.besafx.app.entity.DrugCategory;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.enums.DrugUnit;
-import com.besafx.app.service.DetectionTypeService;
+import com.besafx.app.service.DrugCategoryService;
+import com.besafx.app.service.DrugService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -12,7 +14,6 @@ import com.besafx.app.ws.NotificationService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +36,9 @@ import java.util.Iterator;
 import java.util.List;
 
 @RestController
-public class ExcelDetectionTypeController {
+public class ExcelDrugController {
 
-    private final static Logger log = LoggerFactory.getLogger(ExcelDetectionTypeController.class);
+    private final static Logger log = LoggerFactory.getLogger(ExcelDrugController.class);
 
     private SecureRandom random;
 
@@ -45,7 +46,10 @@ public class ExcelDetectionTypeController {
     private PersonService personService;
 
     @Autowired
-    private DetectionTypeService detectionTypeService;
+    private DrugService drugService;
+
+    @Autowired
+    private DrugCategoryService drugCategoryService;
 
     @Autowired
     private NotificationService notificationService;
@@ -58,7 +62,7 @@ public class ExcelDetectionTypeController {
         random = new SecureRandom();
     }
 
-    @RequestMapping(value = "/api/heavy-work/detectionType/write/{rowCount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "/api/heavy-work/drug/write/{rowCount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void writeExcelFile(@PathVariable(value = "rowCount") Integer rowCount, HttpServletResponse response, Principal principal) {
         log.info("فحص المستخدم");
         Person person = personService.findByEmail(principal.getName());
@@ -114,46 +118,70 @@ public class ExcelDetectionTypeController {
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         //
         Cell cell = row.createCell(0);
-        cell.setCellValue(lang.equals("AR") ? "رقم النوع" : "Code");
+        cell.setCellValue(lang.equals("AR") ? "رقم الدواء" : "Code");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(0, 20 * 256);
         //
         cell = row.createCell(1);
-        cell.setCellValue(lang.equals("AR") ? "الاسم عربي" : "Arabic Name");
+        cell.setCellValue(lang.equals("AR") ? "الاسم التجاري عربي" : "Arabic Name");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(1, 20 * 256);
         //
         cell = row.createCell(2);
-        cell.setCellValue(lang.equals("AR") ? "الاسم إنجليزي" : "English Name");
+        cell.setCellValue(lang.equals("AR") ? "الاسم التجاري إنجليزي" : "English Name");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(2, 20 * 256);
         //
         cell = row.createCell(3);
-        cell.setCellValue(lang.equals("AR") ? "الوصف عربي" : "Arabic Description");
+        cell.setCellValue(lang.equals("AR") ? "الاسم العلمي عربي" : "Arabic Name");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(3, 20 * 256);
         //
         cell = row.createCell(4);
-        cell.setCellValue(lang.equals("AR") ? "الوصف إنجليزي" : "English Description");
+        cell.setCellValue(lang.equals("AR") ? "الاسم العلمي إنجليزي" : "English Name");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(4, 20 * 256);
         //
         cell = row.createCell(5);
-        cell.setCellValue(lang.equals("AR") ? "التكلفة" : "Cost");
+        cell.setCellValue(lang.equals("AR") ? "الوصف عربي" : "Arabic Description");
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(5, 20 * 256);
+        //
+        cell = row.createCell(6);
+        cell.setCellValue(lang.equals("AR") ? "الوصف إنجليزي" : "English Description");
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(styleColumnHeader);
+        sheet.setColumnWidth(6, 20 * 256);
+        //
+        cell = row.createCell(7);
+        cell.setCellValue(lang.equals("AR") ? "سعر بيع الحبة" : "Pill Cost");
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(styleColumnHeader);
+        sheet.setColumnWidth(7, 20 * 256);
+        //
+        cell = row.createCell(8);
+        cell.setCellValue(lang.equals("AR") ? "سعر بيع العلبة" : "Pillbox Cost");
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(styleColumnHeader);
+        sheet.setColumnWidth(8, 20 * 256);
+        //
+        cell = row.createCell(9);
+        cell.setCellValue(lang.equals("AR") ? "رقم التصنيف" : "Code");
+        cell.setCellType(CellType.STRING);
+        cell.setCellStyle(styleColumnHeader);
+        sheet.setColumnWidth(9, 20 * 256);
         //
         for (int i = 1; i <= rowCount; i++) {
             row = sheet.createRow(i);
             row.setHeightInPoints((short) 25);
             //
-            for (int j = 0; j <= 5; j++) {
+            for (int j = 0; j <= 9; j++) {
                 cell = row.createCell(j);
                 cell.setCellType(CellType.STRING);
                 cell.setCellValue("---");
@@ -163,7 +191,7 @@ public class ExcelDetectionTypeController {
         //
         try {
             response.setContentType("application/xlsx");
-            response.setHeader("Content-Disposition", "attachment; filename=\"PHARMACY4FALCON-HeavyWork-DetectionType-Insert.xlsx\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"PHARMACY4FALCON-HeavyWork-Drug-Insert.xlsx\"");
             OutputStream outputStream = response.getOutputStream();
             workbook.write(outputStream);
             workbook.close();
@@ -175,12 +203,12 @@ public class ExcelDetectionTypeController {
 
     }
 
-    @RequestMapping(value = "/api/heavy-work/detectionType/read", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(value = "/api/heavy-work/drug/read", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void readExcelFile(@RequestParam("file") MultipartFile multipartFile, Principal principal) {
         Person person = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(person.getOptions(), Options.class).getLang();
         try {
-            List<DetectionType> detectionTypeList = new ArrayList<>();
+            List<Drug> drugList = new ArrayList<>();
             //
             File tempFile = File.createTempFile(new BigInteger(130, random).toString(32), "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
             FileUtils.writeByteArrayToFile(tempFile, multipartFile.getBytes());
@@ -195,7 +223,7 @@ public class ExcelDetectionTypeController {
             while (iterator.hasNext()) {
                 Row nextRow = iterator.next();
                 Iterator<Cell> cellIterator = nextRow.cellIterator();
-                DetectionType detectionType = new DetectionType();
+                Drug drug = new Drug();
                 boolean accept = true;
                 while (cellIterator.hasNext()) {
                     Cell nextCell = cellIterator.next();
@@ -213,7 +241,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                                 break;
                             }
-                            detectionType.setCode(code);
+                            drug.setCode(code);
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 1:
@@ -221,7 +249,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setNameArabic((String) excelCellHelper.getCellValue(nextCell));
+                            drug.setNameArabic((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 2:
@@ -229,7 +257,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setNameEnglish((String) excelCellHelper.getCellValue(nextCell));
+                            drug.setNameEnglish((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 3:
@@ -237,7 +265,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setDescriptionArabic((String) excelCellHelper.getCellValue(nextCell));
+                            drug.setMedicalNameArabic((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 4:
@@ -245,7 +273,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setDescriptionEnglish((String) excelCellHelper.getCellValue(nextCell));
+                            drug.setMedicalNameEnglish((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 5:
@@ -253,14 +281,64 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            Double cost;
+                            drug.setDescriptionArabic((String) excelCellHelper.getCellValue(nextCell));
+                            log.info((String) excelCellHelper.getCellValue(nextCell));
+                            break;
+                        case 6:
+                            if (excelCellHelper.getCellValue(nextCell) == null) {
+                                accept = false;
+                            }
+                            nextCell.setCellType(CellType.STRING);
+                            drug.setDescriptionEnglish((String) excelCellHelper.getCellValue(nextCell));
+                            log.info((String) excelCellHelper.getCellValue(nextCell));
+                            break;
+                        case 7:
+                            if (excelCellHelper.getCellValue(nextCell) == null) {
+                                accept = false;
+                            }
+                            nextCell.setCellType(CellType.STRING);
+                            Double pillCost;
                             try {
-                                cost = Double.parseDouble((String) excelCellHelper.getCellValue(nextCell));
+                                 pillCost = Double.parseDouble((String) excelCellHelper.getCellValue(nextCell));
                             } catch (Exception ex) {
                                 accept = false;
                                 break;
                             }
-                            detectionType.setCost(cost);
+                            drug.setPillCost(pillCost);
+                            log.info((String) excelCellHelper.getCellValue(nextCell));
+                            break;
+                        case 8:
+                            if (excelCellHelper.getCellValue(nextCell) == null) {
+                                accept = false;
+                            }
+                            nextCell.setCellType(CellType.STRING);
+                            Double pillboxCost;
+                            try {
+                                pillboxCost = Double.parseDouble((String) excelCellHelper.getCellValue(nextCell));
+                            } catch (Exception ex) {
+                                accept = false;
+                                break;
+                            }
+                            drug.setPillboxCost(pillboxCost);
+                            log.info((String) excelCellHelper.getCellValue(nextCell));
+                            break;
+                        case 9:
+                            if (excelCellHelper.getCellValue(nextCell) == null) {
+                                accept = false;
+                            }
+                            nextCell.setCellType(CellType.STRING);
+                            Integer categoryCode;
+                            try {
+                                categoryCode = Integer.parseInt((String) excelCellHelper.getCellValue(nextCell));
+                            } catch (Exception ex) {
+                                accept = false;
+                                break;
+                            }
+                            DrugCategory drugCategory = drugCategoryService.findByCode(categoryCode);
+                            if (drugCategory == null) {
+                                accept = false;
+                            }
+                            drug.setDrugCategory(drugCategory);
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                     }
@@ -268,17 +346,17 @@ public class ExcelDetectionTypeController {
                 }
                 if (accept) {
                     try {
-                        DetectionType foundDetectionType = detectionTypeService.findByCode(detectionType.getCode());
-                        if (foundDetectionType != null) {
-                            DetectionType topDetectionType = detectionTypeService.findTopByOrderByCodeDesc();
-                            if (topDetectionType == null) {
-                                detectionType.setCode(1);
+                        Drug foundDrug = drugService.findByCode(drug.getCode());
+                        if (foundDrug != null) {
+                            Drug topDrug = drugService.findTopByOrderByCodeDesc();
+                            if (topDrug == null) {
+                                drug.setCode(1);
                             } else {
-                                detectionType.setCode(topDetectionType.getCode() + 1);
+                                drug.setCode(topDrug.getCode() + 1);
                             }
                         }
-                        detectionTypeList.add(detectionType);
-                        detectionTypeService.save(detectionType);
+                        drugList.add(drug);
+                        drugService.save(drug);
                     } catch (Exception ex) {
                         log.info(ex.getMessage());
                     }
@@ -287,7 +365,7 @@ public class ExcelDetectionTypeController {
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "مركز السلطان للصقور" : "SULTAN CENTER")
-                    .message(lang.equals("AR") ? "تم اضافة عدد " +  detectionTypeList.size()  + " من الفحوصات بنجاح." : "Create " + detectionTypeList.size() + " Of Detection Types" + "Successfully")
+                    .message(lang.equals("AR") ? "تم اضافة عدد " + drugList.size() + " من الأدوية بنجاح." : "Create " + drugList.size() + " Of Drugs" + "Successfully")
                     .type("information")
                     .icon("fa-plus-square")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")

@@ -10,5 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface DrugCategoryService extends PagingAndSortingRepository<DrugCategory, Long>, JpaSpecificationExecutor<DrugCategory> {
     DrugCategory findTopByOrderByCodeDesc();
+    DrugCategory findByCode(Integer code);
     DrugCategory findByCodeAndIdIsNot(Integer code, Long id);
 }

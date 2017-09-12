@@ -132,12 +132,13 @@
                             </div>
 
                             <div class="form-group row">
+
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="cost" class="control-label">
-                                        <span ng-if="lang==='AR'">التكلفة</span>
+                                    <label for="pillCost" class="control-label">
+                                        <span ng-if="lang==='AR'">سعر بيع الحبة</span>
                                         <span ng-if="lang==='EN'">Cost</span>
                                     </label>
-                                    <div dir="ltr" class="input-group" id="cost">
+                                    <div dir="ltr" class="input-group" id="pillCost">
                                         <span class="input-group-addon">
                                             <span ng-if="lang==='AR'">ريال سعودي</span>
                                             <span ng-if="lang==='EN'">SAR</span>
@@ -148,39 +149,41 @@
                                                required="required"
                                                disable-validation-message=""
                                                class="form-control"
-                                               ng-model="drug.cost">
+                                               ng-model="drug.pillCost">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="structure" class="control-label">
-                                        <span ng-if="lang==='AR'">وحدة القياس</span>
-                                        <span ng-if="lang==='EN'">Unit</span>
+                                    <label for="pillboxCost" class="control-label">
+                                        <span ng-if="lang==='AR'">سعر بيع العلبة</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
                                     </label>
-                                    <select id="structure"
-                                            placeholder="{{lang==='AR' ? 'اختر الوحدة' : 'Select Unit...'}}"
-                                            class="form-control"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-model="drug.unit">
-                                        <option ng-if="lang==='AR'" value="Pill">حبة</option>
-                                        <option ng-if="lang==='EN'" value="Pill">Pill</option>
-                                        <option ng-if="lang==='AR'" value="Pillbox">علبة</option>
-                                        <option ng-if="lang==='EN'" value="Pillbox">Pillbox</option>
-                                    </select>
+                                    <div dir="ltr" class="input-group" id="pillboxCost">
+                                        <span class="input-group-addon">
+                                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                                            <span ng-if="lang==='EN'">SAR</span>
+                                        </span>
+                                        <input dir="rtl"
+                                               type="number"
+                                               min="0"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="drug.pillboxCost">
+                                    </div>
                                 </div>
 
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label for="drugCategory" class="control-label">
-                                    <span ng-if="lang==='AR'">الصنف</span>
+                                    <span ng-if="lang==='AR'">التصنيف</span>
                                     <span ng-if="lang==='EN'">Category</span>
                                 </label>
                                 <select id="drugCategory"
-                                        data-placeholder="{{lang==='AR' ? 'ابحث عن الصنف' : 'Search For Category...'}}"
+                                        data-placeholder="{{lang==='AR' ? 'ابحث عن التصنيف' : 'Search For Category...'}}"
                                         no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                        placeholder-text-single="'{{lang==='AR' ? 'اختر الصنف' : 'Please Select Category...'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر التصنيف' : 'Please Select Category...'}}'"
                                         class="form-control"
                                         chosen=""
                                         ng-model="drug.drugCategory"
@@ -188,90 +191,6 @@
                                         disable-validation-message=""
                                         ng-options="('[ ' + drugCategory.code + ' ]' + drugCategory.nameArabic + ' / ' + drugCategory.nameEnglish) for drugCategory in drugCategories track by drugCategory.id">
                                 </select>
-                            </div>
-
-                            <div hidden class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
-                                    <label for="productionDate" class="control-label">
-                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                        <span ng-if="lang==='EN'">Production Date</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group">
-                                        <input dir="rtl"
-                                               id="productionDate"
-                                               type="text"
-                                               class="form-control is-calendarPicker"
-                                               ng-model="drug.productionDate"
-                                               ng-required="dateType==='H'"
-                                               disable-validation-message=""
-                                               calendarType="ummalqura"
-                                               language="en"
-                                               dateFormat="yyyy/mm/dd"
-                                               showOnFocus="false"
-                                               readonly="readonly"
-                                               kdatepicker>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
-                                    <label for="G-productionDate" class="control-label">
-                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                        <span ng-if="lang==='EN'">Production Date</span>
-                                    </label>
-                                    <input id="G-productionDate"
-                                           class="form-control "
-                                           type="date"
-                                           name="input"
-                                           ng-model="buffer.productionDate"
-                                           ng-change="drug.productionDate=buffer.productionDate.toISOString()"
-                                           placeholder="yyyy-MM-dd"
-                                           min="2017-01-01"
-                                           max="2030-12-31"
-                                           ng-required="dateType==='G'"
-                                           disable-validation-message=""/>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
-                                    <label for="expireDate" class="control-label">
-                                        <span ng-if="lang==='AR'">تاريخ الإنتهاء</span>
-                                        <span ng-if="lang==='EN'">Expire Date</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group">
-                                        <input dir="rtl"
-                                               id="expireDate"
-                                               type="text"
-                                               class="form-control is-calendarPicker"
-                                               ng-model="drug.expireDate"
-                                               ng-required="dateType==='H'"
-                                               disable-validation-message=""
-                                               calendarType="ummalqura"
-                                               language="en"
-                                               dateFormat="yyyy/mm/dd"
-                                               showOnFocus="false"
-                                               readonly="readonly"
-                                               kdatepicker>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
-                                    <label for="G-expireDate" class="control-label">
-                                        <span ng-if="lang==='AR'">تاريخ الإنتهاء</span>
-                                        <span ng-if="lang==='EN'">Expire Date</span>
-                                    </label>
-                                    <input id="G-expireDate"
-                                           class="form-control "
-                                           type="date"
-                                           name="input"
-                                           ng-model="buffer.expireDate"
-                                           ng-change="drug.expireDate=buffer.expireDate.toISOString()"
-                                           placeholder="yyyy-MM-dd"
-                                           min="2017-01-01"
-                                           max="2030-12-31"
-                                           ng-required="dateType==='G'"
-                                           disable-validation-message=""/>
-                                </div>
-
                             </div>
 
                         </div>

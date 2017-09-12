@@ -1,5 +1,5 @@
-app.controller("drugCtrl", ['DrugService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (DrugService, ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
+    function (DrugService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
 
@@ -41,6 +41,12 @@ app.controller("drugCtrl", ['DrugService', 'ModalProvider', '$scope', '$rootScop
                     $scope.drugs.splice(index, 1);
                     $scope.setSelected($scope.drugs[0]);
                 });
+            });
+        };
+
+        $scope.refreshDrugCategories = function () {
+            DrugCategoryService.findAll().then(function (data) {
+                $scope.categories = data;
             });
         };
 

@@ -324,6 +324,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openDrugHeavyWorkModel = function () {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drug/drugHeavyWork.html',
+            controller: 'drugHeavyWorkCtrl',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     this.openDrugCategoryCreateModel = function () {
         return $uibModal.open({
             animation: true,
@@ -336,7 +348,7 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             size: 'lg',
             resolve: {
                 title: function () {
-                    return $rootScope.lang === 'AR' ? 'انشاء صنف دواء جديد' : 'New Drug Category';
+                    return $rootScope.lang === 'AR' ? 'انشاء تصنيف دواء جديد' : 'New Drug Category';
                 },
                 action: function () {
                     return 'create';
@@ -345,6 +357,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
                     return {};
                 }
             }
+        });
+    };
+
+    this.openDrugCategoryHeavyWorkModel = function () {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drug/drugCategoryHeavyWork.html',
+            controller: 'drugCategoryHeavyWorkCtrl',
+            backdrop: 'static',
+            keyboard: false
         });
     };
 

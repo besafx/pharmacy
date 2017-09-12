@@ -133,12 +133,21 @@
                                 <span ng-if="lang==='EN'">View</span>
                             </span>
                         </li>
-                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider" ng-click="newDrugCategory();"
-                            ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="newDrugCategory();"
+                            ng-if="contains(me.team.authorities, ['ROLE_DRUG_CATEGORY_CREATE'])">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">add</i>
-                                <span ng-if="lang==='AR'">انشاء صنف دواء جديد</span>
+                                <span ng-if="lang==='AR'">انشاء تصنيف جديد</span>
                                 <span ng-if="lang==='EN'">New Category...</span>
+                            </span>
+                        </li>
+                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                            ng-click="ModalProvider.openDrugCategoryHeavyWorkModel()"
+                            ng-if="contains(me.team.authorities, ['ROLE_DRUG_CATEGORY_CREATE'])">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">build</i>
+                                <span ng-if="lang==='AR'">انشاء دفعة من التصنيفات</span>
+                                <span ng-if="lang==='EN'">New Category Group...</span>
                             </span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="newDrug();"
@@ -147,6 +156,15 @@
                                 <i class="material-icons mdl-list__item-icon">add</i>
                                 <span ng-if="lang==='AR'">انشاء دواء جديد</span>
                                 <span ng-if="lang==='EN'">New Item...</span>
+                            </span>
+                        </li>
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="ModalProvider.openDrugHeavyWorkModel()"
+                            ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">build</i>
+                                <span ng-if="lang==='AR'">انشاء دفعة من الأدوية</span>
+                                <span ng-if="lang==='EN'">New Drug Group...</span>
                             </span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="ModalProvider.openDrugUpdateModel(selected);"
@@ -177,7 +195,7 @@
                                     type="button" ng-click="toggleList=1"
                                     ng-class="{'active':toggleList===1}">
                                 <input type="radio" name="options"/>
-                                <i class="material-icons">reorder</i>
+                                <i class="material-icons">web</i>
                             </button>
                             <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
                                     type="button" ng-click="toggleList=2"
@@ -228,9 +246,14 @@
                                     <span ng-if="lang==='EN'">Cost</span>
                                 </th>
 
+                                <th st-sort="category">
+                                    <span ng-if="lang==='AR'">التصنيف</span>
+                                    <span ng-if="lang==='EN'">Category</span>
+                                </th>
+
                             </tr>
                             <tr>
-                                <th colspan="5">
+                                <th colspan="6">
                                     <input st-search=""
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
@@ -256,12 +279,16 @@
                                     <span ng-if="lang==='EN'">{{drug.medicalNameEnglish}}</span>
                                 </td>
                                 <td st-select-row-custom="drug">
-                                    <span class="label label-danger">{{drug.cost | currency:'SAR':0.0}}</span>
+                                    <span class="label label-danger">{{drug.unitCost | currency:'SAR':0.0}}</span>
+                                </td>
+                                <td>
+                                    <span ng-if="lang==='AR'">{{drug.drugCategory.nameArabic}}</span>
+                                    <span ng-if="lang==='EN'">{{drug.drugCategory.nameEnglish}}</span>
                                 </td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="5">
+                                <td colspan="6">
                                     <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                     <span ng-if="lang==='EN'">No Data Found.</span>
                                 </td>
@@ -271,6 +298,8 @@
                     </div>
                 </div>
             </div>
+
+
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
                 <div st-table="collection" st-safe-src="drugs">

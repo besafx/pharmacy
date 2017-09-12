@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,8 +28,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/drug/")
 public class DrugRest {
-    
-    public static final String FILTER_TABLE = "**";
+
+    private final static Logger log = LoggerFactory.getLogger(DrugRest.class);
+
+    public static final String FILTER_TABLE = "**,drugCategory[id,code,nameArabic,nameEnglish]";
     public static final String FILTER_DRUG_COMBO = "id,code,nameArabic,nameEnglish";
 
     @Autowired

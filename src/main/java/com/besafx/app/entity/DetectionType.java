@@ -40,10 +40,7 @@ public class DetectionType implements Serializable {
 
     private String descriptionEnglish;
 
-    @Enumerated(EnumType.STRING)
-    private DrugUnit unit;
-
-    private Double unitCost;
+    private Double cost;
 
     @JsonCreator
     public static DetectionType Create(String jsonString) throws IOException {

@@ -1,9 +1,9 @@
 package com.besafx.app.excel;
 
-import com.besafx.app.entity.DetectionType;
+import com.besafx.app.entity.DrugCategory;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.enums.DrugUnit;
-import com.besafx.app.service.DetectionTypeService;
+import com.besafx.app.service.DrugCategoryService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -35,9 +35,9 @@ import java.util.Iterator;
 import java.util.List;
 
 @RestController
-public class ExcelDetectionTypeController {
+public class ExcelDrugCategoryController {
 
-    private final static Logger log = LoggerFactory.getLogger(ExcelDetectionTypeController.class);
+    private final static Logger log = LoggerFactory.getLogger(ExcelDrugCategoryController.class);
 
     private SecureRandom random;
 
@@ -45,7 +45,7 @@ public class ExcelDetectionTypeController {
     private PersonService personService;
 
     @Autowired
-    private DetectionTypeService detectionTypeService;
+    private DrugCategoryService drugCategoryService;
 
     @Autowired
     private NotificationService notificationService;
@@ -58,7 +58,7 @@ public class ExcelDetectionTypeController {
         random = new SecureRandom();
     }
 
-    @RequestMapping(value = "/api/heavy-work/detectionType/write/{rowCount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "/api/heavy-work/drugCategory/write/{rowCount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void writeExcelFile(@PathVariable(value = "rowCount") Integer rowCount, HttpServletResponse response, Principal principal) {
         log.info("فحص المستخدم");
         Person person = personService.findByEmail(principal.getName());
@@ -143,17 +143,11 @@ public class ExcelDetectionTypeController {
         cell.setCellStyle(styleColumnHeader);
         sheet.setColumnWidth(4, 20 * 256);
         //
-        cell = row.createCell(5);
-        cell.setCellValue(lang.equals("AR") ? "التكلفة" : "Cost");
-        cell.setCellType(CellType.STRING);
-        cell.setCellStyle(styleColumnHeader);
-        sheet.setColumnWidth(5, 20 * 256);
-        //
         for (int i = 1; i <= rowCount; i++) {
             row = sheet.createRow(i);
             row.setHeightInPoints((short) 25);
             //
-            for (int j = 0; j <= 5; j++) {
+            for (int j = 0; j <= 4; j++) {
                 cell = row.createCell(j);
                 cell.setCellType(CellType.STRING);
                 cell.setCellValue("---");
@@ -163,7 +157,7 @@ public class ExcelDetectionTypeController {
         //
         try {
             response.setContentType("application/xlsx");
-            response.setHeader("Content-Disposition", "attachment; filename=\"PHARMACY4FALCON-HeavyWork-DetectionType-Insert.xlsx\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"PHARMACY4FALCON-HeavyWork-DrugCategory-Insert.xlsx\"");
             OutputStream outputStream = response.getOutputStream();
             workbook.write(outputStream);
             workbook.close();
@@ -175,12 +169,12 @@ public class ExcelDetectionTypeController {
 
     }
 
-    @RequestMapping(value = "/api/heavy-work/detectionType/read", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(value = "/api/heavy-work/drugCategory/read", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void readExcelFile(@RequestParam("file") MultipartFile multipartFile, Principal principal) {
         Person person = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(person.getOptions(), Options.class).getLang();
         try {
-            List<DetectionType> detectionTypeList = new ArrayList<>();
+            List<DrugCategory> drugCategoryList = new ArrayList<>();
             //
             File tempFile = File.createTempFile(new BigInteger(130, random).toString(32), "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
             FileUtils.writeByteArrayToFile(tempFile, multipartFile.getBytes());
@@ -195,7 +189,7 @@ public class ExcelDetectionTypeController {
             while (iterator.hasNext()) {
                 Row nextRow = iterator.next();
                 Iterator<Cell> cellIterator = nextRow.cellIterator();
-                DetectionType detectionType = new DetectionType();
+                DrugCategory drugCategory = new DrugCategory();
                 boolean accept = true;
                 while (cellIterator.hasNext()) {
                     Cell nextCell = cellIterator.next();
@@ -213,7 +207,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                                 break;
                             }
-                            detectionType.setCode(code);
+                            drugCategory.setCode(code);
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 1:
@@ -221,7 +215,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setNameArabic((String) excelCellHelper.getCellValue(nextCell));
+                            drugCategory.setNameArabic((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 2:
@@ -229,7 +223,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setNameEnglish((String) excelCellHelper.getCellValue(nextCell));
+                            drugCategory.setNameEnglish((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 3:
@@ -237,7 +231,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setDescriptionArabic((String) excelCellHelper.getCellValue(nextCell));
+                            drugCategory.setDescriptionArabic((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                         case 4:
@@ -245,22 +239,7 @@ public class ExcelDetectionTypeController {
                                 accept = false;
                             }
                             nextCell.setCellType(CellType.STRING);
-                            detectionType.setDescriptionEnglish((String) excelCellHelper.getCellValue(nextCell));
-                            log.info((String) excelCellHelper.getCellValue(nextCell));
-                            break;
-                        case 5:
-                            if (excelCellHelper.getCellValue(nextCell) == null) {
-                                accept = false;
-                            }
-                            nextCell.setCellType(CellType.STRING);
-                            Double cost;
-                            try {
-                                cost = Double.parseDouble((String) excelCellHelper.getCellValue(nextCell));
-                            } catch (Exception ex) {
-                                accept = false;
-                                break;
-                            }
-                            detectionType.setCost(cost);
+                            drugCategory.setDescriptionEnglish((String) excelCellHelper.getCellValue(nextCell));
                             log.info((String) excelCellHelper.getCellValue(nextCell));
                             break;
                     }
@@ -268,17 +247,17 @@ public class ExcelDetectionTypeController {
                 }
                 if (accept) {
                     try {
-                        DetectionType foundDetectionType = detectionTypeService.findByCode(detectionType.getCode());
-                        if (foundDetectionType != null) {
-                            DetectionType topDetectionType = detectionTypeService.findTopByOrderByCodeDesc();
-                            if (topDetectionType == null) {
-                                detectionType.setCode(1);
+                        DrugCategory foundDrugCategory = drugCategoryService.findByCode(drugCategory.getCode());
+                        if (foundDrugCategory != null) {
+                            DrugCategory topDrugCategory = drugCategoryService.findTopByOrderByCodeDesc();
+                            if (topDrugCategory == null) {
+                                drugCategory.setCode(1);
                             } else {
-                                detectionType.setCode(topDetectionType.getCode() + 1);
+                                drugCategory.setCode(topDrugCategory.getCode() + 1);
                             }
                         }
-                        detectionTypeList.add(detectionType);
-                        detectionTypeService.save(detectionType);
+                        drugCategoryList.add(drugCategory);
+                        drugCategoryService.save(drugCategory);
                     } catch (Exception ex) {
                         log.info(ex.getMessage());
                     }
@@ -287,7 +266,7 @@ public class ExcelDetectionTypeController {
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "مركز السلطان للصقور" : "SULTAN CENTER")
-                    .message(lang.equals("AR") ? "تم اضافة عدد " +  detectionTypeList.size()  + " من الفحوصات بنجاح." : "Create " + detectionTypeList.size() + " Of Detection Types" + "Successfully")
+                    .message(lang.equals("AR") ? "تم اضافة عدد " +  drugCategoryList.size()  + " من تصنيفات منتجات الصيدلية بنجاح." : "Create " + drugCategoryList.size() + " Of Categories" + "Successfully")
                     .type("information")
                     .icon("fa-plus-square")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")

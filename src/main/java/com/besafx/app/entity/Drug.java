@@ -1,6 +1,5 @@
 package com.besafx.app.entity;
 
-import com.besafx.app.entity.enums.DrugUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -43,10 +42,9 @@ public class Drug implements Serializable {
 
     private String descriptionEnglish;
 
-    @Enumerated(EnumType.STRING)
-    private DrugUnit unit;
+    private Double pillCost;
 
-    private Double unitCost;
+    private Double pillboxCost;
 
     @ManyToOne
     @JoinColumn(name = "drugCategory")
