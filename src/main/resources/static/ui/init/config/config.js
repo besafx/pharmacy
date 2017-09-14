@@ -127,6 +127,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Bank State                                                 *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("bank", {
+            url: "/bank",
+            templateUrl: "/ui/partials/bank/bank.html",
+            controller: "bankCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Falcon State                                               *
          *                                                            *
          *************************************************************/

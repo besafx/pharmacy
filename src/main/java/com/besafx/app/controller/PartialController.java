@@ -69,6 +69,7 @@ public class PartialController {
             "/team",
             "/customer",
             "/supplier",
+            "/bank",
             "/doctor",
             "/employee",
             "/detectionType",

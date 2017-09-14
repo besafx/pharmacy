@@ -250,6 +250,15 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(me.team.authorities, ['ROLE_BANK_CREATE', 'ROLE_BANK_UPDATE', 'ROLE_BANK_DELETE'])">
+                        <a href="" ng-click="goToBank()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-48">account_balance</i>
+                            <p ng-if="lang==='AR'">الحسابات البنكية</p>
+                            <p ng-if="lang==='EN'">BANKS</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE'])">
                         <a href="" ng-click="goToTeam()" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">security</i>

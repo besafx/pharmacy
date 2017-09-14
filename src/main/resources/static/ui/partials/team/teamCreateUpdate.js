@@ -108,6 +108,36 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'تعطيل حسابات الموردين' : 'Disable Supplier',
                 value: 'ROLE_SUPPLIER_DISABLE',
                 selected: false
+            },
+            {
+                id: 46,
+                name: $rootScope.lang === 'AR' ? 'إنشاء حسابات البنوك' : 'Create Bank Account',
+                value: 'ROLE_BANK_CREATE',
+                selected: false
+            },
+            {
+                id: 47,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات حسابات البنوك' : 'Update Bank Account Information',
+                value: 'ROLE_BANK_UPDATE',
+                selected: false
+            },
+            {
+                id: 48,
+                name: $rootScope.lang === 'AR' ? 'حذف حسابات البنوك' : 'Delete Bank Account',
+                value: 'ROLE_BANK_DELETE',
+                selected: false
+            },
+            {
+                id: 49,
+                name: $rootScope.lang === 'AR' ? 'إنشاء الإيداعات' : 'Create Deposits',
+                value: 'ROLE_DEPOSIT_CREATE',
+                selected: false
+            },
+            {
+                id: 50,
+                name: $rootScope.lang === 'AR' ? 'إنشاء السحبيات' : 'Create Withdraws',
+                value: 'ROLE_WITHDRAW_CREATE',
+                selected: false
             }
         ];
 

@@ -66,6 +66,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'bank': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'account_balance';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-brown-deep_orange.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'falcon': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'adb';
@@ -281,6 +292,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'الموردين';
                         } else {
                             $rootScope.pageTitle = 'Supplier';
+                        }
+                        break;
+                    case 'bank':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'الحسابات البنكية';
+                        } else {
+                            $rootScope.pageTitle = 'Bank';
                         }
                         break;
                     case 'falcon':
@@ -563,6 +581,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToSupplier = function () {
             $state.go('supplier');
+        };
+        $rootScope.goToBank = function () {
+            $state.go('bank');
         };
         $rootScope.goToFalcon = function () {
             $state.go('falcon');

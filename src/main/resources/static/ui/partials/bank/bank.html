@@ -126,36 +126,46 @@
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
                 <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
                      class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-                    <button id="billBuy-menu-lower-right" style="width: 100%;"
+                    <button id="bank-menu-lower-right" style="width: 100%;"
                             class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                         <span ng-if="lang==='AR'">العمليات</span>
                         <span ng-if="lang==='EN'">Actions</span>
                     </button>
                     <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
                         class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                        for="billBuy-menu-lower-right">
+                        for="bank-menu-lower-right">
                         <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                            ng-click="openFilter()">
+                            ng-click="fetchTableData()">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">visibility</i>
                                 <span ng-if="lang==='AR'">عرض البيانات</span>
                                 <span ng-if="lang==='EN'">View</span>
                             </span>
                         </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="newBillBuy();"
-                            ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="newBank();"
+                            ng-if="contains(me.team.authorities, ['ROLE_BANK_CREATE'])">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">add</i>
-                                <span ng-if="lang==='AR'">انشاء فاتورة شراء جديدة</span>
+                                <span ng-if="lang==='AR'">انشاء حساب بنك جديد</span>
                                 <span ng-if="lang==='EN'">New...</span>
                             </span>
                         </li>
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="ModalProvider.openBankUpdateModel(selected);"
+                            ng-if="contains(me.team.authorities, ['ROLE_BANK_UPDATE']) && toggleList===1"
+                            ng-hide="!banks || banks.length==0">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">edit</i>
+                                <span ng-if="lang==='AR'">تعديل بيانات حساب البنك</span>
+                                <span ng-if="lang==='EN'">Edit...</span>
+                            </span>
+                        </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="delete()"
-                            ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE']) && toggleList===1"
-                            ng-hide="!billBuys || billBuys.length==0">
+                            ng-if="contains(me.team.authorities, ['ROLE_BANK_DELETE']) && toggleList===1"
+                            ng-hide="!banks || banks.length==0">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">delete</i>
-                                <span ng-if="lang==='AR'">حذف الفاتورة شراء</span>
+                                <span ng-if="lang==='AR'">حذف حساب البنك</span>
                                 <span ng-if="lang==='EN'">Delete</span>
                             </span>
                         </li>
@@ -196,28 +206,28 @@
                             style="margin-top: 2px;">
                             <li>
                                 <a href=""
-                                   ng-click="openFilter()"
+                                   ng-click="fetchTableData()"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-filter"></span>
+                                    <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
-                                   ng-click="newBillBuy()"
+                                   ng-if="contains(me.team.authorities, ['ROLE_BANK_CREATE'])"
+                                   ng-click="newBank()"
                                    tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء فاتورة شراء' : 'New Bill...'}}">
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء حساب جديد' : 'New Account...'}}">
                                     <span class="fa fa-plus-square"></span>
                                 </a>
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">قائمة الفواتير</h3>
-                            <h3 ng-if="lang==='EN'">Bills List</h3>
+                            <h3 ng-if="lang==='AR'">قائمة الحسابات</h3>
+                            <h3 ng-if="lang==='EN'">Accounts List</h3>
                         </div>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table st-table="collection1" st-safe-src="billBuys"
+                            <table st-table="collection1" st-safe-src="banks"
                                    class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                                 <thead>
                                 <tr>
@@ -227,65 +237,42 @@
                                     </th>
 
                                     <th st-sort="code">
-                                        <span ng-if="lang==='AR'">رقم الفاتورة</span>
+                                        <span ng-if="lang==='AR'">رقم الحساب</span>
                                         <span ng-if="lang==='EN'">Code</span>
                                     </th>
 
-                                    <th st-sort="supplier.name">
-                                        <span ng-if="lang==='AR'">المورد</span>
-                                        <span ng-if="lang==='EN'">Supplier</span>
+                                    <th st-sort="name">
+                                        <span ng-if="lang==='AR'">اسم البنك</span>
+                                        <span ng-if="lang==='EN'">Name</span>
                                     </th>
 
-                                    <th st-sort="paymentMethod">
-                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
-                                        <span ng-if="lang==='EN'">Payment Method</span>
-                                    </th>
-
-                                    <th st-sort="discount">
-                                        <span ng-if="lang==='AR'">الخصم المكتسب</span>
-                                        <span ng-if="lang==='EN'">Earned Discount</span>
-                                    </th>
-
-                                    <th st-sort="person.lastLoginDate">
-                                        <span ng-if="lang==='AR'">التاريخ</span>
-                                        <span ng-if="lang==='EN'">Date</span>
+                                    <th st-sort="branchName">
+                                        <span ng-if="lang==='AR'">فرع البنك</span>
+                                        <span ng-if="lang==='EN'">Name</span>
                                     </th>
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="billBuy in collection1"
+                                <tr ng-repeat="bank in collection1"
                                     st-select-mode="single"
                                     context-menu="rowMenu"
-                                    ng-click="setSelected(billBuy);calculateCostSum();"
-                                    ng-right-click="setSelected(billBuy);calculateCostSum();"
-                                    ng-class="{'mdl-color--blue-grey-100':billBuy.isSelected}">
-                                    <td st-select-row-custom="billBuy">{{$index+1}}</td>
-                                    <td st-select-row-custom="billBuy">{{billBuy.code}}</td>
-                                    <td st-select-row-custom="billBuy">{{billBuy.supplier.name}}</td>
-                                    <td st-select-row-custom="billBuy">{{billBuy.paymentMethod}}</td>
-                                    <td st-select-row-custom="billBuy">{{billBuy.discount | currency:'%'}}</td>
-                                    <td st-select-row-custom="billBuy">
-                                        <span ng-show="dateType==='H'">{{billBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span ng-show="dateType==='G'">{{billBuy.date | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{billBuy.date | date:'h:m a'}}</span>
-                                    </td>
+                                    ng-click="setSelected(bank)"
+                                    ng-right-click="setSelected(bank)"
+                                    ng-class="{'mdl-color--blue-grey-100':bank.isSelected}">
+                                    <td st-select-row-custom="bank">{{$index+1}}</td>
+                                    <td st-select-row-custom="bank">{{bank.code}}</td>
+                                    <td st-select-row-custom="bank">{{bank.name}}</td>
+                                    <td st-select-row-custom="bank">{{bank.branchName}}</td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="6">
+                                    <td colspan="4">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
                                 </tr>
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="5">
-                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
-                                    </td>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -301,27 +288,27 @@
                             style="margin-top: 2px;">
                             <li>
                                 <a href=""
-                                   ng-click="refreshTransactionBuyByBill()"
+                                   ng-click="refreshDepositsByBank()"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
+                                   ng-if="contains(me.team.authorities, ['ROLE_DEPOSIT_CREATE'])"
                                    ng-show="selected.id"
-                                   ng-click="newTransactionBuy()"
+                                   ng-click="newDeposit()"
                                    tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلبية شراء' : 'New Order...'}}">
+                                   uib-tooltip="{{lang==='AR' ? 'إيداع جديد' : 'New Deposit...'}}">
                                     <span class="fa fa-plus-square"></span>
                                 </a>
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">حركات الشراء (طلبيات شراء الأدوية)</h3>
-                            <h3 ng-if="lang==='EN'">Buys Transactions (Drugs Stock)</h3>
+                            <h3 ng-if="lang==='AR'">الإيداعات البنكية</h3>
+                            <h3 ng-if="lang==='EN'">Deposits</h3>
                             <fieldset ng-if="selected.id">
-                                <span ng-if="lang==='AR'">رقم الفاتورة / {{selected.code}}</span>
-                                <span ng-if="lang==='EN'">Bill Code / {{selected.code}}</span>
+                                <span ng-if="lang==='AR'">رقم الحساب / {{selected.code}}</span>
+                                <span ng-if="lang==='EN'">Account Code / {{selected.code}}</span>
                             </fieldset>
                         </div>
                     </div>
@@ -329,7 +316,7 @@
 
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="table-responsive">
-                                <table st-table="collection2" st-safe-src="selected.transactionBuys"
+                                <table st-table="collection2" st-safe-src="selected.deposits"
                                        class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                                     <thead>
                                     <tr>
@@ -339,104 +326,46 @@
                                         </th>
 
                                         <th>
-                                            <span ng-if="lang==='AR'">رقم الحركة</span>
+                                            <span ng-if="lang==='AR'">رقم الإيداع</span>
                                             <span ng-if="lang==='EN'">Code</span>
                                         </th>
 
-                                        <th st-sort="productionDate">
-                                            <span ng-if="lang==='AR'">تاريخ الحركة</span>
-                                            <span ng-if="lang==='EN'">Transaction Date</span>
+                                        <th st-sort="date">
+                                            <span ng-if="lang==='AR'">تاريخ الإيداع</span>
+                                            <span ng-if="lang==='EN'">Deposit Date</span>
                                         </th>
 
-                                        <th st-sort="drug.code">
-                                            <span ng-if="lang==='AR'">الدواء</span>
-                                            <span ng-if="lang==='EN'">Drug</span>
+                                        <th st-sort="amount">
+                                            <span ng-if="lang==='AR'">قيمة الإيداع</span>
+                                            <span ng-if="lang==='EN'">Amount</span>
                                         </th>
 
-                                        <th st-sort="drugUnit">
-                                            <span ng-if="lang==='AR'">وحدة القياس</span>
-                                            <span ng-if="lang==='EN'">Unit</span>
-                                        </th>
-
-                                        <th st-sort="unitBuyCost">
-                                            <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
-                                            <span ng-if="lang==='EN'">Unit Purchace Cost</span>
-                                        </th>
-
-                                        <th st-sort="unitSellCost">
-                                            <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
-                                            <span ng-if="lang==='EN'">Unit Sell Cost</span>
-                                        </th>
-
-                                        <th st-sort="quantity">
-                                            <span ng-if="lang==='AR'">الكمية</span>
-                                            <span ng-if="lang==='EN'">Quantity</span>
-                                        </th>
-
-                                        <th st-sort="productionDate">
-                                            <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                            <span ng-if="lang==='EN'">Production Date</span>
-                                        </th>
-
-                                        <th st-sort="warrantInMonth">
-                                            <span ng-if="lang==='AR'">مدة الصلاحية (بالشهر)</span>
-                                            <span ng-if="lang==='EN'">Shelf Life (In Month)</span>
-                                        </th>
-
-                                        <th>
-                                            <span ng-if="lang==='AR'">العمليات</span>
-                                            <span ng-if="lang==='EN'">Action</span>
+                                        <th st-sort="depositor">
+                                            <span ng-if="lang==='AR'">اسم المودع</span>
+                                            <span ng-if="lang==='EN'">Depositor</span>
                                         </th>
 
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="transactionBuy in collection2">
+                                    <tr ng-repeat="deposit in collection2">
                                         <td>{{$index+1}}</td>
-                                        <td>{{transactionBuy.code}}</td>
+                                        <td>{{deposit.code}}</td>
                                         <td>
-                                            <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                            <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
-                                            <span class="label label-success">{{transactionBuy.date | date:'h:m a'}}</span>
+                                            <span ng-show="dateType==='H'">{{deposit.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                            <span ng-show="dateType==='G'">{{deposit.date | date: 'yyyy-MM-dd'}}</span>
+                                            <span class="label label-success">{{deposit.date | date:'h:m a'}}</span>
                                         </td>
                                         <td>
-                                            [{{transactionBuy.drug.code}}]
-                                            [
-                                            <span ng-if="lang==='AR'">{{transactionBuy.drug.nameArabic}}</span>
-                                            <span ng-if="lang==='EN'">{{transactionBuy.drug.nameEnglish}}</span>
-                                            ][
-                                            <span ng-if="lang==='AR'">{{transactionBuy.drug.medicalNameArabic}}</span>
-                                            <span ng-if="lang==='EN'">{{transactionBuy.drug.medicalNameEnglish}}</span>
-                                            ]
+                                            <span class="label label-danger">{{deposit.amount | currency:'SAR'}}</span>
                                         </td>
-                                        <td>{{transactionBuy.drugUnit.name}}</td>
-                                        <td>
-                                            <span class="label label-danger">{{transactionBuy.unitBuyCost | currency:'SAR'}}</span>
-                                        </td>
-                                        <td>
-                                            <span class="label label-danger">{{transactionBuy.unitSellCost | currency:'SAR'}}</span>
-                                        </td>
-                                        <td>{{transactionBuy.quantity}}</td>
-                                        <td>
-                                            <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                            <span ng-show="dateType==='G'">{{transactionBuy.productionDate | date: 'yyyy-MM-dd'}}</span>
-                                            <span class="label label-success">{{transactionBuy.productionDate | date:'h:m a'}}</span>
-                                        </td>
-                                        <td>{{transactionBuy.warrantInMonth}}</td>
-                                        <td>
-                                            <a href=""
-                                               ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
-                                               ng-click="deleteTransactionBuy(transactionBuy)">
-                                                <strong ng-if="lang==='AR'">حذف</strong>
-                                                <strong ng-if="lang==='EN'">Remove</strong>
-                                            </a>
-                                        </td>
+                                        <td>{{deposit.depositor}}</td>
                                     </tr>
                                     <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                         ng-show="!collection2 || collection2.length ==0">
-                                        <td colspan="11">
-                                            <span ng-if="lang==='AR'">فضلاً اختر الفحوصات المطلوبة</span>
-                                            <span ng-if="lang==='EN'">Please Select Required Detections</span>
+                                        <td colspan="5">
+                                            <span ng-if="lang==='AR'">لا توجد إيداعات</span>
+                                            <span ng-if="lang==='EN'">No Deposits.</span>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -444,19 +373,117 @@
                             </div>
                         </div>
 
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
+                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalDeposit > 0">
                             <div class="alert alert-info" role="alert" style="font-size: 18px">
-                                <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost | currency:'SAR'}}</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">الخصم المكتسب</strong>
-                                <strong ng-if="lang==='EN'">Discount</strong>
-                                <span>{{(totalCost * selected.discount) / 100 | currency:'SAR'}}</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost - ((totalCost * selected.discount) / 100) | currency:'SAR'}}</span>
+                                <strong ng-if="lang==='AR'">إجمالي الإيداعات</strong>
+                                <strong ng-if="lang==='EN'">Total Deposits</strong>
+                                <span>{{totalDeposit | currency:'SAR'}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
+
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshWithdrawsByBank()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_WITHDRAW_CREATE'])"
+                                   ng-show="selected.id"
+                                   ng-click="newWithdraw()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'سحب جديد' : 'New Withdraw...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">السحبيات البنكية</h3>
+                            <h3 ng-if="lang==='EN'">Withdraws</h3>
+                            <fieldset ng-if="selected.id">
+                                <span ng-if="lang==='AR'">رقم الحساب / {{selected.code}}</span>
+                                <span ng-if="lang==='EN'">Account Code / {{selected.code}}</span>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="table-responsive">
+                                <table st-table="collection3" st-safe-src="selected.withdraws"
+                                       class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <span ng-if="lang==='AR'">م</span>
+                                            <span ng-if="lang==='EN'">#</span>
+                                        </th>
+
+                                        <th>
+                                            <span ng-if="lang==='AR'">رقم السحب</span>
+                                            <span ng-if="lang==='EN'">Code</span>
+                                        </th>
+
+                                        <th st-sort="date">
+                                            <span ng-if="lang==='AR'">تاريخ السحب</span>
+                                            <span ng-if="lang==='EN'">Withdraw Date</span>
+                                        </th>
+
+                                        <th st-sort="amount">
+                                            <span ng-if="lang==='AR'">قيمة السحب</span>
+                                            <span ng-if="lang==='EN'">Amount</span>
+                                        </th>
+
+                                        <th st-sort="drawer">
+                                            <span ng-if="lang==='AR'">اسم الساحب</span>
+                                            <span ng-if="lang==='EN'">Drawer</span>
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="withdraw in collection3">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{withdraw.code}}</td>
+                                        <td>
+                                            <span ng-show="dateType==='H'">{{withdraw.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                            <span ng-show="dateType==='G'">{{withdraw.date | date: 'yyyy-MM-dd'}}</span>
+                                            <span class="label label-success">{{withdraw.date | date:'h:m a'}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="label label-danger">{{withdraw.amount | currency:'SAR'}}</span>
+                                        </td>
+                                        <td>{{withdraw.drawer}}</td>
+                                    </tr>
+                                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                        ng-show="!collection3 || collection3.length ==0">
+                                        <td colspan="5">
+                                            <span ng-if="lang==='AR'">لا توجد سحبيات</span>
+                                            <span ng-if="lang==='EN'">No Withdraws.</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalWithdraw > 0">
+                            <div class="alert alert-info" role="alert" style="font-size: 18px">
+                                <strong ng-if="lang==='AR'">إجمالي السحبيات</strong>
+                                <strong ng-if="lang==='EN'">Total Withdraws</strong>
+                                <span>{{totalWithdraw | currency:'SAR'}}</span>
                             </div>
                         </div>
 
@@ -466,19 +493,19 @@
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div st-table="collection3" st-safe-src="billBuys">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="billBuy in collection">
+                <div st-table="collection4" st-safe-src="banks">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="bank in collection4">
                         <!-- CONTACT ITEM -->
                         <div class="panel panel-default">
                             <div class="panel-body profile">
                                 <div class="profile-image">
                                     <img width="100" height="100"
                                          src="/ui/img/no-image.jpg"
-                                         alt="{{billBuy.code}}"/>
+                                         alt="{{bank.code}}"/>
                                 </div>
                                 <div class="profile-data">
                                     <div class="profile-data-name">
-                                        {{billBuy.code}}
+                                        {{bank.name}}
                                     </div>
                                 </div>
                                 <div class="profile-controls">
@@ -489,47 +516,41 @@
                             <div class="panel-body">
                                 <div class="contact-info">
                                     <p>
-                                        <strong ng-if="lang==='AR'">رقم الفاتورة</strong>
-                                        <strong ng-if="lang==='EN'">Code</strong>
-                                        {{billBuy.code}}
+                                        <strong ng-if="lang==='AR'">اسم البنك</strong>
+                                        <strong ng-if="lang==='EN'">Name</strong>
+                                        {{bank.name}}
                                     </p>
                                     <hr>
                                     <p>
-                                        <strong ng-if="lang==='AR'">المورد</strong>
-                                        <strong ng-if="lang==='EN'">Supplier</strong>
-                                        {{billBuy.supplier.name}}
-                                    </p>
-                                    <hr>
-                                    <p>
-                                        <strong ng-if="lang==='AR'">طريقة الدفع</strong>
-                                        <strong ng-if="lang==='EN'">Payment Method</strong>
-                                        {{billBuy.paymentMethod}}
-                                    </p>
-                                    <hr>
-                                    <p>
-                                        <strong ng-if="lang==='AR'">التاريخ</strong>
-                                        <strong ng-if="lang==='EN'">Date</strong>
-                                        <span ng-show="dateType==='H'">{{billBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span ng-show="dateType==='G'">{{billBuy.date | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{billBuy.date | date:'h:m a'}}</span>
+                                        <strong ng-if="lang==='AR'">فرع البنك</strong>
+                                        <strong ng-if="lang==='EN'">Branch</strong>
+                                        {{bank.branchName}}
                                     </p>
                                 </div>
                             </div>
                             <div class="panel-footer">
                                 <div class="row">
-                                    <button uib-tooltip="{{lang==='AR' ? 'انشاء فاتورة شراء' : 'New...'}}"
+                                    <button uib-tooltip="{{lang==='AR' ? 'انشاء حساب بنك جديد' : 'New...'}}"
                                             tooltip-append-to-body="true"
                                             type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
-                                            ng-click="ModalProvider.openBillBuyCreateModel();"
+                                            ng-if="contains(me.team.authorities, ['ROLE_BANK_CREATE'])"
+                                            ng-click="newBank();"
                                             class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <i class="material-icons">add</i>
+                                    </button>
+                                    <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                            tooltip-append-to-body="true"
+                                            type="button"
+                                            ng-if="contains(me.team.authorities, ['ROLE_BANK_UPDATE'])"
+                                            ng-click="ModalProvider.openBankUpdateModel(bank)"
+                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <i class="material-icons">edit</i>
                                     </button>
                                     <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
                                             tooltip-append-to-body="true"
                                             type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
-                                            ng-click="delete(billBuy)"
+                                            ng-if="contains(me.team.authorities, ['ROLE_BANK_DELETE'])"
+                                            ng-click="delete(bank)"
                                             class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <i class="material-icons">delete</i>
                                     </button>
