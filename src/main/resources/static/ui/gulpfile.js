@@ -149,6 +149,7 @@ gulp.task('scripts', function () {
         './partials/detectionType/detectionTypeCreateUpdate.js',
         './partials/detectionType/detectionTypeHeavyWork.js',
         './partials/drug/drug.js',
+        './partials/drug/drugFilter.js',
         './partials/drug/drugCreateUpdate.js',
         './partials/drug/drugDetails.js',
         './partials/drug/drugHeavyWork.js',

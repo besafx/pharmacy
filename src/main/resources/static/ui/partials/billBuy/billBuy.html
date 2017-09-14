@@ -215,10 +215,10 @@
                             <h3 ng-if="lang==='EN'">Bills List</h3>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body panel-body-table">
                         <div class="table-responsive">
                             <table st-table="collection1" st-safe-src="billBuys"
-                                   class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                   class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>
@@ -325,125 +325,123 @@
                             </fieldset>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection2" st-safe-src="selected.transactionBuys"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
 
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="table-responsive">
-                                <table st-table="collection2" st-safe-src="selected.transactionBuys"
-                                       class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                                    <thead>
-                                    <tr>
-                                        <th>
-                                            <span ng-if="lang==='AR'">م</span>
-                                            <span ng-if="lang==='EN'">#</span>
-                                        </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">رقم الحركة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
 
-                                        <th>
-                                            <span ng-if="lang==='AR'">رقم الحركة</span>
-                                            <span ng-if="lang==='EN'">Code</span>
-                                        </th>
+                                    <th st-sort="productionDate">
+                                        <span ng-if="lang==='AR'">تاريخ الحركة</span>
+                                        <span ng-if="lang==='EN'">Transaction Date</span>
+                                    </th>
 
-                                        <th st-sort="productionDate">
-                                            <span ng-if="lang==='AR'">تاريخ الحركة</span>
-                                            <span ng-if="lang==='EN'">Transaction Date</span>
-                                        </th>
+                                    <th st-sort="drug.code">
+                                        <span ng-if="lang==='AR'">الدواء</span>
+                                        <span ng-if="lang==='EN'">Drug</span>
+                                    </th>
 
-                                        <th st-sort="drug.code">
-                                            <span ng-if="lang==='AR'">الدواء</span>
-                                            <span ng-if="lang==='EN'">Drug</span>
-                                        </th>
+                                    <th st-sort="drugUnit">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Unit</span>
+                                    </th>
 
-                                        <th st-sort="drugUnit">
-                                            <span ng-if="lang==='AR'">وحدة القياس</span>
-                                            <span ng-if="lang==='EN'">Unit</span>
-                                        </th>
+                                    <th st-sort="unitBuyCost">
+                                        <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Purchace Cost</span>
+                                    </th>
 
-                                        <th st-sort="unitBuyCost">
-                                            <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
-                                            <span ng-if="lang==='EN'">Unit Purchace Cost</span>
-                                        </th>
+                                    <th st-sort="unitSellCost">
+                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
+                                    </th>
 
-                                        <th st-sort="unitSellCost">
-                                            <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
-                                            <span ng-if="lang==='EN'">Unit Sell Cost</span>
-                                        </th>
+                                    <th st-sort="quantity">
+                                        <span ng-if="lang==='AR'">الكمية</span>
+                                        <span ng-if="lang==='EN'">Quantity</span>
+                                    </th>
 
-                                        <th st-sort="quantity">
-                                            <span ng-if="lang==='AR'">الكمية</span>
-                                            <span ng-if="lang==='EN'">Quantity</span>
-                                        </th>
+                                    <th st-sort="productionDate">
+                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
+                                        <span ng-if="lang==='EN'">Production Date</span>
+                                    </th>
 
-                                        <th st-sort="productionDate">
-                                            <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                            <span ng-if="lang==='EN'">Production Date</span>
-                                        </th>
+                                    <th st-sort="warrantInMonth">
+                                        <span ng-if="lang==='AR'">مدة الصلاحية (بالشهر)</span>
+                                        <span ng-if="lang==='EN'">Shelf Life (In Month)</span>
+                                    </th>
 
-                                        <th st-sort="warrantInMonth">
-                                            <span ng-if="lang==='AR'">مدة الصلاحية (بالشهر)</span>
-                                            <span ng-if="lang==='EN'">Shelf Life (In Month)</span>
-                                        </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Action</span>
+                                    </th>
 
-                                        <th>
-                                            <span ng-if="lang==='AR'">العمليات</span>
-                                            <span ng-if="lang==='EN'">Action</span>
-                                        </th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="transactionBuy in collection2">
-                                        <td>{{$index+1}}</td>
-                                        <td>{{transactionBuy.code}}</td>
-                                        <td>
-                                            <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                            <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
-                                            <span class="label label-success">{{transactionBuy.date | date:'h:m a'}}</span>
-                                        </td>
-                                        <td>
-                                            [{{transactionBuy.drug.code}}]
-                                            [
-                                            <span ng-if="lang==='AR'">{{transactionBuy.drug.nameArabic}}</span>
-                                            <span ng-if="lang==='EN'">{{transactionBuy.drug.nameEnglish}}</span>
-                                            ][
-                                            <span ng-if="lang==='AR'">{{transactionBuy.drug.medicalNameArabic}}</span>
-                                            <span ng-if="lang==='EN'">{{transactionBuy.drug.medicalNameEnglish}}</span>
-                                            ]
-                                        </td>
-                                        <td>{{transactionBuy.drugUnit.name}}</td>
-                                        <td>
-                                            <span class="label label-danger">{{transactionBuy.unitBuyCost | currency:'SAR'}}</span>
-                                        </td>
-                                        <td>
-                                            <span class="label label-danger">{{transactionBuy.unitSellCost | currency:'SAR'}}</span>
-                                        </td>
-                                        <td>{{transactionBuy.quantity}}</td>
-                                        <td>
-                                            <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                            <span ng-show="dateType==='G'">{{transactionBuy.productionDate | date: 'yyyy-MM-dd'}}</span>
-                                            <span class="label label-success">{{transactionBuy.productionDate | date:'h:m a'}}</span>
-                                        </td>
-                                        <td>{{transactionBuy.warrantInMonth}}</td>
-                                        <td>
-                                            <a href=""
-                                               ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
-                                               ng-click="deleteTransactionBuy(transactionBuy)">
-                                                <strong ng-if="lang==='AR'">حذف</strong>
-                                                <strong ng-if="lang==='EN'">Remove</strong>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                        ng-show="!collection2 || collection2.length ==0">
-                                        <td colspan="11">
-                                            <span ng-if="lang==='AR'">فضلاً اختر الفحوصات المطلوبة</span>
-                                            <span ng-if="lang==='EN'">Please Select Required Detections</span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="transactionBuy in collection2">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{transactionBuy.code}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{transactionBuy.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>
+                                        [{{transactionBuy.drug.code}}]
+                                        [
+                                        <span ng-if="lang==='AR'">{{transactionBuy.drug.nameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{transactionBuy.drug.nameEnglish}}</span>
+                                        ][
+                                        <span ng-if="lang==='AR'">{{transactionBuy.drug.medicalNameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{transactionBuy.drug.medicalNameEnglish}}</span>
+                                        ]
+                                    </td>
+                                    <td>{{transactionBuy.drugUnit.name}}</td>
+                                    <td>
+                                        <span class="label label-danger">{{transactionBuy.unitBuyCost | currency:'SAR'}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="label label-danger">{{transactionBuy.unitSellCost | currency:'SAR'}}</span>
+                                    </td>
+                                    <td>{{transactionBuy.quantity}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{transactionBuy.productionDate | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{transactionBuy.productionDate | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{transactionBuy.warrantInMonth}}</td>
+                                    <td>
+                                        <a href=""
+                                           ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
+                                           ng-click="deleteTransactionBuy(transactionBuy)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection2 || collection2.length ==0">
+                                    <td colspan="11">
+                                        <span ng-if="lang==='AR'">فضلاً اختر الفحوصات المطلوبة</span>
+                                        <span ng-if="lang==='EN'">Please Select Required Detections</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-
+                    </div>
+                    <div class="panel-footer">
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
                             <div class="alert alert-info" role="alert" style="font-size: 18px">
                                 <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
@@ -459,7 +457,6 @@
                                 <span>{{totalCost - ((totalCost * selected.discount) / 100) | currency:'SAR'}}</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
 

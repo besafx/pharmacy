@@ -1,0 +1,147 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong ng-if="lang==='AR'">تصفية وعرض الأدوية</strong>
+                <strong ng-if="lang==='EN'">Filter Data</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="drugCategory" class="control-label">
+                    <span ng-if="lang==='AR'">التصنيف</span>
+                    <span ng-if="lang==='EN'">Category</span>
+                </label>
+                <select id="drugCategory"
+                        data-placeholder="{{lang==='AR' ? 'ابحث عن التصنيف' : 'Search For Category...'}}"
+                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                        placeholder-text-single="'{{lang==='AR' ? 'اختر التصنيف' : 'Please Select Category...'}}'"
+                        class="form-control"
+                        chosen=""
+                        multiple="multiple"
+                        ng-model="buffer.drugCategoryList"
+                        ng-options="('[ ' + drugCategory.code + ' ]' + drugCategory.nameArabic + ' / ' + drugCategory.nameEnglish) for drugCategory in drugCategories track by drugCategory.id">
+                </select>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="codeFrom" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الدواء من</span>
+                        <span ng-if="lang==='EN'">Code From</span>
+                    </label>
+                    <input id="codeFrom"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.codeFrom">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="codeTo" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الدواء إلى</span>
+                        <span ng-if="lang==='EN'">Code To</span>
+                    </label>
+                    <input id="codeTo"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.codeTo">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="nameArabic" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم التجاري عربي</span>
+                        <span ng-if="lang==='EN'">Arabic Commercial Name</span>
+                    </label>
+                    <input id="nameArabic"
+                           type="text"
+                           class="form-control arabic-control"
+                           ng-model="buffer.nameArabic">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="nameEnglish" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم التجاري إنجليزي</span>
+                        <span ng-if="lang==='EN'">English Commercial Name</span>
+                    </label>
+                    <input id="nameEnglish"
+                           type="text"
+                           class="form-control english-control"
+                           ng-model="buffer.nameEnglish">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="medicalNameArabic" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم العلمي عربي</span>
+                        <span ng-if="lang==='EN'">Arabic Medical Name</span>
+                    </label>
+                    <input id="medicalNameArabic"
+                           type="text"
+                           class="form-control arabic-control"
+                           ng-model="buffer.medicalNameArabic">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="medicalNameEnglish" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم العلمي إنجليزي</span>
+                        <span ng-if="lang==='EN'">English Medical Name</span>
+                    </label>
+                    <input id="medicalNameEnglish"
+                           type="text"
+                           class="form-control english-control"
+                           ng-model="buffer.medicalNameEnglish">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">search</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

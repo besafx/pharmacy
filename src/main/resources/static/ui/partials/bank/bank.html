@@ -225,10 +225,10 @@
                             <h3 ng-if="lang==='EN'">Accounts List</h3>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body panel-body-table">
                         <div class="table-responsive">
                             <table st-table="collection1" st-safe-src="banks"
-                                   class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                   class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>
@@ -312,67 +312,65 @@
                             </fieldset>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection2" st-safe-src="selected.deposits"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
 
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="table-responsive">
-                                <table st-table="collection2" st-safe-src="selected.deposits"
-                                       class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                                    <thead>
-                                    <tr>
-                                        <th>
-                                            <span ng-if="lang==='AR'">م</span>
-                                            <span ng-if="lang==='EN'">#</span>
-                                        </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">رقم الإيداع</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
 
-                                        <th>
-                                            <span ng-if="lang==='AR'">رقم الإيداع</span>
-                                            <span ng-if="lang==='EN'">Code</span>
-                                        </th>
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">تاريخ الإيداع</span>
+                                        <span ng-if="lang==='EN'">Deposit Date</span>
+                                    </th>
 
-                                        <th st-sort="date">
-                                            <span ng-if="lang==='AR'">تاريخ الإيداع</span>
-                                            <span ng-if="lang==='EN'">Deposit Date</span>
-                                        </th>
+                                    <th st-sort="amount">
+                                        <span ng-if="lang==='AR'">قيمة الإيداع</span>
+                                        <span ng-if="lang==='EN'">Amount</span>
+                                    </th>
 
-                                        <th st-sort="amount">
-                                            <span ng-if="lang==='AR'">قيمة الإيداع</span>
-                                            <span ng-if="lang==='EN'">Amount</span>
-                                        </th>
+                                    <th st-sort="depositor">
+                                        <span ng-if="lang==='AR'">اسم المودع</span>
+                                        <span ng-if="lang==='EN'">Depositor</span>
+                                    </th>
 
-                                        <th st-sort="depositor">
-                                            <span ng-if="lang==='AR'">اسم المودع</span>
-                                            <span ng-if="lang==='EN'">Depositor</span>
-                                        </th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="deposit in collection2">
-                                        <td>{{$index+1}}</td>
-                                        <td>{{deposit.code}}</td>
-                                        <td>
-                                            <span ng-show="dateType==='H'">{{deposit.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                            <span ng-show="dateType==='G'">{{deposit.date | date: 'yyyy-MM-dd'}}</span>
-                                            <span class="label label-success">{{deposit.date | date:'h:m a'}}</span>
-                                        </td>
-                                        <td>
-                                            <span class="label label-danger">{{deposit.amount | currency:'SAR'}}</span>
-                                        </td>
-                                        <td>{{deposit.depositor}}</td>
-                                    </tr>
-                                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                        ng-show="!collection2 || collection2.length ==0">
-                                        <td colspan="5">
-                                            <span ng-if="lang==='AR'">لا توجد إيداعات</span>
-                                            <span ng-if="lang==='EN'">No Deposits.</span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="deposit in collection2">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{deposit.code}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{deposit.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{deposit.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{deposit.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="label label-danger">{{deposit.amount | currency:'SAR'}}</span>
+                                    </td>
+                                    <td>{{deposit.depositor}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection2 || collection2.length ==0">
+                                    <td colspan="5">
+                                        <span ng-if="lang==='AR'">لا توجد إيداعات</span>
+                                        <span ng-if="lang==='EN'">No Deposits.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-
+                    </div>
+                    <div class="panel-footer">
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalDeposit > 0">
                             <div class="alert alert-info" role="alert" style="font-size: 18px">
                                 <strong ng-if="lang==='AR'">إجمالي الإيداعات</strong>
@@ -380,7 +378,6 @@
                                 <span>{{totalDeposit | currency:'SAR'}}</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -419,66 +416,64 @@
                         </div>
                     </div>
                     <div class="panel-body">
+                        <div class="table-responsive">
+                            <table st-table="collection3" st-safe-src="selected.withdraws"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
 
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="table-responsive">
-                                <table st-table="collection3" st-safe-src="selected.withdraws"
-                                       class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                                    <thead>
-                                    <tr>
-                                        <th>
-                                            <span ng-if="lang==='AR'">م</span>
-                                            <span ng-if="lang==='EN'">#</span>
-                                        </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">رقم السحب</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
 
-                                        <th>
-                                            <span ng-if="lang==='AR'">رقم السحب</span>
-                                            <span ng-if="lang==='EN'">Code</span>
-                                        </th>
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">تاريخ السحب</span>
+                                        <span ng-if="lang==='EN'">Withdraw Date</span>
+                                    </th>
 
-                                        <th st-sort="date">
-                                            <span ng-if="lang==='AR'">تاريخ السحب</span>
-                                            <span ng-if="lang==='EN'">Withdraw Date</span>
-                                        </th>
+                                    <th st-sort="amount">
+                                        <span ng-if="lang==='AR'">قيمة السحب</span>
+                                        <span ng-if="lang==='EN'">Amount</span>
+                                    </th>
 
-                                        <th st-sort="amount">
-                                            <span ng-if="lang==='AR'">قيمة السحب</span>
-                                            <span ng-if="lang==='EN'">Amount</span>
-                                        </th>
+                                    <th st-sort="drawer">
+                                        <span ng-if="lang==='AR'">اسم الساحب</span>
+                                        <span ng-if="lang==='EN'">Drawer</span>
+                                    </th>
 
-                                        <th st-sort="drawer">
-                                            <span ng-if="lang==='AR'">اسم الساحب</span>
-                                            <span ng-if="lang==='EN'">Drawer</span>
-                                        </th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="withdraw in collection3">
-                                        <td>{{$index+1}}</td>
-                                        <td>{{withdraw.code}}</td>
-                                        <td>
-                                            <span ng-show="dateType==='H'">{{withdraw.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                            <span ng-show="dateType==='G'">{{withdraw.date | date: 'yyyy-MM-dd'}}</span>
-                                            <span class="label label-success">{{withdraw.date | date:'h:m a'}}</span>
-                                        </td>
-                                        <td>
-                                            <span class="label label-danger">{{withdraw.amount | currency:'SAR'}}</span>
-                                        </td>
-                                        <td>{{withdraw.drawer}}</td>
-                                    </tr>
-                                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                        ng-show="!collection3 || collection3.length ==0">
-                                        <td colspan="5">
-                                            <span ng-if="lang==='AR'">لا توجد سحبيات</span>
-                                            <span ng-if="lang==='EN'">No Withdraws.</span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="withdraw in collection3">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{withdraw.code}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{withdraw.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{withdraw.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{withdraw.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="label label-danger">{{withdraw.amount | currency:'SAR'}}</span>
+                                    </td>
+                                    <td>{{withdraw.drawer}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection3 || collection3.length ==0">
+                                    <td colspan="5">
+                                        <span ng-if="lang==='AR'">لا توجد سحبيات</span>
+                                        <span ng-if="lang==='EN'">No Withdraws.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-
+                    </div>
+                    <div class="panel-footer">
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalWithdraw > 0">
                             <div class="alert alert-info" role="alert" style="font-size: 18px">
                                 <strong ng-if="lang==='AR'">إجمالي السحبيات</strong>
@@ -486,7 +481,6 @@
                                 <span>{{totalWithdraw | currency:'SAR'}}</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
 

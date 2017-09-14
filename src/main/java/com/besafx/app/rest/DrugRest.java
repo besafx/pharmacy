@@ -3,6 +3,7 @@ package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.Person;
+import com.besafx.app.search.DrugSearch;
 import com.besafx.app.service.DrugService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
@@ -39,6 +40,9 @@ public class DrugRest {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private DrugSearch drugSearch;
 
     @Autowired
     private NotificationService notificationService;
@@ -136,5 +140,38 @@ public class DrugRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drugService.findOne(id));
+    }
+
+    @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filter(
+            @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
+            @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "nameArabic", required = false) final String nameArabic,
+            @RequestParam(value = "nameEnglish", required = false) final String nameEnglish,
+            @RequestParam(value = "medicalNameArabic", required = false) final String medicalNameArabic,
+            @RequestParam(value = "medicalNameEnglish", required = false) final String medicalNameEnglish,
+            @RequestParam(value = "drugCategories", required = false) final List<Long> drugCategories,
+            Principal principal) {
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        notificationService.notifyOne(Notification
+                .builder()
+                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
+                .message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا..." : "Filtering Data")
+                .type("success")
+                .icon("fa-plus-square")
+                .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                .build(), principal.getName());
+        List<Drug> list = drugSearch.filter(codeFrom, codeTo, nameArabic, nameEnglish, medicalNameArabic, medicalNameEnglish, drugCategories);
+        notificationService.notifyOne(Notification
+                .builder()
+                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
+                .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done")
+                .type("success")
+                .icon("fa-plus-square")
+                .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                .build(), principal.getName());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

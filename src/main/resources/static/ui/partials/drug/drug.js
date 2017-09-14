@@ -1,14 +1,9 @@
-app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (DrugService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (DrugService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
 
-        $scope.fetchTableData = function () {
-            DrugService.findAll().then(function (data) {
-                $scope.drugs = data;
-                $scope.setSelected(data[0]);
-            });
-        };
+        $scope.buffer = {};
 
         $scope.setSelected = function (object) {
             if (object) {
@@ -21,6 +16,73 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
                     }
                 });
             }
+        };
+
+        $scope.openFilter = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/drug/drugFilter.html',
+                controller: 'drugFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            modalInstance.result.then(function (buffer) {
+                var search = [];
+
+                //
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                //
+                if (buffer.nameArabic) {
+                    search.push('nameArabic=');
+                    search.push(buffer.nameArabic);
+                    search.push('&');
+                }
+                if (buffer.nameEnglish) {
+                    search.push('nameEnglish=');
+                    search.push(buffer.nameEnglish);
+                    search.push('&');
+                }
+                //
+                if (buffer.medicalNameArabic) {
+                    search.push('medicalNameArabic=');
+                    search.push(buffer.medicalNameArabic);
+                    search.push('&');
+                }
+                if (buffer.medicalNameEnglish) {
+                    search.push('medicalNameEnglish=');
+                    search.push(buffer.medicalNameEnglish);
+                    search.push('&');
+                }
+                //
+                if (buffer.drugCategoryList) {
+                    var drugCategories = [];
+                    for (var i = 0; i < buffer.drugCategoryList.length; i++) {
+                        drugCategories.push(buffer.drugCategoryList[i].id);
+                    }
+                    search.push('drugCategories=');
+                    search.push(drugCategories);
+                    search.push('&');
+                }
+                //
+                DrugService.filter(search.join("")).then(function (data) {
+                    $scope.drugs = data;
+                    $scope.setSelected(data[0]);
+                });
+            }, function () {
+            });
         };
 
         $scope.delete = function (drug) {
@@ -66,18 +128,6 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
             });
         };
 
-        $scope.enable = function () {
-            DrugService.enable($scope.selected).then(function (data) {
-                $scope.fetchTableData();
-            });
-        };
-
-        $scope.disable = function () {
-            DrugService.disable($scope.selected).then(function (data) {
-                $scope.fetchTableData();
-            });
-        };
-
         $scope.rowMenu = [
             {
                 html: '<div class="drop-menu">انشاء دواء جديد<span class="fa fa-pencil fa-lg"></span></div>',
@@ -119,7 +169,6 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
-            $scope.fetchTableData();
         }, 1500);
 
     }]);

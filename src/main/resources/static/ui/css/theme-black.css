@@ -3791,6 +3791,7 @@ blockquote.pull-right {
     color: #56688A;
     font-size: 12px;
     cursor: pointer;
+    text-align: center;
 }
 
 .table > thead > tr > th * {

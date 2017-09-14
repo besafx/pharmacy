@@ -28,6 +28,11 @@ app.factory("DrugService",
                 return $http.put("/api/drug/update", drug).then(function (response) {
                     return response.data;
                 });
+            },
+            filter: function (search) {
+                return $http.get("/api/drug/filter?" + search).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);
