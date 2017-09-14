@@ -37,7 +37,7 @@ app.controller("doctorCtrl", ['DoctorService', 'ModalProvider', '$scope', '$root
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطبيب فعلاً؟", "error", "fa-trash", function () {
                 DoctorService.remove($scope.selected.id).then(function () {
-                    var index = $scope.doctors.indexOf(selected);
+                    var index = $scope.doctors.indexOf($scope.selected);
                     $scope.doctors.splice(index, 1);
                     $scope.setSelected($scope.doctors[0]);
                 });

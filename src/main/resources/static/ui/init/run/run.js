@@ -55,6 +55,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'supplier': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'store';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-brown-deep_orange.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'falcon': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'adb';
@@ -113,6 +124,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 case 'drug': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'favorite';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-light_green-lime.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
+                case 'billBuy': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'shopping_cart';
                     $css.removeAll();
                     $css.add([
                         '/ui/css/mdl-style-light_green-lime.css',
@@ -200,12 +222,12 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         $rootScope.switchLang = function () {
             switch ($rootScope.lang) {
                 case 'AR':
-                    $rootScope.lang = 'EN'
+                    $rootScope.lang = 'EN';
                     $css.remove('/ui/css/style.css');
                     $css.add('/ui/css/style-en.css');
                     break;
                 case 'EN':
-                    $rootScope.lang = 'AR'
+                    $rootScope.lang = 'AR';
                     $css.remove('/ui/css/style-en.css');
                     $css.add('/ui/css/style.css');
                     break;
@@ -254,6 +276,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'Customers';
                         }
                         break;
+                    case 'supplier':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'الموردين';
+                        } else {
+                            $rootScope.pageTitle = 'Supplier';
+                        }
+                        break;
                     case 'falcon':
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'حسابات الصقور';
@@ -294,6 +323,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'الدواء';
                         } else {
                             $rootScope.pageTitle = 'Drugs';
+                        }
+                        break;
+                    case 'billBuy':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'فواتير الشراء';
+                        } else {
+                            $rootScope.pageTitle = 'Bill Buys';
                         }
                         break;
                     case 'profile':
@@ -506,6 +542,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
 
         /**************************************************************
          *                                                            *
+         * Printer Connect                                            *
+         *                                                            *
+         *************************************************************/
+
+
+        /**************************************************************
+         *                                                            *
          * Navigation Callers                                         *
          *                                                            *
          *************************************************************/
@@ -517,6 +560,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToCustomer = function () {
             $state.go('customer');
+        };
+        $rootScope.goToSupplier = function () {
+            $state.go('supplier');
         };
         $rootScope.goToFalcon = function () {
             $state.go('falcon');
@@ -535,6 +581,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToDrug = function () {
             $state.go('drug');
+        };
+        $rootScope.goToBillBuy = function () {
+            $state.go('billBuy');
         };
         $rootScope.goToTeam = function () {
             $state.go('team');

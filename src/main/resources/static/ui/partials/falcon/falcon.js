@@ -37,7 +37,7 @@ app.controller("falconCtrl", ['FalconService', 'ModalProvider', '$scope', '$root
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الحساب فعلاً؟", "error", "fa-trash", function () {
                 FalconService.remove($scope.selected.id).then(function () {
-                    var index = $scope.falcons.indexOf(selected);
+                    var index = $scope.falcons.indexOf($scope.selected);
                     $scope.falcons.splice(index, 1);
                     $scope.setSelected($scope.falcons[0]);
                 });

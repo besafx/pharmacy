@@ -30,9 +30,16 @@ public class TransactionBuy implements Serializable {
     @GeneratedValue(generator = "transactionBuySequenceGenerator")
     private Long id;
 
-    private Double unitCost;
+    private Integer code;
+
+    private Double unitBuyCost;
+
+    private Double unitSellCost;
 
     private Double quantity;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date productionDate;

@@ -44,7 +44,7 @@ app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scop
             }
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف المجموعة فعلاً؟", "error", "fa-trash", function () {
                 TeamService.remove($scope.selected.id).then(function () {
-                    var index = $scope.teams.indexOf(selected);
+                    var index = $scope.teams.indexOf($scope.selected);
                     $scope.teams.splice(index, 1);
                     $scope.setSelected($scope.teams[0]);
                 });

@@ -2,7 +2,6 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Customer;
-import com.besafx.app.entity.Doctor;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.CustomerService;
 import com.besafx.app.service.FalconService;
@@ -53,7 +52,6 @@ public class CustomerRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_CUSTOMER_CREATE')")
     public String create(@RequestBody Customer customer, Principal principal) {
-        log.info(customer.getNickname());
         Customer topCustomer = customerService.findTopByOrderByCodeDesc();
         if (topCustomer == null) {
             customer.setCode(1);

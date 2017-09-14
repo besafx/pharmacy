@@ -10,7 +10,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,7 +35,11 @@ public class BillBuy implements Serializable {
 
     private Integer code;
 
-    private String supplier;
+    @JoinColumn(name = "supplier")
+    @ManyToOne
+    private Supplier supplier;
+
+    private Double discount;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
@@ -46,6 +52,9 @@ public class BillBuy implements Serializable {
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String note;
+
+    @OneToMany(mappedBy = "billBuy", fetch = FetchType.LAZY)
+    private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
     @JsonCreator
     public static BillBuy Create(String jsonString) throws IOException {

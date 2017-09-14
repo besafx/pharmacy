@@ -29,9 +29,9 @@ public class TransactionSell implements Serializable {
     @GeneratedValue(generator = "transactionSellSequenceGenerator")
     private Long id;
 
-    private Double unitCost;
+    private Integer code;
 
-    private Double discount;
+    private Double unitCost;
 
     private Double quantity;
 
@@ -43,9 +43,9 @@ public class TransactionSell implements Serializable {
     @ManyToOne
     private DrugUnit drugUnit;
 
-    @JoinColumn(name = "drug")
+    @JoinColumn(name = "transactionBuy")
     @ManyToOne
-    private Drug drug;
+    private TransactionBuy transactionBuy;
 
     @JoinColumn(name = "billSell")
     @ManyToOne

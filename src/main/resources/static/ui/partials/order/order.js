@@ -111,7 +111,7 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلب فعلاً؟", "error", "fa-trash", function () {
                 OrderService.remove($scope.selected.id).then(function () {
-                    var index = $scope.orders.indexOf(selected);
+                    var index = $scope.orders.indexOf($scope.selected);
                     $scope.orders.splice(index, 1);
                     $scope.setSelected($scope.orders[0]);
                 });

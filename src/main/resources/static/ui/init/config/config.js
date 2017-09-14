@@ -116,6 +116,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Supplier State                                             *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("supplier", {
+            url: "/supplier",
+            templateUrl: "/ui/partials/supplier/supplier.html",
+            controller: "supplierCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Falcon State                                               *
          *                                                            *
          *************************************************************/
@@ -178,6 +189,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             url: "/drug",
             templateUrl: "/ui/partials/drug/drug.html",
             controller: "drugCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
+         * BillBuy State                                              *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("billBuy", {
+            url: "/billBuy",
+            templateUrl: "/ui/partials/billBuy/billBuy.html",
+            controller: "billBuyCtrl"
         });
 
         /**************************************************************

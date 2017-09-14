@@ -37,9 +37,78 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
             {id: 31, name: $rootScope.lang==='AR' ? 'إنشاء اصناف الدواء' : 'Create Medicine Category' , value: 'ROLE_DRUG_CATEGORY_CREATE', selected: false},
             {id: 32, name: $rootScope.lang==='AR' ? 'تعديل بيانات اصناف الدواء' : 'Update Medicine Category Information' , value: 'ROLE_DRUG_CATEGORY_UPDATE', selected: false},
             {id: 33, name: $rootScope.lang==='AR' ? 'حذف اصناف الدواء' : 'Delete Medicine Category' , value: 'ROLE_DRUG_CATEGORY_DELETE', selected: false},
-            {id: 34, name: $rootScope.lang==='AR' ? 'إنشاء الصلاحيات' : 'Create Privileges' , value: 'ROLE_TEAM_CREATE', selected: false},
-            {id: 35, name: $rootScope.lang==='AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges' , value: 'ROLE_TEAM_UPDATE', selected: false},
-            {id: 36, name: $rootScope.lang==='AR' ? 'حذف الصلاحيات' : 'Delete Privileges' , value: 'ROLE_TEAM_DELETE', selected: false}
+            {
+                id: 34,
+                name: $rootScope.lang === 'AR' ? 'إنشاء فواتير شراء الأدوية' : 'Create Drugs Bill Buy',
+                value: 'ROLE_BILL_BUY_CREATE',
+                selected: false
+            },
+            {
+                id: 35,
+                name: $rootScope.lang === 'AR' ? 'حذف فواتير شراء الأدوية' : 'Delete Drugs Bill Buy',
+                value: 'ROLE_BILL_BUY_DELETE',
+                selected: false
+            },
+            {
+                id: 36,
+                name: $rootScope.lang === 'AR' ? 'إنشاء فواتير بيع الأدوية' : 'Create Drugs Bill Sell',
+                value: 'ROLE_BILL_SELL_CREATE',
+                selected: false
+            },
+            {
+                id: 37,
+                name: $rootScope.lang === 'AR' ? 'حذف فواتير بيع الأدوية' : 'Delete Drugs Bill Sell',
+                value: 'ROLE_BILL_SELL_DELETE',
+                selected: false
+            },
+            {
+                id: 38,
+                name: $rootScope.lang === 'AR' ? 'إنشاء الصلاحيات' : 'Create Privileges',
+                value: 'ROLE_TEAM_CREATE',
+                selected: false
+            },
+            {
+                id: 39,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات الصلاحيات' : 'Update Privileges',
+                value: 'ROLE_TEAM_UPDATE',
+                selected: false
+            },
+            {
+                id: 40,
+                name: $rootScope.lang === 'AR' ? 'حذف الصلاحيات' : 'Delete Privileges',
+                value: 'ROLE_TEAM_DELETE',
+                selected: false
+            },
+            {
+                id: 41,
+                name: $rootScope.lang === 'AR' ? 'إنشاء حسابات الموردين' : 'Create Supplier',
+                value: 'ROLE_SUPPLIER_CREATE',
+                selected: false
+            },
+            {
+                id: 42,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات حسابات الموردين' : 'Update Supplier Information',
+                value: 'ROLE_SUPPLIER_UPDATE',
+                selected: false
+            },
+            {
+                id: 43,
+                name: $rootScope.lang === 'AR' ? 'حذف حسابات الموردين' : 'Delete Supplier',
+                value: 'ROLE_SUPPLIER_DELETE',
+                selected: false
+            },
+            {
+                id: 44,
+                name: $rootScope.lang === 'AR' ? 'تفعيل حسابات الموردين' : 'Enable Supplier',
+                value: 'ROLE_SUPPLIER_ENABLE',
+                selected: false
+            },
+            {
+                id: 45,
+                name: $rootScope.lang === 'AR' ? 'تعطيل حسابات الموردين' : 'Disable Supplier',
+                value: 'ROLE_SUPPLIER_DISABLE',
+                selected: false
+            }
         ];
 
 

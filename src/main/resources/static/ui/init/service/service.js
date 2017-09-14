@@ -73,6 +73,60 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * Supplier Model                                             *
+     *                                                            *
+     *************************************************************/
+    this.openSupplierCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/supplier/supplierCreateUpdate.html',
+            controller: 'supplierCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء حساب مورد جديد' : 'New Supplier';
+                },
+                action: function () {
+                    return 'create';
+                },
+                supplier: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openSupplierUpdateModel = function (supplier) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/supplier/supplierCreateUpdate.html',
+            controller: 'supplierCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل حساب مورد' : 'Update Supplier Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                supplier: function () {
+                    return supplier;
+                }
+            }
+        });
+    };
+
+
+    /**************************************************************
+     *                                                            *
      * Doctor Model                                               *
      *                                                            *
      *************************************************************/
@@ -387,6 +441,53 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: 'drugCategoryHeavyWorkCtrl',
             backdrop: 'static',
             keyboard: false
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * BillBuy Model                                              *
+     *                                                            *
+     *************************************************************/
+    this.openBillBuyCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billBuy/billBuyCreate.html',
+            controller: 'billBuyCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء فاتورة شراء جديدة' : 'New Bill Buy';
+                },
+                billBuy: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openTransactionBuyCreateModel = function (billBuy) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billBuy/transactionBuyCreate.html',
+            controller: 'transactionBuyCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'حركة شراء جديدة' : 'New Transaction Buy';
+                },
+                billBuy: function () {
+                    return billBuy;
+                }
+            }
         });
     };
 

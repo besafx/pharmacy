@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -45,6 +47,10 @@ public class Drug implements Serializable {
     @ManyToOne
     @JoinColumn(name = "drugCategory")
     private DrugCategory drugCategory;
+
+    @OneToMany(mappedBy = "billBuy", fetch = FetchType.LAZY)
+    private List<TransactionBuy> transactionBuys = new ArrayList<>();
+
 
     @JsonCreator
     public static Drug Create(String jsonString) throws IOException {

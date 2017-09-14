@@ -7632,7 +7632,8 @@ iframe.heightSet {
 /*                                                                                                  */
 /****************************************************************************************************/
 .card-square.mdl-card {
-    width: 100%;
+    width: auto;
+    padding: 10px 0px 10px 0px;
 }
 
 .card-square > .mdl-card__title {
@@ -7645,7 +7646,7 @@ iframe.heightSet {
 
 .card-square {
     margin: 10px;
-    min-height: 150px;
+    min-height: auto;
     background-color: rgb(63, 81, 181);
 }
 
@@ -7663,7 +7664,7 @@ iframe.heightSet {
 /*                                                                                                  */
 /****************************************************************************************************/
 .card-square.mdl-card {
-    width: 100%;
+    width: auto;
 }
 
 .card-square > .mdl-card__title {
@@ -7676,7 +7677,7 @@ iframe.heightSet {
 
 .card-square {
     margin: 10px;
-    min-height: 150px;
+    min-height: auto;
     background-color: rgb(63, 81, 181);
 }
 

@@ -37,7 +37,7 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الدواء فعلاً؟", "error", "fa-trash", function () {
                 DrugService.remove($scope.selected.id).then(function () {
-                    var index = $scope.drugs.indexOf(selected);
+                    var index = $scope.drugs.indexOf($scope.selected);
                     $scope.drugs.splice(index, 1);
                     $scope.setSelected($scope.drugs[0]);
                 });
@@ -104,6 +104,15 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.drug);
+                }
+            },
+            {
+                html: '<div class="drop-menu">التفاصيل<span class="fa fa-info fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    ModalProvider.openDrugDetailsModel($itemScope.drug);
                 }
             }
         ];

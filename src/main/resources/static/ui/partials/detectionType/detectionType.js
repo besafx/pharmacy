@@ -37,7 +37,7 @@ app.controller("detectionTypeCtrl", ['DetectionTypeService', 'ModalProvider', '$
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف النوع فعلاً؟", "error", "fa-trash", function () {
                 DetectionTypeService.remove($scope.selected.id).then(function () {
-                    var index = $scope.detectionTypes.indexOf(selected);
+                    var index = $scope.detectionTypes.indexOf($scope.selected);
                     $scope.detectionTypes.splice(index, 1);
                     $scope.setSelected($scope.detectionTypes[0]);
                 });

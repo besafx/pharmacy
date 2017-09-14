@@ -37,7 +37,7 @@ app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', '$scope', '$
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الموظف فعلاً؟", "error", "fa-trash", function () {
                 EmployeeService.remove($scope.selected.id).then(function () {
-                    var index = $scope.employees.indexOf(selected);
+                    var index = $scope.employees.indexOf($scope.selected);
                     $scope.employees.splice(index, 1);
                     $scope.setSelected($scope.employees[0]);
                 });

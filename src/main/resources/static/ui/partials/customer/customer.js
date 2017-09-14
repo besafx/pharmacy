@@ -37,7 +37,7 @@ app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل وكل ما يتعلق به من حسابات فعلاً؟", "error", "fa-trash", function () {
                 CustomerService.remove($scope.selected.id).then(function () {
-                    var index = $scope.customers.indexOf(selected);
+                    var index = $scope.customers.indexOf($scope.selected);
                     $scope.customers.splice(index, 1);
                     $scope.setSelected($scope.customers[0]);
                 });
@@ -128,7 +128,7 @@ app.controller("customerCtrl", ['CustomerService', 'ModalProvider', '$scope', '$
             {
                 html: '<div class="drop-menu">التفاصيل<span class="fa fa-info fa-lg"></span></div>',
                 enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_READ']);
+                    return true;
                 },
                 click: function ($itemScope, $event, value) {
                     ModalProvider.openCustomerDetailsModel($itemScope.customer);
