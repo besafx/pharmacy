@@ -84,7 +84,7 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
 
         $scope.refreshTransactionBuyByBill = function () {
             if ($scope.selected) {
-                TransactionBuyService.findByBillBuy($scope.selected).then(function (data) {
+                TransactionBuyService.findByBillBuy($scope.selected.id).then(function (data) {
                     $scope.selected.transactionBuys = data
                 });
             }

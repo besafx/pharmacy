@@ -1,8 +1,10 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.entity.BillBuy;
+import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.TransactionBuy;
 import com.besafx.app.service.BillBuyService;
+import com.besafx.app.service.DrugService;
 import com.besafx.app.service.TransactionBuyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
@@ -29,6 +31,9 @@ public class TransactionBuyRest {
 
     @Autowired
     private BillBuyService billBuyService;
+
+    @Autowired
+    private DrugService drugService;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -80,6 +85,17 @@ public class TransactionBuyRest {
         BillBuy billBuy = billBuyService.findOne(id);
         if (billBuy != null) {
             return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billBuy.getTransactionBuys());
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "findByDrug/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByDrug(@PathVariable Long id) {
+        Drug drug = drugService.findOne(id);
+        if (drug != null) {
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drug.getTransactionBuys());
         } else {
             return null;
         }

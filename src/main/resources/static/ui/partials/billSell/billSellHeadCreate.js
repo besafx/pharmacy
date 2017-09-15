@@ -1,5 +1,5 @@
-app.controller('billSellHeadCreateCtrl', ['DrugUnitService', 'CustomerService', 'ModalProvider', 'BillSellService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
-    function (DrugUnitService, CustomerService, ModalProvider, BillSellService, $scope, $rootScope, $timeout, $log, $uibModalInstance) {
+app.controller('billSellHeadCreateCtrl', ['CustomerService', 'ModalProvider', 'BillSellService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
+    function (CustomerService, ModalProvider, BillSellService, $scope, $rootScope, $timeout, $log, $uibModalInstance) {
 
         $timeout(function () {
             $scope.refreshCustomers();

@@ -16,6 +16,16 @@ app.factory("DrugService",
                     return response.data;
                 });
             },
+            getTransactionBuysSum: function (id) {
+                return $http.get("/api/drug/getTransactionBuysSum/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
+            getBillBuyDiscountSum: function (id) {
+                return $http.get("/api/drug/getBillBuyDiscountSum/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (drug) {
                 return $http.post("/api/drug/create", drug).then(function (response) {
                     return response.data;

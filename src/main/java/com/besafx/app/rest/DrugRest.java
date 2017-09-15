@@ -142,6 +142,18 @@ public class DrugRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drugService.findOne(id));
     }
 
+    @RequestMapping(value = "getTransactionBuysSum/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Double getTransactionBuysSum(@PathVariable Long id) {
+        return drugService.findOne(id).getTransactionBuysSum();
+    }
+
+    @RequestMapping(value = "getBillBuyDiscountSum/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Double getBillBuyDiscountSum(@PathVariable Long id) {
+        return drugService.findOne(id).getBillBuyDiscountSum();
+    }
+
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String filter(

@@ -67,7 +67,7 @@
                             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                 <label for="customerCode" class="control-label">
                                     <span ng-if="lang==='AR'">رقم العميل</span>
-                                    <span ng-if="lang==='EN'">Identity Number</span>
+                                    <span ng-if="lang==='EN'">Customer Code</span>
                                 </label>
                                 <select id="customerCode"
                                         data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
@@ -76,7 +76,6 @@
                                         class="form-control"
                                         chosen=""
                                         ng-model="billSell.customer"
-                                        required="required"
                                         disable-validation-message=""
                                         ng-options="customer.code for customer in customers | orderBy:'code' track by customer.id">
                                 </select>

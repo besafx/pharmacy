@@ -1,5 +1,5 @@
-app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (DrugService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("drugCtrl", ['DrugService', 'TransactionBuyService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (DrugService, TransactionBuyService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
 
@@ -12,6 +12,7 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
                 angular.forEach($scope.drugs, function (drug) {
                     if (object.id == drug.id) {
                         $scope.selected = drug;
+                        $scope.drugCalculation();
                         return drug.isSelected = true;
                     } else {
                         return drug.isSelected = false;
@@ -127,6 +128,14 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
             });
         };
 
+        $scope.refreshTransactionBuyByDrug = function () {
+            if ($scope.selected) {
+                TransactionBuyService.findByDrug($scope.selected.id).then(function (data) {
+                    $scope.selected.transactionBuys = data
+                });
+            }
+        };
+
         $scope.newDrug = function () {
             ModalProvider.openDrugCreateModel().result.then(function (data) {
                 $scope.drugs.splice(0, 0, data);
@@ -148,6 +157,12 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
                 $scope.selected.transactionBuys.splice(0, 0, data);
             }, function () {
                 console.info('DrugTransactionBuyCreateModel Closed.');
+            });
+        };
+
+        $scope.drugCalculation = function () {
+            DrugService.getTransactionBuysSum($scope.selected.id).then(function (data) {
+                $scope.totalBuyCost = data;
             });
         };
 

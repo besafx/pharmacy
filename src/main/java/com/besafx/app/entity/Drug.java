@@ -51,6 +51,22 @@ public class Drug implements Serializable {
     @OneToMany(mappedBy = "drug", fetch = FetchType.LAZY)
     private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
+    public double getTransactionBuysSum() {
+        return this.transactionBuys
+                .stream()
+                .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitBuyCost())
+                .sum();
+    }
+
+    public double getBillBuyDiscountSum() {
+        return this.transactionBuys
+                .stream()
+                .map(TransactionBuy::getBillBuy)
+                .distinct()
+                .mapToDouble(BillBuy::getDiscount)
+                .sum();
+    }
+
 
     @JsonCreator
     public static Drug Create(String jsonString) throws IOException {

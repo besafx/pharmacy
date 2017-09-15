@@ -11,6 +11,11 @@ app.factory("TransactionBuyService",
                     return response.data;
                 });
             },
+            findByDrug: function (id) {
+                return $http.get("/api/transactionBuy/findByDrug/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (transactionBuy) {
                 return $http.post("/api/transactionBuy/create", transactionBuy).then(function (response) {
                     return response.data;

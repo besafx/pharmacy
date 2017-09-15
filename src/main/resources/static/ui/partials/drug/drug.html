@@ -345,13 +345,15 @@
                             <li>
                                 <a href=""
                                    ng-click="refreshTransactionBuyByDrug()"
+                                   ng-show="selected.id"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-filter"></span>
+                                    <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
                                    ng-click="newTransactionBuy()"
+                                   ng-show="selected.id"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'انشاء طلبية شراء' : 'New Order...'}}">
                                     <span class="fa fa-plus-square"></span>
@@ -446,10 +448,10 @@
                                     </td>
                                     <td st-select-row-custom="transactionBuy">{{transactionBuy.drugUnit.name}}</td>
                                     <td st-select-row-custom="transactionBuy">
-                                        <span class="label label-danger">{{transactionBuy.unitBuyCost | currency:'SAR'}}</span>
+                                        <span class="label label-danger">{{transactionBuy.unitBuyCost}} SAR</span>
                                     </td>
                                     <td st-select-row-custom="transactionBuy">
-                                        <span class="label label-danger">{{transactionBuy.unitSellCost | currency:'SAR'}}</span>
+                                        <span class="label label-danger">{{transactionBuy.unitSellCost}} SAR</span>
                                     </td>
                                     <td st-select-row-custom="transactionBuy">{{transactionBuy.quantity}}</td>
                                     <td st-select-row-custom="transactionBuy">
@@ -479,19 +481,12 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
-                            <div class="alert alert-info" role="alert" style="font-size: 18px">
-                                <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost | currency:'SAR'}}</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">الخصم المكتسب</strong>
-                                <strong ng-if="lang==='EN'">Discount</strong>
-                                <span>{{(totalCost * selected.discount) / 100 | currency:'SAR'}}</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost - ((totalCost * selected.discount) / 100) | currency:'SAR'}}</span>
+                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selected.id">
+                            <div class="alert alert-info" role="alert">
+                                <strong ng-if="lang==='AR'">إجمالي المشتريات للدواء رقم / {{selected.code}} = </strong>
+                                <strong ng-if="lang==='EN'">Total Purchace Cost For Drug Code / {{selected.id}}
+                                    = </strong>
+                                <span>{{totalBuyCost}} SAR</span>
                             </div>
                         </div>
                     </div>
@@ -508,13 +503,15 @@
                             <li>
                                 <a href=""
                                    ng-click="refreshTransactionSellByDrug()"
+                                   ng-show="selectedTransactionBuy.id"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-filter"></span>
+                                    <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
                                    ng-click="newTransactionBuy()"
+                                   ng-show="selectedTransactionBuy.id"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'انشاء طلبية شراء' : 'New Order...'}}">
                                     <span class="fa fa-plus-square"></span>
@@ -584,7 +581,7 @@
                                     </td>
                                     <td>{{transactionSell.drugUnit.name}}</td>
                                     <td>
-                                        <span class="label label-danger">{{transactionSell.unitSellCost | currency:'SAR'}}</span>
+                                        <span class="label label-danger">{{transactionSell.unitSellCost}} SAR</span>
                                     </td>
                                     <td>{{transactionSell.quantity}}</td>
                                     <td>
@@ -612,15 +609,15 @@
                             <div class="alert alert-info" role="alert" style="font-size: 18px">
                                 <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
                                 <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost | currency:'SAR'}}</span>
+                                <span>{{totalCost}} SAR</span>
                                 <br/>
                                 <strong ng-if="lang==='AR'">الخصم المكتسب</strong>
                                 <strong ng-if="lang==='EN'">Discount</strong>
-                                <span>{{(totalCost * selected.discount) / 100 | currency:'SAR'}}</span>
+                                <span>{{(totalCost * selected.discount) / 100}} SAR</span>
                                 <br/>
                                 <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
                                 <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost - ((totalCost * selected.discount) / 100) | currency:'SAR'}}</span>
+                                <span>{{totalCost - ((totalCost * selected.discount) / 100)}} SAR</span>
                             </div>
                         </div>
                     </div>
