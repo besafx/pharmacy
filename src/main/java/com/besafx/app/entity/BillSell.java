@@ -10,7 +10,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -42,12 +44,17 @@ public class BillSell implements Serializable {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
+    private Integer checkCode;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String note;
+
+    @OneToMany(mappedBy = "billSell", fetch = FetchType.LAZY)
+    private List<TransactionSell> transactionSells = new ArrayList<>();
 
     @JsonCreator
     public static BillSell Create(String jsonString) throws IOException {

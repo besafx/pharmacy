@@ -3,6 +3,8 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
 
         $scope.selected = {};
 
+        $scope.selectedTransactionBuy = {};
+
         $scope.buffer = {};
 
         $scope.setSelected = function (object) {
@@ -13,6 +15,19 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
                         return drug.isSelected = true;
                     } else {
                         return drug.isSelected = false;
+                    }
+                });
+            }
+        };
+
+        $scope.setSelectedTransactionBuy = function (object) {
+            if (object) {
+                angular.forEach($scope.selected.transactionBuys, function (transactionBuy) {
+                    if (object.id == transactionBuy.id) {
+                        $scope.selectedTransactionBuy = transactionBuy;
+                        return transactionBuy.isSelected = true;
+                    } else {
+                        return transactionBuy.isSelected = false;
                     }
                 });
             }
@@ -125,6 +140,14 @@ app.controller("drugCtrl", ['DrugService', 'DrugCategoryService', 'ModalProvider
 
             }, function () {
                 console.info('DrugCategoryCreateModel Closed.');
+            });
+        };
+
+        $scope.newTransactionBuy = function () {
+            ModalProvider.openDrugTransactionBuyCreateModel($scope.selected).result.then(function (data) {
+                $scope.selected.transactionBuys.splice(0, 0, data);
+            }, function () {
+                console.info('DrugTransactionBuyCreateModel Closed.');
             });
         };
 

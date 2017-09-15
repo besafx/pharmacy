@@ -1,4 +1,4 @@
-app.controller('billBuyFilterCtrl', ['$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
+app.controller('billSellFilterCtrl', ['$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
     function ($scope, $rootScope, $timeout, $log, $uibModalInstance) {
 
         $scope.buffer = {};

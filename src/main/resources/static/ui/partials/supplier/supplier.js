@@ -47,7 +47,6 @@ app.controller("supplierCtrl", ['SupplierService', 'ModalProvider', '$scope', '$
         $scope.newSupplier = function () {
             ModalProvider.openSupplierCreateModel().result.then(function (data) {
                 $scope.suppliers.splice(0, 0, data);
-                $scope.newFalcon(data);
             }, function () {
                 console.info('SupplierCreateModel Closed.');
             });

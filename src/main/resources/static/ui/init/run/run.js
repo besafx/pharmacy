@@ -154,6 +154,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'billSell': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'shopping_cart';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-light_green-lime.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'team': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'security';
@@ -348,6 +359,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'فواتير الشراء';
                         } else {
                             $rootScope.pageTitle = 'Bill Buys';
+                        }
+                        break;
+                    case 'billSell':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'فواتير البيع';
+                        } else {
+                            $rootScope.pageTitle = 'Bill Sells';
                         }
                         break;
                     case 'profile':
@@ -605,6 +623,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToBillBuy = function () {
             $state.go('billBuy');
+        };
+        $rootScope.goToBillSell = function () {
+            $state.go('billSell');
         };
         $rootScope.goToTeam = function () {
             $state.go('team');

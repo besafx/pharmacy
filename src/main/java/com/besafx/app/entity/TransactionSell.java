@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -34,6 +35,9 @@ public class TransactionSell implements Serializable {
     private Double unitCost;
 
     private Double quantity;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")

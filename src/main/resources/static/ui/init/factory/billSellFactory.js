@@ -1,31 +1,31 @@
-app.factory("BillBuyService",
+app.factory("BillSellService",
     ['$http', '$log', function ($http, $log) {
         return {
             findAll: function () {
-                return $http.get("/api/billBuy/findAll").then(function (response) {
+                return $http.get("/api/billSell/findAll").then(function (response) {
                     return response.data;
                 });
             },
             findAllCombo: function () {
-                return $http.get("/api/billBuy/findAllCombo").then(function (response) {
+                return $http.get("/api/billSell/findAllCombo").then(function (response) {
                     return response.data;
                 });
             },
             findOne: function (id) {
-                return $http.get("/api/billBuy/findOne/" + id).then(function (response) {
+                return $http.get("/api/billSell/findOne/" + id).then(function (response) {
                     return response.data;
                 });
             },
-            create: function (billBuy) {
-                return $http.post("/api/billBuy/create", billBuy).then(function (response) {
+            create: function (billSell) {
+                return $http.post("/api/billSell/create", billSell).then(function (response) {
                     return response.data;
                 });
             },
             remove: function (id) {
-                return $http.delete("/api/billBuy/delete/" + id);
+                return $http.delete("/api/billSell/delete/" + id);
             },
             filter: function (search) {
-                return $http.get("/api/billBuy/filter?" + search).then(function (response) {
+                return $http.get("/api/billSell/filter?" + search).then(function (response) {
                     return response.data;
                 });
             }

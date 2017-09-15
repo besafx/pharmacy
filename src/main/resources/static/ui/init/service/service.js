@@ -529,6 +529,24 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openDrugTransactionBuyCreateModel = function (drug) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drug/drugTransactionBuyCreate.html',
+            controller: 'drugTransactionBuyCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                drug: function () {
+                    return drug;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * BillBuy Model                                              *
@@ -555,6 +573,19 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openBillBuyHeadCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billBuy/billBuyHeadCreate.html',
+            controller: 'billBuyHeadCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg'
+        });
+    };
+
     this.openTransactionBuyCreateModel = function (billBuy) {
         return $uibModal.open({
             animation: true,
@@ -571,6 +602,66 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
                 },
                 billBuy: function () {
                     return billBuy;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * BillSell Model                                             *
+     *                                                            *
+     *************************************************************/
+    this.openBillSellCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/billSellCreate.html',
+            controller: 'billSellCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء فاتورة بيع جديدة' : 'New Bill Sell';
+                },
+                billSell: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openBillSellHeadCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/billSellHeadCreate.html',
+            controller: 'billSellHeadCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg'
+        });
+    };
+
+    this.openTransactionSellCreateModel = function (billSell) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/transactionSellCreate.html',
+            controller: 'transactionSellCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'حركة بيع جديدة' : 'New Transaction Sell';
+                },
+                billSell: function () {
+                    return billSell;
                 }
             }
         });

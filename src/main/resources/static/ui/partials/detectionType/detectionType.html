@@ -198,151 +198,214 @@
         <div class="row" style="margin-top: 10px">
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
-                <div class="panel panel-body">
-                    <div class="table-responsive">
-                        <table st-table="collection" st-safe-src="detectionTypes"
-                               class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <span ng-if="lang==='AR'">م</span>
-                                    <span ng-if="lang==='EN'">#</span>
-                                </th>
 
-                                <th st-sort="nameArabic">
-                                    <span ng-if="lang==='AR'">اسم النوع</span>
-                                    <span ng-if="lang==='EN'">Name</span>
-                                </th>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="fetchTableData()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-filter"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
+                                   ng-click="newDetectionType()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء نوع جديد' : 'New Type...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة أنواع الفحوصات</h3>
+                            <h3 ng-if="lang==='EN'">Detections Type List</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection1" st-safe-src="detectionTypes"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
 
-                                <th st-sort="cost">
-                                    <span ng-if="lang==='AR'">التكلفة</span>
-                                    <span ng-if="lang==='EN'">Cost</span>
-                                </th>
+                                    <th st-sort="nameArabic">
+                                        <span ng-if="lang==='AR'">اسم النوع</span>
+                                        <span ng-if="lang==='EN'">Name</span>
+                                    </th>
+
+                                    <th st-sort="cost">
+                                        <span ng-if="lang==='AR'">التكلفة</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
+                                    </th>
 
 
-                                <th st-sort="descriptionArabic">
-                                    <span ng-if="lang==='AR'">الوصف</span>
-                                    <span ng-if="lang==='EN'">Description</span>
-                                </th>
+                                    <th st-sort="descriptionArabic">
+                                        <span ng-if="lang==='AR'">الوصف</span>
+                                        <span ng-if="lang==='EN'">Description</span>
+                                    </th>
 
-                            </tr>
-                            <tr>
-                                <th colspan="4">
-                                    <input st-search=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
-                                           type="text"/>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="detectionType in collection"
-                                st-select-mode="single"
-                                context-menu="rowMenu"
-                                ng-click="setSelected(detectionType)"
-                                ng-right-click="setSelected(detectionType)"
-                                ng-class="{'mdl-color--blue-grey-100':detectionType.isSelected}">
-                                <td st-select-row-custom="detectionType">{{$index+1}}</td>
-                                <td st-select-row-custom="detectionType">
-                                    <span ng-if="lang==='AR'">{{detectionType.nameArabic}}</span>
-                                    <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
-                                </td>
-                                <td st-select-row-custom="detectionType">
-                                    <span class="label label-danger">{{detectionType.cost | currency:'SAR':0.0}}</span>
-                                </td>
-                                <td st-select-row-custom="detectionType">
-                                    <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
-                                    <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
-                                </td>
-                            </tr>
-                            <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                ng-show="!collection || collection.length ==0">
-                                <td colspan="4">
-                                    <span ng-if="lang==='AR'">لا توجد بيانات</span>
-                                    <span ng-if="lang==='EN'">No Data Found.</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td colspan="4">
-                                    <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                </tr>
+                                <tr>
+                                    <th colspan="4">
+                                        <input st-search=""
+                                               class="form-control"
+                                               placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
+                                               type="text"/>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="detectionType in collection1"
+                                    st-select-mode="single"
+                                    context-menu="rowMenu"
+                                    ng-click="setSelected(detectionType)"
+                                    ng-right-click="setSelected(detectionType)"
+                                    ng-class="{'mdl-color--blue-grey-100':detectionType.isSelected}">
+                                    <td st-select-row-custom="detectionType">{{$index+1}}</td>
+                                    <td st-select-row-custom="detectionType">
+                                        <span ng-if="lang==='AR'">{{detectionType.nameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
+                                    </td>
+                                    <td st-select-row-custom="detectionType">
+                                        <span class="label label-danger">{{detectionType.cost | currency:'SAR':0.0}}</span>
+                                    </td>
+                                    <td st-select-row-custom="detectionType">
+                                        <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection1 || collection1.length ==0">
+                                    <td colspan="4">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div st-table="collection" st-safe-src="detectionTypes">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="detectionType in collection">
-                        <!-- CONTACT ITEM -->
-                        <div class="panel panel-default">
-                            <div class="panel-body profile">
-                                <div class="profile-image">
-                                    <img width="100" height="100"
-                                         src="/ui/img/no-image.jpg"
-                                         alt="{{detectionType.nameArabic}}"/>
-                                </div>
-                                <div class="profile-data">
-                                    <div class="profile-data-name">
-                                        <span ng-if="lang==='AR'">{{detectionType.nameArabic}}</span>
-                                        <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="fetchTableData()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-filter"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
+                                   ng-click="newDetectionType()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء نوع جديد' : 'New Type...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة أنواع الفحوصات</h3>
+                            <h3 ng-if="lang==='EN'">Detections Type List</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div st-table="collection2" st-safe-src="detectionTypes">
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="detectionType in collection2">
+                                <!-- CONTACT ITEM -->
+                                <div class="panel panel-default">
+                                    <div class="panel-body profile">
+                                        <div class="profile-image">
+                                            <img width="100" height="100"
+                                                 src="/ui/img/no-image.jpg"
+                                                 alt="{{detectionType.nameArabic}}"/>
+                                        </div>
+                                        <div class="profile-data">
+                                            <div class="profile-data-name">
+                                                <span ng-if="lang==='AR'">{{detectionType.nameArabic}}</span>
+                                                <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-controls">
+                                            <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                                            <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="contact-info">
+                                            <p>
+                                                <strong ng-if="lang==='AR'">الوصف</strong>
+                                                <strong ng-if="lang==='EN'">Description</strong>
+                                                <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
+                                                <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
+                                            </p>
+                                            <hr>
+                                            <p>
+                                                <strong ng-if="lang==='AR'">التكلفة</strong>
+                                                <strong ng-if="lang==='EN'">Cost</strong>
+                                                {{detectionType.cost | currency:'SAR':0.0}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <button uib-tooltip="{{lang==='AR' ? 'انشاء نوع جديد' : 'New...'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
+                                                    ng-click="newDetectionType();"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <i class="material-icons">add</i>
+                                            </button>
+                                            <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_UPDATE'])"
+                                                    ng-click="ModalProvider.openDetectionTypeUpdateModel(detectionType)"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_DELETE'])"
+                                                    ng-click="delete(detectionType)"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="profile-controls">
-                                    <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
-                                    <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
-                                </div>
+                                <!-- END CONTACT ITEM -->
                             </div>
-                            <div class="panel-body">
-                                <div class="contact-info">
-                                    <p>
-                                        <strong ng-if="lang==='AR'">الوصف</strong>
-                                        <strong ng-if="lang==='EN'">Description</strong>
-                                        <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
-                                        <span ng-if="lang==='EN'">{{detectionType.descriptionEnglish}}</span>
-                                    </p>
-                                    <hr>
-                                    <p>
-                                        <strong ng-if="lang==='AR'">التكلفة</strong>
-                                        <strong ng-if="lang==='EN'">Cost</strong>
-                                        {{detectionType.cost | currency:'SAR':0.0}}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <button uib-tooltip="{{lang==='AR' ? 'انشاء نوع جديد' : 'New...'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
-                                            ng-click="newDetectionType();"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                    <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_UPDATE'])"
-                                            ng-click="ModalProvider.openDetectionTypeUpdateModel(detectionType)"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                    <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_DELETE'])"
-                                            ng-click="delete(detectionType)"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                </div>
-                            </div>
+                            <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <div st-pagination="" st-items-by-page="3" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                            </tfoot>
                         </div>
-                        <!-- END CONTACT ITEM -->
                     </div>
                 </div>
             </div>

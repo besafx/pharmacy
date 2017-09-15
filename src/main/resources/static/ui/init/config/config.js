@@ -215,6 +215,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * BillSell State                                             *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("billSell", {
+            url: "/billSell",
+            templateUrl: "/ui/partials/billSell/billSell.html",
+            controller: "billSellCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Team State                                                 *
          *                                                            *
          *************************************************************/

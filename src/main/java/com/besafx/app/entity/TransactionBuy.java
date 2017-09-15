@@ -9,7 +9,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -61,6 +63,9 @@ public class TransactionBuy implements Serializable {
     @JoinColumn(name = "billBuy")
     @ManyToOne
     private BillBuy billBuy;
+
+    @OneToMany(mappedBy = "transactionBuy", fetch = FetchType.LAZY)
+    private List<TransactionSell> transactionSells = new ArrayList<>();
 
     @JsonCreator
     public static TransactionBuy Create(String jsonString) throws IOException {

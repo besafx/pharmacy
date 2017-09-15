@@ -76,6 +76,7 @@ public class PartialController {
             "/order",
             "/drug",
             "/billBuy",
+            "/billSell",
             "/drugCategory",
             "/falcon",
             "/help",

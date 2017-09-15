@@ -1,13 +1,13 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.entity.BillBuy;
+import com.besafx.app.entity.BillSell;
 import com.besafx.app.entity.Person;
-import com.besafx.app.entity.TransactionBuy;
+import com.besafx.app.entity.TransactionSell;
 import com.besafx.app.entity.enums.PaymentMethod;
-import com.besafx.app.search.BillBuySearch;
-import com.besafx.app.service.BillBuyService;
+import com.besafx.app.search.BillSellSearch;
+import com.besafx.app.service.BillSellService;
 import com.besafx.app.service.PersonService;
-import com.besafx.app.service.TransactionBuyService;
+import com.besafx.app.service.TransactionSellService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -31,19 +31,19 @@ import java.util.List;
 import java.util.ListIterator;
 
 @RestController
-@RequestMapping(value = "/api/billBuy/")
-public class BillBuyRest {
+@RequestMapping(value = "/api/billSell/")
+public class BillSellRest {
 
-    private final Logger log = LoggerFactory.getLogger(BillBuyRest.class);
+    private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
 
-    public static final String FILTER_TABLE = "**,transactionBuys[**,drugUnit[**],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]";
-    public static final String FILTER_BILL_BUY_COMBO = "id,code";
-
-    @Autowired
-    private BillBuyService billBuyService;
+    public static final String FILTER_TABLE = "**,transactionSells[**,drugUnit[**],drug[**,-drugCategory,-transactionSells],-billSell,-transactionSells]";
+    public static final String FILTER_BILL_SELL_COMBO = "id,code";
 
     @Autowired
-    private TransactionBuyService transactionBuyService;
+    private BillSellService billSellService;
+
+    @Autowired
+    private TransactionSellService transactionSellService;
 
     @Autowired
     private PersonService personService;
@@ -52,62 +52,62 @@ public class BillBuyRest {
     private NotificationService notificationService;
 
     @Autowired
-    private BillBuySearch billBuySearch;
+    private BillSellSearch billSellSearch;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_BILL_BUY_CREATE')")
+    @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
     @Transactional
-    public String create(@RequestBody BillBuy billBuy, Principal principal) {
-        BillBuy topBillBuy = billBuyService.findTopByOrderByCodeDesc();
-        if (topBillBuy == null) {
-            billBuy.setCode(1);
+    public String create(@RequestBody BillSell billSell, Principal principal) {
+        BillSell topBillSell = billSellService.findTopByOrderByCodeDesc();
+        if (topBillSell == null) {
+            billSell.setCode(1);
         } else {
-            billBuy.setCode(topBillBuy.getCode() + 1);
+            billSell.setCode(topBillSell.getCode() + 1);
         }
-        billBuy.setDate(new DateTime().toDate());
-        billBuy = billBuyService.save(billBuy);
-        ListIterator<TransactionBuy> listIterator = billBuy.getTransactionBuys().listIterator();
+        billSell.setDate(new DateTime().toDate());
+        billSell = billSellService.save(billSell);
+        ListIterator<TransactionSell> listIterator = billSell.getTransactionSells().listIterator();
         while (listIterator.hasNext()) {
-            TransactionBuy transactionBuy = listIterator.next();
-            transactionBuy.setBillBuy(billBuy);
-            TransactionBuy topTransactionBuy = transactionBuyService.findTopByOrderByCodeDesc();
-            if (topTransactionBuy == null) {
-                transactionBuy.setCode(1);
+            TransactionSell transactionSell = listIterator.next();
+            transactionSell.setBillSell(billSell);
+            TransactionSell topTransactionSell = transactionSellService.findTopByOrderByCodeDesc();
+            if (topTransactionSell == null) {
+                transactionSell.setCode(1);
             } else {
-                transactionBuy.setCode(topTransactionBuy.getCode() + 1);
+                transactionSell.setCode(topTransactionSell.getCode() + 1);
             }
-            transactionBuy.setDate(new DateTime().toDate());
-            listIterator.set(transactionBuyService.save(transactionBuy));
+            transactionSell.setDate(new DateTime().toDate());
+            listIterator.set(transactionSellService.save(transactionSell));
         }
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "تم انشاء فاتورة شراء بنجاح" : "Create Bill Buy Successfully")
+                .message(lang.equals("AR") ? "تم انشاء فاتورة شراء بنجاح" : "Create Bill Sell Successfully")
                 .type("success")
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billBuy);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSell);
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_BILL_BUY_DELETE')")
+    @PreAuthorize("hasRole('ROLE_BILL_SELL_DELETE')")
     @Transactional
     public void delete(@PathVariable Long id, Principal principal) {
-        BillBuy billBuy = billBuyService.findOne(id);
-        if (billBuy != null) {
-            transactionBuyService.delete(billBuy.getTransactionBuys());
-            billBuyService.delete(id);
+        BillSell billSell = billSellService.findOne(id);
+        if (billSell != null) {
+            transactionSellService.delete(billSell.getTransactionSells());
+            billSellService.delete(id);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                    .message(lang.equals("AR") ? "تم حذف فاتورة شراء بنجاح" : "Delete Bill Buy Successfully")
+                    .message(lang.equals("AR") ? "تم حذف فاتورة شراء بنجاح" : "Delete Bill Sell Successfully")
                     .type("error")
                     .icon("fa-trash")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
@@ -118,23 +118,23 @@ public class BillBuyRest {
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAll() {
-        List<BillBuy> list = Lists.newArrayList(billBuyService.findAll());
-        list.sort(Comparator.comparing(BillBuy::getCode));
+        List<BillSell> list = Lists.newArrayList(billSellService.findAll());
+        list.sort(Comparator.comparing(BillSell::getCode));
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
     @RequestMapping(value = "findAllCombo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAllCombo() {
-        List<BillBuy> list = Lists.newArrayList(billBuyService.findAll());
-        list.sort(Comparator.comparing(BillBuy::getCode));
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_BILL_BUY_COMBO), list);
+        List<BillSell> list = Lists.newArrayList(billSellService.findAll());
+        list.sort(Comparator.comparing(BillSell::getCode));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_BILL_SELL_COMBO), list);
     }
 
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOne(@PathVariable Long id) {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billBuyService.findOne(id));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellService.findOne(id));
     }
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -146,7 +146,7 @@ public class BillBuyRest {
             @RequestParam(value = "checkCode", required = false) final String checkCode,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
-            @RequestParam(value = "suppliers", required = false) final List<Long> suppliers,
+            @RequestParam(value = "customers", required = false) final List<Long> customers,
             Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -158,7 +158,7 @@ public class BillBuyRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        List<BillBuy> list = billBuySearch.filter(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, suppliers);
+        List<BillSell> list = billSellSearch.filter(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, customers);
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")

@@ -48,7 +48,7 @@ public class Drug implements Serializable {
     @JoinColumn(name = "drugCategory")
     private DrugCategory drugCategory;
 
-    @OneToMany(mappedBy = "billBuy", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "drug", fetch = FetchType.LAZY)
     private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
 
