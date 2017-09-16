@@ -2,10 +2,13 @@ package com.besafx.app.rest;
 
 import com.besafx.app.entity.BillBuy;
 import com.besafx.app.entity.Drug;
+import com.besafx.app.entity.Person;
 import com.besafx.app.entity.TransactionBuy;
-import com.besafx.app.service.BillBuyService;
-import com.besafx.app.service.DrugService;
-import com.besafx.app.service.TransactionBuyService;
+import com.besafx.app.service.*;
+import com.besafx.app.util.JSONConverter;
+import com.besafx.app.util.Options;
+import com.besafx.app.ws.Notification;
+import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
@@ -17,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "/api/transactionBuy/")
@@ -30,10 +35,19 @@ public class TransactionBuyRest {
     private TransactionBuyService transactionBuyService;
 
     @Autowired
+    private TransactionSellService transactionSellService;
+
+    @Autowired
     private BillBuyService billBuyService;
 
     @Autowired
     private DrugService drugService;
+
+    @Autowired
+    private PersonService personService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -55,10 +69,21 @@ public class TransactionBuyRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BILL_BUY_DELETE')")
     @Transactional
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id, Principal principal) {
         TransactionBuy transactionBuy = transactionBuyService.findOne(id);
         if (transactionBuy != null) {
+            transactionSellService.delete(transactionBuy.getTransactionSells());
             transactionBuyService.delete(id);
+            Person caller = personService.findByEmail(principal.getName());
+            String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title(lang.equals("AR") ? "المشتريات" : "The Sales")
+                    .message(lang.equals("AR") ? "تم حذف الطلبية وكل ما يتعلق بها من مبيعات بنجاح" : "Delete Purchace Order With All Related Successfully")
+                    .type("error")
+                    .icon("fa-trash")
+                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                    .build(), principal.getName());
         }
     }
 

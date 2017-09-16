@@ -249,6 +249,7 @@
                                             class="form-control"
                                             chosen=""
                                             ng-model="buffer.drug"
+                                            ng-change="refreshTransactionBuyByDrug();"
                                             disable-validation-message=""
                                             ng-options="drug.code for drug in drugs | orderBy:'code' track by drug.id">
                                     </select>
@@ -266,6 +267,7 @@
                                             class="form-control"
                                             chosen=""
                                             ng-model="buffer.drug"
+                                            ng-change="refreshTransactionBuyByDrug();"
                                             disable-validation-message=""
                                             ng-options="('[ ' + drug.nameArabic + ' ] [' + drug.nameEnglish + ' ]' ) for drug in drugs | orderBy:'nameEnglish' track by drug.id">
                                     </select>
@@ -283,6 +285,7 @@
                                             class="form-control"
                                             chosen=""
                                             ng-model="buffer.drug"
+                                            ng-change="refreshTransactionBuyByDrug();"
                                             disable-validation-message=""
                                             ng-options="('[ ' + drug.medicalNameArabic + ' ] [' + drug.medicalNameEnglish + ' ]' ) for drug in drugs | orderBy:'medicalNameEnglish' track by drug.id">
                                     </select>
@@ -292,59 +295,164 @@
 
                             <div class="form-group row">
 
-                                <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="table-responsive">
+                                        <table st-table="collection2" st-safe-src="buffer.drug.transactionBuys"
+                                               class="table table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    <span ng-if="lang==='AR'">م</span>
+                                                    <span ng-if="lang==='EN'">#</span>
+                                                </th>
+
+                                                <th>
+                                                    <span ng-if="lang==='AR'">رقم الحركة</span>
+                                                    <span ng-if="lang==='EN'">Transaction Code</span>
+                                                </th>
+
+                                                <th>
+                                                    <span ng-if="lang==='AR'">رقم الفاتورة</span>
+                                                    <span ng-if="lang==='EN'">Bill Code</span>
+                                                </th>
+
+                                                <th st-sort="productionDate">
+                                                    <span ng-if="lang==='AR'">تاريخ الحركة</span>
+                                                    <span ng-if="lang==='EN'">Transaction Date</span>
+                                                </th>
+
+                                                <th st-sort="drugUnit">
+                                                    <span ng-if="lang==='AR'">وحدة القياس</span>
+                                                    <span ng-if="lang==='EN'">Unit</span>
+                                                </th>
+
+                                                <th st-sort="unitSellCost">
+                                                    <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                                                    <span ng-if="lang==='EN'">Unit Sell Cost</span>
+                                                </th>
+
+                                                <th st-sort="quantity">
+                                                    <span ng-if="lang==='AR'">الكمية</span>
+                                                    <span ng-if="lang==='EN'">Quantity</span>
+                                                </th>
+
+                                                <th st-sort="productionDate">
+                                                    <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
+                                                    <span ng-if="lang==='EN'">Production Date</span>
+                                                </th>
+
+                                                <th st-sort="warrantInMonth">
+                                                    <span ng-if="lang==='AR'">مدة الصلاحية (بالشهر)</span>
+                                                    <span ng-if="lang==='EN'">Shelf Life (In Month)</span>
+                                                </th>
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="transactionBuy in collection2"
+                                                st-select-mode="single"
+                                                ng-click="setSelectedTransactionBuy(transactionBuy)"
+                                                ng-right-click="setSelectedTransactionBuy(transactionBuy)"
+                                                ng-class="{'mdl-color--blue-grey-100':transactionBuy.isSelected}">
+                                                <td st-select-row-custom="transactionBuy">{{$index+1}}</td>
+                                                <td st-select-row-custom="transactionBuy">{{transactionBuy.code}}</td>
+                                                <td st-select-row-custom="transactionBuy">
+                                                    {{transactionBuy.billBuy.code}}
+                                                </td>
+                                                <td st-select-row-custom="transactionBuy">
+                                                    <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                                    <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
+                                                    <span class="label label-success">{{transactionBuy.date | date:'h:m a'}}</span>
+                                                </td>
+                                                <td st-select-row-custom="transactionBuy">
+                                                    {{transactionBuy.drugUnit.name}}
+                                                </td>
+                                                <td st-select-row-custom="transactionBuy">
+                                                    <span class="label label-danger">{{transactionBuy.unitSellCost}} SAR</span>
+                                                </td>
+                                                <td st-select-row-custom="transactionBuy">{{transactionBuy.quantity}}
+                                                </td>
+                                                <td st-select-row-custom="transactionBuy">
+                                                    <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                                    <span ng-show="dateType==='G'">{{transactionBuy.productionDate | date: 'yyyy-MM-dd'}}</span>
+                                                    <span class="label label-success">{{transactionBuy.productionDate | date:'h:m a'}}</span>
+                                                </td>
+                                                <td st-select-row-custom="transactionBuy">
+                                                    {{transactionBuy.warrantInMonth}}
+                                                </td>
+                                            </tr>
+                                            <tr class="blank_row"
+                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                ng-show="!collection2 || collection2.length ==0">
+                                                <td colspan="9">
+                                                    <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                                    <span ng-if="lang==='EN'">No Data Found.</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                     ng-show="selectedTransactionBuy.id">
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong ng-if="lang==='AR'">بيان أسعار الطلبية رقم /
+                                            {{selectedTransactionBuy.code}}</strong>
+                                        <strong ng-if="lang==='EN'">Prices Information For Order Code /
+                                            {{selectedTransactionBuy.id}}</strong>
+                                        <br/>
+                                        <span ng-repeat="price in relatedPrices">
+                                            <strong>الوحدة / </strong>
+                                            <span>{{price.obj1.name}}</span>
+                                            <strong>سعر البيع / </strong>
+                                            <span>{{price.obj3}} SAR</span>
+                                            <strong>الكمية / </strong>
+                                            <span>{{price.obj5}} </span>
+                                            <br/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <fieldset class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="drugUnit" class="control-label">
                                         <span ng-if="lang==='AR'">وحدة القياس</span>
                                         <span ng-if="lang==='EN'">Drug Unit</span>
                                     </label>
                                     <select id="drugUnit"
                                             class="form-control"
-                                            ng-model="buffer.drugUnit"
+                                            ng-model="buffer.related"
                                             disable-validation-message=""
-                                            ng-options="unit.name for unit in drugUnits | orderBy:'code' track by unit.id">
+                                            ng-options="related.obj1.name for related in relatedPrices | orderBy:'related.obj1.name' track by related.obj1.id">
                                     </select>
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="cost" class="control-label">
                                         <span ng-if="lang==='AR'">الكمية</span>
                                         <span ng-if="lang==='EN'">Quantity</span>
                                     </label>
                                     <div dir="ltr" class="input-group" id="cost">
                                         <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">{{buffer.drugUnit.name}}</span>
-                                            <span ng-if="lang==='EN'">{{buffer.drugUnit.name}}</span>
+                                            <span ng-if="lang==='AR'">{{buffer.related.obj1.name}}</span>
+                                            <span ng-if="lang==='EN'">{{buffer.related.obj1.name}}</span>
                                         </span>
                                         <input dir="rtl"
                                                type="number"
-                                               min="0"
+                                               ng-max="buffer.related.obj5"
+                                               min="1"
                                                disable-validation-message=""
                                                class="form-control"
                                                ng-model="buffer.quantity">
                                     </div>
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                                    <label for="unitCost" class="control-label">
-                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
-                                        <span ng-if="lang==='EN'">Unit Purchace Cost</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="unitCost">
-                                        <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">ريال سعودي</span>
-                                            <span ng-if="lang==='EN'">SAR</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               min="0"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="buffer.unitCost">
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                                    <button ng-disabled="!buffer.drug"
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <button ng-disabled="!buffer.drug.id"
                                             uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Add'}}"
                                             tooltip-append-to-body="true"
                                             type="button"
@@ -355,7 +463,7 @@
                                     </button>
                                 </div>
 
-                            </div>
+                            </fieldset>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label for="description" class="control-label">
@@ -396,11 +504,6 @@
                                                 <span ng-if="lang==='EN'">Unit Purchace Cost</span>
                                             </th>
 
-                                            <th st-sort="unitSellCost">
-                                                <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
-                                                <span ng-if="lang==='EN'">Unit Sell Cost</span>
-                                            </th>
-
                                             <th st-sort="quantity">
                                                 <span ng-if="lang==='AR'">الكمية</span>
                                                 <span ng-if="lang==='EN'">Quantity</span>
@@ -428,10 +531,7 @@
                                             </td>
                                             <td>{{transactionSell.drugUnit.name}}</td>
                                             <td>
-                                                <span class="label label-danger">{{transactionSell.unitSellCost | currency:'SAR'}}</span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-danger">{{transactionSell.unitSellCost | currency:'SAR'}}</span>
+                                                <span class="label label-danger">{{transactionSell.unitSellCost}} SAR</span>
                                             </td>
                                             <td>{{transactionSell.quantity}}</td>
                                             <td>
@@ -444,7 +544,7 @@
                                         <tr class="blank_row"
                                             style="height: 10px !important; background-color: #FFFFFF;"
                                             ng-show="!collection || collection.length ==0">
-                                            <td colspan="7">
+                                            <td colspan="6">
                                                 <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                                 <span ng-if="lang==='EN'">No Data.</span>
                                             </td>
@@ -455,18 +555,18 @@
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
-                                <div class="alert alert-info" role="alert" style="font-size: 18px">
+                                <div class="alert alert-info" role="alert">
                                     <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
                                     <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                    <span>{{totalCost | currency:'SAR'}}</span>
+                                    <span>{{totalCost}} SAR</span>
                                     <br/>
                                     <strong ng-if="lang==='AR'">خصم المبيعات</strong>
                                     <strong ng-if="lang==='EN'">Discount</strong>
-                                    <span>{{(totalCost * billSell.discount) / 100 | currency:'SAR'}}</span>
+                                    <span>{{(totalCost * billSell.discount) / 100}} SAR</span>
                                     <br/>
                                     <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
                                     <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                    <span>{{totalCost - ((totalCost * billSell.discount) / 100) | currency:'SAR'}}</span>
+                                    <span>{{totalCost - ((totalCost * billSell.discount) / 100)}} SAR</span>
                                 </div>
                             </div>
 

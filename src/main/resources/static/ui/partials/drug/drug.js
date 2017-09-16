@@ -1,5 +1,5 @@
-app.controller("drugCtrl", ['DrugService', 'TransactionBuyService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (DrugService, TransactionBuyService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuyService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (DrugService, DrugUnitService, TransactionBuyService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
 
@@ -26,6 +26,7 @@ app.controller("drugCtrl", ['DrugService', 'TransactionBuyService', 'DrugCategor
                 angular.forEach($scope.selected.transactionBuys, function (transactionBuy) {
                     if (object.id == transactionBuy.id) {
                         $scope.selectedTransactionBuy = transactionBuy;
+                        $scope.transactionBuyCalculation();
                         return transactionBuy.isSelected = true;
                     } else {
                         return transactionBuy.isSelected = false;
@@ -122,6 +123,20 @@ app.controller("drugCtrl", ['DrugService', 'TransactionBuyService', 'DrugCategor
             });
         };
 
+        $scope.deleteTransactionBuy = function (transactionBuy) {
+            if (transactionBuy) {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
+                    TransactionBuyService.remove(transactionBuy.id).then(function () {
+                        var index = $scope.selected.transactionBuys.indexOf(transactionBuy);
+                        $scope.selected.transactionBuys.splice(index, 1);
+                        $scope.setSelected($scope.selected.transactionBuys[0]);
+                        $scope.drugCalculation();
+                    });
+                });
+
+            }
+        };
+
         $scope.refreshDrugCategories = function () {
             DrugCategoryService.findAll().then(function (data) {
                 $scope.categories = data;
@@ -164,6 +179,19 @@ app.controller("drugCtrl", ['DrugService', 'TransactionBuyService', 'DrugCategor
             DrugService.getTransactionBuysSum($scope.selected.id).then(function (data) {
                 $scope.totalBuyCost = data;
             });
+        };
+
+        $scope.transactionBuyCalculation = function () {
+            DrugUnitService.getRelatedPrices(
+                $scope.selectedTransactionBuy.drugUnit.id,
+                $scope.selectedTransactionBuy.quantity,
+                $scope.selectedTransactionBuy.drugUnit.factor,
+                $scope.selectedTransactionBuy.unitBuyCost,
+                $scope.selectedTransactionBuy.unitSellCost
+            )
+                .then(function (data) {
+                    $scope.relatedPrices = data;
+                })
         };
 
         $scope.rowMenu = [

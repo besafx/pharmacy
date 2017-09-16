@@ -481,7 +481,27 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selected.id">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selectedTransactionBuy.id">
+                            <div class="alert alert-danger" role="alert">
+                                <strong ng-if="lang==='AR'">بيان أسعار الطلبية رقم /
+                                    {{selectedTransactionBuy.code}}</strong>
+                                <strong ng-if="lang==='EN'">Prices Information For Order Code /
+                                    {{selectedTransactionBuy.id}}</strong>
+                                <br/>
+                                <span ng-repeat="price in relatedPrices">
+                                    <strong>الوحدة / </strong>
+                                    <span>{{price.obj1.name}}</span>
+                                    <strong>سعر الشراء / </strong>
+                                    <span>{{price.obj2}} SAR</span>
+                                    <strong>سعر البيع / </strong>
+                                    <span>{{price.obj3}} SAR</span>
+                                    <strong>الكمية / </strong>
+                                    <span>{{price.obj5}} </span>
+                                    <br/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selected.id">
                             <div class="alert alert-info" role="alert">
                                 <strong ng-if="lang==='AR'">إجمالي المشتريات للدواء رقم / {{selected.code}} = </strong>
                                 <strong ng-if="lang==='EN'">Total Purchace Cost For Drug Code / {{selected.id}}
@@ -509,11 +529,11 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
-                                   ng-click="newTransactionBuy()"
+                                   ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
+                                   ng-click="newTransactionSell()"
                                    ng-show="selectedTransactionBuy.id"
                                    tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلبية شراء' : 'New Order...'}}">
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلبية بيع' : 'New Sales Order...'}}">
                                     <span class="fa fa-plus-square"></span>
                                 </a>
                             </li>
@@ -586,8 +606,8 @@
                                     <td>{{transactionSell.quantity}}</td>
                                     <td>
                                         <a href=""
-                                           ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
-                                           ng-click="deleteTransactionBuy(transactionSell)">
+                                           ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_DELETE'])"
+                                           ng-click="deleteTransactionSell(transactionSell)">
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
                                         </a>
