@@ -3,6 +3,7 @@ package com.besafx.app.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.decimal4j.util.DoubleRounder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -52,6 +53,14 @@ public class TransactionSell implements Serializable {
     @JoinColumn(name = "billSell")
     @ManyToOne
     private BillSell billSell;
+
+    public Double getUnitSellCost() {
+        return DoubleRounder.round((this.transactionBuy.getUnitSellCost() / this.transactionBuy.getDrugUnit().getFactor()) * this.drugUnit.getFactor(), 3);
+    }
+
+    public Double getUnitQuantity() {
+        return DoubleRounder.round((this.transactionBuy.getDrugUnit().getFactor() / this.drugUnit.getFactor()) * this.transactionBuy.getQuantity(), 3);
+    }
 
     @JsonCreator
     public static TransactionSell Create(String jsonString) throws IOException {

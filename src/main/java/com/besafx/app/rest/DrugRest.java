@@ -32,7 +32,7 @@ public class DrugRest {
 
     private final static Logger log = LoggerFactory.getLogger(DrugRest.class);
 
-    public static final String FILTER_TABLE = "**,drugCategory[id,code,nameArabic,nameEnglish],transactionBuys[**,-drug,billBuy[id,code],transactionSells[**,-transactionBuy]]";
+    public static final String FILTER_TABLE = "**,drugCategory[id,code,nameArabic,nameEnglish],transactionBuys[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells]";
     public static final String FILTER_DRUG_COMBO = "**,drugCategory[id],-transactionBuys";
 
     @Autowired

@@ -120,13 +120,17 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
         $scope.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
-                window.open('/report/order/' + data.id + '/PDF');
+                $scope.print(data);
                 if($scope.orders){
                     $scope.orders.splice(0, 0, data);
                 }
             }, function () {
                 console.info('OrderCreateModel Closed.');
             });
+        };
+
+        $scope.print = function (order) {
+            window.open('/report/order/' + order.id + '/PDF');
         };
 
         $scope.rowMenu = [

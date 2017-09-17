@@ -84,7 +84,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
 
         $scope.refreshTransactionSellByBill = function () {
             if ($scope.selected) {
-                TransactionSellService.findByBillSell($scope.selected).then(function (data) {
+                TransactionSellService.findByBillSell($scope.selected.id).then(function (data) {
                     $scope.selected.transactionSells = data
                 });
             }
@@ -127,6 +127,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
 
         $scope.newBillSell = function () {
             ModalProvider.openBillSellCreateModel().result.then(function (data) {
+                $scope.print(data);
                 if ($scope.billSells) {
                     $scope.billSells.splice(0, 0, data);
                 }
@@ -158,6 +159,10 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 }
                 $scope.totalCostAfterDiscount = $scope.totalCost - (($scope.totalCost * $scope.selected.discount) / 100);
             }
+        };
+
+        $scope.print = function (billSell) {
+            window.open('/report/billSell/' + billSell.id + '/PDF');
         };
 
         $scope.rowMenu = [

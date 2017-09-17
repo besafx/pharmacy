@@ -56,6 +56,18 @@ public class BillSell implements Serializable {
     @OneToMany(mappedBy = "billSell", fetch = FetchType.LAZY)
     private List<TransactionSell> transactionSells = new ArrayList<>();
 
+    public Double getUnitSellCostSum() {
+        return this.transactionSells
+                .stream()
+                .mapToDouble(TransactionSell::getUnitSellCost)
+                .sum();
+    }
+
+    public Double getNet() {
+        Double totalCost = this.getUnitSellCostSum();
+        return totalCost - ((totalCost * this.discount) / 100);
+    }
+
     @JsonCreator
     public static BillSell Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

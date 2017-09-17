@@ -159,6 +159,15 @@
                                 <span ng-if="lang==='EN'">Delete</span>
                             </span>
                         </li>
+                        <li class="mdl-menu__item mdl-list__item" ng-click="print(selected)"
+                            ng-if="toggleList===1"
+                            ng-hide="!billSells || billSells.length==0">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">print</i>
+                                <span ng-if="lang==='AR'">طباعة الفاتورة</span>
+                                <span ng-if="lang==='EN'">Print...</span>
+                            </span>
+                        </li>
                     </ul>
                 </div>
 
@@ -392,9 +401,9 @@
                                         <span ng-if="lang==='EN'">{{transactionSell.transactionBuy.drug.medicalNameEnglish}}</span>
                                         ]
                                     </td>
-                                    <td>{{transactionSell.transactionBuy.drugUnit.name}}</td>
+                                    <td>{{transactionSell.drugUnit.name}}</td>
                                     <td>
-                                        <span class="label label-danger">{{transactionSell.unitCost | currency:'SAR'}}</span>
+                                        <span class="label label-danger">{{transactionSell.unitSellCost}} SAR</span>
                                     </td>
                                     <td>{{transactionSell.quantity}}</td>
                                     <td>
@@ -419,18 +428,18 @@
                     </div>
                     <div class="panel-footer">
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
-                            <div class="alert alert-info" role="alert" style="font-size: 18px">
+                            <div class="alert alert-info" role="alert">
                                 <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
                                 <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost | currency:'SAR'}}</span>
+                                <span>{{totalCost}} SAR</span>
                                 <br/>
                                 <strong ng-if="lang==='AR'">خصم المبيعات</strong>
                                 <strong ng-if="lang==='EN'">Discount</strong>
-                                <span>{{(totalCost * selected.discount) / 100 | currency:'SAR'}}</span>
+                                <span>{{(totalCost * selected.discount) / 100}} SAR</span>
                                 <br/>
                                 <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
                                 <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost - ((totalCost * selected.discount) / 100) | currency:'SAR'}}</span>
+                                <span>{{totalCost - ((totalCost * selected.discount) / 100)}} SAR</span>
                             </div>
                         </div>
                     </div>

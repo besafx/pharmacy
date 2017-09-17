@@ -56,6 +56,7 @@ public class BillBuy implements Serializable {
     @OneToMany(mappedBy = "billBuy", fetch = FetchType.LAZY)
     private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
+
     @JsonCreator
     public static BillBuy Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

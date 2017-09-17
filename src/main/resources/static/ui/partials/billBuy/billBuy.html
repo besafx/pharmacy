@@ -264,7 +264,7 @@
                                     <td st-select-row-custom="billBuy">{{billBuy.code}}</td>
                                     <td st-select-row-custom="billBuy">{{billBuy.supplier.name}}</td>
                                     <td st-select-row-custom="billBuy">{{billBuy.paymentMethod}}</td>
-                                    <td st-select-row-custom="billBuy">{{billBuy.discount | currency:'%'}}</td>
+                                    <td st-select-row-custom="billBuy">{{billBuy.discount}} %</td>
                                     <td st-select-row-custom="billBuy">
                                         <span ng-show="dateType==='H'">{{billBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                         <span ng-show="dateType==='G'">{{billBuy.date | date: 'yyyy-MM-dd'}}</span>
@@ -409,10 +409,10 @@
                                     </td>
                                     <td>{{transactionBuy.drugUnit.name}}</td>
                                     <td>
-                                        <span class="label label-danger">{{transactionBuy.unitBuyCost | currency:'SAR'}}</span>
+                                        <span class="label label-danger">{{transactionBuy.unitBuyCost}} SAR</span>
                                     </td>
                                     <td>
-                                        <span class="label label-danger">{{transactionBuy.unitSellCost | currency:'SAR'}}</span>
+                                        <span class="label label-danger">{{transactionBuy.unitSellCost}} SAR</span>
                                     </td>
                                     <td>{{transactionBuy.quantity}}</td>
                                     <td>
@@ -443,18 +443,18 @@
                     </div>
                     <div class="panel-footer">
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
-                            <div class="alert alert-info" role="alert" style="font-size: 18px">
+                            <div class="alert alert-info" role="alert">
                                 <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
                                 <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost | currency:'SAR'}}</span>
+                                <span>{{totalCost}} SAR</span>
                                 <br/>
                                 <strong ng-if="lang==='AR'">الخصم المكتسب</strong>
                                 <strong ng-if="lang==='EN'">Discount</strong>
-                                <span>{{(totalCost * selected.discount) / 100 | currency:'SAR'}}</span>
+                                <span>{{(totalCost * selected.discount) / 100}} SAR</span>
                                 <br/>
                                 <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
                                 <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost - ((totalCost * selected.discount) / 100) | currency:'SAR'}}</span>
+                                <span>{{totalCost - ((totalCost * selected.discount) / 100)}} SAR</span>
                             </div>
                         </div>
                     </div>

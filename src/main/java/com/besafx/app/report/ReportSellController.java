@@ -1,6 +1,6 @@
 package com.besafx.app.report;
 
-import com.besafx.app.service.OrderService;
+import com.besafx.app.service.BillSellService;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -15,15 +15,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ReportOrderController {
+public class ReportSellController {
 
     @Autowired
-    private OrderService orderService;
+    private BillSellService billSellService;
 
     @Autowired
     private ReportExporter reportExporter;
 
-    @RequestMapping(value = "/report/order/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/billSell/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
     public void ReportOrder(
             @PathVariable("id") Long id,
@@ -33,10 +33,10 @@ public class ReportOrderController {
          * Insert Parameters
          */
         Map<String, Object> map = new HashMap<>();
-        map.put("order", orderService.findOne(id));
+        map.put("billSell", billSellService.findOne(id));
 
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/Report.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/Report.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         reportExporter.export(exportType, response, jasperPrint);
