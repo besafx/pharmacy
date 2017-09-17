@@ -182,16 +182,9 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
         };
 
         $scope.transactionBuyCalculation = function () {
-            DrugUnitService.getRelatedPrices(
-                $scope.selectedTransactionBuy.drugUnit.id,
-                $scope.selectedTransactionBuy.quantity,
-                $scope.selectedTransactionBuy.drugUnit.factor,
-                $scope.selectedTransactionBuy.unitBuyCost,
-                $scope.selectedTransactionBuy.unitSellCost
-            )
-                .then(function (data) {
-                    $scope.relatedPrices = data;
-                })
+            DrugUnitService.getRelatedPrices($scope.selectedTransactionBuy.id).then(function (data) {
+                $scope.relatedPrices = data;
+            })
         };
 
         $scope.rowMenu = [

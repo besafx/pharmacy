@@ -11,8 +11,8 @@ app.factory("DrugUnitService",
                     return response.data;
                 });
             },
-            getRelatedPrices: function (id, defaultQuantity, defaultFactor, defaultBuyCost, defaultSellCost) {
-                return $http.get("/api/drugUnit/getRelatedPrices/" + id + "/" + defaultQuantity + "/" + defaultFactor + "/" + defaultBuyCost + "/" + defaultSellCost).then(function (response) {
+            getRelatedPrices: function (transactionBuyId) {
+                return $http.get("/api/drugUnit/getRelatedPrices/" + transactionBuyId).then(function (response) {
                     return response.data;
                 });
             }

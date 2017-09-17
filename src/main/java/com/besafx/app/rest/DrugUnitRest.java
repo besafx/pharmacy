@@ -1,7 +1,9 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.entity.DrugUnit;
+import com.besafx.app.entity.TransactionBuy;
 import com.besafx.app.service.DrugUnitService;
+import com.besafx.app.service.TransactionBuyService;
 import com.besafx.app.util.WrapperUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
@@ -31,6 +33,9 @@ public class DrugUnitRest {
     @Autowired
     private DrugUnitService drugUnitService;
 
+    @Autowired
+    private TransactionBuyService transactionBuyService;
+
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAll() {
@@ -58,15 +63,12 @@ public class DrugUnitRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drugUnits);
     }
 
-    @RequestMapping(value = "getRelatedPrices/{id}/{defaultQuantity}/{defaultFactor}/{defaultBuyCost}/{defaultSellCost}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getRelatedPrices/{transactionBuyId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getRelatedPrices(@PathVariable(value = "id") Long id,
-                                   @PathVariable(value = "defaultQuantity") Double defaultQuantity,
-                                   @PathVariable(value = "defaultFactor") Integer defaultFactor,
-                                   @PathVariable(value = "defaultBuyCost") Double defaultBuyCost,
-                                   @PathVariable(value = "defaultSellCost") Double defaultSellCost) {
+    public String getRelatedPrices(@PathVariable(value = "transactionBuyId") Long transactionBuyId) {
+        TransactionBuy transactionBuy = transactionBuyService.findOne(transactionBuyId);
         Gson gson = new Gson();
-        List<DrugUnit> drugUnits = gson.fromJson(getRelated(id), new TypeToken<List<DrugUnit>>() {
+        List<DrugUnit> drugUnits = gson.fromJson(getRelated(transactionBuy.getDrugUnit().getId()), new TypeToken<List<DrugUnit>>() {
         }.getType());
         List<WrapperUtil> wrapperUtils = new ArrayList<>();
         drugUnits.stream().forEach(unit -> {
@@ -74,10 +76,10 @@ public class DrugUnitRest {
             //Unit Name
             util.setObj1(unit);
             //Unit Buy Cost
-            util.setObj2(DoubleRounder.round((defaultBuyCost / defaultFactor) * unit.getFactor(), 3));
+            util.setObj2(DoubleRounder.round((transactionBuy.getUnitBuyCost() / transactionBuy.getDrugUnit().getFactor()) * unit.getFactor(), 3));
             //Unit Sell Cost
-            util.setObj3(DoubleRounder.round((defaultSellCost / defaultFactor) * unit.getFactor(), 3));
-            if (unit.getId().equals(id)) {
+            util.setObj3(DoubleRounder.round((transactionBuy.getUnitSellCost() / transactionBuy.getDrugUnit().getFactor()) * unit.getFactor(), 3));
+            if (unit.getId().equals(transactionBuy.getDrugUnit().getId())) {
                 //Default Unit
                 util.setObj4(true);
             } else {
@@ -85,7 +87,7 @@ public class DrugUnitRest {
                 util.setObj4(false);
             }
             //Calculate Quantity
-            util.setObj5(DoubleRounder.round((defaultFactor / unit.getFactor()) * defaultQuantity, 3));
+            util.setObj5(DoubleRounder.round((transactionBuy.getDrugUnit().getFactor() / unit.getFactor()) * transactionBuy.getQuantity(), 3));
             wrapperUtils.add(util);
         });
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5"), wrapperUtils);

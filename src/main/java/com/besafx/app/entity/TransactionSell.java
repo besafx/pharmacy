@@ -32,8 +32,6 @@ public class TransactionSell implements Serializable {
 
     private Integer code;
 
-    private Double unitCost;
-
     private Double quantity;
 
     @Temporal(TemporalType.TIMESTAMP)

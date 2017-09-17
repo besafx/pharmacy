@@ -383,16 +383,16 @@
                                         <span class="label label-success">{{transactionSell.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>
-                                        [{{transactionSell.drug.code}}]
+                                        [{{transactionSell.transactionBuy.drug.code}}]
                                         [
-                                        <span ng-if="lang==='AR'">{{transactionSell.drug.nameArabic}}</span>
-                                        <span ng-if="lang==='EN'">{{transactionSell.drug.nameEnglish}}</span>
+                                        <span ng-if="lang==='AR'">{{transactionSell.transactionBuy.drug.nameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{transactionSell.transactionBuy.drug.nameEnglish}}</span>
                                         ][
-                                        <span ng-if="lang==='AR'">{{transactionSell.drug.medicalNameArabic}}</span>
-                                        <span ng-if="lang==='EN'">{{transactionSell.drug.medicalNameEnglish}}</span>
+                                        <span ng-if="lang==='AR'">{{transactionSell.transactionBuy.drug.medicalNameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{transactionSell.transactionBuy.drug.medicalNameEnglish}}</span>
                                         ]
                                     </td>
-                                    <td>{{transactionSell.drugUnit.name}}</td>
+                                    <td>{{transactionSell.transactionBuy.drugUnit.name}}</td>
                                     <td>
                                         <span class="label label-danger">{{transactionSell.unitCost | currency:'SAR'}}</span>
                                     </td>

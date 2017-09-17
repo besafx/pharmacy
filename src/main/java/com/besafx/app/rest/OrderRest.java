@@ -33,7 +33,7 @@ public class OrderRest {
 
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
 
-    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,nickname,name,mobile]],doctor[**,person[id,nickname,name,mobile,identityNumber]]";
+    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,nickname,name,mobile]],doctor[**,person[id,nickname,name,mobile,identityNumber]],orderDetectionTypes[id]";
     public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id]],doctor[id,person[id]]";
 
     @Autowired

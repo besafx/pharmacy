@@ -1,4 +1,4 @@
-package com.besafx.app.controller;
+package com.besafx.app.report;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.service.CompanyService;

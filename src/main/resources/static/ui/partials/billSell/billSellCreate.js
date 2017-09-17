@@ -35,16 +35,9 @@ app.controller('billSellCreateCtrl', ['TransactionBuyService', 'DrugService', 'D
         };
 
         $scope.transactionBuyCalculation = function () {
-            DrugUnitService.getRelatedPrices(
-                $scope.selectedTransactionBuy.drugUnit.id,
-                $scope.selectedTransactionBuy.quantity,
-                $scope.selectedTransactionBuy.drugUnit.factor,
-                $scope.selectedTransactionBuy.unitBuyCost,
-                $scope.selectedTransactionBuy.unitSellCost
-            )
-                .then(function (data) {
-                    $scope.relatedPrices = data;
-                });
+            DrugUnitService.getRelatedPrices($scope.selectedTransactionBuy.id).then(function (data) {
+                $scope.relatedPrices = data;
+            });
         };
 
         $scope.newCustomer = function () {
@@ -86,6 +79,7 @@ app.controller('billSellCreateCtrl', ['TransactionBuyService', 'DrugService', 'D
         $scope.addTransactionSellToList = function () {
             //Add To Table
             var transactionSell = {};
+            transactionSell.transactionBuy = $scope.selectedTransactionBuy;
             transactionSell.drug = $scope.buffer.drug;
             transactionSell.drugUnit = $scope.buffer.related.obj1;
             transactionSell.unitSellCost = $scope.buffer.related.obj3;

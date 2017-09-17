@@ -9,7 +9,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -46,6 +48,17 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "doctor")
     private Doctor doctor;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<OrderDetectionType> orderDetectionTypes = new ArrayList<>();
+
+    public Double getDetectionTypeCostSum() {
+        return this.orderDetectionTypes
+                .stream()
+                .map(OrderDetectionType::getDetectionType)
+                .mapToDouble(DetectionType::getCost)
+                .sum();
+    }
 
     @JsonCreator
     public static Order Create(String jsonString) throws IOException {

@@ -120,6 +120,7 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
         $scope.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
+                window.open('/report/order/' + data.id + '/PDF');
                 if($scope.orders){
                     $scope.orders.splice(0, 0, data);
                 }

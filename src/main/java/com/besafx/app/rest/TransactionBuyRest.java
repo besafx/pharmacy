@@ -29,7 +29,7 @@ public class TransactionBuyRest {
 
     private final Logger log = LoggerFactory.getLogger(TransactionBuyRest.class);
 
-    public static final String FILTER_TABLE = "**,drugUnit[**],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],transactionSells[**,-transactionBuy]";
+    public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells";
 
     @Autowired
     private TransactionBuyService transactionBuyService;

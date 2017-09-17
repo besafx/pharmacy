@@ -36,7 +36,7 @@ public class BillSellRest {
 
     private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
 
-    public static final String FILTER_TABLE = "**,transactionSells[**,drugUnit[**],drug[**,-drugCategory,-transactionSells],-billSell,-transactionSells]";
+    public static final String FILTER_TABLE = "**,customer[**,falcons[id]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]]";
     public static final String FILTER_BILL_SELL_COMBO = "id,code";
 
     @Autowired
@@ -85,7 +85,7 @@ public class BillSellRest {
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "تم انشاء فاتورة شراء بنجاح" : "Create Bill Sell Successfully")
+                .message(lang.equals("AR") ? "تم انشاء فاتورة بيع بنجاح" : "Create Bill Sell Successfully")
                 .type("success")
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
@@ -107,7 +107,7 @@ public class BillSellRest {
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                    .message(lang.equals("AR") ? "تم حذف فاتورة شراء بنجاح" : "Delete Bill Sell Successfully")
+                    .message(lang.equals("AR") ? "تم حذف فاتورة بيع بنجاح" : "Delete Bill Sell Successfully")
                     .type("error")
                     .icon("fa-trash")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
