@@ -400,9 +400,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
                 title: function () {
                     return $rootScope.lang === 'AR' ? 'انشاء طلب جديد' : 'New Order';
                 },
-                action: function () {
-                    return 'create';
-                },
                 order: function () {
                     return {};
                 }

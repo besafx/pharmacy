@@ -6,8 +6,8 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
         $scope.items = [];
         $scope.items.push(
-            {'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'},
-            {'id': 2, 'type': 'title', 'name': 'طلبات الفحص'}
+            {'id': 1, 'type': 'link', 'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application', 'link': 'menu'},
+            {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'}
         );
 
         $scope.setSelected = function (object) {
@@ -21,6 +21,24 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                     }
                 });
             }
+        };
+
+        $scope.findPending = function () {
+            OrderService.findPending().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected($scope.orders[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'تحت التنفيذ' : 'Pending'}
+                );
+            });
         };
 
         $scope.openFilter = function () {
@@ -93,6 +111,21 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                 OrderService.filter(search.join("")).then(function (data) {
                     $scope.orders = data;
                     $scope.setSelected(data[0]);
+                    $scope.items = [];
+                    $scope.items.push(
+                        {
+                            'id': 1,
+                            'type': 'link',
+                            'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                            'link': 'menu'
+                        },
+                        {
+                            'id': 2,
+                            'type': 'title',
+                            'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                        },
+                        {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'بحث مخصص' : 'Filter'}
+                    );
                 });
             }, function () {});
         };
@@ -120,7 +153,9 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
         $scope.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
-                $scope.print(data);
+                $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
+                    $scope.print(data);
+                });
                 if($scope.orders){
                     $scope.orders.splice(0, 0, data);
                 }
@@ -165,6 +200,7 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
+            $scope.findPending();
         }, 1500);
 
     }]);

@@ -1,5 +1,5 @@
-app.controller('orderCreateUpdateCtrl', ['OrderService', 'TransactionSellDetectionService', 'OrderDetectionTypeService', 'OrderAttachService', 'BillSellDetectionService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'order',
-    function (OrderService, TransactionSellDetectionService, OrderDetectionTypeService, OrderAttachService, BillSellDetectionService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, order) {
+app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'order',
+    function (OrderService, OrderDetectionTypeService, OrderAttachService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, order) {
 
         $timeout(function () {
             $scope.refreshCustomers();
@@ -9,21 +9,15 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'TransactionSellDetecti
 
         $scope.order = order;
 
-        $scope.billSellDetection = {};
-
         $scope.buffer = {};
-
-        $scope.buffer.discount = 0;
 
         $scope.buffer.selectedDetectionType = {};
 
-        $scope.buffer.detectionTypeList = [];
+        $scope.orderDetectionTypeList = [];
 
         $scope.wrappers = [];
 
         $scope.title = title;
-
-        $scope.action = action;
 
         $scope.refreshCustomers = function () {
             CustomerService.findAll().then(function (data) {
@@ -93,12 +87,10 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'TransactionSellDetecti
 
         $scope.calculateCostSum = function () {
             $scope.totalCost = 0;
-            $scope.totalDiscount = 0;
-            if ($scope.buffer.detectionTypeList) {
-                for (var i = 0; i < $scope.buffer.detectionTypeList.length; i++) {
-                    var detectionType = $scope.buffer.detectionTypeList[i];
-                    $scope.totalCost = $scope.totalCost + detectionType.unitCost;
-                    $scope.totalDiscount = $scope.totalDiscount + detectionType.discount;
+            if ($scope.orderDetectionTypeList) {
+                for (var i = 0; i < $scope.orderDetectionTypeList.length; i++) {
+                    var orderDetectionType = $scope.orderDetectionTypeList[i];
+                    $scope.totalCost = $scope.totalCost + orderDetectionType.detectionType.cost;
                 }
             }
         };
@@ -204,60 +196,29 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'TransactionSellDetecti
 
         $scope.addDetectionTypeToList = function () {
             //Add To Table
-            $scope.buffer.selectedDetectionType.discount = $scope.buffer.discount;
-            $scope.buffer.detectionTypeList.push($scope.buffer.selectedDetectionType);
+            var orderDetectionType = {};
+            orderDetectionType.detectionType = $scope.buffer.selectedDetectionType;
+            $scope.orderDetectionTypeList.push(orderDetectionType);
             $scope.buffer.selectedDetectionType = {};
-            $scope.buffer.discount = 0;
             $scope.calculateCostSum();
         };
 
         $scope.removeDetectionTypeFromList = function (index) {
-            $scope.buffer.detectionTypeList.splice(index, 1);
+            $scope.orderDetectionTypeList.splice(index, 1);
             $scope.calculateCostSum();
         };
 
         $scope.submit = function () {
-            switch ($scope.action) {
-                case 'create' :
-                    OrderService.create($scope.order).then(function (data) {
-                        //انشاء رأس الفاتورة الخاصة بالفحوصات
-                        $scope.billSellDetection.order = data;
-                        BillSellDetectionService.create($scope.billSellDetection).then(function (data_billSellDetection) {
-                            //انشاء تفاصيل الفاتورة
-                            angular.forEach($scope.buffer.detectionTypeList, function (detectionType) {
-                                var transactionSellDetection = {};
-                                transactionSellDetection.detectionType = detectionType;
-                                transactionSellDetection.billSellDetection = data_billSellDetection;
-                                transactionSellDetection.discount = detectionType.discount;
-                                TransactionSellDetectionService.create(transactionSellDetection).then(function (data) {
+            $scope.order.orderDetectionTypes = $scope.orderDetectionTypeList;
+            OrderService.create($scope.order).then(function (data) {
+                //رفع الملفات
+                angular.forEach($scope.wrappers, function (wrapper) {
+                    OrderAttachService.upload(data, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
 
-                                });
-                            });
-                        });
-                        //ربط الفحوصات مع الطلب
-                        angular.forEach($scope.buffer.detectionTypeList, function (detectionType) {
-                            var orderDetectionType = {};
-                            orderDetectionType.detectionType = detectionType;
-                            orderDetectionType.order = data;
-                            OrderDetectionTypeService.create(orderDetectionType).then(function (data) {
-
-                            });
-                        });
-                        //رفع الملفات
-                        angular.forEach($scope.wrappers, function (wrapper) {
-                            OrderAttachService.upload(data, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
-
-                            });
-                        });
-                        $uibModalInstance.close(data);
                     });
-                    break;
-                case 'update' :
-                    OrderService.update($scope.order).then(function (data) {
-                        $scope.order = data;
-                    });
-                    break;
-            }
+                });
+                $uibModalInstance.close(data);
+            });
         };
 
         $scope.cancel = function () {

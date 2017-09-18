@@ -1,6 +1,7 @@
 package com.besafx.app.entity;
 
 import com.besafx.app.entity.enums.OrderCondition;
+import com.besafx.app.entity.enums.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -41,6 +42,13 @@ public class Order implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    private Integer checkCode;
+
+    private Double discount;
+
     @ManyToOne
     @JoinColumn(name = "falcon")
     private Falcon falcon;
@@ -53,11 +61,15 @@ public class Order implements Serializable {
     private List<OrderDetectionType> orderDetectionTypes = new ArrayList<>();
 
     public Double getDetectionTypeCostSum() {
-        return this.orderDetectionTypes
-                .stream()
-                .map(OrderDetectionType::getDetectionType)
-                .mapToDouble(DetectionType::getCost)
-                .sum();
+        try {
+            return this.orderDetectionTypes
+                    .stream()
+                    .map(OrderDetectionType::getDetectionType)
+                    .mapToDouble(DetectionType::getCost)
+                    .sum();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     @JsonCreator

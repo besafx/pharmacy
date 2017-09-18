@@ -163,6 +163,7 @@
                                     <input id="checkCode"
                                            type="number"
                                            ng-required="billSellDetection.paymentMethod==='Check'"
+                                           ng-disabled="billSellDetection.paymentMethod!=='Check'"
                                            disable-validation-message=""
                                            class="form-control"
                                            ng-model="billBuy.checkCode">
@@ -179,7 +180,7 @@
                                         </span>
                                         <input dir="rtl"
                                                type="number"
-                                               min="1"
+                                               min="0"
                                                max="100"
                                                disable-validation-message=""
                                                class="form-control"

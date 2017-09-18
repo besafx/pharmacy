@@ -28,7 +28,7 @@ import java.util.List;
 public class DetectionTypeRest {
     
     public static final String FILTER_TABLE = "**";
-    public static final String FILTER_DETECTION_TYPE_COMBO = "id,code,nameArabic,nameEnglish,unitCost";
+    public static final String FILTER_DETECTION_TYPE_COMBO = "id,code,nameArabic,nameEnglish,cost";
 
     @Autowired
     private DetectionTypeService detectionTypeService;

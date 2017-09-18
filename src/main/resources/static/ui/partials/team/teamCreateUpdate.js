@@ -21,8 +21,6 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
             {id: 17, name: $rootScope.lang==='AR' ? 'إنشاء أنواع الفحوصات' : 'Create Detection Types' , value: 'ROLE_DETECTION_TYPE_CREATE', selected: false},
             {id: 18, name: $rootScope.lang==='AR' ? 'تعديل بيانات أنواع الفحوصات' : 'Update Detection Types Information' , value: 'ROLE_DETECTION_TYPE_UPDATE', selected: false},
             {id: 19, name: $rootScope.lang==='AR' ? 'حذف أنواع الفحوصات' : 'Delete Detection Types' , value: 'ROLE_DETECTION_TYPE_DELETE', selected: false},
-            {id: 17, name: $rootScope.lang==='AR' ? 'إنشاء فواتير الفحوصات' : 'Create Detection Bills' , value: 'ROLE_BILL_SELL_DETECTION_CREATE', selected: false},
-            {id: 19, name: $rootScope.lang==='AR' ? 'حذف فواتير الفحوصات' : 'Delete Detection Bills' , value: 'ROLE_BILL_SELL_DETECTION_DELETE', selected: false},
             {id: 20, name: $rootScope.lang==='AR' ? 'إنشاء طلبات الفحص' : 'Create Orders' , value: 'ROLE_ORDER_CREATE', selected: false},
             {id: 21, name: $rootScope.lang==='AR' ? 'تعديل بيانات طلبات الفحص' : 'Update Orders Information' , value: 'ROLE_ORDER_UPDATE', selected: false},
             {id: 22, name: $rootScope.lang==='AR' ? 'حذف طلبات الفحص' : 'Delete Orders' , value: 'ROLE_ORDER_DELETE', selected: false},

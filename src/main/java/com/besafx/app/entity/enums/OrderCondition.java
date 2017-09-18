@@ -1,7 +1,7 @@
 package com.besafx.app.entity.enums;
 public enum OrderCondition {
     Pending("تحت التنفيذ"),
-    Processing("تحت الفحص"),
+    Diagnosed("تم التشخيص"),
     Done("مكتمل"),
     Canceled("ملغي");
     private String name;

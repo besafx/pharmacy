@@ -1,9 +1,11 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.entity.Order;
+import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.enums.OrderCondition;
 import com.besafx.app.search.OrderSearch;
+import com.besafx.app.service.OrderDetectionTypeService;
 import com.besafx.app.service.OrderService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 
 @RestController
 @RequestMapping(value = "/api/order/")
@@ -33,14 +36,17 @@ public class OrderRest {
 
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
 
-    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,nickname,name,mobile]],doctor[**,person[id,nickname,name,mobile,identityNumber]],orderDetectionTypes[id]";
-    public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id]],doctor[id,person[id]]";
+    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],orderDetectionTypes[**,-order]";
+    public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id,name]],doctor[id,person[id,name]]";
 
     @Autowired
     private OrderService orderService;
 
     @Autowired
     private OrderSearch orderSearch;
+
+    @Autowired
+    private OrderDetectionTypeService orderDetectionTypeService;
 
     @Autowired
     private PersonService personService;
@@ -62,6 +68,12 @@ public class OrderRest {
         order.setOrderCondition(OrderCondition.Pending);
         order.setDate(new DateTime().toDate());
         order = orderService.save(order);
+        ListIterator<OrderDetectionType> listIterator = order.getOrderDetectionTypes().listIterator();
+        while (listIterator.hasNext()) {
+            OrderDetectionType orderDetectionType = listIterator.next();
+            orderDetectionType.setOrder(order);
+            listIterator.set(orderDetectionTypeService.save(orderDetectionType));
+        }
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
@@ -116,6 +128,34 @@ public class OrderRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findOne(id));
+    }
+
+    @RequestMapping(value = "findPending", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findPending() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Pending)));
+    }
+
+    @RequestMapping(value = "findDiagnosed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findDiagnosed() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Diagnosed)));
+    }
+
+    @RequestMapping(value = "findDone", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findDone() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Done)));
+    }
+
+    @RequestMapping(value = "findCanceled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findCanceled() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Canceled)));
     }
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -438,3 +438,8 @@ WebKit inertia scrolling is being added here for any present/future devices that
 .Middle {
     flex: 1;
 }
+
+.breadcrumb {
+    direction: rtl;
+    float: right;
+}
