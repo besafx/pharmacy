@@ -30,7 +30,7 @@ public class Falcon implements Serializable {
     @GeneratedValue(generator = "falconSequenceGenerator")
     private Long id;
 
-    private Integer code;
+    private Long code;
 
     private String type;
 
