@@ -80,7 +80,11 @@ public class Order implements Serializable {
     }
 
     public Double getNetCost() {
-        Double total = getDetectionTypeCostSum();
-        return total - (total * this.discount / 100);
+        try {
+            Double total = getDetectionTypeCostSum();
+            return total - (total * this.discount / 100);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }
