@@ -3,9 +3,7 @@ package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Customer;
 import com.besafx.app.entity.Person;
-import com.besafx.app.service.CustomerService;
-import com.besafx.app.service.FalconService;
-import com.besafx.app.service.PersonService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -31,16 +29,20 @@ import java.util.List;
 @RequestMapping(value = "/api/customer/")
 public class CustomerRest {
 
-    private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
-
     public static final String FILTER_TABLE = "**,falcons[**,customer[id,code,name]]";
     public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name,mobile,identityNumber";
-
+    private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
     @Autowired
     private CustomerService customerService;
 
     @Autowired
     private FalconService falconService;
+
+    @Autowired
+    private BillSellService billSellService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private PersonService personService;
@@ -136,6 +138,14 @@ public class CustomerRest {
     public void delete(@PathVariable Long id, Principal principal) {
         Customer customer = customerService.findOne(id);
         if (customer != null) {
+            billSellService.findByCustomer(customer).stream().forEach(billSell -> {
+                billSell.setCustomer(null);
+                billSellService.save(billSell);
+            });
+            orderService.findByFalconIn(customer.getFalcons()).stream().forEach(order -> {
+                order.setFalcon(null);
+                orderService.save(order);
+            });
             falconService.delete(customer.getFalcons());
             customerService.delete(id);
             Person caller = personService.findByEmail(principal.getName());

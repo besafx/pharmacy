@@ -179,6 +179,7 @@ gulp.task('scripts', function () {
         './partials/order/orderAttachUpload.js',
 
         './partials/report/person/personsIn.js',
+        './partials/report/order/orderByDate.js',
 
         './partials/help/help.js',
         './partials/profile/profile.js',

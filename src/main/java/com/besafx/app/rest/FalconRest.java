@@ -4,6 +4,7 @@ import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Falcon;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.FalconService;
+import com.besafx.app.service.OrderService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -33,6 +34,9 @@ public class FalconRest {
 
     @Autowired
     private FalconService falconService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private PersonService personService;
@@ -97,6 +101,10 @@ public class FalconRest {
     public void delete(@PathVariable Long id, Principal principal) {
         Falcon falcon = falconService.findOne(id);
         if (falcon != null) {
+            orderService.findByFalcon(falcon).stream().forEach(order -> {
+                order.setFalcon(null);
+                orderService.save(order);
+            });
             falconService.delete(id);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();

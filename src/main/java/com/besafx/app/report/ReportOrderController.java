@@ -1,10 +1,12 @@
 package com.besafx.app.report;
 
 import com.besafx.app.service.OrderService;
+import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -37,6 +40,51 @@ public class ReportOrderController {
 
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/Report.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export(exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/orders", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportOrders(
+            @RequestParam("ids") List<Long> ids,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        map.put("orders", orderService.findByIdIn(ids));
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrders.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export(exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/ordersByDate", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportOrdersByDate(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        map.put("orders", orderService.findByDateBetween(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate()));
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مختصر لطلبات الفحص حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateRTL(dateFrom));
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateRTL(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrders.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         reportExporter.export(exportType, response, jasperPrint);
