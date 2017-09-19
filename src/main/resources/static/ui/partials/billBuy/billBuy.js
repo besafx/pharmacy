@@ -130,7 +130,6 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                 if ($scope.billBuys) {
                     $scope.billBuys.splice(0, 0, data);
                 }
-                //اعطاء امر طباعة للفاتورة
             }, function () {
                 console.info('BillBuyCreateModel Closed.');
             });
@@ -142,7 +141,6 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                     $scope.selected.transactionBuys.splice(0, 0, data);
                     $scope.calculateCostSum();
                 }
-                //اعطاء امر طباعة للفاتورة
             }, function () {
                 console.info('TransactionBuyCreateModel Closed.');
             });

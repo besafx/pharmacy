@@ -1,4 +1,4 @@
-app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'order',
+app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'order',
     function (OrderService, OrderDetectionTypeService, OrderAttachService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, order) {
 
         $timeout(function () {
@@ -213,6 +213,7 @@ app.controller('orderCreateUpdateCtrl', ['OrderService', 'OrderDetectionTypeServ
             OrderService.create($scope.order).then(function (data) {
                 //رفع الملفات
                 angular.forEach($scope.wrappers, function (wrapper) {
+                    console.info($scope.wrappers);
                     OrderAttachService.upload(data, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
 
                     });

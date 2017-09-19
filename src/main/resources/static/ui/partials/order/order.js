@@ -1,5 +1,5 @@
-app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
-    function (OrderService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
+app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
+    function (OrderService, OrderDetectionTypeService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
         $scope.buffer = {};
@@ -37,6 +37,60 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                     },
                     {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
                     {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'تحت التنفيذ' : 'Pending'}
+                );
+            });
+        };
+
+        $scope.findDiagnosed = function () {
+            OrderService.findDiagnosed().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected($scope.orders[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'تم التشخيص' : 'Diagnosed'}
+                );
+            });
+        };
+
+        $scope.findDone = function () {
+            OrderService.findDone().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected($scope.orders[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'مكتملة' : 'Done'}
+                );
+            });
+        };
+
+        $scope.findCanceled = function () {
+            OrderService.findCanceled().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected($scope.orders[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'مُلغاه' : 'Canceled'}
                 );
             });
         };
@@ -132,7 +186,7 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
 
         $scope.delete = function (order) {
             if (order) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلب فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف الطلب فعلاً؟", "error", "fa-trash", function () {
                     OrderService.remove(order.id).then(function () {
                         var index = $scope.orders.indexOf(order);
                         $scope.orders.splice(index, 1);
@@ -142,7 +196,7 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                 return;
             }
 
-            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلب فعلاً؟", "error", "fa-trash", function () {
+            $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف الطلب فعلاً؟", "error", "fa-trash", function () {
                 OrderService.remove($scope.selected.id).then(function () {
                     var index = $scope.orders.indexOf($scope.selected);
                     $scope.orders.splice(index, 1);
@@ -164,8 +218,27 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
             });
         };
 
+        $scope.newOrderDetectionType = function () {
+            ModalProvider.openOrderDetectionTypeCreateModel($scope.selected).result.then(function (data) {
+                if ($scope.selected.orderDetectionTypes) {
+                    $scope.selected.orderDetectionTypes.splice(0, 0, data);
+                }
+                $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
+                    $scope.print($scope.selected);
+                });
+            }, function () {
+                console.info('OrderCreateModel Closed.');
+            });
+        };
+
         $scope.print = function (order) {
             window.open('/report/order/' + order.id + '/PDF');
+        };
+
+        $scope.refreshOrderDetectionTypeByOrder = function () {
+            OrderDetectionTypeService.findByOrder($scope.selected).then(function (data) {
+                $scope.selected.orderDetectionTypes = data;
+            });
         };
 
         $scope.rowMenu = [
@@ -179,21 +252,21 @@ app.controller("orderCtrl", ['OrderService', 'ModalProvider', '$uibModal', '$sco
                 }
             },
             {
-                html: '<div class="drop-menu">تعديل بيانات الطلب<span class="fa fa-edit fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_UPDATE']);
-                },
-                click: function ($itemScope, $event, value) {
-                    ModalProvider.openOrderUpdateModel($itemScope.order);
-                }
-            },
-            {
                 html: '<div class="drop-menu">حذف الطلب<span class="fa fa-trash fa-lg"></span></div>',
                 enabled: function () {
                     return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_DELETE']);
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.order);
+                }
+            },
+            {
+                html: '<div class="drop-menu">طباعة الطلب<span class="fa fa-print fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.print($itemScope.order);
                 }
             }
         ];

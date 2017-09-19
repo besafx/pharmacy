@@ -391,8 +391,8 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/order/orderCreateUpdate.html',
-            controller: 'orderCreateUpdateCtrl',
+            templateUrl: '/ui/partials/order/orderCreate.html',
+            controller: 'orderCreateCtrl',
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
@@ -402,6 +402,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
                 },
                 order: function () {
                     return {};
+                }
+            }
+        });
+    };
+
+    this.openOrderDetectionTypeCreateModel = function (order) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/order/orderDetectionTypeCreate.html',
+            controller: 'orderDetectionTypeCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                order: function () {
+                    return order;
                 }
             }
         });

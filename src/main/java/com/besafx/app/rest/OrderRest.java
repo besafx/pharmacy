@@ -29,16 +29,15 @@ import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/order/")
 public class OrderRest {
 
-    private final Logger log = LoggerFactory.getLogger(OrderRest.class);
-
     public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],orderDetectionTypes[**,-order]";
     public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id,name]],doctor[id,person[id,name]]";
-
+    private final Logger log = LoggerFactory.getLogger(OrderRest.class);
     @Autowired
     private OrderService orderService;
 
@@ -94,6 +93,7 @@ public class OrderRest {
     public void delete(@PathVariable Long id, Principal principal) {
         Order order = orderService.findOne(id);
         if (order != null) {
+            orderDetectionTypeService.delete(order.getOrderDetectionTypes());
             orderService.delete(id);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -134,28 +134,36 @@ public class OrderRest {
     @ResponseBody
     public String findPending() {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Pending)));
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Pending))
+                        .stream().sorted(Comparator.comparing(Order::getCode))
+                        .collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "findDiagnosed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findDiagnosed() {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Diagnosed)));
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Diagnosed))
+                        .stream().sorted(Comparator.comparing(Order::getCode))
+                        .collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "findDone", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findDone() {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Done)));
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Done))
+                        .stream().sorted(Comparator.comparing(Order::getCode))
+                        .collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "findCanceled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findCanceled() {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Canceled)));
+                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Canceled))
+                        .stream().sorted(Comparator.comparing(Order::getCode))
+                        .collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

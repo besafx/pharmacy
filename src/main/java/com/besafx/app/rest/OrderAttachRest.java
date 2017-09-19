@@ -1,15 +1,14 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.DropboxManager;
-import com.besafx.app.entity.OrderAttach;
 import com.besafx.app.entity.Attach;
+import com.besafx.app.entity.OrderAttach;
 import com.besafx.app.service.AttachService;
 import com.besafx.app.service.OrderAttachService;
 import com.besafx.app.service.OrderService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
@@ -22,8 +21,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -31,10 +31,8 @@ import java.util.concurrent.Future;
 @RequestMapping(value = "/api/orderAttach/")
 public class OrderAttachRest {
 
-    private final static Logger log = LoggerFactory.getLogger(OrderAttachRest.class);
-
     public static final String FILTER_TABLE = "id,order[id],attach[id]";
-
+    private final static Logger log = LoggerFactory.getLogger(OrderAttachRest.class);
     @Autowired
     private PersonService personService;
 
@@ -57,12 +55,13 @@ public class OrderAttachRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_ATTACH_CREATE')")
     public String upload(@RequestParam(value = "orderId") Long orderId,
-                                @RequestParam(value = "fileName") String fileName,
-                                @RequestParam(value = "mimeType") String mimeType,
-                                @RequestParam(value = "description") String description,
-                                @RequestParam(value = "file") MultipartFile file,
-                                Principal principal)
-            throws ExecutionException, InterruptedException {
+                         @RequestParam(value = "fileName") String fileName,
+                         @RequestParam(value = "mimeType") String mimeType,
+                         @RequestParam(value = "description") String description,
+                         @RequestParam(value = "remote") Boolean remote,
+                         @RequestParam(value = "file") MultipartFile file,
+                         Principal principal)
+            throws ExecutionException, InterruptedException, IOException {
 
         OrderAttach orderAttach = new OrderAttach();
         orderAttach.setOrder(orderService.findOne(orderId));
@@ -73,26 +72,38 @@ public class OrderAttachRest {
         attach.setDescription(description);
         attach.setSize(file.getSize());
         attach.setDate(new DateTime().toDate());
+        attach.setRemote(remote);
         attach.setPerson(personService.findByEmail(principal.getName()));
 
-        Future<Boolean> uploadTask = dropboxManager.uploadFile(file, "/Pharmacy4Falcon/Orders/" + orderId + "/" + fileName + "." + mimeType);
-        if (uploadTask.get()) {
-            Future<String> shareTask = dropboxManager.shareFile("/Pharmacy4Falcon/Orders/" + orderId + "/" + fileName + "." + mimeType);
-            attach.setLink(shareTask.get());
-            notificationService.notifyOne(Notification
-                    .builder()
-                    .title("طلبات الفحص")
-                    .message("تم رفع الملف" + " [ " + file.getOriginalFilename() + " ] " + " بنجاح.")
-                    .type("success")
-                    .icon("fa-upload")
-                    .build(), principal.getName());
+        String path = "./Pharmacy4Falcon/Orders/" + orderId + "/" + fileName + "." + mimeType;
 
+        if (remote) {
+            Future<Boolean> uploadTask = dropboxManager.uploadFile(file, path);
+            if (uploadTask.get()) {
+                Future<String> shareTask = dropboxManager.shareFile(path);
+                attach.setLink(shareTask.get());
+                attach = attachService.save(attach);
+                orderAttach.setAttach(attach);
+            }
+        } else {
+            File tempFile = new File(path);
+            tempFile.getParentFile().mkdirs();
+            tempFile.createNewFile();
+
+            attach.setLink(tempFile.getPath());
             attach = attachService.save(attach);
             orderAttach.setAttach(attach);
-            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.save(orderAttach));
-        } else {
-            return null;
         }
+
+        notificationService.notifyOne(Notification
+                .builder()
+                .title("طلبات الفحص")
+                .message("تم رفع الملف" + " [ " + file.getOriginalFilename() + " ] " + " بنجاح.")
+                .type("success")
+                .icon("fa-upload")
+                .build(), principal.getName());
+
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.save(orderAttach));
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

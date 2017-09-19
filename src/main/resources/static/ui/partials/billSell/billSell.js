@@ -127,11 +127,12 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
 
         $scope.newBillSell = function () {
             ModalProvider.openBillSellCreateModel().result.then(function (data) {
-                $scope.print(data);
+                $rootScope.showConfirmNotify("المبيعات", "هل تود طباعة الفاتورة ؟", "notification", "fa-info", function () {
+                    $scope.print(data);
+                });
                 if ($scope.billSells) {
                     $scope.billSells.splice(0, 0, data);
                 }
-                //اعطاء امر طباعة للفاتورة
             }, function () {
                 console.info('BillSellCreateModel Closed.');
             });
@@ -182,6 +183,15 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.billSell);
+                }
+            },
+            {
+                html: '<div class="drop-menu">طباعة الفاتورة<span class="fa fa-print fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.print($itemScope.billSell);
                 }
             }
         ];

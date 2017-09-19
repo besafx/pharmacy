@@ -25,6 +25,15 @@ app.controller('billBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'Supplier
             });
         };
 
+        $scope.newDrug = function () {
+            ModalProvider.openDrugCreateModel().result.then(function (data) {
+                $scope.drugs.splice(0, 0, data);
+            }, function () {
+                console.info('DrugCreateModel Closed.');
+            });
+        };
+
+
         $scope.refreshDrugs = function () {
             DrugService.findAllCombo().then(function (data) {
                 $scope.drugs = data;

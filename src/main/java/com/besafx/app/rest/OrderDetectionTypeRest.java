@@ -11,8 +11,6 @@ import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
-import com.google.common.collect.Lists;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +25,7 @@ import java.util.List;
 @RequestMapping(value = "/api/orderDetectionType/")
 public class OrderDetectionTypeRest {
 
-    public static final String FILTER_TABLE = "id,order[id],detectionType[id]";
+    public static final String FILTER_TABLE = "**,order[id,code]";
 
     @Autowired
     private OrderDetectionTypeService orderDetectionTypeService;

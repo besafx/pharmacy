@@ -5,9 +5,7 @@ import com.besafx.app.entity.Person;
 import com.besafx.app.entity.TransactionBuy;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.search.BillBuySearch;
-import com.besafx.app.service.BillBuyService;
-import com.besafx.app.service.PersonService;
-import com.besafx.app.service.TransactionBuyService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -29,16 +27,15 @@ import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/billBuy/")
 public class BillBuyRest {
 
-    private final Logger log = LoggerFactory.getLogger(BillBuyRest.class);
-
     public static final String FILTER_TABLE = "**,transactionBuys[**,drugUnit[**],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]";
     public static final String FILTER_BILL_BUY_COMBO = "id,code";
-
+    private final Logger log = LoggerFactory.getLogger(BillBuyRest.class);
     @Autowired
     private BillBuyService billBuyService;
 
@@ -53,6 +50,12 @@ public class BillBuyRest {
 
     @Autowired
     private BillBuySearch billBuySearch;
+
+    @Autowired
+    private BillSellService billSellService;
+
+    @Autowired
+    private TransactionSellService transactionSellService;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -100,6 +103,7 @@ public class BillBuyRest {
     public void delete(@PathVariable Long id, Principal principal) {
         BillBuy billBuy = billBuyService.findOne(id);
         if (billBuy != null) {
+            transactionSellService.delete(billBuy.getTransactionBuys().stream().flatMap(transactionBuy -> transactionBuy.getTransactionSells().stream()).collect(Collectors.toList()));
             transactionBuyService.delete(billBuy.getTransactionBuys());
             billBuyService.delete(id);
             Person caller = personService.findByEmail(principal.getName());

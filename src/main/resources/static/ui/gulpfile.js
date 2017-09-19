@@ -173,7 +173,8 @@ gulp.task('scripts', function () {
         './partials/falcon/falcon.js',
         './partials/falcon/falconCreateUpdate.js',
         './partials/order/order.js',
-        './partials/order/orderCreateUpdate.js',
+        './partials/order/orderCreate.js',
+        './partials/order/orderDetectionTypeCreate.js',
         './partials/order/orderFilter.js',
         './partials/order/orderAttachUpload.js',
 
