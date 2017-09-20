@@ -37,6 +37,45 @@
                             <div class="form-group row">
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="code" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم النوع</span>
+                                        <span ng-if="lang==='EN'">Type Code</span>
+                                    </label>
+                                    <input id="code"
+                                           type="text"
+                                           focus-autofocus="1"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control arabic-control"
+                                           placeholder="{{lang==='AR' ? 'ادخل رقم غير مكرر' : 'Type Unique Code'}}"
+                                           ng-model="detectionType.code">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="cost" class="control-label">
+                                        <span ng-if="lang==='AR'">التكلفة</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group" id="cost">
+                                        <span class="input-group-addon">
+                                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                                            <span ng-if="lang==='EN'">SAR</span>
+                                        </span>
+                                        <input dir="rtl"
+                                               type="number"
+                                               min="0"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="detectionType.cost">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     <label for="name_ar" class="control-label">
                                         <span ng-if="lang==='AR'">الاسم عربي</span>
                                         <span ng-if="lang==='EN'">Arabic Name</span>
@@ -95,30 +134,6 @@
                                            class="form-control english-control"
                                            placeholder="Type Description..."
                                            ng-model="detectionType.descriptionEnglish">
-                                </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <label for="cost" class="control-label">
-                                        <span ng-if="lang==='AR'">التكلفة</span>
-                                        <span ng-if="lang==='EN'">Cost</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="cost">
-                                        <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">ريال سعودي</span>
-                                            <span ng-if="lang==='EN'">SAR</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               min="0"
-                                               required="required"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="detectionType.unitCost">
-                                    </div>
                                 </div>
 
                             </div>

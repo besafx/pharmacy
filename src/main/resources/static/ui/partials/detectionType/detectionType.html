@@ -235,6 +235,11 @@
                                         <span ng-if="lang==='EN'">#</span>
                                     </th>
 
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم النوع</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
                                     <th st-sort="nameArabic">
                                         <span ng-if="lang==='AR'">اسم النوع</span>
                                         <span ng-if="lang==='EN'">Name</span>
@@ -253,7 +258,7 @@
 
                                 </tr>
                                 <tr>
-                                    <th colspan="4">
+                                    <th colspan="5">
                                         <input st-search=""
                                                class="form-control"
                                                placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
@@ -269,12 +274,13 @@
                                     ng-right-click="setSelected(detectionType)"
                                     ng-class="{'mdl-color--blue-grey-100':detectionType.isSelected}">
                                     <td st-select-row-custom="detectionType">{{$index+1}}</td>
+                                    <td st-select-row-custom="detectionType">{{detectionType.code}}</td>
                                     <td st-select-row-custom="detectionType">
                                         <span ng-if="lang==='AR'">{{detectionType.nameArabic}}</span>
                                         <span ng-if="lang==='EN'">{{detectionType.nameEnglish}}</span>
                                     </td>
                                     <td st-select-row-custom="detectionType">
-                                        <span class="label label-danger">{{detectionType.cost | currency:'SAR':0.0}}</span>
+                                        <span class="label label-danger">{{detectionType.cost}} SAR</span>
                                     </td>
                                     <td st-select-row-custom="detectionType">
                                         <span ng-if="lang==='AR'">{{detectionType.descriptionArabic}}</span>
@@ -283,7 +289,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="4">
+                                    <td colspan="5">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -291,7 +297,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="4">
+                                    <td colspan="5">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
