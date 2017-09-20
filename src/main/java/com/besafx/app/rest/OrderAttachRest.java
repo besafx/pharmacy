@@ -21,7 +21,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.concurrent.ExecutionException;
@@ -75,35 +74,26 @@ public class OrderAttachRest {
         attach.setRemote(remote);
         attach.setPerson(personService.findByEmail(principal.getName()));
 
-        String path = "./Pharmacy4Falcon/Orders/" + orderId + "/" + fileName + "." + mimeType;
+        String path = "/Pharmacy4Falcon/Orders/" + orderId + "/" + fileName + "." + mimeType;
 
-        if (remote) {
-            Future<Boolean> uploadTask = dropboxManager.uploadFile(file, path);
-            if (uploadTask.get()) {
-                Future<String> shareTask = dropboxManager.shareFile(path);
-                attach.setLink(shareTask.get());
-                attach = attachService.save(attach);
-                orderAttach.setAttach(attach);
-            }
-        } else {
-            File tempFile = new File(path);
-            tempFile.getParentFile().mkdirs();
-            tempFile.createNewFile();
-
-            attach.setLink(tempFile.getPath());
+        Future<Boolean> uploadTask = dropboxManager.uploadFile(file, path);
+        if (uploadTask.get()) {
+            Future<String> shareTask = dropboxManager.shareFile(path);
+            attach.setLink(shareTask.get());
             attach = attachService.save(attach);
             orderAttach.setAttach(attach);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("طلبات الفحص")
+                    .message("تم رفع الملف" + " [ " + file.getOriginalFilename() + " ] " + " بنجاح.")
+                    .type("success")
+                    .icon("fa-upload")
+                    .build(), principal.getName());
+
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.save(orderAttach));
+        }else{
+            return null;
         }
-
-        notificationService.notifyOne(Notification
-                .builder()
-                .title("طلبات الفحص")
-                .message("تم رفع الملف" + " [ " + file.getOriginalFilename() + " ] " + " بنجاح.")
-                .type("success")
-                .icon("fa-upload")
-                .build(), principal.getName());
-
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.save(orderAttach));
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
