@@ -102,6 +102,7 @@ gulp.task('scripts', function () {
         './init/factory/customerFactory.js',
         './init/factory/supplierFactory.js',
         './init/factory/detectionTypeFactory.js',
+        './init/factory/diagnosisFactory.js',
         './init/factory/doctorFactory.js',
         './init/factory/drugFactory.js',
         './init/factory/drugUnitFactory.js',
@@ -175,6 +176,7 @@ gulp.task('scripts', function () {
         './partials/order/order.js',
         './partials/order/orderCreate.js',
         './partials/order/orderDetectionTypeCreate.js',
+        './partials/order/diagnosisCreate.js',
         './partials/order/orderFilter.js',
         './partials/order/orderAttachUpload.js',
 
@@ -182,6 +184,7 @@ gulp.task('scripts', function () {
         './partials/report/order/orderByDate.js',
         './partials/report/order/orderByList.js',
         './partials/report/order/orderDetailsByList.js',
+        './partials/report/order/orderDetailsByDate.js',
 
         './partials/help/help.js',
         './partials/profile/profile.js',

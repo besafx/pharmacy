@@ -136,6 +136,18 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'إنشاء السحبيات' : 'Create Withdraws',
                 value: 'ROLE_WITHDRAW_CREATE',
                 selected: false
+            },
+            {
+                id: 51,
+                name: $rootScope.lang === 'AR' ? 'إنشاء الوصفات الطبية' : 'Create Prescription',
+                value: 'ROLE_DIAGNOSIS_CREATE',
+                selected: false
+            },
+            {
+                id: 52,
+                name: $rootScope.lang === 'AR' ? 'حذف الوصفات الطبية' : 'Delete Prescription',
+                value: 'ROLE_DIAGNOSIS_DELETE',
+                selected: false
             }
         ];
 

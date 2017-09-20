@@ -106,15 +106,47 @@ public class ReportOrderController {
         StringBuilder title = new StringBuilder();
         title.append("تقرير مختصر لطلبات الفحص حسب الفترة من");
         title.append(" ");
-        title.append(DateConverter.getHijriStringFromDateRTL(dateFrom));
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
         title.append(" ");
         title.append("إلى الفترة");
         title.append(" ");
-        title.append(DateConverter.getHijriStringFromDateRTL(dateTo));
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
         map.put("title", title.toString());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrders.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export(exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/ordersDetailsByDate", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportOrdersDetailsByDate(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مفصل لطلبات الفحص حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
+        title.append(" ");
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrdersDetails.jrxml");
+        ClassPathResource jrxmlFileSub = new ClassPathResource("/report/order/ReportOrdersDetailsSub.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
+        map.put("subReport", jasperReportSub);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map,
+                new JRBeanCollectionDataSource(orderService.findByDateBetween(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
+                        new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())));
         reportExporter.export(exportType, response, jasperPrint);
     }
 

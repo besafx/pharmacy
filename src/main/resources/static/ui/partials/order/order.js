@@ -2,6 +2,7 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
     function (OrderService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
+        $scope.selectedOrderDetectionType = {};
         $scope.buffer = {};
         $scope.wrappers = [];
 
@@ -19,6 +20,19 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
                         return order.isSelected = true;
                     } else {
                         return order.isSelected = false;
+                    }
+                });
+            }
+        };
+
+        $scope.setSelectedOrderDetectionType = function (object) {
+            if (object) {
+                angular.forEach($scope.selected.orderDetectionTypes, function (orderDetectionType) {
+                    if (object.id == orderDetectionType.id) {
+                        $scope.selectedOrderDetectionType = orderDetectionType;
+                        return orderDetectionType.isSelected = true;
+                    } else {
+                        return orderDetectionType.isSelected = false;
                     }
                 });
             }
@@ -243,7 +257,17 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
                     $scope.print($scope.selected);
                 });
             }, function () {
-                console.info('OrderCreateModel Closed.');
+                console.info('OrderDetectionTypeCreateModel Closed.');
+            });
+        };
+
+        $scope.newDiagnosis = function () {
+            ModalProvider.openDiagnosisCreateModel($scope.selectedOrderDetectionType).result.then(function (data) {
+                if ($scope.selectedOrderDetectionType.diagnoses) {
+                    $scope.selectedOrderDetectionType.diagnoses.splice(0, 0, data);
+                }
+            }, function () {
+                console.info('DiagnosisCreateModel Closed.');
             });
         };
 

@@ -424,6 +424,24 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openDiagnosisCreateModel = function (orderDetectionType) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/order/diagnosisCreate.html',
+            controller: 'diagnosisCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                orderDetectionType: function () {
+                    return orderDetectionType;
+                }
+            }
+        });
+    };
+
     this.openReportOrderByListModel = function (orders) {
         return $uibModal.open({
             animation: true,
@@ -465,6 +483,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             ariaDescribedBy: 'modal-body',
             templateUrl: "/ui/partials/report/order/orderByDate.html",
             controller: "orderByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    this.openReportOrderDetailsByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/order/orderDetailsByDate.html",
+            controller: "orderDetailsByDateCtrl",
             backdrop: 'static',
             keyboard: false
         });

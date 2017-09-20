@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/order/")
 public class OrderRest {
 
-    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],orderDetectionTypes[**,-order],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
+    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],orderDetectionTypes[**,-order,diagnoses[**,orderDetectionType[id],drug[id,code],drugUnit[**,-drugUnit]]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
     public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id,name]],doctor[id,person[id,name]]";
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
     @Autowired

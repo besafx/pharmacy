@@ -6,6 +6,11 @@ app.factory("OrderDetectionTypeService",
                     return response.data;
                 });
             },
+            findOne: function (id) {
+                return $http.get("/api/orderDetectionType/findOne/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             findByOrder: function (order) {
                 return $http.get("/api/orderDetectionType/findByOrder/" + order.id).then(function (response) {
                     return response.data;

@@ -1,0 +1,334 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">add</i>
+                <strong ng-if="lang==='AR'">اضافة وصفة طبية للطلب رقم /  </strong>
+                <strong ng-if="lang==='EN'">Add Medical Prescription To Order Number \  </strong>
+                <strong>{{diagnosis.orderDetectionType.order.code}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">بيانات طلب الفحص</h3>
+                            <h3 ng-if="lang==='EN'">Order Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الطلب</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </td>
+                                    <td>{{diagnosis.orderDetectionType.order.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">تاريخ الطلب</span>
+                                        <span ng-if="lang==='EN'">Order Date</span>
+                                    </td>
+                                    <td>
+                                        {{diagnosis.orderDetectionType.order.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span class="label label-success">{{diagnosis.orderDetectionType.order.date | date:'h:m a'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الحالة</span>
+                                        <span ng-if="lang==='EN'">Condition</span>
+                                    </td>
+                                    <td>
+                                        <span ng-if="diagnosis.orderDetectionType.order.orderCondition==='Pending'"
+                                              class="label label-default">
+                                            <span ng-if="lang==='AR'">تحت التنفيذ</span>
+                                            <span ng-if="lang==='EN'">Pending</span>
+                                        </span>
+                                        <span ng-if="diagnosis.orderDetectionType.order.orderCondition==='Diagnosed'"
+                                              class="label label-info">
+                                            <span ng-if="lang==='AR'">تم التشخيص</span>
+                                            <span ng-if="lang==='EN'">Diagnosed</span>
+                                        </span>
+                                        <span ng-if="diagnosis.orderDetectionType.order.orderCondition==='Done'"
+                                              class="label label-success">
+                                            <span ng-if="lang==='AR'">مكتمل</span>
+                                            <span ng-if="lang==='EN'">Done</span>
+                                        </span>
+                                        <span ng-if="diagnosis.orderDetectionType.order.orderCondition==='Canceled'"
+                                              class="label label-danger">
+                                            <span ng-if="lang==='AR'">ملغي</span>
+                                            <span ng-if="lang==='EN'">Canceled</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Code</span>
+                                    </td>
+                                    <td>{{diagnosis.orderDetectionType.order.falcon.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">العميل</span>
+                                        <span ng-if="lang==='EN'">Customer</span>
+                                    </td>
+                                    <td>{{diagnosis.orderDetectionType.order.falcon.customer.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الطبيب المعالج</span>
+                                        <span ng-if="lang==='EN'">Doctor</span>
+                                    </td>
+                                    <td>{{diagnosis.orderDetectionType.order.doctor.person.name}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">بيانات خدمة الفحص</h3>
+                            <h3 ng-if="lang==='EN'">Detection Service Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الخدمة المطلوبة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </td>
+                                    <td>{{diagnosis.orderDetectionType.detectionType.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">اسم خدمة الفحص</span>
+                                        <span ng-if="lang==='EN'">Name</span>
+                                    </td>
+                                    <td>
+                                        [{{diagnosis.orderDetectionType.detectionType.nameArabic}}]
+                                        [{{diagnosis.orderDetectionType.detectionType.nameEnglish}}]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">تكلفة خدمة الفحص</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
+                                    </td>
+                                    <td>{{diagnosis.orderDetectionType.detectionType.cost}} SAR</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshDrugs()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])"
+                                   ng-click="newDrug()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء صنف دواء جديد' : 'New Drug...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">البيانات المطلوبة</h3>
+                            <h3 ng-if="lang==='EN'">Required Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="drugCode" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم الدواء</span>
+                                        <span ng-if="lang==='EN'">Drug Code</span>
+                                    </label>
+                                    <select id="drugCode"
+                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
+                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الرقم' : 'Please Select Code...'}}'"
+                                            class="form-control"
+                                            chosen=""
+                                            ng-model="diagnosis.drug"
+                                            ng-change="getRelatedPricesByDrug(diagnosis.drug)"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-options="drug.code for drug in drugs | orderBy:'code' track by drug.id">
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="tradeName" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم التجاري</span>
+                                        <span ng-if="lang==='EN'">Trade Name</span>
+                                    </label>
+                                    <select id="tradeName"
+                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم التجاري' : 'Search For Trade Name...'}}"
+                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم التجاري' : 'Please Select Trade Name...'}}'"
+                                            class="form-control"
+                                            chosen=""
+                                            ng-model="diagnosis.drug"
+                                            ng-change="getRelatedPricesByDrug(diagnosis.drug)"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-options="('[ ' + drug.nameArabic + ' ] [' + drug.nameEnglish + ' ]' ) for drug in drugs | orderBy:'nameEnglish' track by drug.id">
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="medicalName" class="control-label">
+                                        <span ng-if="lang==='AR'">الاسم العلمي</span>
+                                        <span ng-if="lang==='EN'">Medical Name</span>
+                                    </label>
+                                    <select id="medicalName"
+                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم العلمي' : 'Search For Trade Name...'}}"
+                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم العلمي' : 'Please Select Trade Name...'}}'"
+                                            class="form-control"
+                                            chosen=""
+                                            ng-model="diagnosis.drug"
+                                            ng-change="getRelatedPricesByDrug(diagnosis.drug)"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-options="('[ ' + drug.medicalNameArabic + ' ] [' + drug.medicalNameEnglish + ' ]' ) for drug in drugs | orderBy:'medicalNameEnglish' track by drug.id">
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="drugUnit" class="control-label">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Drug Unit</span>
+                                    </label>
+                                    <select id="drugUnit"
+                                            class="form-control"
+                                            ng-model="buffer.related"
+                                            disable-validation-message=""
+                                            ng-options="related.obj1.name for related in relatedPrices | orderBy:'related.obj1.name' track by related.obj1.id">
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="cost" class="control-label">
+                                        <span ng-if="lang==='AR'">الكمية</span>
+                                        <span ng-if="lang==='EN'">Quantity</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group" id="cost">
+                                        <span class="input-group-addon">
+                                            <span ng-if="lang==='AR'">{{buffer.related.obj1.name}}</span>
+                                            <span ng-if="lang==='EN'">{{buffer.related.obj1.name}}</span>
+                                        </span>
+                                        <input dir="rtl"
+                                               type="number"
+                                               ng-max="buffer.related.obj5"
+                                               min="1"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="diagnosis.quantity">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="description" class="control-label">
+                                    <span ng-if="lang==='AR'">التشخيص</span>
+                                    <span ng-if="lang==='EN'">Prescription</span>
+                                </label>
+                                <textarea id="description"
+                                          type="text"
+                                          msd-elastic="\n"
+                                          class="form-control"
+                                          ng-model="diagnosis.content">
+                                </textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

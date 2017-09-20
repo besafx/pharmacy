@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -35,6 +37,9 @@ public class OrderDetectionType implements Serializable {
     @ManyToOne
     @JoinColumn(name = "detectionType")
     private DetectionType detectionType;
+
+    @OneToMany(mappedBy = "orderDetectionType", fetch = FetchType.LAZY)
+    private List<Diagnosis> diagnoses = new ArrayList<>();
 
     @JsonCreator
     public static OrderDetectionType Create(String jsonString) throws IOException {

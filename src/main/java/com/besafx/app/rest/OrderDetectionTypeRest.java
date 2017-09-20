@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping(value = "/api/orderDetectionType/")
 public class OrderDetectionTypeRest {
 
-    public static final String FILTER_TABLE = "**,order[id,code]";
+    public static final String FILTER_TABLE = "**,diagnoses[**,-orderDetectionType,drug[id,code],drugUnit[**,-drugUnit]],order[**,falcon[id,code],doctor[id,person[id,code,nickname,name]],-orderDetectionTypes,-orderAttaches]";
 
     @Autowired
     private OrderDetectionTypeService orderDetectionTypeService;
@@ -53,6 +53,12 @@ public class OrderDetectionTypeRest {
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderDetectionType);
+    }
+
+    @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findOne(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderDetectionTypeService.findOne(id));
     }
 
     @RequestMapping(value = "findByOrder/{orderId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

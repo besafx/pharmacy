@@ -15,6 +15,11 @@ app.factory("DrugUnitService",
                 return $http.get("/api/drugUnit/getRelatedPrices/" + transactionBuyId).then(function (response) {
                     return response.data;
                 });
+            },
+            getRelatedPricesByDrug: function (drugId) {
+                return $http.get("/api/drugUnit/getRelatedPricesByDrug/" + drugId).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

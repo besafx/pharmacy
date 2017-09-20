@@ -227,7 +227,7 @@
                         </button>
                         <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
                             class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="order-reports-menu-lower-right">
-                            <li class="mdl-menu__item mdl-list__item"
+                            <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
                                 ng-click="print(selected)"
                                 ng-if="toggleList===1"
                                 ng-hide="!orders || orders.length==0">
@@ -247,7 +247,7 @@
                                     <span ng-if="lang==='EN'">Orders Summery By List...</span>
                                 </span>
                             </li>
-                            <li class="mdl-menu__item mdl-list__item"
+                            <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
                                 ng-click="ModalProvider.openReportOrderDetailsByListModel(orders)"
                                 ng-if="toggleList===1"
                                 ng-hide="!orders || orders.length==0">
@@ -255,6 +255,16 @@
                                     <i class="material-icons mdl-list__item-icon">print</i>
                                     <span ng-if="lang==='AR'">تقرير مفصل بالقائمة</span>
                                     <span ng-if="lang==='EN'">Orders Details By List...</span>
+                                </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item"
+                                ng-click="ModalProvider.openReportOrderDetailsByDateModel()"
+                                ng-if="toggleList===1"
+                                ng-hide="!orders || orders.length==0">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">print</i>
+                                    <span ng-if="lang==='AR'">تقرير مفصل بالتاريخ</span>
+                                    <span ng-if="lang==='EN'">Orders Details By Date...</span>
                                 </span>
                             </li>
                             <li class="mdl-menu__item mdl-list__item"
@@ -386,8 +396,8 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="order in collection1"
-                                    st-select-mode="single"
                                     context-menu="rowMenu"
+                                    st-select-mode="single"
                                     ng-click="setSelected(order)"
                                     ng-right-click="setSelected(order)"
                                     ng-class="{'mdl-color--blue-grey-100':order.isSelected}">
@@ -447,8 +457,7 @@
 
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1"
-                 ng-hide="!orders || orders.length==0">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selected.id && toggleList===1">
 
                 <div class="panel panel-warning">
                     <div class="panel-heading">
@@ -473,8 +482,8 @@
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
                             <h3 ng-if="lang==='AR'">قائمة الفحوصات المطلوبة</h3>
                             <h3 ng-if="lang==='EN'">Required Detections</h3>
-                            <span ng-if="lang==='AR'">رقم الطلب / </span>
-                            <span ng-if="lang==='EN'">Order Code \ </span>
+                            <strong ng-if="lang==='AR'">رقم الطلب / </strong>
+                            <strong ng-if="lang==='EN'">Order Code \ </strong>
                             <span>{{selected.code}}</span>
                         </div>
                     </div>
@@ -507,13 +516,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="orderDetectionType in collection2">
-                                    <td>{{$index+1}}</td>
-                                    <td>{{orderDetectionType.detectionType.code}}</td>
-                                    <td>[{{orderDetectionType.detectionType.nameArabic}}]
+                                <tr ng-repeat="orderDetectionType in collection2"
+                                    st-select-mode="single"
+                                    ng-click="setSelectedOrderDetectionType(orderDetectionType)"
+                                    ng-right-click="setSelectedOrderDetectionType(orderDetectionType)"
+                                    ng-class="{'mdl-color--blue-grey-100':orderDetectionType.isSelected}">
+                                    <td st-select-row-custom="orderDetectionType">{{$index+1}}</td>
+                                    <td st-select-row-custom="orderDetectionType">{{orderDetectionType.detectionType.code}}</td>
+                                    <td st-select-row-custom="orderDetectionType">
+                                        [{{orderDetectionType.detectionType.nameArabic}}]
                                         [{{orderDetectionType.detectionType.nameEnglish}}]
                                     </td>
-                                    <td>{{orderDetectionType.detectionType.cost}} SAR</td>
+                                    <td st-select-row-custom="orderDetectionType">{{orderDetectionType.detectionType.cost}} SAR</td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection2 || collection2.length ==0">
@@ -530,8 +544,109 @@
 
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1"
-                 ng-hide="!orders || orders.length==0">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selectedOrderDetectionType.id && toggleList===1">
+
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshDiagnosesByOrderDetectionType()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
+                                   ng-click="newDiagnosis()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'اضافة وصفة طبية' : 'Add Prescription...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">الوصفات الطبية</h3>
+                            <h3 ng-if="lang==='EN'">Medical Prescriptions</h3>
+                            <strong ng-if="lang==='AR'">رقم الفحص المُحدد / </strong>
+                            <span ng-if="lang==='EN'">Detection Service Code \ </span>
+                            <span>{{selectedOrderDetectionType.detectionType.code}}</span>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection3" st-safe-src="selectedOrderDetectionType.diagnoses"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم الوصفة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">تاريخ الوصفة</span>
+                                        <span ng-if="lang==='EN'">Date</span>
+                                    </th>
+
+                                    <th st-sort="content">
+                                        <span ng-if="lang==='AR'">التشخيص</span>
+                                        <span ng-if="lang==='EN'">Content</span>
+                                    </th>
+
+                                    <th st-sort="drug.code">
+                                        <span ng-if="lang==='AR'">رقم الدواء</span>
+                                        <span ng-if="lang==='EN'">Drug Code</span>
+                                    </th>
+
+                                    <th st-sort="quantity">
+                                        <span ng-if="lang==='AR'">الكمية المطلوبة</span>
+                                        <span ng-if="lang==='EN'">Required Quantity</span>
+                                    </th>
+
+                                    <th st-sort="drugUnit">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Drug Unit</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="diagnosis in collection3">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{diagnosis.code}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{diagnosis.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{diagnosis.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{diagnosis.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{diagnosis.content}}</td>
+                                    <td>{{diagnosis.drug.code}}</td>
+                                    <td>{{diagnosis.quantity}}</td>
+                                    <td>{{diagnosis.drugUnit.name}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection3 || collection3.length ==0">
+                                    <td colspan="7">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="orders.length > 0 && toggleList===1">
                 <input id="uploader" style="display: none" type="file" onchange="angular.element(this).scope().initFiles(this.files);" multiple/>
                 <div class="panel panel-warning">
                     <div class="panel-heading">
@@ -570,7 +685,7 @@
                     </div>
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
-                            <table st-table="collection3" st-safe-src="selected.orderAttaches"
+                            <table st-table="collection4" st-safe-src="selected.orderAttaches"
                                    class="table table-bordered">
                                 <thead>
                                 <tr>
@@ -597,7 +712,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="orderAttach in collection3"
+                                <tr ng-repeat="orderAttach in collection4"
                                     ng-class="{'success':orderAttach.attach.link, 'danger' : !orderAttach.attach.link}">
                                     <td>{{$index+1}}</td>
                                     <td>
@@ -618,7 +733,7 @@
                                 </tr>
                                 <tr class="blank_row"
                                     style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collection3 || collection3.length ==0">
+                                    ng-show="!collection4 || collection4.length ==0">
                                     <td colspan="4">
                                         <span ng-if="lang==='AR'">فضلاً قم برفع الملفات</span>
                                         <span ng-if="lang==='EN'">Please Upload Files.</span>
@@ -633,8 +748,8 @@
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div st-table="collection4" st-safe-src="orders">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="order in collection4">
+                <div st-table="collection5" st-safe-src="orders">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="order in collection5">
                         <!-- CONTACT ITEM -->
                         <div class="panel panel-default">
                             <div class="panel-body profile">

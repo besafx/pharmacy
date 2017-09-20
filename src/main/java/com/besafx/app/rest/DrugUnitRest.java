@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/drugUnit/")
@@ -91,5 +93,18 @@ public class DrugUnitRest {
             wrapperUtils.add(util);
         });
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5"), wrapperUtils);
+    }
+
+    @RequestMapping(value = "getRelatedPricesByDrug/{drugId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getRelatedPricesByDrug(@PathVariable(value = "drugId") Long drugId) {
+        List<WrapperUtil> wrapperUtils = new ArrayList<>();
+        Gson gson = new Gson();
+        ListIterator<TransactionBuy> listIterator = transactionBuyService.findByDrugId(drugId).listIterator();
+        while(listIterator.hasNext()){
+            TransactionBuy transactionBuy = listIterator.next();
+            wrapperUtils.addAll(gson.fromJson(getRelatedPrices(transactionBuy.getId()), new TypeToken<List<WrapperUtil>>(){}.getType()));
+        }
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5"), wrapperUtils.stream().distinct().collect(Collectors.toList()));
     }
 }

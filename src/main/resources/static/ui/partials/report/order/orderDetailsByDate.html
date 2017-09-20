@@ -1,0 +1,142 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop"
+      focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">print</i>
+                <strong ng-if="lang==='AR'">تقرير مُفصل بالتاريخ</strong>
+                <strong ng-if="lang==='EN'">Orders Details By Date...</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة.</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields.</strong>
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                    <label for="dateFrom" class="control-label">
+                        <span ng-if="lang==='AR'">التاريخ من</span>
+                        <span ng-if="lang==='EN'">Date From</span>
+                    </label>
+                    <div dir="ltr" class="input-group">
+                        <input dir="rtl"
+                               id="dateFrom"
+                               type="text"
+                               class="form-control is-calendarPicker"
+                               ng-model="buffer.dateFrom"
+                               ng-required="dateType==='H'"
+                               disable-validation-message=""
+                               calendarType="ummalqura"
+                               language="en"
+                               dateFormat="yyyy/mm/dd"
+                               showOnFocus="false"
+                               readonly="readonly"
+                               kdatepicker>
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                    <label for="G-dateFrom" class="control-label">
+                        <span ng-if="lang==='AR'">التاريخ من</span>
+                        <span ng-if="lang==='EN'">Date From</span>
+                    </label>
+                    <input id="G-dateFrom"
+                           class="form-control "
+                           type="date"
+                           name="input"
+                           ng-model="buffer.dateFrom"
+                           placeholder="yyyy-MM-dd"
+                           min="2017-01-01"
+                           max="2030-12-31"
+                           ng-required="dateType==='G'"
+                           disable-validation-message=""/>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                    <label for="dateTo" class="control-label">
+                        <span ng-if="lang==='AR'">التاريخ إلى</span>
+                        <span ng-if="lang==='EN'">Date To</span>
+                    </label>
+                    <div dir="ltr" class="input-group">
+                        <input dir="rtl"
+                               id="dateTo"
+                               type="text"
+                               class="form-control is-calendarPicker"
+                               ng-model="buffer.dateTo"
+                               ng-required="dateType==='H'"
+                               disable-validation-message=""
+                               calendarType="ummalqura"
+                               language="en"
+                               dateFormat="yyyy/mm/dd"
+                               showOnFocus="false"
+                               readonly="readonly"
+                               kdatepicker>
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                    <label for="G-dateTo" class="control-label">
+                        <span ng-if="lang==='AR'">التاريخ إلى</span>
+                        <span ng-if="lang==='EN'">Date To</span>
+                    </label>
+                    <input id="G-dateTo"
+                           class="form-control "
+                           type="date"
+                           name="input"
+                           ng-model="buffer.dateTo"
+                           placeholder="yyyy-MM-dd"
+                           min="2017-01-01"
+                           max="2030-12-31"
+                           ng-required="dateType==='G'"
+                           disable-validation-message=""/>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'طباعة' : 'Print'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">print</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine();buffer={}"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

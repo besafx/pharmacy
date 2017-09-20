@@ -11,7 +11,6 @@ import java.util.List;
 @Transactional
 public interface FalconService extends PagingAndSortingRepository<Falcon, Long>, JpaSpecificationExecutor<Falcon> {
     Falcon findByCode(Long code);
-
     Falcon findByCodeAndIdIsNot(Long code, Long id);
     List<Falcon> findByCustomerId(Long customerId);
 }
