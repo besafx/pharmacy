@@ -1,13 +1,13 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.config.DropboxManager;
 import com.besafx.app.entity.Order;
+import com.besafx.app.entity.OrderAttach;
 import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.enums.OrderCondition;
 import com.besafx.app.search.OrderSearch;
-import com.besafx.app.service.OrderDetectionTypeService;
-import com.besafx.app.service.OrderService;
-import com.besafx.app.service.PersonService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -48,10 +48,19 @@ public class OrderRest {
     private OrderDetectionTypeService orderDetectionTypeService;
 
     @Autowired
+    private DiagnosisService diagnosisService;
+
+    @Autowired
+    private OrderAttachService orderAttachService;
+
+    @Autowired
     private PersonService personService;
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private DropboxManager dropboxManager;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -90,17 +99,24 @@ public class OrderRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_DELETE')")
     @Transactional
-    public void delete(@PathVariable Long id, Principal principal) {
+    public void delete(@PathVariable Long id, Principal principal) throws Exception {
         Order order = orderService.findOne(id);
         if (order != null) {
+            diagnosisService.delete(order.getOrderDetectionTypes().stream().flatMap(orderDetectionType -> orderDetectionType.getDiagnoses().stream()).collect(Collectors.toList()));
             orderDetectionTypeService.delete(order.getOrderDetectionTypes());
+            ListIterator<OrderAttach> listIterator = order.getOrderAttaches().listIterator();
+            while (listIterator.hasNext()){
+                OrderAttach orderAttach = listIterator.next();
+                dropboxManager.deleteFile("/Pharmacy4Falcon/Orders/" + orderAttach.getOrder().getId() + "/" + orderAttach.getAttach().getName() + "." + orderAttach.getAttach().getMimeType()).get();
+                orderAttachService.delete(orderAttach);
+            }
             orderService.delete(id);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                    .message(lang.equals("AR") ? "تم حذف الطلب بنجاح" : "Delete Order Successfully")
+                    .message(lang.equals("AR") ? "تم حذف الطلب وكل ما يتعلق به من مستندات ونتائج فحص بنجاح" : "Delete Order Successfully")
                     .type("error")
                     .icon("fa-trash")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
