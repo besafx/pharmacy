@@ -290,6 +290,15 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
                 click: function ($itemScope, $event, value) {
                     $scope.print($itemScope.order);
                 }
+            },
+            {
+                html: '<div class="drop-menu">طباعة تقرير مختصر<span class="fa fa-print fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    ModalProvider.openReportOrderByListModel($scope.orders);
+                }
             }
         ];
 

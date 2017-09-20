@@ -57,6 +57,9 @@ public class ReportOrderController {
         Map<String, Object> map = new HashMap<>();
         map.put("orders", orderService.findByIdIn(ids));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مختصر لطلبات الفحص حسب القائمة");
+        map.put("title", title.toString());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrders.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
@@ -80,6 +83,7 @@ public class ReportOrderController {
         title.append("تقرير مختصر لطلبات الفحص حسب الفترة من");
         title.append(" ");
         title.append(DateConverter.getHijriStringFromDateRTL(dateFrom));
+        title.append(" ");
         title.append("إلى الفترة");
         title.append(" ");
         title.append(DateConverter.getHijriStringFromDateRTL(dateTo));
