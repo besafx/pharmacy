@@ -510,6 +510,108 @@
 
             </div>
 
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1"
+                 ng-hide="!orders || orders.length==0">
+                <input id="uploader" style="display: none" type="file" onchange="angular.element(this).scope().initFiles(this.files);" multiple/>
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshOrderAttachByOrder()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_ATTACH_CREATE'])"
+                                   ng-click="uploadFiles()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'مرفق جديد' : 'New Attachment...'}}">
+                                    <span class="fa fa-paperclip"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_ATTACH_CREATE'])"
+                                   ng-click="scanToJpg()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'فحص ملف' : 'Scan File...'}}">
+                                    <span class="fa fa-file-image-o"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">المرفقات والمستندات</h3>
+                            <h3 ng-if="lang==='EN'">Documents And Attachments</h3>
+                            <span ng-if="lang==='AR'">رقم الطلب / </span>
+                            <span ng-if="lang==='EN'">Order Code \ </span>
+                            <span>{{selected.code}}</span>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection3" st-safe-src="selected.orderAttaches"
+                                   class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">اسم الملف</span>
+                                        <span ng-if="lang==='EN'">File Name</span>
+                                    </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">حجم الملف</span>
+                                        <span ng-if="lang==='EN'">File Size</span>
+                                    </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">بواسطة</span>
+                                        <span ng-if="lang==='EN'">By User</span>
+                                    </th>
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Actions</span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="orderAttach in collection3"
+                                    ng-class="{'success':orderAttach.attach.link, 'danger' : !orderAttach.attach.link}">
+                                    <td>{{$index+1}}</td>
+                                    <td>
+                                        <a ng-href="{{orderAttach.attach.link ? orderAttach.attach.link : ''}}" target="_blank">
+                                            {{orderAttach.attach.name}} . {{orderAttach.attach.mimeType}}
+                                        </a>
+                                    </td>
+                                    <td>{{orderAttach.attach.size/1024/1024|number:2}} MB</td>
+                                    <td>{{orderAttach.attach.person.nickname}} {{orderAttach.attach.person.name}}</td>
+                                    <td>
+                                        <a href=""
+                                           ng-if="contains(me.team.authorities, ['ROLE_ORDER_ATTACH_DELETE'])"
+                                           ng-click="deleteOrderAttach(orderAttach)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row"
+                                    style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection3 || collection3.length ==0">
+                                    <td colspan="4">
+                                        <span ng-if="lang==='AR'">فضلاً قم برفع الملفات</span>
+                                        <span ng-if="lang==='EN'">Please Upload Files.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
                 <div st-table="collection3" st-safe-src="orders">
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="order in collection3">

@@ -4,7 +4,7 @@ app.factory("OrderAttachService",
             upload: function (order, fileName, mimeType, description, file) {
                 var fd = new FormData();
                 fd.append('file', file);
-                return $http.post("/api/orderAttach/upload?orderId=" + order.id + "&fileName=" + fileName + "&mimeType=" + mimeType + "&description=" + description + "&remote=false",
+                return $http.post("/api/orderAttach/upload?orderId=" + order.id + "&fileName=" + fileName + "&mimeType=" + mimeType + "&description=" + description + "&remote=true",
                     fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(function (response) {
                     return response.data;
                 });

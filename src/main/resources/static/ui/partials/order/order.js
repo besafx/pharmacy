@@ -1,8 +1,9 @@
-app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
-    function (OrderService, OrderDetectionTypeService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
+app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
+    function (OrderService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
         $scope.buffer = {};
+        $scope.wrappers = [];
 
         $scope.items = [];
         $scope.items.push(
@@ -205,6 +206,21 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Modal
             });
         };
 
+        $scope.deleteOrderAttach = function (orderAttach) {
+            if (orderAttach) {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف المستند فعلاً؟", "error", "fa-trash", function () {
+                    OrderAttachService.remove(orderAttach).then(function (data) {
+                        if(data===false) {
+                            OrderAttachService.removeWhatever(orderAttach);
+                        }
+                        var index = $scope.selected.orderAttaches.indexOf(orderAttach);
+                        $scope.selected.orderAttaches.splice(index, 1);
+                    });
+                });
+
+            }
+        };
+
         $scope.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
@@ -241,6 +257,12 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Modal
             });
         };
 
+        $scope.refreshOrderAttachByOrder = function () {
+            OrderAttachService.findByOrder($scope.selected).then(function (data) {
+                $scope.selected.orderAttaches = data;
+            });
+        };
+
         $scope.rowMenu = [
             {
                 html: '<div class="drop-menu">انشاء طلب جديد<span class="fa fa-pencil fa-lg"></span></div>',
@@ -270,6 +292,95 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Modal
                 }
             }
         ];
+
+        //////////////////////////File Manager///////////////////////////////////
+        $scope.uploadFiles = function () {
+            document.getElementById('uploader').click();
+        };
+
+        $scope.initFiles = function (files) {
+
+            angular.forEach(files, function (file) {
+                var wrapper = {};
+                wrapper.src = file;
+                wrapper.name = file.name.substr(0, file.name.lastIndexOf('.')) || file.name;
+                wrapper.mimeType = file.name.split('.').pop();
+                wrapper.size = file.size;
+                $scope.wrappers.push(wrapper);
+            });
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/order/orderAttachUpload.html',
+                controller: 'orderAttachUploadCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            modalInstance.result.then(function () {
+                angular.forEach($scope.wrappers, function (wrapper) {
+                    console.info(wrapper);
+                    OrderAttachService.upload($scope.selected, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
+                        if ($scope.selected.orderAttaches) {
+                            $scope.selected.orderAttaches.splice(0, 0, data);
+                        }
+                    });
+                });
+            }, function () {
+            });
+
+        };
+        //////////////////////////File Manager///////////////////////////////////
+
+        //////////////////////////Scan Manager///////////////////////////////////
+        $scope.scanToJpg = function () {
+            scanner.scan(displayImagesOnPage,
+                {
+                    "output_settings": [
+                        {
+                            "type": "return-base64",
+                            "format": "jpg"
+                        }
+                    ]
+                }
+            );
+        };
+
+        function dataURItoBlob(dataURI) {
+            // convert base64/URLEncoded data component to raw binary data held in a string
+            var byteString;
+            if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                byteString = atob(dataURI.split(',')[1]);
+            else
+                byteString = unescape(dataURI.split(',')[1]);
+
+            // separate out the mime component
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+            // write the bytes of the string to a typed array
+            var ia = new Uint8Array(byteString.length);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([ia], {type: mimeString});
+        }
+
+        /** Processes the scan result */
+        function displayImagesOnPage(successful, mesg, response) {
+            var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
+            var files = [];
+            for (var i = 0; (scannedImages instanceof Array) && i < scannedImages.length; i++) {
+                var blob = dataURItoBlob(scannedImages[i].src);
+                var file = new File([blob], wrapper.name + '.jpg');
+                files.push(file);
+            }
+            $scope.initFiles(files);
+        }
+        //////////////////////////Scan Manager///////////////////////////////////
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();

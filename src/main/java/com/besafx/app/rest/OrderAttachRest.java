@@ -31,7 +31,7 @@ import java.util.concurrent.Future;
 @RequestMapping(value = "/api/orderAttach/")
 public class OrderAttachRest {
 
-    public static final String FILTER_TABLE = "id,order[id],attach[id]";
+    public static final String FILTER_TABLE = "id,order[id],attach[**,person[id,nickname,name]]";
     private final static Logger log = LoggerFactory.getLogger(OrderAttachRest.class);
     @Autowired
     private PersonService personService;
@@ -155,9 +155,9 @@ public class OrderAttachRest {
         }
     }
 
-    @RequestMapping(value = "findByAccount/{orderId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "findByOrder/{orderId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByAccount(@PathVariable(value = "orderId") Long orderId) {
+    public String findByOrder(@PathVariable(value = "orderId") Long orderId) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.findByOrderId(orderId));
     }
 }

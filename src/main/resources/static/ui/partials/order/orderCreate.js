@@ -111,6 +111,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             });
         };
 
+        //////////////////////////File Manager///////////////////////////////////
         $scope.uploadFiles = function () {
             document.getElementById('uploader').click();
         };
@@ -145,6 +146,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             });
 
         };
+        //////////////////////////File Manager///////////////////////////////////
 
         //////////////////////////Scan Manager///////////////////////////////////
         $scope.scanToJpg = function () {
@@ -191,7 +193,6 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             }
             $scope.initFiles(files);
         }
-
         //////////////////////////Scan Manager///////////////////////////////////
 
         $scope.addDetectionTypeToList = function () {

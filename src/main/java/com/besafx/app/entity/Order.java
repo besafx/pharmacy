@@ -60,6 +60,9 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderDetectionType> orderDetectionTypes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<OrderAttach> orderAttaches = new ArrayList<>();
+
     @JsonCreator
     public static Order Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
