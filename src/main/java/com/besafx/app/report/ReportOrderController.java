@@ -6,6 +6,7 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -63,6 +64,29 @@ public class ReportOrderController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrders.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export(exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/ordersDetails", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportOrdersDetails(
+            @RequestParam("ids") List<Long> ids,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مفصل لطلبات الفحص حسب القائمة");
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrdersDetails.jrxml");
+        ClassPathResource jrxmlFileSub = new ClassPathResource("/report/order/ReportOrdersDetailsSub.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
+        map.put("subReport", jasperReportSub);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(orderService.findByIdIn(ids)));
         reportExporter.export(exportType, response, jasperPrint);
     }
 

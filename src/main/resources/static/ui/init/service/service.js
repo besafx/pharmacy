@@ -441,6 +441,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportOrderDetailsByListModel = function (orders) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/order/orderDetailsByList.html",
+            controller: "orderDetailsByListCtrl",
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                orders: function () {
+                    return orders;
+                }
+            }
+        });
+    };
+
     this.openReportOrderByDateModel = function () {
         return $uibModal.open({
             animation: true,

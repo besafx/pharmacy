@@ -1,11 +1,13 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.comparator.OrderDetectionTypeComparator;
 import com.besafx.app.entity.enums.OrderCondition;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SortComparator;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -58,6 +60,7 @@ public class Order implements Serializable {
     private Doctor doctor;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @SortComparator(OrderDetectionTypeComparator.class)
     private List<OrderDetectionType> orderDetectionTypes = new ArrayList<>();
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
