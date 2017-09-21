@@ -98,4 +98,11 @@ public class DiagnosisRest {
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), diagnosisService.findOne(id));
     }
+
+    @RequestMapping(value = "findByOrderDetectionTypeId/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByOrderDetectionTypeId(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
+                diagnosisService.findByOrderDetectionTypeId(id));
+    }
 }

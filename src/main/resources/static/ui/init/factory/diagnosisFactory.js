@@ -11,6 +11,11 @@ app.factory("DiagnosisService",
                     return response.data;
                 });
             },
+            findByOrderDetectionTypeId: function (id) {
+                return $http.get("/api/diagnosis/findByOrderDetectionTypeId/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (diagnosis) {
                 return $http.post("/api/diagnosis/create", diagnosis).then(function (response) {
                     return response.data;

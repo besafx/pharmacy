@@ -46,6 +46,8 @@ public class TransactionSell implements Serializable {
     @ManyToOne
     private DrugUnit drugUnit;
 
+    private Double unitSellCost;
+
     @JoinColumn(name = "transactionBuy")
     @ManyToOne
     private TransactionBuy transactionBuy;

@@ -39,9 +39,6 @@
 	<field name="detectionTypeCostSum" class="java.lang.Double"/>
 	<field name="netCost" class="java.lang.Double"/>
 	<field name="orderDetectionTypes" class="java.util.List"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="127" splitType="Stretch">
 			<staticText>

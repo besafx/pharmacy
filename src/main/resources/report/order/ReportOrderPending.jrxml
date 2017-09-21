@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="6610c978-bf64-41be-98fd-29b2e43aa866">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportOrderPending" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="6610c978-bf64-41be-98fd-29b2e43aa866">
 	<import value="com.besafx.app.util.DateConverter"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
@@ -66,11 +66,23 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Receivable Receipt Cash]]></text>
+				<text><![CDATA[ [ 1 ] طلب فحص طبي]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="false" isLazy="true" onErrorType="Icon">
 				<reportElement x="252" y="10" width="50" height="50" uuid="3365758c-fd5a-49f8-a2be-4217ce7693e1"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="10" y="15" width="40" height="40" uuid="aa801eeb-201e-483f-b7a9-368ce27712c4">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($P{order}.getCode().toString(),com.google.zxing.BarcodeFormat.QR_CODE, 300, 300 ))]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -474,9 +486,9 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="90" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<componentElement>
-				<reportElement x="10" y="0" width="534" height="90" uuid="0faf8c79-244f-4a99-b057-a9b4c7c7efba">
+				<reportElement x="10" y="0" width="534" height="60" uuid="0faf8c79-244f-4a99-b057-a9b4c7c7efba">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -488,7 +500,6 @@
 					</datasetRun>
 					<jr:columnGroup width="534" uuid="c13ad0c2-405b-4ec3-b41c-f15a192d656b">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [3]"/>
-						<jr:tableFooter style="Table_TH" height="30" rowSpan="1"/>
 						<jr:column width="90" uuid="0c2840f7-f334-4c42-9271-6c9a7468a000">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
@@ -501,7 +512,7 @@
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
-										<text><![CDATA[رقم الطلب]]></text>
+										<text><![CDATA[رقم نوع الفحص]]></text>
 									</staticText>
 									<staticText>
 										<reportElement x="0" y="15" width="90" height="15" uuid="a3330bec-cd18-479a-9e06-1cfa697d2924"/>

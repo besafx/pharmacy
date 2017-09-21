@@ -228,7 +228,7 @@
                         <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
                             class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="order-reports-menu-lower-right">
                             <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                                ng-click="print(selected)"
+                                ng-click="printPending(selected)"
                                 ng-if="toggleList===1"
                                 ng-hide="!orders || orders.length==0">
                                 <span class="mdl-list__item-primary-content">
@@ -471,6 +471,13 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
+                                   ng-show="selected.orderDetectionTypes.length > 0"
+                                   ng-click="printPending(selected)"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'طباعة طلب الفحص الطبي' : 'Print Order'}}">
+                                    <span class="fa fa-print"></span>
+                                </a>
+                                <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
                                    ng-click="newOrderDetectionType()"
                                    tooltip-append-to-body="true"
@@ -556,6 +563,13 @@
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
                                     <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-show="selectedOrderDetectionType.diagnoses.length > 0"
+                                   ng-click="printDiagnosed(selected)"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'طباعة نتائج الفحص الطبي' : 'Print Detection Results'}}">
+                                    <span class="fa fa-print"></span>
                                 </a>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"

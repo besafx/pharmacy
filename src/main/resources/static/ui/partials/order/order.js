@@ -1,5 +1,5 @@
-app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
-    function (OrderService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
+app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
+    function (OrderService, DiagnosisService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
         $scope.selectedOrderDetectionType = {};
@@ -222,7 +222,7 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
 
         $scope.deleteOrderAttach = function (orderAttach) {
             if (orderAttach) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف المستند فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف المستند فعلاً؟", "error", "fa-trash", function () {
                     OrderAttachService.remove(orderAttach).then(function (data) {
                         if(data===false) {
                             OrderAttachService.removeWhatever(orderAttach);
@@ -238,7 +238,7 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
         $scope.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
-                    $scope.print(data);
+                    $scope.printPending(data);
                 });
                 if($scope.orders){
                     $scope.orders.splice(0, 0, data);
@@ -254,7 +254,7 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
                     $scope.selected.orderDetectionTypes.splice(0, 0, data);
                 }
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
-                    $scope.print($scope.selected);
+                    $scope.printPending($scope.selected);
                 });
             }, function () {
                 console.info('OrderDetectionTypeCreateModel Closed.');
@@ -263,6 +263,9 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
 
         $scope.newDiagnosis = function () {
             ModalProvider.openDiagnosisCreateModel($scope.selectedOrderDetectionType).result.then(function (data) {
+                $rootScope.showConfirmNotify("العيادة البيطرية", "هل تود طباعة نتائج الفحص الطبي ؟", "notification", "fa-info", function () {
+                    $scope.printDiagnosed($scope.selected);
+                });
                 if ($scope.selectedOrderDetectionType.diagnoses) {
                     $scope.selectedOrderDetectionType.diagnoses.splice(0, 0, data);
                 }
@@ -271,8 +274,12 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
             });
         };
 
-        $scope.print = function (order) {
-            window.open('/report/order/' + order.id + '/PDF');
+        $scope.printPending = function (order) {
+            window.open('/report/order/pending/' + order.id + '/PDF');
+        };
+
+        $scope.printDiagnosed = function (order) {
+            window.open('/report/order/diagnosed/' + order.id + '/PDF');
         };
 
         $scope.refreshOrderDetectionTypeByOrder = function () {
@@ -284,6 +291,12 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
         $scope.refreshOrderAttachByOrder = function () {
             OrderAttachService.findByOrder($scope.selected).then(function (data) {
                 $scope.selected.orderAttaches = data;
+            });
+        };
+
+        $scope.refreshDiagnosesByOrderDetectionType = function () {
+            DiagnosisService.findByOrderDetectionTypeId($scope.selectedOrderDetectionType.id).then(function (data) {
+                $scope.selectedOrderDetectionType.diagnosis = data;
             });
         };
 
@@ -312,7 +325,7 @@ app.controller("orderCtrl", ['OrderService', 'OrderDetectionTypeService', 'Order
                     return true;
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.print($itemScope.order);
+                    $scope.printPending($itemScope.order);
                 }
             },
             {

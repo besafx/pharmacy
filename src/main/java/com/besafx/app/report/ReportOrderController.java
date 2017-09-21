@@ -1,5 +1,6 @@
 package com.besafx.app.report;
 
+import com.besafx.app.entity.Order;
 import com.besafx.app.service.OrderService;
 import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -27,9 +28,9 @@ public class ReportOrderController {
     @Autowired
     private ReportExporter reportExporter;
 
-    @RequestMapping(value = "/report/order/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/order/pending/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportOrder(
+    public void ReportOrderPending(
             @PathVariable("id") Long id,
             @PathVariable(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
@@ -38,11 +39,32 @@ public class ReportOrderController {
          */
         Map<String, Object> map = new HashMap<>();
         map.put("order", orderService.findOne(id));
-
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/Report.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrderPending.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export(exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/order/diagnosed/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportOrderDiagnosed(
+            @PathVariable("id") Long id,
+            @PathVariable(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        /**
+         * Insert Parameters
+         */
+        Order order = orderService.findOne(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("order", order);
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrderDiagnosed.jrxml");
+        ClassPathResource jrxmlFileSub = new ClassPathResource("/report/order/ReportOrderDiagnosedSub1.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
+        map.put("subReport", jasperReportSub);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map , new JRBeanCollectionDataSource(order.getOrderDetectionTypes()));
         reportExporter.export(exportType, response, jasperPrint);
     }
 
