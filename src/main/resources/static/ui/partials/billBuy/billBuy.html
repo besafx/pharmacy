@@ -424,10 +424,20 @@
                                     <td>{{transactionBuy.warrantInMonth}}</td>
                                     <td>
                                         <a href=""
+                                           class="btn btn-danger"
                                            ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
                                            ng-click="deleteTransactionBuy(transactionBuy)">
+                                            <span class="fa fa-trash"></span>
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                        <a href=""
+                                           class="btn btn-warning"
+                                           ng-if="contains(me.team.authorities, ['ROLE_DRUG_PRICE_UPDATE'])"
+                                           ng-click="updatePrices(transactionBuy)">
+                                            <span class="fa fa-edit"></span>
+                                            <strong ng-if="lang==='AR'">تعديل الاسعار</strong>
+                                            <strong ng-if="lang==='EN'">Update Prices</strong>
                                         </a>
                                     </td>
                                 </tr>

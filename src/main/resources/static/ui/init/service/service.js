@@ -696,6 +696,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openUpdatePricesModel = function (transactionBuy) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billBuy/updatePrices.html',
+            controller: 'updatePricesCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                transactionBuy: function () {
+                    return transactionBuy;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * BillSell Model                                             *

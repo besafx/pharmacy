@@ -148,6 +148,12 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'حذف الوصفات الطبية' : 'Delete Prescription',
                 value: 'ROLE_DIAGNOSIS_DELETE',
                 selected: false
+            },
+            {
+                id: 53,
+                name: $rootScope.lang === 'AR' ? 'تعديل اسعار الاصناف' : 'Update Prices',
+                value: 'ROLE_DRUG_PRICE_UPDATE',
+                selected: false
             }
         ];
 

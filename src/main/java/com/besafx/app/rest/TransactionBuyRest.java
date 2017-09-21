@@ -44,6 +44,9 @@ public class TransactionBuyRest {
     private DrugService drugService;
 
     @Autowired
+    private DrugUnitService drugUnitService;
+
+    @Autowired
     private PersonService personService;
 
     @Autowired
@@ -124,5 +127,20 @@ public class TransactionBuyRest {
         } else {
             return null;
         }
+    }
+
+    @RequestMapping(value = "updatePrices/{transactionBuyId}/{drugUnitId}/{unitBuyCost}/{unitSellCost}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @Transactional
+    public String updatePrices(@PathVariable(value = "transactionBuyId") Long transactionBuyId,
+                               @PathVariable(value = "drugUnitId") Long drugUnitId,
+                               @PathVariable(value = "unitBuyCost") Double unitBuyCost,
+                               @PathVariable(value = "unitSellCost") Double unitSellCost) {
+        TransactionBuy transactionBuy = transactionBuyService.findOne(transactionBuyId);
+        transactionBuy.setDrugUnit(drugUnitService.findOne(drugUnitId));
+        transactionBuy.setUnitBuyCost(unitBuyCost);
+        transactionBuy.setUnitSellCost(unitSellCost);
+        transactionBuy = transactionBuyService.save(transactionBuy);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionBuy);
     }
 }

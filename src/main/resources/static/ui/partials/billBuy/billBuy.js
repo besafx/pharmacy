@@ -92,7 +92,7 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
 
         $scope.delete = function (billBuy) {
             if (billBuy) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("المخازن", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
                     BillBuyService.remove(billBuy.id).then(function () {
                         var index = $scope.billBuys.indexOf(billBuy);
                         $scope.billBuys.splice(index, 1);
@@ -102,7 +102,7 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                 return;
             }
 
-            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
+            $rootScope.showConfirmNotify("المخازن", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
                 BillBuyService.remove($scope.selected.id).then(function () {
                     var index = $scope.billBuys.indexOf($scope.selected);
                     $scope.billBuys.splice(index, 1);
@@ -113,7 +113,7 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
 
         $scope.deleteTransactionBuy = function (transactionBuy) {
             if (transactionBuy) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("المخازن", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
                     TransactionBuyService.remove(transactionBuy.id).then(function () {
                         var index = $scope.selected.transactionBuys.indexOf(transactionBuy);
                         $scope.selected.transactionBuys.splice(index, 1);
@@ -122,6 +122,16 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                     });
                 });
 
+            }
+        };
+
+        $scope.updatePrices = function (transactionBuy) {
+            if (transactionBuy) {
+                $rootScope.showConfirmNotify("المخازن", "هل تعديل أسعار الطلبية فعلاً؟", "warning", "fa-edit", function () {
+                    ModalProvider.openUpdatePricesModel(transactionBuy).result.then(function (data) {
+                        return transactionBuy = data;
+                    });
+                });
             }
         };
 

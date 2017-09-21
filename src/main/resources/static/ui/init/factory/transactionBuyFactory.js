@@ -26,6 +26,11 @@ app.factory("TransactionBuyService",
             },
             removeByBillBuy: function (id) {
                 return $http.delete("/api/transactionBuy/deleteByBillBuy/" + id);
+            },
+            updatePrices: function (transactionBuyId, drugUnitId, unitBuyCost, unitSellCost) {
+                return $http.get("/api/transactionBuy/updatePrices/" + transactionBuyId + "/" + drugUnitId + "/" + unitBuyCost + "/" + unitSellCost).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);
