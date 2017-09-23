@@ -1,6 +1,7 @@
 package com.besafx.app.report;
 
 import com.besafx.app.entity.Order;
+import com.besafx.app.service.BillSellService;
 import com.besafx.app.service.OrderService;
 import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -9,6 +10,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -22,8 +25,13 @@ import java.util.Map;
 @RestController
 public class ReportOrderController {
 
+    private final static Logger log = LoggerFactory.getLogger(ReportOrderController.class);
+
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private BillSellService billSellService;
 
     @Autowired
     private ReportExporter reportExporter;
@@ -65,6 +73,26 @@ public class ReportOrderController {
         JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
         map.put("subReport", jasperReportSub);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map , new JRBeanCollectionDataSource(order.getOrderDetectionTypes()));
+        reportExporter.export(exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/order/done/{orderId}/{billSellId}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportOrderDone(
+            @PathVariable("orderId") Long orderId,
+            @PathVariable("billSellId") Long billSellId,
+            @PathVariable(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        map.put("order", orderService.findOne(orderId));
+        map.put("billSell", billSellService.findOne(billSellId));
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrderDone.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         reportExporter.export(exportType, response, jasperPrint);
     }
 

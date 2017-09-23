@@ -157,23 +157,40 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                     search.push('&');
                 }
                 //
-                if (buffer.falconsList) {
-                    var falcons = [];
-                    for (var i = 0; i < buffer.falconsList.length; i++) {
-                        falcons.push(buffer.falconsList[i].id);
-                    }
-                    search.push('falcons=');
-                    search.push(falcons);
+                if (buffer.customerName) {
+                    search.push('customerName=');
+                    search.push(buffer.customerName);
+                    search.push('&');
+                }
+                if (buffer.customerMobile) {
+                    search.push('customerMobile=');
+                    search.push(buffer.customerMobile);
+                    search.push('&');
+                }
+                if (buffer.customerIdentityNumber) {
+                    search.push('customerIdentityNumber=');
+                    search.push(buffer.customerIdentityNumber);
                     search.push('&');
                 }
                 //
-                if (buffer.doctorsList) {
-                    var doctors = [];
-                    for (var i = 0; i < buffer.doctorsList.length; i++) {
-                        doctors.push(buffer.doctorsList[i].id);
-                    }
-                    search.push('doctors=');
-                    search.push(doctors);
+                if (buffer.falconCode) {
+                    search.push('falconCode=');
+                    search.push(buffer.falconCode);
+                    search.push('&');
+                }
+                if (buffer.falconType) {
+                    search.push('falconType=');
+                    search.push(buffer.falconType);
+                    search.push('&');
+                }
+                if (buffer.weightTo) {
+                    search.push('weightTo=');
+                    search.push(buffer.weightTo);
+                    search.push('&');
+                }
+                if (buffer.weightFrom) {
+                    search.push('weightFrom=');
+                    search.push(buffer.weightFrom);
                     search.push('&');
                 }
                 //

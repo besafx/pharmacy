@@ -176,7 +176,7 @@
                                         ng-model="order.falcon"
                                         required="required"
                                         disable-validation-message=""
-                                        ng-options="falcon.code for falcon in buffer.customer.falcons | orderBy:'code' track by falcon.id">
+                                        ng-options="(falcon.code + ' ( ' + falcon.type + ' ) (' + falcon.weight + ' جرام' + ')') for falcon in buffer.customer.falcons | orderBy:'code' track by falcon.id">
                                 </select>
                             </div>
 

@@ -31,17 +31,42 @@ public class OrderSearch {
             final List<OrderCondition> orderConditions,
             final Long dateFrom,
             final Long dateTo,
-            final List<Long> falcons,
-            final List<Long> doctors
+            final String customerName,
+            final String customerMobile,
+            final String customerIdentityNumber,
+            final Long falconCode,
+            final String falconType,
+            final Double weightFrom,
+            final Double weightTo,
+            final String doctorName
     ) {
         List<Specification> predicates = new ArrayList<>();
-        Optional.ofNullable(orderConditions).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("orderCondition").in(value)));
-        Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
-        Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
-        Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
-        Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
-        Optional.ofNullable(falcons).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("falcon").get("id").in(value)));
-        Optional.ofNullable(doctors).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("doctor").get("id").in(value)));
+        Optional.ofNullable(orderConditions)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> root.get("orderCondition").in(value)));
+        Optional.ofNullable(codeFrom)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
+        Optional.ofNullable(codeTo)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
+        Optional.ofNullable(dateFrom)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
+        Optional.ofNullable(dateTo)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
+        Optional.ofNullable(customerName)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("customer").get("name"), "%" + value + "%")));
+        Optional.ofNullable(customerMobile)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("customer").get("mobile"), "%" + value + "%")));
+        Optional.ofNullable(customerIdentityNumber)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("customer").get("identityNumber"), "%" + value + "%")));
+        Optional.ofNullable(falconCode)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("code"), "%" + value + "%")));
+        Optional.ofNullable(falconType)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("type"), "%" + value + "%")));
+        Optional.ofNullable(weightFrom)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("falcon").get("weight"), value)));
+        Optional.ofNullable(weightTo)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("falcon").get("weight"), value)));
+        Optional.ofNullable(doctorName)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("doctor").get("person").get("name"), "%" + value + "%")));
         if (!predicates.isEmpty()) {
             Specification result = predicates.get(0);
             for (int i = 1; i < predicates.size(); i++) {

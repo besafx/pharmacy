@@ -367,6 +367,16 @@
                                         <span ng-if="lang==='EN'">Falcon Code</span>
                                     </th>
 
+                                    <th st-sort="falcon.weight">
+                                        <span ng-if="lang==='AR'">وزن الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Weight</span>
+                                    </th>
+
+                                    <th st-sort="falcon.type">
+                                        <span ng-if="lang==='AR'">نوع الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Type</span>
+                                    </th>
+
                                     <th st-sort="falcon.customer.name">
                                         <span ng-if="lang==='AR'">العميل</span>
                                         <span ng-if="lang==='EN'">Customer</span>
@@ -427,6 +437,8 @@
                                         </span>
                                     </td>
                                     <td st-select-row-custom="order">{{order.falcon.code}}</td>
+                                    <td st-select-row-custom="order">{{order.falcon.weight}} جرام</td>
+                                    <td st-select-row-custom="order">{{order.falcon.type}}</td>
                                     <td st-select-row-custom="order">{{order.falcon.customer.name}}</td>
                                     <td st-select-row-custom="order">{{order.doctor.person.name}}</td>
                                     <td st-select-row-custom="order">{{order.detectionTypeCostSum}} SAR</td>
@@ -437,7 +449,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="10">
+                                    <td colspan="12">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -445,7 +457,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="10">
+                                    <td colspan="12">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>

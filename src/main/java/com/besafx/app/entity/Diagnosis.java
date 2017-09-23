@@ -36,6 +36,10 @@ public class Diagnosis implements Serializable {
     @Type(type = "org.hibernate.type.TextType")
     private String content;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String usage;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 

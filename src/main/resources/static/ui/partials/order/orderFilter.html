@@ -66,37 +66,92 @@
             </div>
 
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <label for="code" class="control-label">
-                    <span ng-if="lang==='AR'">رقم الصقر</span>
-                    <span ng-if="lang==='EN'">Falcons</span>
+                <label for="customerName" class="control-label">
+                    <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
+                    <span ng-if="lang==='EN'">Customer Name Contains</span>
                 </label>
-                <select id="code"
-                        data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
-                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                        placeholder-text-single="'{{lang==='AR' ? 'اختر الرقم' : 'Please Select Code...'}}'"
-                        class="form-control"
-                        chosen=""
-                        multiple=""
-                        ng-model="buffer.falconsList"
-                        ng-options="falcon.code for falcon in falcons | orderBy:'code' track by falcon.id">
-                </select>
+                <input id="customerName"
+                       type="text"
+                       class="form-control"
+                       ng-model="buffer.customerName">
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <label for="doctorName" class="control-label">
-                    <span ng-if="lang==='AR'">الاسم</span>
-                    <span ng-if="lang==='EN'">Doctors</span>
-                </label>
-                <select id="doctorName"
-                        data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم' : 'Search For Name...'}}"
-                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                        placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم' : 'Please Select Name...'}}'"
-                        class="form-control"
-                        chosen=""
-                        multiple=""
-                        ng-model="buffer.doctorsList"
-                        ng-options="doctor.person.name for doctor in doctors | orderBy:'person.name' track by doctor.id">
-                </select>
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="customerMobile" class="control-label">
+                        <span ng-if="lang==='AR'">رقم جوال العميل يحتوي على</span>
+                        <span ng-if="lang==='EN'">Customer Mobile Contains</span>
+                    </label>
+                    <input id="customerMobile"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.customerMobile">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="customerIdentityNumber" class="control-label">
+                        <span ng-if="lang==='AR'">رقم بطاقة العميل تحتوي على</span>
+                        <span ng-if="lang==='EN'">Customer ID Contains</span>
+                    </label>
+                    <input id="customerIdentityNumber"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.customerIdentityNumber">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="falconCode" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الصقر يحتوي على</span>
+                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
+                    </label>
+                    <input id="falconCode"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.falconCode">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="falconType" class="control-label">
+                        <span ng-if="lang==='AR'">نوع الصقر يحتوي على</span>
+                        <span ng-if="lang==='EN'">Falcon Type Contains</span>
+                    </label>
+                    <input id="falconType"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.falconType">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="weightFrom" class="control-label">
+                        <span ng-if="lang==='AR'">وزن الصقر من</span>
+                        <span ng-if="lang==='EN'">Falcon Weight From</span>
+                    </label>
+                    <input id="weightFrom"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.weightFrom">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="weightTo" class="control-label">
+                        <span ng-if="lang==='AR'">وزن الصقر إلى</span>
+                        <span ng-if="lang==='EN'">Falcon Weight To</span>
+                    </label>
+                    <input id="weightTo"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.weightTo">
+                </div>
+
             </div>
 
             <div class="form-group row">

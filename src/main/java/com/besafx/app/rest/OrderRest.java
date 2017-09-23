@@ -190,8 +190,14 @@ public class OrderRest {
             @RequestParam(value = "orderConditions", required = false) final List<OrderCondition> orderConditions,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
-            @RequestParam(value = "falcons", required = false) final List<Long> falcons,
-            @RequestParam(value = "doctors", required = false) final List<Long> doctors,
+            @RequestParam(value = "customerName", required = false) final String customerName,
+            @RequestParam(value = "customerMobile", required = false) final String customerMobile,
+            @RequestParam(value = "customerIdentityNumber", required = false) final String customerIdentityNumber,
+            @RequestParam(value = "falconCode", required = false) final Long falconCode,
+            @RequestParam(value = "falconType", required = false) final String falconType,
+            @RequestParam(value = "weightFrom", required = false) final Double weightFrom,
+            @RequestParam(value = "weightTo", required = false) final Double weightTo,
+            @RequestParam(value = "doctorName", required = false) final String doctorName,
             Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -203,7 +209,7 @@ public class OrderRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        List<Order> list = orderSearch.filter(codeFrom, codeTo, orderConditions, dateFrom, dateTo, falcons, doctors);
+        List<Order> list = orderSearch.filter(codeFrom, codeTo, orderConditions, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
