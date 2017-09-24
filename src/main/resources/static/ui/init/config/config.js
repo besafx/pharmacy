@@ -193,6 +193,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Diagnosis State                                            *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("diagnosis", {
+            url: "/diagnosis",
+            templateUrl: "/ui/partials/diagnosis/diagnosis.html",
+            controller: "diagnosisCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Drug State                                                 *
          *                                                            *
          *************************************************************/

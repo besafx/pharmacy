@@ -3,6 +3,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
 
         $timeout(function () {
             $scope.refreshCustomers();
+            $scope.refreshFalcons();
             $scope.refreshDetectionTypes();
             $scope.refreshDoctors();
         }, 2000);
@@ -34,9 +35,9 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             });
         };
 
-        $scope.refreshFalconsByCustomer = function () {
-            FalconService.findByCustomer($scope.buffer.customer).then(function (data) {
-                $scope.buffer.customer.falcons = data;
+        $scope.refreshFalcons = function () {
+            FalconService.findAllCombo().then(function (data) {
+                $scope.falcons = data;
             });
         };
 
@@ -64,6 +65,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
                 }
             }).result.then(function (data) {
                 $scope.buffer.customer.falcons.splice(0, 0, data);
+                $scope.falcons.splice(0, 0, data);
                 $scope.order.falcon = data;
             }, function () {
                 console.info('CustomerFalconCreateModel Closed.');

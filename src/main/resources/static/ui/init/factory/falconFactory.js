@@ -11,6 +11,11 @@ app.factory("FalconService",
                     return response.data;
                 });
             },
+            findAllCodeCombo: function () {
+                return $http.get("/api/falcon/findAllCodeCombo").then(function (response) {
+                    return response.data;
+                });
+            },
             findOne: function (id) {
                 return $http.get("/api/falcon/findOne/" + id).then(function (response) {
                     return response.data;

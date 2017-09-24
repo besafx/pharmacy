@@ -1,43 +1,23 @@
-SELECT setval('attach_sequence', (SELECT MAX(id)
-                                  FROM attach) + 1);
-SELECT setval('bank_sequence', (SELECT MAX(id)
-                                FROM bank) + 1);
-SELECT setval('bill_buy_sequence', (SELECT MAX(id)
-                                    FROM bill_buy) + 1);
-SELECT setval('bill_sell_sequence', (SELECT MAX(id)
-                                     FROM bill_sell) + 1);
+SELECT setval('attach_sequence', (SELECT MAX(id) FROM attach) + 1);
+SELECT setval('bank_sequence', (SELECT MAX(id) FROM bank) + 1);
+SELECT setval('bill_buy_sequence', (SELECT MAX(id) FROM bill_buy) + 1);
+SELECT setval('bill_sell_sequence', (SELECT MAX(id) FROM bill_sell) + 1);
 SELECT setval('company_sequence', (SELECT MAX(id) FROM company) + 1);
-SELECT setval('customer_sequence', (SELECT MAX(id)
-                                    FROM customer) + 1);
-SELECT setval('deposit_sequence', (SELECT MAX(id)
-                                   FROM deposit) + 1);
-SELECT setval('detection_type_sequence', (SELECT MAX(id)
-                                          FROM detection_type) + 1);
-SELECT setval('doctor_sequence', (SELECT MAX(id)
-                                  FROM doctor) + 1);
-SELECT setval('drug_sequence', (SELECT MAX(id)
-                                FROM drug) + 1);
-SELECT setval('drug_category_sequence', (SELECT MAX(id)
-                                         FROM drug_category) + 1);
-SELECT setval('drug_unit_sequence', (SELECT MAX(id)
-                                     FROM drug_unit) + 1);
-SELECT setval('employee_sequence', (SELECT MAX(id)
-                                    FROM employee) + 1);
-SELECT setval('falcon_sequence', (SELECT MAX(id)
-                                  FROM falcon) + 1);
-SELECT setval('order_sequence', (SELECT MAX(id)
-                                 FROM "order") + 1);
-SELECT setval('order_attach_sequence', (SELECT MAX(id)
-                                        FROM order_attach) + 1);
-SELECT setval('order_detection_type_sequence', (SELECT MAX(id)
-                                                FROM order_detection_type) + 1);
+SELECT setval('customer_sequence', (SELECT MAX(id) FROM customer) + 1);
+SELECT setval('deposit_sequence', (SELECT MAX(id) FROM deposit) + 1);
+SELECT setval('detection_type_sequence', (SELECT MAX(id) FROM detection_type) + 1);
+SELECT setval('doctor_sequence', (SELECT MAX(id) FROM doctor) + 1);
+SELECT setval('drug_sequence', (SELECT MAX(id) FROM drug) + 1);
+SELECT setval('drug_category_sequence', (SELECT MAX(id) FROM drug_category) + 1);
+SELECT setval('drug_unit_sequence', (SELECT MAX(id) FROM drug_unit) + 1);
+SELECT setval('employee_sequence', (SELECT MAX(id) FROM employee) + 1);
+SELECT setval('falcon_sequence', (SELECT MAX(id) FROM falcon) + 1);
+SELECT setval('order_sequence', (SELECT MAX(id) FROM "order") + 1);
+SELECT setval('order_attach_sequence', (SELECT MAX(id) FROM order_attach) + 1);
+SELECT setval('order_detection_type_sequence', (SELECT MAX(id) FROM order_detection_type) + 1);
 SELECT setval('person_sequence', (SELECT MAX(id) FROM person) + 1);
-SELECT setval('supplier_sequence', (SELECT MAX(id)
-                                    FROM supplier) + 1);
+SELECT setval('supplier_sequence', (SELECT MAX(id)  FROM supplier) + 1);
 SELECT setval('team_sequence', (SELECT MAX(id) FROM team) + 1);
-SELECT setval('transaction_buy_sequence', (SELECT MAX(id)
-                                           FROM transaction_buy) + 1);
-SELECT setval('transaction_sell_sequence', (SELECT MAX(id)
-                                            FROM transaction_sell) + 1);
-SELECT setval('withdraw_sequence', (SELECT MAX(id)
-                                    FROM withdraw) + 1);
+SELECT setval('transaction_buy_sequence', (SELECT MAX(id) FROM transaction_buy) + 1);
+SELECT setval('transaction_sell_sequence', (SELECT MAX(id) FROM transaction_sell) + 1);
+SELECT setval('withdraw_sequence', (SELECT MAX(id) FROM withdraw) + 1);

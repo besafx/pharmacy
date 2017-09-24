@@ -132,6 +132,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'diagnosis': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'assignment';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-light_green-lime.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'drug': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'favorite';
@@ -345,6 +356,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'طلبات الفحص';
                         } else {
                             $rootScope.pageTitle = 'Detection Orders';
+                        }
+                        break;
+                    case 'diagnosis':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'نتائج الفحص';
+                        } else {
+                            $rootScope.pageTitle = 'Detection Results';
                         }
                         break;
                     case 'drug':

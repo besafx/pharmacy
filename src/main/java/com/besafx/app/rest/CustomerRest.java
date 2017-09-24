@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping(value = "/api/customer/")
 public class CustomerRest {
 
-    public static final String FILTER_TABLE = "**,falcons[**,customer[id,code,name]]";
+    public static final String FILTER_TABLE = "**,falcons[**,customer[id,code,name,mobile,identityNumber]]";
     public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name,mobile,identityNumber";
     private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
     @Autowired

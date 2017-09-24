@@ -177,9 +177,11 @@ gulp.task('scripts', function () {
         './partials/order/order.js',
         './partials/order/orderCreate.js',
         './partials/order/orderDetectionTypeCreate.js',
-        './partials/order/diagnosisCreate.js',
         './partials/order/orderFilter.js',
         './partials/order/orderAttachUpload.js',
+
+        './partials/diagnosis/diagnosis.js',
+        './partials/order/diagnosisCreate.js',
 
         './partials/report/person/personsIn.js',
         './partials/report/order/orderByDate.js',

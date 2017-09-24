@@ -31,6 +31,7 @@ public class FalconRest {
 
     public static final String FILTER_TABLE = "**,customer[id,code,name,mobile]";
     public static final String FILTER_FALCON_COMBO = "id,code,type,customer[id,code,name,mobile]";
+    public static final String FILTER_FALCON_CODE_COMBO = "id,code,customer[id]";
 
     @Autowired
     private FalconService falconService;
@@ -133,6 +134,14 @@ public class FalconRest {
         List<Falcon> list = Lists.newArrayList(falconService.findAll());
         list.sort(Comparator.comparing(Falcon::getCode));
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_FALCON_COMBO), list);
+    }
+
+    @RequestMapping(value = "findAllCodeCombo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findAllCodeCombo() {
+        List<Falcon> list = Lists.newArrayList(falconService.findAll());
+        list.sort(Comparator.comparing(Falcon::getCode));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_FALCON_CODE_COMBO), list);
     }
 
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
