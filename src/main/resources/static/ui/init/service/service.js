@@ -424,24 +424,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
-    this.openDiagnosisCreateModel = function (orderDetectionType) {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/order/diagnosisCreate.html',
-            controller: 'diagnosisCreateCtrl',
-            backdrop: 'static',
-            keyboard: false,
-            size: 'lg',
-            resolve: {
-                orderDetectionType: function () {
-                    return orderDetectionType;
-                }
-            }
-        });
-    };
-
     this.openReportOrderByListModel = function (orders) {
         return $uibModal.open({
             animation: true,
@@ -497,6 +479,47 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: "orderDetailsByDateCtrl",
             backdrop: 'static',
             keyboard: false
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * Diagnosis Model                                            *
+     *                                                            *
+     *************************************************************/
+    this.openDiagnosisCreateModel = function (orderDetectionType) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/diagnosis/diagnosisCreate.html',
+            controller: 'diagnosisCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                orderDetectionType: function () {
+                    return orderDetectionType;
+                }
+            }
+        });
+    };
+
+    this.openDiagnosisDetailsModel = function (orderDetectionType) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/diagnosis/diagnosisDetails.html',
+            controller: 'diagnosisDetailsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                orderDetectionType: function () {
+                    return orderDetectionType;
+                }
+            }
         });
     };
 

@@ -1,8 +1,10 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.entity.Diagnosis;
+import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.DiagnosisService;
+import com.besafx.app.service.OrderDetectionTypeService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -27,10 +29,13 @@ import java.util.List;
 @RequestMapping(value = "/api/diagnosis/")
 public class DiagnosisRest {
 
-    public static final String FILTER_TABLE = "**,orderDetectionType[**,order[id]],transactionSell[**,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]]";
+    public static final String FILTER_TABLE = "**,diagnosisAttaches[id],orderDetectionType[**,order[id]],transactionSell[**,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]]";
 
     @Autowired
     private DiagnosisService diagnosisService;
+
+    @Autowired
+    private OrderDetectionTypeService orderDetectionTypeService;
 
     @Autowired
     private PersonService personService;
@@ -78,6 +83,36 @@ public class DiagnosisRest {
                     .builder()
                     .title(lang.equals("AR") ? "العيادة البيطرية" : "Data Processing")
                     .message(lang.equals("AR") ? "تم حذف الوصفة الطبية بنجاح" : "Delete Diagnosis Successfully")
+                    .type("error")
+                    .icon("fa-trash")
+                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                    .build(), principal.getName());
+        }
+    }
+
+    @RequestMapping(value = "deleteByOrderDetectionType/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_DIAGNOSIS_DELETE')")
+    @Transactional
+    public void deleteByOrderDetectionType(@PathVariable Long id, Principal principal) {
+        OrderDetectionType orderDetectionType = orderDetectionTypeService.findOne(id);
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        if (!orderDetectionType.getDiagnoses().isEmpty()) {
+            diagnosisService.delete(orderDetectionType.getDiagnoses());
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title(lang.equals("AR") ? "العيادة البيطرية" : "Data Processing")
+                    .message(lang.equals("AR") ? "تم حذف الوصفة الطبية بنجاح" : "Delete Diagnosis Successfully")
+                    .type("error")
+                    .icon("fa-trash")
+                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                    .build(), principal.getName());
+        }else{
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title(lang.equals("AR") ? "العيادة البيطرية" : "Data Processing")
+                    .message(lang.equals("AR") ? "عفواً، لا توجد وصفات طبية مسجلة لدى هذة الخدمة" : "No Prescriptions For This Service Yet")
                     .type("error")
                     .icon("fa-trash")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")

@@ -636,6 +636,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         $rootScope.goToOrder = function () {
             $state.go('order');
         };
+        $rootScope.goToDiagnosis = function () {
+            $state.go('diagnosis');
+        };
         $rootScope.goToDrug = function () {
             $state.go('drug');
         };

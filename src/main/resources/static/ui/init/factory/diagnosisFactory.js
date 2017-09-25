@@ -23,6 +23,9 @@ app.factory("DiagnosisService",
             },
             remove: function (id) {
                 return $http.delete("/api/diagnosis/delete/" + id);
+            },
+            removeByOrderDetectionType: function (id) {
+                return $http.delete("/api/diagnosis/deleteByOrderDetectionType/" + id);
             }
         };
     }]);

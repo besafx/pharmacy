@@ -19,12 +19,8 @@ public interface OrderService extends PagingAndSortingRepository<Order, Long>, J
     Order findTopByOrderByCodeDesc();
     Order findByCodeAndIdIsNot(Integer code, Long id);
     List<Order> findByOrderConditionIn(List<OrderCondition> orderConditions);
-
     List<Order> findByIdIn(List<Long> ids);
-
     List<Order> findByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
     List<Order> findByFalconIn(List<Falcon> falcons);
-
     List<Order> findByFalcon(Falcon falcon);
 }

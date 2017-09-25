@@ -9,7 +9,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -56,6 +58,9 @@ public class Diagnosis implements Serializable {
     @JoinColumn(name = "orderDetectionType")
     @ManyToOne
     private OrderDetectionType orderDetectionType;
+
+    @OneToMany(mappedBy = "diagnosis", fetch = FetchType.LAZY)
+    private List<DiagnosisAttach> diagnosisAttaches = new ArrayList<>();
 
     @JsonCreator
     public static Diagnosis Create(String jsonString) throws IOException {

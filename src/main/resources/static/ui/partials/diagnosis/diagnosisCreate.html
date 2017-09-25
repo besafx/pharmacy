@@ -8,8 +8,8 @@
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
             <span class="mdl-list__item-primary-content">
                 <i class="material-icons mdl-list__item-icon">add</i>
-                <strong ng-if="lang==='AR'">اضافة وصفة طبية للطلب رقم /  </strong>
-                <strong ng-if="lang==='EN'">Add Medical Prescription To Order Number \  </strong>
+                <strong ng-if="lang==='AR'">اضافة وصفة طبية للطلب</strong>
+                <strong ng-if="lang==='EN'">Add Medical Prescription To Order</strong>
                 <strong>{{diagnosis.orderDetectionType.order.code}}</strong>
             </span>
         </h3>
@@ -167,13 +167,6 @@
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
                                     <span class="fa fa-refresh"></span>
                                 </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])"
-                                   ng-click="newDrug()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء صنف دواء جديد' : 'New Drug...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
@@ -283,15 +276,28 @@
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="description" class="control-label">
+                                <label for="content" class="control-label">
                                     <span ng-if="lang==='AR'">التشخيص</span>
                                     <span ng-if="lang==='EN'">Prescription</span>
                                 </label>
-                                <textarea id="description"
+                                <textarea id="content"
                                           type="text"
                                           msd-elastic="\n"
                                           class="form-control"
                                           ng-model="diagnosis.content">
+                                </textarea>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="usage" class="control-label">
+                                    <span ng-if="lang==='AR'">دواعي الإستخدام</span>
+                                    <span ng-if="lang==='EN'">Usage</span>
+                                </label>
+                                <textarea id="usage"
+                                          type="text"
+                                          msd-elastic="\n"
+                                          class="form-control"
+                                          ng-model="diagnosis.usage">
                                 </textarea>
                             </div>
 

@@ -252,6 +252,18 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             }
         };
 
+        $scope.deleteOrderDetectionType = function (orderDetectionType) {
+            if (orderDetectionType) {
+                $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف خدمة الفحص فعلاً؟", "error", "fa-trash", function () {
+                    OrderDetectionTypeService.remove(orderDetectionType.id).then(function (data) {
+                        var index = $scope.selected.orderDetectionTypes.indexOf(data);
+                        $scope.selected.orderDetectionTypes.splice(index, 1);
+                    });
+                });
+
+            }
+        };
+
         $scope.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
@@ -278,25 +290,8 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             });
         };
 
-        $scope.newDiagnosis = function () {
-            ModalProvider.openDiagnosisCreateModel($scope.selectedOrderDetectionType).result.then(function (data) {
-                $rootScope.showConfirmNotify("العيادة البيطرية", "هل تود طباعة نتائج الفحص الطبي ؟", "notification", "fa-info", function () {
-                    $scope.printDiagnosed($scope.selected);
-                });
-                if ($scope.selectedOrderDetectionType.diagnoses) {
-                    $scope.selectedOrderDetectionType.diagnoses.splice(0, 0, data);
-                }
-            }, function () {
-                console.info('DiagnosisCreateModel Closed.');
-            });
-        };
-
         $scope.printPending = function (order) {
             window.open('/report/order/pending/' + order.id + '/PDF');
-        };
-
-        $scope.printDiagnosed = function (order) {
-            window.open('/report/order/diagnosed/' + order.id + '/PDF');
         };
 
         $scope.refreshOrderDetectionTypeByOrder = function () {
@@ -308,12 +303,6 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
         $scope.refreshOrderAttachByOrder = function () {
             OrderAttachService.findByOrder($scope.selected).then(function (data) {
                 $scope.selected.orderAttaches = data;
-            });
-        };
-
-        $scope.refreshDiagnosesByOrderDetectionType = function () {
-            DiagnosisService.findByOrderDetectionTypeId($scope.selectedOrderDetectionType.id).then(function (data) {
-                $scope.selectedOrderDetectionType.diagnosis = data;
             });
         };
 
