@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/orderDetectionType/")
 public class OrderDetectionTypeRest {
 
-    public static final String FILTER_TABLE = "**,orderDetectionTypeAttaches[id],diagnoses[**,-orderDetectionType,drug[id,code],drugUnit[**,-drugUnit]],order[**,falcon[id,code,customer[id,name]],doctor[id,person[id,code,nickname,name]],-orderDetectionTypes,-orderAttaches]";
-    public static final String FILTER_ORDER_DETECTION_TYPE_COMBO = "**,diagnoses[id],order[id,code,orderCondition]";
+    public static final String FILTER_TABLE = "**,orderDetectionTypeAttaches[id],diagnoses[**,diagnosisAttaches[id],-orderDetectionType,drug[id,code],drugUnit[**,-drugUnit]],order[**,falcon[id,code,customer[id,name]],doctor[id,person[id,code,nickname,name]],-orderDetectionTypes,-orderAttaches]";
+    public static final String FILTER_ORDER_DETECTION_TYPE_COMBO = "**,orderDetectionTypeAttaches[id],diagnoses[id],order[id,code,orderCondition]";
 
     @Autowired
     private OrderDetectionTypeService orderDetectionTypeService;
