@@ -250,9 +250,19 @@
                                         <span ng-if="lang==='EN'">Payment Method</span>
                                     </th>
 
+                                    <th st-sort="unitSellCostSum">
+                                        <span ng-if="lang==='AR'">إجمالي الفاتورة</span>
+                                        <span ng-if="lang==='EN'">Total Cost</span>
+                                    </th>
+
                                     <th st-sort="discount">
                                         <span ng-if="lang==='AR'">خصم المبيعات</span>
                                         <span ng-if="lang==='EN'">Sales Discount</span>
+                                    </th>
+
+                                    <th st-sort="net">
+                                        <span ng-if="lang==='AR'">الصافي</span>
+                                        <span ng-if="lang==='EN'">Net</span>
                                     </th>
 
                                     <th st-sort="date">
@@ -273,7 +283,9 @@
                                     <td st-select-row-custom="billSell">{{billSell.code}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.customer.name}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.paymentMethod}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.unitSellCostSum}} SAR</td>
                                     <td st-select-row-custom="billSell">{{billSell.discount | currency:'%'}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.net}} SAR</td>
                                     <td st-select-row-custom="billSell">
                                         <span ng-show="dateType==='H'">{{billSell.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                         <span ng-show="dateType==='G'">{{billSell.date | date: 'yyyy-MM-dd'}}</span>
@@ -282,7 +294,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="6">
+                                    <td colspan="8">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -290,7 +302,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="5">
+                                    <td colspan="8">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
@@ -425,23 +437,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
-                            <div class="alert alert-info" role="alert">
-                                <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost}} SAR</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">خصم المبيعات</strong>
-                                <strong ng-if="lang==='EN'">Discount</strong>
-                                <span>{{(totalCost * selected.discount) / 100}} SAR</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost - ((totalCost * selected.discount) / 100)}} SAR</span>
-                            </div>
                         </div>
                     </div>
                 </div>
