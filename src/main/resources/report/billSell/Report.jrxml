@@ -448,14 +448,14 @@
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
-										<text><![CDATA[الاسم العلمي / M. Name]]></text>
+										<text><![CDATA[اسم الصنف]]></text>
 									</staticText>
 									<staticText>
 										<reportElement x="0" y="15" width="161" height="15" uuid="594b618d-3fe7-498d-84ff-0c2771aeecbb"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
-										<text><![CDATA[الاسم التجاري / T. Name]]></text>
+										<text><![CDATA[Drug Name]]></text>
 									</staticText>
 								</frame>
 							</jr:columnHeader>
@@ -469,14 +469,14 @@
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
-										<textFieldExpression><![CDATA[$F{transactionBuy}.getDrug().getMedicalNameArabic() + " / " + $F{transactionBuy}.getDrug().getMedicalNameEnglish()]]></textFieldExpression>
+										<textFieldExpression><![CDATA[$F{transactionBuy}.getDrug().getNameArabic()]]></textFieldExpression>
 									</textField>
 									<textField>
 										<reportElement x="0" y="15" width="161" height="15" uuid="a29c83d4-c248-4e41-a717-3f7c4502e5a2"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
-										<textFieldExpression><![CDATA[$F{transactionBuy}.getDrug().getNameArabic() + " / " + $F{transactionBuy}.getDrug().getNameEnglish()]]></textFieldExpression>
+										<textFieldExpression><![CDATA[ $F{transactionBuy}.getDrug().getNameEnglish()]]></textFieldExpression>
 									</textField>
 								</frame>
 							</jr:detailCell>
