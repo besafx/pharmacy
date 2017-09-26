@@ -5,7 +5,6 @@ import com.besafx.app.entity.Order;
 import com.besafx.app.entity.OrderAttach;
 import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.Person;
-import com.besafx.app.entity.enums.OrderCondition;
 import com.besafx.app.search.OrderSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.JSONConverter;
@@ -29,15 +28,16 @@ import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/order/")
 public class OrderRest {
 
-    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],orderDetectionTypes[**,-order,diagnoses[id],orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
-    public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id,name]],doctor[id,person[id,name]]";
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
+
+    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
+    public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id,name]],doctor[id,person[id,name]]";
+
     @Autowired
     private OrderService orderService;
 
@@ -73,7 +73,6 @@ public class OrderRest {
         } else {
             order.setCode(topOrder.getCode() + 1);
         }
-        order.setOrderCondition(OrderCondition.Pending);
         order.setDate(new DateTime().toDate());
         order = orderService.save(order);
         ListIterator<OrderDetectionType> listIterator = order.getOrderDetectionTypes().listIterator();
@@ -102,7 +101,7 @@ public class OrderRest {
     public void delete(@PathVariable Long id, Principal principal) throws Exception {
         Order order = orderService.findOne(id);
         if (order != null) {
-            diagnosisService.delete(order.getOrderDetectionTypes().stream().flatMap(orderDetectionType -> orderDetectionType.getDiagnoses().stream()).collect(Collectors.toList()));
+            diagnosisService.delete(order.getDiagnoses());
             orderDetectionTypeService.delete(order.getOrderDetectionTypes());
             ListIterator<OrderAttach> listIterator = order.getOrderAttaches().listIterator();
             while (listIterator.hasNext()){
@@ -124,11 +123,23 @@ public class OrderRest {
         }
     }
 
+    @RequestMapping(value = "saveNote/{id}/{note}", method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_ORDER_SAVE_NOTE')")
+    @Transactional
+    public void saveNote(@PathVariable(value = "id") Long id, @PathVariable(value = "note") String note, Principal principal) {
+        Order order = orderService.findOne(id);
+        if (order != null) {
+            order.setNote(note);
+            orderService.save(order);
+        }
+    }
+
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAll() {
         List<Order> list = Lists.newArrayList(orderService.findAll());
-        list.sort(Comparator.comparing(Order::getCode));
+        list.sort(Comparator.comparing(Order::getCode).reversed());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
@@ -146,48 +157,11 @@ public class OrderRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findOne(id));
     }
 
-    @RequestMapping(value = "findPending", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findPending() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Pending))
-                        .stream().sorted(Comparator.comparing(Order::getCode))
-                        .collect(Collectors.toList()));
-    }
-
-    @RequestMapping(value = "findDiagnosed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findDiagnosed() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Diagnosed))
-                        .stream().sorted(Comparator.comparing(Order::getCode))
-                        .collect(Collectors.toList()));
-    }
-
-    @RequestMapping(value = "findDone", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findDone() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Done))
-                        .stream().sorted(Comparator.comparing(Order::getCode))
-                        .collect(Collectors.toList()));
-    }
-
-    @RequestMapping(value = "findCanceled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findCanceled() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                orderService.findByOrderConditionIn(Lists.newArrayList(OrderCondition.Canceled))
-                        .stream().sorted(Comparator.comparing(Order::getCode))
-                        .collect(Collectors.toList()));
-    }
-
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String filter(
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
-            @RequestParam(value = "orderConditions", required = false) final List<OrderCondition> orderConditions,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
             @RequestParam(value = "customerName", required = false) final String customerName,
@@ -209,7 +183,7 @@ public class OrderRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        List<Order> list = orderSearch.filter(codeFrom, codeTo, orderConditions, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
+        List<Order> list = orderSearch.filter(codeFrom, codeTo, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")

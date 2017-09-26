@@ -321,18 +321,6 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 selected: false
             },
             {
-                id: 54,
-                name: $rootScope.lang === 'AR' ? 'رفع مستندات الوصفات الطبية' : 'Create Diagnosis Attachments',
-                value: 'ROLE_DIAGNOSIS_ATTACH_CREATE',
-                selected: false
-            },
-            {
-                id: 56,
-                name: $rootScope.lang === 'AR' ? 'حذف مستندات الوصفات الطبية' : 'Delete Diagnosis Attachments',
-                value: 'ROLE_DIAGNOSIS_ATTACH_DELETE',
-                selected: false
-            },
-            {
                 id: 57,
                 name: $rootScope.lang === 'AR' ? 'رفع مستندات الخدمات الطبية' : 'Create Detections Attachments',
                 value: 'ROLE_ORDER_DETECTION_TYPE_ATTACH_CREATE',
@@ -342,6 +330,18 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 id: 58,
                 name: $rootScope.lang === 'AR' ? 'حذف مستندات الخدمات الطبية' : 'Delete Detections Attachments',
                 value: 'ROLE_ORDER_DETECTION_TYPE_ATTACH_DELETE',
+                selected: false
+            },
+            {
+                id: 59,
+                name: $rootScope.lang === 'AR' ? 'تشخيص طلبات الفحص' : 'Diagnosing Orders',
+                value: 'ROLE_ORDER_SAVE_NOTE',
+                selected: false
+            },
+            {
+                id: 60,
+                name: $rootScope.lang === 'AR' ? 'تشخيص خدمات الفحص' : 'Diagnosing Detections',
+                value: 'ROLE_ORDER_DETECTION_TYPE_SAVE_CASE',
                 selected: false
             }
         ];

@@ -39,9 +39,6 @@ public class CustomerRest {
     private FalconService falconService;
 
     @Autowired
-    private BillSellService billSellService;
-
-    @Autowired
     private OrderService orderService;
 
     @Autowired
@@ -138,10 +135,6 @@ public class CustomerRest {
     public void delete(@PathVariable Long id, Principal principal) {
         Customer customer = customerService.findOne(id);
         if (customer != null) {
-            billSellService.findByCustomer(customer).stream().forEach(billSell -> {
-                billSell.setCustomer(null);
-                billSellService.save(billSell);
-            });
             orderService.findByFalconIn(customer.getFalcons()).stream().forEach(order -> {
                 order.setFalcon(null);
                 orderService.save(order);

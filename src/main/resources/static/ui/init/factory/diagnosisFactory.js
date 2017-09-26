@@ -11,8 +11,8 @@ app.factory("DiagnosisService",
                     return response.data;
                 });
             },
-            findByOrderDetectionTypeId: function (id) {
-                return $http.get("/api/diagnosis/findByOrderDetectionTypeId/" + id).then(function (response) {
+            findByOrderId: function (id) {
+                return $http.get("/api/diagnosis/findByOrderId/" + id).then(function (response) {
                     return response.data;
                 });
             },
@@ -21,11 +21,16 @@ app.factory("DiagnosisService",
                     return response.data;
                 });
             },
+            createAll: function (diagnosisWrapper) {
+                return $http.post("/api/diagnosis/createAll", diagnosisWrapper).then(function (response) {
+                    return response.data;
+                });
+            },
             remove: function (id) {
                 return $http.delete("/api/diagnosis/delete/" + id);
             },
-            removeByOrderDetectionType: function (id) {
-                return $http.delete("/api/diagnosis/deleteByOrderDetectionType/" + id);
+            removeByOrder: function (id) {
+                return $http.delete("/api/diagnosis/deleteByOrder/" + id);
             }
         };
     }]);

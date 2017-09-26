@@ -102,7 +102,6 @@ gulp.task('scripts', function () {
         './init/factory/customerFactory.js',
         './init/factory/supplierFactory.js',
         './init/factory/detectionTypeFactory.js',
-        './init/factory/diagnosisAttachFactory.js',
         './init/factory/diagnosisFactory.js',
         './init/factory/doctorFactory.js',
         './init/factory/drugFactory.js',
@@ -184,10 +183,6 @@ gulp.task('scripts', function () {
 
         './partials/diagnosis/diagnosis.js',
         './partials/diagnosis/diagnosisCreate.js',
-        './partials/diagnosis/diagnosisFilter.js',
-        './partials/diagnosis/diagnosisDetails.js',
-        './partials/diagnosis/diagnosisAttachUpload.js',
-        './partials/diagnosis/orderDetectionTypeAttachUpload.js',
 
         './partials/report/person/personsIn.js',
         './partials/report/order/orderByDate.js',

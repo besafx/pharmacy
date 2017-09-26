@@ -3,6 +3,7 @@ package com.besafx.app.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,9 @@ public class OrderDetectionType implements Serializable {
     @GeneratedValue(generator = "orderDetectionTypeSequenceGenerator")
     private Long id;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean done;
+
     @ManyToOne
     @JoinColumn(name = "[order]")
     private Order order;
@@ -41,10 +45,15 @@ public class OrderDetectionType implements Serializable {
     private DetectionType detectionType;
 
     @OneToMany(mappedBy = "orderDetectionType", fetch = FetchType.LAZY)
-    private List<Diagnosis> diagnoses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "orderDetectionType", fetch = FetchType.LAZY)
     private List<OrderDetectionTypeAttach> orderDetectionTypeAttaches = new ArrayList<>();
+
+    public String getCondition(){
+       try{
+           return this.done ? "تم التشخيص" : "غير مُشخص";
+       }catch (Exception ex){
+           return null;
+       }
+    }
 
     @JsonCreator
     public static OrderDetectionType Create(String jsonString) throws IOException {

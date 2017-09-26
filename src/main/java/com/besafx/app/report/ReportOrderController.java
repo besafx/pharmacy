@@ -68,11 +68,8 @@ public class ReportOrderController {
         map.put("order", order);
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrderDiagnosed.jrxml");
-        ClassPathResource jrxmlFileSub = new ClassPathResource("/report/order/ReportOrderDiagnosedSub1.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
-        JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
-        map.put("subReport", jasperReportSub);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map , new JRBeanCollectionDataSource(order.getOrderDetectionTypes()));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         reportExporter.export(exportType, response, jasperPrint);
     }
 

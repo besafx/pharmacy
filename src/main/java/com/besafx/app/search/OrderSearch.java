@@ -1,7 +1,6 @@
 package com.besafx.app.search;
 
 import com.besafx.app.entity.Order;
-import com.besafx.app.entity.enums.OrderCondition;
 import com.besafx.app.service.OrderService;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
@@ -28,7 +27,6 @@ public class OrderSearch {
     public List<Order> filter(
             final Long codeFrom,
             final Long codeTo,
-            final List<OrderCondition> orderConditions,
             final Long dateFrom,
             final Long dateTo,
             final String customerName,
@@ -41,8 +39,6 @@ public class OrderSearch {
             final String doctorName
     ) {
         List<Specification> predicates = new ArrayList<>();
-        Optional.ofNullable(orderConditions)
-                .ifPresent(value -> predicates.add((root, cq, cb) -> root.get("orderCondition").in(value)));
         Optional.ofNullable(codeFrom)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
         Optional.ofNullable(codeTo)
@@ -80,6 +76,5 @@ public class OrderSearch {
             list.sort(Comparator.comparing(Order::getCode).reversed());
             return list;
         }
-
     }
 }

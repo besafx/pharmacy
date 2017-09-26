@@ -35,10 +35,6 @@ public class BillSell implements Serializable {
 
     private Integer code;
 
-    @JoinColumn(name = "customer")
-    @ManyToOne
-    private Customer customer;
-
     private Double discount;
 
     @Enumerated(EnumType.STRING)

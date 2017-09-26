@@ -2,7 +2,6 @@ package com.besafx.app.service;
 
 import com.besafx.app.entity.Falcon;
 import com.besafx.app.entity.Order;
-import com.besafx.app.entity.enums.OrderCondition;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -18,7 +17,6 @@ import java.util.List;
 public interface OrderService extends PagingAndSortingRepository<Order, Long>, JpaSpecificationExecutor<Order> {
     Order findTopByOrderByCodeDesc();
     Order findByCodeAndIdIsNot(Integer code, Long id);
-    List<Order> findByOrderConditionIn(List<OrderCondition> orderConditions);
     List<Order> findByIdIn(List<Long> ids);
     List<Order> findByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
     List<Order> findByFalconIn(List<Falcon> falcons);

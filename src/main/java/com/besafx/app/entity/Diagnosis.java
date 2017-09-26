@@ -36,10 +36,6 @@ public class Diagnosis implements Serializable {
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    private String content;
-
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
     private String usage;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -55,12 +51,9 @@ public class Diagnosis implements Serializable {
     @ManyToOne
     private DrugUnit drugUnit;
 
-    @JoinColumn(name = "orderDetectionType")
+    @JoinColumn(name = "[order]")
     @ManyToOne
-    private OrderDetectionType orderDetectionType;
-
-    @OneToMany(mappedBy = "diagnosis", fetch = FetchType.LAZY)
-    private List<DiagnosisAttach> diagnosisAttaches = new ArrayList<>();
+    private Order order;
 
     @JsonCreator
     public static Diagnosis Create(String jsonString) throws IOException {

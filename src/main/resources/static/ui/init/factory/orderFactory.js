@@ -16,28 +16,13 @@ app.factory("OrderService",
                     return response.data;
                 });
             },
-            findPending: function () {
-                return $http.get("/api/order/findPending").then(function (response) {
-                    return response.data;
-                });
-            },
-            findDiagnosed: function () {
-                return $http.get("/api/order/findDiagnosed").then(function (response) {
-                    return response.data;
-                });
-            },
-            findDone: function () {
-                return $http.get("/api/order/findDone").then(function (response) {
-                    return response.data;
-                });
-            },
-            findCanceled: function () {
-                return $http.get("/api/order/findCanceled").then(function (response) {
-                    return response.data;
-                });
-            },
             create: function (order) {
                 return $http.post("/api/order/create", order).then(function (response) {
+                    return response.data;
+                });
+            },
+            saveNote: function (order, note) {
+                return $http.get("/api/order/saveNote/" + order.id + "/" + note).then(function (response) {
                     return response.data;
                 });
             },

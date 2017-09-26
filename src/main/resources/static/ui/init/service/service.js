@@ -487,7 +487,7 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
      * Diagnosis Model                                            *
      *                                                            *
      *************************************************************/
-    this.openDiagnosisCreateModel = function (orderDetectionType) {
+    this.openDiagnosisCreateModel = function (order) {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -498,26 +498,8 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             keyboard: false,
             size: 'lg',
             resolve: {
-                orderDetectionType: function () {
-                    return orderDetectionType;
-                }
-            }
-        });
-    };
-
-    this.openDiagnosisDetailsModel = function (orderDetectionType) {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/diagnosis/diagnosisDetails.html',
-            controller: 'diagnosisDetailsCtrl',
-            backdrop: 'static',
-            keyboard: false,
-            size: 'lg',
-            resolve: {
-                orderDetectionType: function () {
-                    return orderDetectionType;
+                order: function () {
+                    return order;
                 }
             }
         });

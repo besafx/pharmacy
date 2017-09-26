@@ -1,9 +1,8 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.entity.*;
-import com.besafx.app.entity.enums.OrderCondition;
+import com.besafx.app.entity.OrderDetectionType;
+import com.besafx.app.entity.Person;
 import com.besafx.app.search.OrderDetectionTypeSearch;
-import com.besafx.app.service.DiagnosisService;
 import com.besafx.app.service.OrderDetectionTypeService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
@@ -13,7 +12,6 @@ import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/orderDetectionType/")
@@ -37,9 +34,6 @@ public class OrderDetectionTypeRest {
 
     @Autowired
     private OrderDetectionTypeSearch orderDetectionTypeSearch;
-
-    @Autowired
-    private DiagnosisService diagnosisService;
 
     @Autowired
     private PersonService personService;
@@ -66,6 +60,18 @@ public class OrderDetectionTypeRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderDetectionType);
     }
 
+    @RequestMapping(value = "saveOrderDetectionTypeCase/{id}/{done}", method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_ORDER_DETECTION_TYPE_SAVE_CASE')")
+    @Transactional
+    public void saveOrderDetectionTypeCase(@PathVariable(value = "id") Long id, @PathVariable(value = "done") Boolean done, Principal principal) {
+        OrderDetectionType orderDetectionType = orderDetectionTypeService.findOne(id);
+        if (orderDetectionType != null) {
+            orderDetectionType.setDone(done);
+            orderDetectionTypeService.save(orderDetectionType);
+        }
+    }
+
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_DELETE')")
@@ -73,7 +79,6 @@ public class OrderDetectionTypeRest {
     public void delete(@PathVariable Long id, Principal principal) {
         OrderDetectionType orderDetectionType = orderDetectionTypeService.findOne(id);
         if (orderDetectionType != null) {
-            diagnosisService.delete(orderDetectionType.getDiagnoses());
             orderDetectionTypeService.delete(orderDetectionType);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -94,42 +99,6 @@ public class OrderDetectionTypeRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderDetectionTypeService.findOne(id));
     }
 
-    @RequestMapping(value = "findPending", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findPending() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_DETECTION_TYPE_COMBO),
-                orderDetectionTypeService.findByOrderOrderConditionIn(Lists.newArrayList(OrderCondition.Pending))
-                        .stream().sorted(Comparator.comparing(orderDetectionType -> orderDetectionType.getOrder().getCode()))
-                        .collect(Collectors.toList()));
-    }
-
-    @RequestMapping(value = "findDiagnosed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findDiagnosed() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_DETECTION_TYPE_COMBO),
-                orderDetectionTypeService.findByOrderOrderConditionIn(Lists.newArrayList(OrderCondition.Diagnosed))
-                        .stream().sorted(Comparator.comparing(orderDetectionType -> orderDetectionType.getOrder().getCode()))
-                        .collect(Collectors.toList()));
-    }
-
-    @RequestMapping(value = "findDone", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findDone() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_DETECTION_TYPE_COMBO),
-                orderDetectionTypeService.findByOrderOrderConditionIn(Lists.newArrayList(OrderCondition.Done))
-                        .stream().sorted(Comparator.comparing(orderDetectionType -> orderDetectionType.getOrder().getCode()))
-                        .collect(Collectors.toList()));
-    }
-
-    @RequestMapping(value = "findCanceled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String findCanceled() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_DETECTION_TYPE_COMBO),
-                orderDetectionTypeService.findByOrderOrderConditionIn(Lists.newArrayList(OrderCondition.Canceled))
-                        .stream().sorted(Comparator.comparing(orderDetectionType -> orderDetectionType.getOrder().getCode()))
-                        .collect(Collectors.toList()));
-    }
-
     @RequestMapping(value = "findByOrder/{orderId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findByOrder(@PathVariable(value = "orderId") Long orderId, Principal principal) {
@@ -143,7 +112,6 @@ public class OrderDetectionTypeRest {
     public String filter(
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
-            @RequestParam(value = "orderConditions", required = false) final List<OrderCondition> orderConditions,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
             @RequestParam(value = "customerName", required = false) final String customerName,
@@ -165,7 +133,7 @@ public class OrderDetectionTypeRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        List<OrderDetectionType> list = orderDetectionTypeSearch.filter(codeFrom, codeTo, orderConditions, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
+        List<OrderDetectionType> list = orderDetectionTypeSearch.filter(codeFrom, codeTo, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")

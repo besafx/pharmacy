@@ -1,9 +1,11 @@
-app.controller('diagnosisCreateCtrl', ['DiagnosisService', 'DrugService', 'DrugUnitService', 'OrderDetectionTypeService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'orderDetectionType',
-    function (DiagnosisService, DrugService, DrugUnitService, OrderDetectionTypeService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, orderDetectionType) {
+app.controller('diagnosisCreateCtrl', ['DiagnosisService', 'DrugService', 'DrugUnitService', 'OrderService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'order',
+    function (DiagnosisService, DrugService, DrugUnitService, OrderService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, order) {
+
+        $scope.buffer = {};
 
         $scope.diagnosis = {};
 
-        $scope.buffer = {};
+        $scope.diagnoses = [];
 
         $timeout(function () {
             $scope.refreshDrugs();
@@ -21,13 +23,27 @@ app.controller('diagnosisCreateCtrl', ['DiagnosisService', 'DrugService', 'DrugU
             });
         };
 
-        OrderDetectionTypeService.findOne(orderDetectionType.id).then(function (data) {
-            $scope.diagnosis.orderDetectionType = data;
+        OrderService.findOne(order.id).then(function (data) {
+            $scope.order = data;
         });
 
-        $scope.submit = function () {
+        $scope.addDiagnosisToList = function () {
+            //Add To Table
             $scope.diagnosis.drugUnit = $scope.buffer.related.obj1;
-            DiagnosisService.create($scope.diagnosis).then(function (data) {
+            $scope.diagnosis.order = $scope.order;
+            $scope.diagnoses.push($scope.diagnosis);
+            $scope.diagnosis = {};
+            $scope.buffer = {};
+        };
+
+        $scope.removeDiagnosisFromList = function (index) {
+            $scope.diagnoses.splice(index, 1);
+        };
+
+        $scope.submit = function () {
+            var diagnosisWrapper = {};
+            diagnosisWrapper.diagnoses = $scope.diagnoses;
+            DiagnosisService.createAll(diagnosisWrapper).then(function (data) {
                 $uibModalInstance.close(data);
             });
         };

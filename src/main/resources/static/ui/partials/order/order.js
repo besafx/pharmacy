@@ -38,78 +38,6 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             }
         };
 
-        $scope.findPending = function () {
-            OrderService.findPending().then(function (data) {
-                $scope.orders = data;
-                $scope.setSelected($scope.orders[0]);
-                $scope.items = [];
-                $scope.items.push(
-                    {
-                        'id': 1,
-                        'type': 'link',
-                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
-                        'link': 'menu'
-                    },
-                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
-                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'تحت التنفيذ' : 'Pending'}
-                );
-            });
-        };
-
-        $scope.findDiagnosed = function () {
-            OrderService.findDiagnosed().then(function (data) {
-                $scope.orders = data;
-                $scope.setSelected($scope.orders[0]);
-                $scope.items = [];
-                $scope.items.push(
-                    {
-                        'id': 1,
-                        'type': 'link',
-                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
-                        'link': 'menu'
-                    },
-                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
-                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'تم التشخيص' : 'Diagnosed'}
-                );
-            });
-        };
-
-        $scope.findDone = function () {
-            OrderService.findDone().then(function (data) {
-                $scope.orders = data;
-                $scope.setSelected($scope.orders[0]);
-                $scope.items = [];
-                $scope.items.push(
-                    {
-                        'id': 1,
-                        'type': 'link',
-                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
-                        'link': 'menu'
-                    },
-                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
-                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'مكتملة' : 'Done'}
-                );
-            });
-        };
-
-        $scope.findCanceled = function () {
-            OrderService.findCanceled().then(function (data) {
-                $scope.orders = data;
-                $scope.setSelected($scope.orders[0]);
-                $scope.items = [];
-                $scope.items.push(
-                    {
-                        'id': 1,
-                        'type': 'link',
-                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
-                        'link': 'menu'
-                    },
-                    {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'},
-                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'مُلغاه' : 'Canceled'}
-                );
-            });
-        };
-
         $scope.openFilter = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -135,17 +63,6 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                     search.push(buffer.codeTo);
                     search.push('&');
                 }
-                //
-                if (buffer.orderConditionsList) {
-                    var orderConditions = [];
-                    for (var i = 0; i < buffer.orderConditionsList.length; i++) {
-                        orderConditions.push(buffer.orderConditionsList[i]);
-                    }
-                    search.push('orderConditions=');
-                    search.push(orderConditions);
-                    search.push('&');
-                }
-                //
                 if (buffer.dateTo) {
                     search.push('dateTo=');
                     search.push(buffer.dateTo.getTime());
@@ -294,6 +211,10 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             window.open('/report/order/pending/' + order.id + '/PDF');
         };
 
+        $scope.printDiagnosed = function (order) {
+            window.open('/report/order/diagnosed/' + order.id + '/PDF');
+        };
+
         $scope.refreshOrderDetectionTypeByOrder = function () {
             OrderDetectionTypeService.findByOrder($scope.selected).then(function (data) {
                 $scope.selected.orderDetectionTypes = data;
@@ -326,12 +247,21 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 }
             },
             {
-                html: '<div class="drop-menu">طباعة الطلب<span class="fa fa-print fa-lg"></span></div>',
+                html: '<div class="drop-menu">طباعة طلب الفحص<span class="fa fa-print fa-lg"></span></div>',
                 enabled: function () {
                     return true;
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.printPending($itemScope.order);
+                }
+            },
+            {
+                html: '<div class="drop-menu">طباعة التشخيص<span class="fa fa-print fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.printDiagnosed($itemScope.order);
                 }
             },
             {
@@ -436,7 +366,10 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
-            $scope.findPending();
+            OrderService.findAll().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected(data[0]);
+            });
         }, 1500);
 
     }]);

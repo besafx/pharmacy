@@ -45,27 +45,6 @@
             </div>
 
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <label for="orderCondition" class="control-label">
-                    <span ng-if="lang==='AR'">الحالة</span>
-                    <span ng-if="lang==='EN'">Conditions</span>
-                </label>
-                <select id="orderCondition"
-                        class="form-control"
-                        chosen=""
-                        multiple=""
-                        ng-model="buffer.orderConditionsList">
-                    <option ng-if="lang==='AR'" value="Pending">تحت التنفيذ</option>
-                    <option ng-if="lang==='EN'" value="Pending">Pending</option>
-                    <option ng-if="lang==='AR'" value="Diagnosed">تم التشخيص</option>
-                    <option ng-if="lang==='EN'" value="Diagnosed">Diagnosed</option>
-                    <option ng-if="lang==='AR'" value="Done">مكتمل</option>
-                    <option ng-if="lang==='EN'" value="Done">Done</option>
-                    <option ng-if="lang==='AR'" value="Canceled">ملغي</option>
-                    <option ng-if="lang==='EN'" value="Canceled">Canceled</option>
-                </select>
-            </div>
-
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label for="customerName" class="control-label">
                     <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
                     <span ng-if="lang==='EN'">Customer Name Contains</span>

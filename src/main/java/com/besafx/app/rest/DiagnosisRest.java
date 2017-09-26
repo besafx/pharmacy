@@ -1,10 +1,11 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.entity.Diagnosis;
-import com.besafx.app.entity.OrderDetectionType;
+import com.besafx.app.entity.wrapper.DiagnosisWrapper;
+import com.besafx.app.entity.Order;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.DiagnosisService;
-import com.besafx.app.service.OrderDetectionTypeService;
+import com.besafx.app.service.OrderService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -29,13 +31,13 @@ import java.util.List;
 @RequestMapping(value = "/api/diagnosis/")
 public class DiagnosisRest {
 
-    public static final String FILTER_TABLE = "**,diagnosisAttaches[id],orderDetectionType[**,order[id]],transactionSell[**,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]]";
+    public static final String FILTER_TABLE = "**,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name],order[id,code]";
 
     @Autowired
     private DiagnosisService diagnosisService;
 
     @Autowired
-    private OrderDetectionTypeService orderDetectionTypeService;
+    private OrderService orderService;
 
     @Autowired
     private PersonService personService;
@@ -69,6 +71,35 @@ public class DiagnosisRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), diagnosis);
     }
 
+    @RequestMapping(value = "createAll", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_DIAGNOSIS_CREATE')")
+    @Transactional
+    public String createAll(@RequestBody DiagnosisWrapper diagnosisWrapper, Principal principal) {
+        List<Diagnosis> diagnoses = new ArrayList<>();
+        diagnosisWrapper.getDiagnoses().stream().forEach(diagnosis -> {
+            Diagnosis topDiagnosis = diagnosisService.findTopByOrderByCodeDesc();
+            if (topDiagnosis == null) {
+                diagnosis.setCode(1);
+            } else {
+                diagnosis.setCode(topDiagnosis.getCode() + 1);
+            }
+            diagnosis.setDate(new Date());
+            diagnoses.add(diagnosisService.save(diagnosis));
+        });
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        notificationService.notifyOne(Notification
+                .builder()
+                .title(lang.equals("AR") ? "العيادة البيطرية" : "Data Processing")
+                .message(lang.equals("AR") ? "تم انشاء الوصفات الطبية بنجاح" : "Create Diagnoses Successfully")
+                .type("success")
+                .icon("fa-plus-square")
+                .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                .build(), principal.getName());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), diagnoses);
+    }
+
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_DIAGNOSIS_DELETE')")
@@ -90,25 +121,25 @@ public class DiagnosisRest {
         }
     }
 
-    @RequestMapping(value = "deleteByOrderDetectionType/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "deleteByOrder/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_DIAGNOSIS_DELETE')")
     @Transactional
-    public void deleteByOrderDetectionType(@PathVariable Long id, Principal principal) {
-        OrderDetectionType orderDetectionType = orderDetectionTypeService.findOne(id);
+    public void deleteByOrder(@PathVariable Long id, Principal principal) {
+        Order order = orderService.findOne(id);
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-        if (!orderDetectionType.getDiagnoses().isEmpty()) {
-            diagnosisService.delete(orderDetectionType.getDiagnoses());
+        if (!order.getDiagnoses().isEmpty()) {
+            diagnosisService.delete(order.getDiagnoses());
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العيادة البيطرية" : "Data Processing")
-                    .message(lang.equals("AR") ? "تم حذف الوصفة الطبية بنجاح" : "Delete Diagnosis Successfully")
+                    .message(lang.equals("AR") ? "تم حذف الوصفات الطبية بنجاح" : "Delete Diagnosis Successfully")
                     .type("error")
                     .icon("fa-trash")
                     .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
-        }else{
+        } else {
             notificationService.notifyOne(Notification
                     .builder()
                     .title(lang.equals("AR") ? "العيادة البيطرية" : "Data Processing")
@@ -134,10 +165,10 @@ public class DiagnosisRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), diagnosisService.findOne(id));
     }
 
-    @RequestMapping(value = "findByOrderDetectionTypeId/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "findByOrderId/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByOrderDetectionTypeId(@PathVariable Long id) {
+    public String findByOrderId(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                diagnosisService.findByOrderDetectionTypeId(id));
+                diagnosisService.findByOrderId(id));
     }
 }

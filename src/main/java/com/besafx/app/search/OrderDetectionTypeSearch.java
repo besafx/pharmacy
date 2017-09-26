@@ -1,12 +1,7 @@
 package com.besafx.app.search;
 
-import com.besafx.app.entity.Order;
 import com.besafx.app.entity.OrderDetectionType;
-import com.besafx.app.entity.comparator.OrderDetectionTypeComparator;
-import com.besafx.app.entity.enums.OrderCondition;
 import com.besafx.app.service.OrderDetectionTypeService;
-import com.besafx.app.service.OrderService;
-import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +26,6 @@ public class OrderDetectionTypeSearch {
     public List<OrderDetectionType> filter(
             final Long codeFrom,
             final Long codeTo,
-            final List<OrderCondition> orderConditions,
             final Long dateFrom,
             final Long dateTo,
             final String customerName,
@@ -44,8 +38,6 @@ public class OrderDetectionTypeSearch {
             final String doctorName
     ) {
         List<Specification> predicates = new ArrayList<>();
-        Optional.ofNullable(orderConditions)
-                .ifPresent(value -> predicates.add((root, cq, cb) -> root.get("order").get("orderCondition").in(value)));
         Optional.ofNullable(codeFrom)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("order").get("code"), value)));
         Optional.ofNullable(codeTo)
