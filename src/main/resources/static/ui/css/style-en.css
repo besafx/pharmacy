@@ -443,3 +443,20 @@ WebKit inertia scrolling is being added here for any present/future devices that
     direction: ltr;
     float: left;
 }
+
+.pagination{
+    width: auto !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    float: left !important;
+}
+
+.pagination>li{
+    float: left !important;
+}
+
+.pagination>li:first-child>a, .pagination>li:first-child>span{
+    margin-left: 3px !important;
+    border-top-left-radius: 3px !important;
+    border-bottom-left-radius: 3px !important;
+}
