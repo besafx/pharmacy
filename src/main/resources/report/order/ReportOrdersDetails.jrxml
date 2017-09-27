@@ -2,7 +2,6 @@
 <!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="6610c978-bf64-41be-98fd-29b2e43aa866">
 	<import value="com.besafx.app.util.DateConverter"/>
-	<import value="com.besafx.app.entity.enums.OrderCondition"/>
 	<subDataset name="Dataset" uuid="d6c8af80-e85f-462b-85c1-39de3456cd9b">
 		<queryString>
 			<![CDATA[]]>
@@ -31,7 +30,6 @@
 	</queryString>
 	<field name="code" class="java.lang.Integer"/>
 	<field name="date" class="java.util.Date"/>
-	<field name="orderCondition" class="com.besafx.app.entity.enums.OrderCondition"/>
 	<field name="paymentMethod" class="com.besafx.app.entity.enums.PaymentMethod"/>
 	<field name="discount" class="java.lang.Double"/>
 	<field name="falcon" class="com.besafx.app.entity.Falcon"/>
@@ -144,43 +142,21 @@
 					</staticText>
 				</frame>
 				<frame>
-					<reportElement mode="Opaque" x="86" y="0" width="42" height="30" backcolor="#AAF1FA" uuid="c44cbde9-7dd9-498c-9245-6569eb1dc0b0">
+					<reportElement mode="Opaque" x="86" y="0" width="87" height="30" backcolor="#AAF1FA" uuid="bf3a6736-1c03-4749-946b-3a588a50ccc0">
 						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					</reportElement>
 					<box>
 						<pen lineWidth="0.3"/>
 					</box>
 					<staticText>
-						<reportElement x="0" y="0" width="42" height="15" uuid="f1c6f859-30aa-466a-8ede-7583ba2c8d37"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[الحالة]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="42" height="15" uuid="b622fa0f-c627-433b-8d05-b2e9c4093372"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Condition]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="128" y="0" width="45" height="30" backcolor="#AAF1FA" uuid="bf3a6736-1c03-4749-946b-3a588a50ccc0">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="45" height="15" uuid="d6ce229b-5347-4c7c-a679-617eb12d6b59"/>
+						<reportElement x="0" y="0" width="87" height="15" uuid="d6ce229b-5347-4c7c-a679-617eb12d6b59"/>
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font fontName="Arial"/>
 						</textElement>
 						<text><![CDATA[رقم الصقر]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="0" y="15" width="45" height="15" uuid="23f1fb74-5164-4291-a99f-31756a6b3718"/>
+						<reportElement x="0" y="15" width="87" height="15" uuid="23f1fb74-5164-4291-a99f-31756a6b3718"/>
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font fontName="Arial"/>
 						</textElement>
@@ -367,17 +343,7 @@
 					<textFieldExpression><![CDATA[DateConverter.getHijriStringFromDateRTLWithTime($F{date})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement x="86" y="0" width="42" height="30" uuid="67fc1a2d-877a-408d-8fbe-08112447d2fd"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{orderCondition}.getName()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement x="128" y="0" width="45" height="30" uuid="2137b3d9-5e7d-4b83-969a-b0ab9d3b37ce"/>
+					<reportElement x="86" y="0" width="87" height="30" uuid="2137b3d9-5e7d-4b83-969a-b0ab9d3b37ce"/>
 					<box padding="3">
 						<pen lineWidth="0.3"/>
 					</box>
