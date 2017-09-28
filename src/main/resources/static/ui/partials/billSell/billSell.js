@@ -2,7 +2,9 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
     function (BillSellService, TransactionSellService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
+        $scope.selected.transactionSells = [];
         $scope.buffer = {};
+        $scope.billSells = [];
 
         $scope.setSelected = function (object) {
             if (object) {
@@ -64,13 +66,25 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                     search.push('&');
                 }
                 //
-                if (buffer.customersList) {
-                    var customers = [];
-                    for (var i = 0; i < buffer.customersList.length; i++) {
-                        customers.push(buffer.customersList[i].id);
-                    }
-                    search.push('customers=');
-                    search.push(customers);
+                if (buffer.orderCodeFrom) {
+                    search.push('orderCodeFrom=');
+                    search.push(buffer.orderCodeFrom);
+                    search.push('&');
+                }
+                if (buffer.orderCodeTo) {
+                    search.push('orderCodeTo=');
+                    search.push(buffer.orderCodeTo);
+                    search.push('&');
+                }
+                //
+                if (buffer.orderFalconCode) {
+                    search.push('orderFalconCode=');
+                    search.push(buffer.orderFalconCode);
+                    search.push('&');
+                }
+                if (buffer.orderCustomerName) {
+                    search.push('orderCustomerName=');
+                    search.push(buffer.orderCustomerName);
                     search.push('&');
                 }
                 //
@@ -118,7 +132,6 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                         var index = $scope.selected.transactionSells.indexOf(transactionSell);
                         $scope.selected.transactionSells.splice(index, 1);
                         $scope.setSelected($scope.selected.transactionSells[0]);
-                        $scope.calculateCostSum();
                     });
                 });
 
@@ -130,9 +143,20 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 $rootScope.showConfirmNotify("المبيعات", "هل تود طباعة الفاتورة ؟", "notification", "fa-info", function () {
                     $scope.print(data);
                 });
-                if ($scope.billSells) {
-                    $scope.billSells.splice(0, 0, data);
-                }
+                $scope.billSells.splice(0, 0, data);
+                $scope.setSelected(data);
+            }, function () {
+                console.info('BillSellCreateModel Closed.');
+            });
+        };
+
+        $scope.newBillSellForOrder = function () {
+            ModalProvider.openBillSellForOrderCreateModel().result.then(function (data) {
+                $rootScope.showConfirmNotify("المبيعات", "هل تود طباعة الفاتورة ؟", "notification", "fa-info", function () {
+                    $scope.print(data);
+                });
+                $scope.billSells.splice(0, 0, data);
+                $scope.setSelected(data);
             }, function () {
                 console.info('BillSellCreateModel Closed.');
             });
@@ -140,26 +164,10 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
 
         $scope.newTransactionSell = function () {
             ModalProvider.openTransactionSellCreateModel($scope.selected).result.then(function (data) {
-                if ($scope.selected) {
-                    $scope.selected.transactionSells.splice(0, 0, data);
-                    $scope.calculateCostSum();
-                }
-                //اعطاء امر طباعة للفاتورة
+                $scope.selected.transactionSells.splice(0, 0, data);
             }, function () {
                 console.info('TransactionSellCreateModel Closed.');
             });
-        };
-
-        $scope.calculateCostSum = function () {
-            $scope.totalCost = 0;
-            $scope.totalCostAfterDiscount = 0;
-            if ($scope.selected.transactionSells) {
-                for (var i = 0; i < $scope.selected.transactionSells.length; i++) {
-                    var transactionSell = $scope.selected.transactionSells[i];
-                    $scope.totalCost = $scope.totalCost + (transactionSell.unitSellCost * transactionSell.quantity);
-                }
-                $scope.totalCostAfterDiscount = $scope.totalCost - (($scope.totalCost * $scope.selected.discount) / 100);
-            }
         };
 
         $scope.print = function (billSell) {

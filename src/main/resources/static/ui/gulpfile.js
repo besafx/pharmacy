@@ -170,6 +170,7 @@ gulp.task('scripts', function () {
         './partials/billSell/billSell.js',
         './partials/billSell/billSellFilter.js',
         './partials/billSell/billSellCreate.js',
+        './partials/billSell/billSellForOrderCreate.js',
         './partials/billSell/billSellHeadCreate.js',
         './partials/billSell/transactionSellCreate.js',
 

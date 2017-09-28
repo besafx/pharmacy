@@ -42,6 +42,7 @@ public class OrderDetectionType implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "detectionType")
+    @OrderBy(value = "code")
     private DetectionType detectionType;
 
     @OneToMany(mappedBy = "orderDetectionType", fetch = FetchType.LAZY)

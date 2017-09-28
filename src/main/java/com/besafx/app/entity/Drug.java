@@ -52,19 +52,27 @@ public class Drug implements Serializable {
     private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
     public double getTransactionBuysSum() {
-        return this.transactionBuys
-                .stream()
-                .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitBuyCost())
-                .sum();
+        try{
+            return this.transactionBuys
+                    .stream()
+                    .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitBuyCost())
+                    .sum();
+        }catch (Exception ex){
+            return 0.0;
+        }
     }
 
     public double getBillBuyDiscountSum() {
-        return this.transactionBuys
-                .stream()
-                .map(TransactionBuy::getBillBuy)
-                .distinct()
-                .mapToDouble(BillBuy::getDiscount)
-                .sum();
+        try{
+            return this.transactionBuys
+                    .stream()
+                    .map(TransactionBuy::getBillBuy)
+                    .distinct()
+                    .mapToDouble(BillBuy::getDiscount)
+                    .sum();
+        }catch (Exception ex){
+            return 0.0;
+        }
     }
 
 

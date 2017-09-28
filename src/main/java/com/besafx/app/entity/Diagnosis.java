@@ -45,6 +45,7 @@ public class Diagnosis implements Serializable {
 
     @JoinColumn(name = "drug")
     @ManyToOne
+    @OrderBy(value = "code")
     private Drug drug;
 
     @JoinColumn(name = "drugUnit")

@@ -3,7 +3,6 @@ app.controller('billSellCreateCtrl', ['TransactionBuyService', 'DrugService', 'D
 
         $timeout(function () {
             $scope.refreshDrugs();
-            $scope.refreshCustomers();
         }, 2000);
 
         $scope.billSell = billSell;
@@ -40,14 +39,6 @@ app.controller('billSellCreateCtrl', ['TransactionBuyService', 'DrugService', 'D
             });
         };
 
-        $scope.newCustomer = function () {
-            ModalProvider.openCustomerCreateModel().result.then(function (data) {
-                $scope.customers.splice(0, 0, data);
-            }, function () {
-                console.info('CustomerCreateModel Closed.');
-            });
-        };
-
         $scope.refreshDrugs = function () {
             DrugService.findAllCombo().then(function (data) {
                 $scope.drugs = data;
@@ -57,12 +48,6 @@ app.controller('billSellCreateCtrl', ['TransactionBuyService', 'DrugService', 'D
         $scope.refreshTransactionBuyByDrug = function () {
             TransactionBuyService.findByDrug($scope.buffer.drug.id).then(function (data) {
                 $scope.buffer.drug.transactionBuys = data
-            });
-        };
-
-        $scope.refreshCustomers = function () {
-            CustomerService.findAllCombo().then(function (data) {
-                $scope.customers = data;
             });
         };
 

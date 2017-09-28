@@ -18,21 +18,56 @@
 
         <div class="row">
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <label for="customer" class="control-label">
-                    <span ng-if="lang==='AR'">العميل</span>
-                    <span ng-if="lang==='EN'">Customer</span>
-                </label>
-                <select id="customer"
-                        data-placeholder="{{lang==='AR' ? 'ابحث عن العميل' : 'Search For Customer...'}}"
-                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                        placeholder-text-single="'{{lang==='AR' ? 'اختر العميل' : 'Please Select Customer...'}}'"
-                        class="form-control"
-                        chosen=""
-                        multiple=""
-                        ng-model="buffer.customersList"
-                        ng-options="( '[ ' + customer.code + ' ] ' + customer.name + ' [ ' + customer.mobile + ' ]') for customer in customers | orderBy:'code' track by customer.id">
-                </select>
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for=.orderCodeFrom" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الطلب من</span>
+                        <span ng-if="lang==='EN'">Order Code From</span>
+                    </label>
+                    <input id=.orderCodeFrom"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderCodeFrom">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="orderCodeTo" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الطلب إلى</span>
+                        <span ng-if="lang==='EN'">Order Code To</span>
+                    </label>
+                    <input id="orderCodeTo"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderCodeTo">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for=.orderFalconCode" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الصقر يحتوي علي</span>
+                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
+                    </label>
+                    <input id=.orderFalconCode"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderFalconCode">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="orderCustomerName" class="control-label">
+                        <span ng-if="lang==='AR'">اسم العميل</span>
+                        <span ng-if="lang==='EN'">Customer Name Contains</span>
+                    </label>
+                    <input id="orderCustomerName"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderCustomerName">
+                </div>
+
             </div>
 
             <div class="form-group row">

@@ -48,11 +48,6 @@ public class TransactionSell implements Serializable {
 
     private Double unitCost;
 
-    //Optional Field
-    @JoinColumn(name = "[order]")
-    @ManyToOne
-    private Order order;
-
     @JoinColumn(name = "transactionBuy")
     @ManyToOne
     private TransactionBuy transactionBuy;

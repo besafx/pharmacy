@@ -1,5 +1,6 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.BillSell;
 import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.Person;
@@ -55,6 +56,9 @@ public class TransactionSellRest {
     @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
     @Transactional
     public String create(@RequestBody TransactionSell transactionSell) {
+        if(transactionSell.getBillSell().getOrder() != null){
+            throw new CustomException("لا يمكنك اضافة حركات بيع الى فاتورة صرف علاج طلب فحص");
+        }
         TransactionSell topTransactionSell = transactionSellService.findTopByOrderByCodeDesc();
         if (topTransactionSell == null) {
             transactionSell.setCode(1);

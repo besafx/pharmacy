@@ -36,7 +36,7 @@ public class BillSellRest {
 
     private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
 
-    public static final String FILTER_TABLE = "**,customer[**,falcons[id]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]]";
+    public static final String FILTER_TABLE = "**,order[id,code,falcon[**,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]]";
     public static final String FILTER_BILL_SELL_COMBO = "id,code";
 
     @Autowired
@@ -146,7 +146,10 @@ public class BillSellRest {
             @RequestParam(value = "checkCode", required = false) final String checkCode,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
-            @RequestParam(value = "customers", required = false) final List<Long> customers,
+            @RequestParam(value = "orderCodeFrom", required = false) final Long orderCodeFrom,
+            @RequestParam(value = "orderCodeTo", required = false) final Long orderCodeTo,
+            @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
+            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName,
             Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -158,7 +161,7 @@ public class BillSellRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        List<BillSell> list = billSellSearch.filter(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, customers);
+        List<BillSell> list = billSellSearch.filter(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")

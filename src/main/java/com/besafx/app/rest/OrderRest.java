@@ -36,7 +36,7 @@ public class OrderRest {
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
 
     public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
-    public static final String FILTER_ORDER_COMBO = "**,falcon[id,customer[id,name]],doctor[id,person[id,name]]";
+    public static final String FILTER_ORDER_COMBO = "id,code";
 
     @Autowired
     private OrderService orderService;
@@ -147,7 +147,7 @@ public class OrderRest {
     @ResponseBody
     public String findAllCombo() {
         List<Order> list = Lists.newArrayList(orderService.findAll());
-        list.sort(Comparator.comparing(Order::getCode));
+        list.sort(Comparator.comparing(Order::getCode).reversed());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_COMBO), list);
     }
 

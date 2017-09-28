@@ -150,6 +150,14 @@
                                 <span ng-if="lang==='EN'">New...</span>
                             </span>
                         </li>
+                        <li class="mdl-menu__item mdl-list__item" ng-click="newBillSellForOrder();"
+                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">shopping_basket</i>
+                                <span ng-if="lang==='AR'">صرف علاج طلب فحص</span>
+                                <span ng-if="lang==='EN'">New...</span>
+                            </span>
+                        </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="delete()"
                             ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_DELETE']) && toggleList===1"
                             ng-hide="!billSells || billSells.length==0">
@@ -240,9 +248,29 @@
                                         <span ng-if="lang==='EN'">Code</span>
                                     </th>
 
-                                    <th st-sort="customer.name">
-                                        <span ng-if="lang==='AR'">العميل</span>
-                                        <span ng-if="lang==='EN'">Customer</span>
+                                    <th st-sort="order.code">
+                                        <span ng-if="lang==='AR'">رقم الطلب</span>
+                                        <span ng-if="lang==='EN'">Order Code</span>
+                                    </th>
+
+                                    <th st-sort="order.falcon.customer.name">
+                                        <span ng-if="lang==='AR'">اسم العميل</span>
+                                        <span ng-if="lang==='EN'">Customer Name</span>
+                                    </th>
+
+                                    <th st-sort="order.falcon.code">
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Code</span>
+                                    </th>
+
+                                    <th st-sort="order.falcon.weight">
+                                        <span ng-if="lang==='AR'">وزن الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Weight</span>
+                                    </th>
+
+                                    <th st-sort="order.falcon.type">
+                                        <span ng-if="lang==='AR'">نوع الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Type</span>
                                     </th>
 
                                     <th st-sort="paymentMethod">
@@ -281,7 +309,11 @@
                                     ng-class="{'mdl-color--blue-grey-100':billSell.isSelected}">
                                     <td st-select-row-custom="billSell">{{$index+1}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.code}}</td>
-                                    <td st-select-row-custom="billSell">{{billSell.customer.name}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.order.code}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.order.falcon.customer.name}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.order.falcon.code}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.order.falcon.weight}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.order.falcon.type}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.paymentMethod}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.unitSellCostSum}} SAR</td>
                                     <td st-select-row-custom="billSell">{{billSell.discount | currency:'%'}}</td>
@@ -294,7 +326,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="8">
+                                    <td colspan="12">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -302,7 +334,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="8">
+                                    <td colspan="12">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
@@ -317,7 +349,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1"
                  ng-hide="!billSells || billSells.length==0">
 
-                <div class="panel panel-warning">
+                <div class="panel panel-danger">
                     <div class="panel-heading">
                         <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
                             style="margin-top: 2px;">

@@ -744,6 +744,24 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openBillSellForOrderCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/billSellForOrderCreate.html',
+            controller: 'billSellForOrderCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'صرف علاج طلب فحص' : 'New Bill Sell For Order';
+                }
+            }
+        });
+    };
+
     this.openBillSellHeadCreateModel = function () {
         return $uibModal.open({
             animation: true,

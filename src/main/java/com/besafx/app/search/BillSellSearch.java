@@ -32,7 +32,10 @@ public class BillSellSearch {
             final String checkCode,
             final Long dateFrom,
             final Long dateTo,
-            final List<Long> customers
+            final Long orderCodeFrom,
+            final Long orderCodeTo,
+            final String orderFalconCode,
+            final String orderCustomerName
     ) {
         List<Specification> predicates = new ArrayList<>();
         Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
@@ -41,7 +44,10 @@ public class BillSellSearch {
         Optional.ofNullable(checkCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("checkCode"), "%" + value + "%")));
         Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
-        Optional.ofNullable(customers).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("customer").get("id").in(value)));
+        Optional.ofNullable(orderCodeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("order").get("code"), value)));
+        Optional.ofNullable(orderCodeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("order").get("code"), value)));
+        Optional.ofNullable(orderFalconCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("code"), "%" + value + "%")));
+        Optional.ofNullable(orderCustomerName).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("customer").get("name"), "%" + value + "%")));
         if (!predicates.isEmpty()) {
             Specification result = predicates.get(0);
             for (int i = 1; i < predicates.size(); i++) {

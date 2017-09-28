@@ -35,6 +35,13 @@ public class BillSell implements Serializable {
 
     private Integer code;
 
+    private String customerName;
+
+    //Optional Field In Case Of Inside Selling
+    @JoinColumn(name = "[order]")
+    @ManyToOne
+    private Order order;
+
     private Double discount;
 
     @Enumerated(EnumType.STRING)
