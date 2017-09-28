@@ -19,7 +19,7 @@
 
         <div class="row">
 
-            <div ng-repeat="order in orders" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div ng-repeat="billSell in billSells" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
@@ -32,57 +32,29 @@
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">بيانات الطلب رقم / {{order.code}}</h3>
-                            <h3 ng-if="lang==='EN'">Order Information, Code \ {{order.code}}</h3>
+                            <h3 ng-if="lang==='AR'">بيانات فاتورة البيع رقم / {{billSell.code}}</h3>
+                            <h3 ng-if="lang==='EN'">Order Information, Code \ {{billSell.code}}</h3>
                         </div>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <table class="table table-bbillSelled">
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <span ng-if="lang==='AR'">رقم الطلب</span>
+                                        <span ng-if="lang==='AR'">رقم فاتورة البيع</span>
                                         <span ng-if="lang==='EN'">Code</span>
                                     </td>
-                                    <td>{{order.code}}</td>
+                                    <td>{{billSell.code}}</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span ng-if="lang==='AR'">تاريخ الطلب</span>
+                                        <span ng-if="lang==='AR'">تاريخ فاتورة البيع</span>
                                         <span ng-if="lang==='EN'">Order Date</span>
                                     </td>
                                     <td>
-                                        {{order.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
-                                        <span class="label label-success">{{order.date | date:'h:m a'}}</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الحالة</span>
-                                        <span ng-if="lang==='EN'">Condition</span>
-                                    </td>
-                                    <td>
-                                        <span ng-if="order.orderCondition==='Pending'"
-                                              class="label label-default">
-                                            <span ng-if="lang==='AR'">تحت التنفيذ</span>
-                                            <span ng-if="lang==='EN'">Pending</span>
-                                        </span>
-                                        <span ng-if="order.orderCondition==='Diagnosed'"
-                                              class="label label-info">
-                                            <span ng-if="lang==='AR'">تم التشخيص</span>
-                                            <span ng-if="lang==='EN'">Diagnosed</span>
-                                        </span>
-                                        <span ng-if="order.orderCondition==='Done'"
-                                              class="label label-success">
-                                            <span ng-if="lang==='AR'">مكتمل</span>
-                                            <span ng-if="lang==='EN'">Done</span>
-                                        </span>
-                                        <span ng-if="order.orderCondition==='Canceled'"
-                                              class="label label-danger">
-                                            <span ng-if="lang==='AR'">ملغي</span>
-                                            <span ng-if="lang==='EN'">Canceled</span>
-                                        </span>
+                                        {{billSell.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span class="label label-success">{{billSell.date | date:'h:m a'}}</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -90,21 +62,21 @@
                                         <span ng-if="lang==='AR'">رقم الصقر</span>
                                         <span ng-if="lang==='EN'">Falcon Code</span>
                                     </td>
-                                    <td>{{order.falcon.code}}</td>
+                                    <td>{{billSell.order.falcon.code}}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span ng-if="lang==='AR'">العميل</span>
                                         <span ng-if="lang==='EN'">Customer</span>
                                     </td>
-                                    <td>{{order.falcon.customer.name}}</td>
+                                    <td>{{billSell.order.falcon.customer.name}}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span ng-if="lang==='AR'">الطبيب المعالج</span>
                                         <span ng-if="lang==='EN'">Doctor</span>
                                     </td>
-                                    <td>{{order.doctor.person.name}}</td>
+                                    <td>{{billSell.order.doctor.person.name}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -120,7 +92,7 @@
     <div class="modal-footer">
 
         <div class="row">
-            <button ng-hide="!orders || orders.length===0"
+            <button ng-hide="!billSells || billSells.length===0"
                     uib-tooltip="{{lang==='AR' ? 'طباعة' : 'Print'}}"
                     tooltip-append-to-body="true"
                     type="submit"
