@@ -186,10 +186,16 @@ gulp.task('scripts', function () {
         './partials/diagnosis/diagnosisCreate.js',
 
         './partials/report/person/personsIn.js',
+
         './partials/report/order/orderByDate.js',
         './partials/report/order/orderByList.js',
         './partials/report/order/orderDetailsByList.js',
         './partials/report/order/orderDetailsByDate.js',
+
+        './partials/report/billSell/billSellByDate.js',
+        './partials/report/billSell/billSellByList.js',
+        './partials/report/billSell/billSellDetailsByList.js',
+        './partials/report/billSell/billSellDetailsByDate.js',
 
         './partials/help/help.js',
         './partials/profile/profile.js',

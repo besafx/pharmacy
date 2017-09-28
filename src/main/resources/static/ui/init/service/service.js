@@ -796,6 +796,64 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportBillSellByListModel = function (billSells) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/billSellByList.html",
+            controller: "billSellByListCtrl",
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                billSells: function () {
+                    return billSells;
+                }
+            }
+        });
+    };
+
+    this.openReportBillSellDetailsByListModel = function (billSells) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/billSellDetailsByList.html",
+            controller: "billSellDetailsByListCtrl",
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                billSells: function () {
+                    return billSells;
+                }
+            }
+        });
+    };
+
+    this.openReportBillSellByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/billSellByDate.html",
+            controller: "billSellByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    this.openReportBillSellDetailsByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/billSellDetailsByDate.html",
+            controller: "billSellDetailsByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Falcon Model                                               *

@@ -247,8 +247,7 @@
                             </li>
                             <li class="mdl-menu__item mdl-list__item"
                                 ng-click="ModalProvider.openReportOrderDetailsByDateModel()"
-                                ng-if="toggleList===1"
-                                ng-hide="!orders || orders.length==0">
+                                ng-if="toggleList===1">
                                 <span class="mdl-list__item-primary-content">
                                     <i class="material-icons mdl-list__item-icon">print</i>
                                     <span ng-if="lang==='AR'">تقرير مفصل بالتاريخ</span>
@@ -257,8 +256,7 @@
                             </li>
                             <li class="mdl-menu__item mdl-list__item"
                                 ng-click="ModalProvider.openReportOrderByDateModel()"
-                                ng-if="toggleList===1"
-                                ng-hide="!orders || orders.length==0">
+                                ng-if="toggleList===1">
                                 <span class="mdl-list__item-primary-content">
                                     <i class="material-icons mdl-list__item-icon">print</i>
                                     <span ng-if="lang==='AR'">تقرير مختصر بالتاريخ</span>
