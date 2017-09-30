@@ -29,6 +29,16 @@ app.factory("OrderService",
             remove: function (id) {
                 return $http.delete("/api/order/delete/" + id);
             },
+            findQuantityByDay: function () {
+                return $http.get("/api/order/findQuantityByDay").then(function (response) {
+                    return response.data;
+                });
+            },
+            findQuantityByMonth: function () {
+                return $http.get("/api/order/findQuantityByMonth").then(function (response) {
+                    return response.data;
+                });
+            },
             filter: function (search) {
                 return $http.get("/api/order/filter?" + search).then(function (response) {
                     return response.data;

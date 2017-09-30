@@ -130,7 +130,8 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                         {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'بحث مخصص' : 'Filter'}
                     );
                 });
-            }, function () {});
+            }, function () {
+            });
         };
 
         $scope.delete = function (order) {
@@ -158,7 +159,7 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             if (orderAttach) {
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف المستند فعلاً؟", "error", "fa-trash", function () {
                     OrderAttachService.remove(orderAttach).then(function (data) {
-                        if(data===false) {
+                        if (data === false) {
                             OrderAttachService.removeWhatever(orderAttach);
                         }
                         var index = $scope.selected.orderAttaches.indexOf(orderAttach);
@@ -186,7 +187,7 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
                     $scope.printPending(data);
                 });
-                if($scope.orders){
+                if ($scope.orders) {
                     $scope.orders.splice(0, 0, data);
                 }
             }, function () {
@@ -362,7 +363,51 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             }
             $scope.initFiles(files);
         }
+
         //////////////////////////Scan Manager///////////////////////////////////
+
+
+        //////////////////////////Area Chart///////////////////////////////////
+        $scope.series = ['عدد الطلبات'];
+        $scope.labels = [];
+        $scope.data = [[]];
+        $scope.onClick = function (points, evt) {
+            console.log(points, evt);
+        };
+        $scope.datasetOverride = [{yAxisID: 'y-axis-1'}];
+        $scope.options = {
+            scales: {
+                yAxes: [
+                    {
+                        id: 'y-axis-1',
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    }
+                ]
+            }
+        };
+        $scope.findQuantityByDay = function () {
+            $scope.labels = [];
+            $scope.data = [[]];
+            OrderService.findQuantityByDay().then(function (data) {
+                angular.forEach(data, function (wrapper) {
+                    $scope.labels.push(wrapper.obj1);
+                    $scope.data[0].push(wrapper.obj2);
+                });
+            });
+        };
+        $scope.findQuantityByMonth = function () {
+            $scope.labels = [];
+            $scope.data = [[]];
+            OrderService.findQuantityByMonth().then(function (data) {
+                angular.forEach(data, function (wrapper) {
+                    $scope.labels.push(wrapper.obj1);
+                    $scope.data[0].push(wrapper.obj2);
+                });
+            });
+        };
+        //////////////////////////Area Chart///////////////////////////////////
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();

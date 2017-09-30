@@ -23,7 +23,8 @@ var app = angular.module('Application',
         'ui.bootstrap.contextMenu',
         'kdate',
         'ui.sortable',
-        'timer'
+        'timer',
+        'chart.js'
     ]);
 
 app.factory('errorInterceptor', ['$q', '$rootScope', '$location', '$log',
@@ -49,8 +50,10 @@ app.factory('errorInterceptor', ['$q', '$rootScope', '$location', '$log',
         };
     }]);
 
-app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssProvider', '$httpProvider',
-    function ($stateProvider, $urlRouterProvider, $locationProvider, $cssProvider, $httpProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssProvider', 'ChartJsProvider', '$httpProvider',
+    function ($stateProvider, $urlRouterProvider, $locationProvider, $cssProvider, ChartJsProvider, $httpProvider) {
+
+        ChartJsProvider.setOptions({colors: ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360']});
 
         $urlRouterProvider.otherwise("/menu");
 

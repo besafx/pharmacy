@@ -1,4 +1,6 @@
 package com.besafx.app.util;
+import org.joda.time.*;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -6,10 +8,7 @@ import java.time.chrono.HijrahChronology;
 import java.time.chrono.HijrahDate;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.*;
 
 public class DateConverter {
 
@@ -142,5 +141,31 @@ public class DateConverter {
         cal.setTime(getCurrentWeekStart());
         cal.add(Calendar.DATE, 6);
         return cal.getTime();
+    }
+
+    public static List<Interval> getDaysOfThisWeek(){
+        List<Interval> dates = new ArrayList<>();
+        DateTime startDate = new DateTime(DateConverter.getCurrentWeekStart());
+        DateTime endDate = new DateTime(DateConverter.getCurrentWeekEnd());
+        int days = Days.daysBetween(startDate, endDate).getDays() + 1;
+        for (int i = 0; i < days; i++) {
+            DateTime start = startDate.withFieldAdded(DurationFieldType.days(), i).withTimeAtStartOfDay();
+            DateTime end = start.plusDays(1).withTimeAtStartOfDay();
+            dates.add(new Interval(start, end));
+        }
+        return dates;
+    }
+
+    public static List<Interval> getMonthsOfThisYear(){
+        List<Interval> dates = new ArrayList<>();
+        DateTime startDate = new DateTime().withMonthOfYear(1).withDayOfMonth(1);
+        DateTime endDate = startDate.plusYears(1).minusMonths(1);
+        int days = Months.monthsBetween(startDate, endDate).getMonths() + 1;
+        for (int i = 0; i < days; i++) {
+            DateTime start = startDate.withFieldAdded(DurationFieldType.months(), i).withTimeAtStartOfDay();
+            DateTime end = start.plusMonths(1).withTimeAtStartOfDay();
+            dates.add(new Interval(start, end));
+        }
+        return dates;
     }
 }

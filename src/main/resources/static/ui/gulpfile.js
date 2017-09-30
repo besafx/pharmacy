@@ -96,6 +96,8 @@ gulp.task('scripts', function () {
         './js/sortable.js',
         './js/FileSaver.js',
         './js/jquery.noty.packaged.js',
+        './angular-chart/Chart.js',
+        './angular-chart/angular-chart.js',
 
         './init/config/config.js',
         './init/factory/companyFactory.js',

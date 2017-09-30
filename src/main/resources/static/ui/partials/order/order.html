@@ -51,6 +51,14 @@
                     <span ng-if="lang==='EN'">PREFERENCES</span>
                 </li>
                 <li class="mdl-menu__item mdl-list__item"
+                    ng-click="goFullscreen()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">aspect_ratio</i>
+                        <span ng-if="lang==='AR'">تطبيق وضع ملء الشاشة</span>
+                        <span ng-if="lang==='EN'">Go To Full Screen</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item"
                     ng-click="switchDateType()">
                     <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon">timer</i>
@@ -280,6 +288,12 @@
                                         ng-class="{'active':toggleList===2}">
                                     <input type="radio" name="options"/>
                                     <i class="material-icons">view_column</i>
+                                </button>
+                                <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                        type="button" ng-click="toggleList=3;findQuantityByDay()"
+                                        ng-class="{'active':toggleList===3}">
+                                    <input type="radio" name="options"/>
+                                    <span class="fa fa-area-chart fa-lg"></span>
                                 </button>
                             </div>
                         </div>
@@ -682,65 +696,151 @@
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div st-table="collection5" st-safe-src="orders">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="order in collection5">
-                        <!-- CONTACT ITEM -->
-                        <div class="panel panel-default">
-                            <div class="panel-body profile">
-                                <div class="profile-image">
-                                    <img width="100" height="100"
-                                         src="/ui/img/no-image.jpg"
-                                         alt="{{order.code}}"/>
-                                </div>
-                                <div class="profile-data">
-                                    <div class="profile-data-name">
-                                        <span>{{order.code}}</span>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="openFilter()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-filter"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
+                                   ng-click="newOrder()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلب فحص' : 'New Order...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة الطلبات</h3>
+                            <h3 ng-if="lang==='EN'">Orders List</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div st-table="collection5" st-safe-src="orders">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" ng-repeat="order in collection5">
+                                <!-- CONTACT ITEM -->
+                                <div class="panel panel-default">
+                                    <div class="panel-body profile">
+                                        <div class="profile-image">
+                                            <img width="100" height="100"
+                                                 src="/ui/img/no-image.jpg"
+                                                 alt="{{order.code}}"/>
+                                        </div>
+                                        <div class="profile-data">
+                                            <div class="profile-data-name">
+                                                <span>{{order.code}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-controls">
+                                            <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                                            <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="contact-info">
+                                            <p>
+                                                <strong ng-if="lang==='AR'">العميل</strong>
+                                                <strong ng-if="lang==='EN'">Customer</strong>
+                                                <span>{{order.falcon.customer.name}}</span>
+                                            </p>
+                                            <hr>
+                                            <p>
+                                                <strong ng-if="lang==='AR'">رقم الصقر</strong>
+                                                <strong ng-if="lang==='EN'">Falcon Code</strong>
+                                                <span class="label label-danger">{{order.falcon.code}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <button uib-tooltip="{{lang==='AR' ? 'انشاء طلب جديد' : 'New...'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
+                                                    ng-click="newOrder();"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <i class="material-icons">add</i>
+                                            </button>
+                                            <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-if="contains(me.team.authorities, ['ROLE_ORDER_DELETE'])"
+                                                    ng-click="delete(order)"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="profile-controls">
-                                    <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
-                                    <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
-                                </div>
+                                <!-- END CONTACT ITEM -->
                             </div>
-                            <div class="panel-body">
-                                <div class="contact-info">
-                                    <p>
-                                        <strong ng-if="lang==='AR'">العميل</strong>
-                                        <strong ng-if="lang==='EN'">Customer</strong>
-                                        <span>{{order.falcon.customer.name}}</span>
-                                    </p>
-                                    <hr>
-                                    <p>
-                                        <strong ng-if="lang==='AR'">رقم الصقر</strong>
-                                        <strong ng-if="lang==='EN'">Falcon Code</strong>
-                                        <span class="label label-danger">{{order.falcon.code}}</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <button uib-tooltip="{{lang==='AR' ? 'انشاء طلب جديد' : 'New...'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
-                                            ng-click="newOrder();"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                    <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_ORDER_DELETE'])"
-                                            ng-click="delete(order)"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                </div>
-                            </div>
+                            <tfoot>
+                            <tr>
+                                <td colspan="12">
+                                    <div st-pagination="" st-items-by-page="4" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                            </tfoot>
                         </div>
-                        <!-- END CONTACT ITEM -->
                     </div>
                 </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===3">
+
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <button id="area-chart-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+                                for="area-chart-menu-lower-left">
+                                <li class="mdl-menu__item mdl-list__item"
+                                    ng-click="findQuantityByDay()">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">filter_list</i>
+                                        <span ng-if="lang==='AR'">توضيح العلاقة بالأسبوع</span>
+                                        <span ng-if="lang==='EN'">View Relations By Week</span>
+                                    </span>
+                                </li>
+                                <li class="mdl-menu__item mdl-list__item"
+                                    ng-click="findQuantityByMonth()">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">filter_list</i>
+                                        <span ng-if="lang==='AR'">توضيح العلاقة بالشهر</span>
+                                        <span ng-if="lang==='EN'">View Relations By Month</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">الإقبال على المستشفي</h3>
+                            <h3 ng-if="lang==='EN'">Popularity Of The Hospital</h3>
+                            <span ng-if="lang==='AR'">رسم بياني يوضح العلاقة بين عدد الطلبات</span>
+                            <span ng-if="lang==='EN'">Area Chart Describe How Many Orders</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <canvas id="line" class="chart chart-line" chart-data="data"
+                                        chart-labels="labels" chart-series="series" chart-options="options"
+                                        chart-dataset-override="datasetOverride" chart-click="onClick">
+                                </canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
 
         </div>

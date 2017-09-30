@@ -7,14 +7,17 @@ import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.Person;
 import com.besafx.app.search.OrderSearch;
 import com.besafx.app.service.*;
+import com.besafx.app.util.DateConverter;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
+import com.besafx.app.util.WrapperUtil;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
+import org.bouncycastle.jce.provider.symmetric.AES;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/order/")
@@ -155,6 +156,32 @@ public class OrderRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findOne(id));
+    }
+
+    @RequestMapping(value = "findQuantityByDay", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findQuantityByDay() {
+        List<WrapperUtil> list = new ArrayList<>();
+        DateConverter.getDaysOfThisWeek().stream().forEach(interval -> {
+            WrapperUtil wrapperUtil = new WrapperUtil();
+            wrapperUtil.setObj1(interval.getStart().dayOfWeek().getAsText(Locale.forLanguageTag("ar")));
+            wrapperUtil.setObj2(orderService.countByDateBetween(interval.getStart().toDate(), interval.getEnd().toDate()));
+            list.add(wrapperUtil);
+        });
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2"), list);
+    }
+
+    @RequestMapping(value = "findQuantityByMonth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findQuantityByMonth() {
+        List<WrapperUtil> list = new ArrayList<>();
+        DateConverter.getMonthsOfThisYear().stream().forEach(interval -> {
+            WrapperUtil wrapperUtil = new WrapperUtil();
+            wrapperUtil.setObj1(interval.getStart().monthOfYear().getAsText(Locale.forLanguageTag("ar")));
+            wrapperUtil.setObj2(orderService.countByDateBetween(interval.getStart().toDate(), interval.getEnd().toDate()));
+            list.add(wrapperUtil);
+        });
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2"), list);
     }
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
