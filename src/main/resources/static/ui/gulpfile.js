@@ -187,6 +187,7 @@ gulp.task('scripts', function () {
         './partials/diagnosis/diagnosis.js',
         './partials/diagnosis/diagnosisCreate.js',
 
+        './partials/report/report.js',
         './partials/report/person/personsIn.js',
 
         './partials/report/order/orderByDate.js',

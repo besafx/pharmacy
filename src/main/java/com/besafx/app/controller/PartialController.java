@@ -82,7 +82,8 @@ public class PartialController {
             "/falcon",
             "/help",
             "/profile",
-            "/about"
+            "/about",
+            "/report"
     })
     public ModelAndView navToView() {
         return new ModelAndView("forward:/");

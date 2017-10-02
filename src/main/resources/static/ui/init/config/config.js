@@ -281,6 +281,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             templateUrl: "/ui/partials/about/about.html",
             controller: "aboutCtrl"
         });
+
+        /**************************************************************
+         *                                                            *
+         * Report State                                               *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("report", {
+            url: "/report",
+            templateUrl: "/ui/partials/report/report.html",
+            controller: "reportCtrl"
+        });
     }
 ]);
 

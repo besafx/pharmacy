@@ -220,6 +220,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'report': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'assignment';
+                    $css.removeAll();
+                    $css.add([
+                        '/ui/css/mdl-style-indigo-pink.css',
+                        '/ui/css/theme-black.css'
+                    ]);
+                    $rootScope.applyCssLang();
+                    break;
+                }
             }
         });
 
@@ -405,6 +416,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'عن البرنامج';
                         } else {
                             $rootScope.pageTitle = 'About';
+                        }
+                        break;
+                    case 'report':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'التقارير';
+                        } else {
+                            $rootScope.pageTitle = 'Reports';
                         }
                         break;
                 }
@@ -659,6 +677,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
         };
         $rootScope.goToAbout = function () {
             $state.go('about');
+        };
+        $rootScope.goToReport = function () {
+            $state.go('report');
         };
 
     }]);
