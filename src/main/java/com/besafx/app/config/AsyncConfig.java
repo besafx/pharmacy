@@ -39,6 +39,12 @@ public class AsyncConfig {
         return initThreadPool(1, 1, 500, "FilePDFGenerate-");
     }
 
+    @Bean(name = "ByteGenerate")
+    public Executor ByteGenerate() {
+        log.info("Prepare ByteGenerate...");
+        return initThreadPool(1, 1, 500, "ByteGenerate-");
+    }
+
     @Bean(name = "threadPoolBank")
     public Executor threadPoolBank() {
         CustomThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();

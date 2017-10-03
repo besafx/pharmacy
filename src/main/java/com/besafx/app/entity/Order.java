@@ -68,7 +68,7 @@ public class Order implements Serializable {
     @OrderBy(value = "drug")
     private List<Diagnosis> diagnoses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     @OrderBy(value = "detectionType")
     private List<OrderDetectionType> orderDetectionTypes = new ArrayList<>();
 

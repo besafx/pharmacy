@@ -42,9 +42,6 @@ public class ReportOrderController {
             @PathVariable("id") Long id,
             @PathVariable(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("order", orderService.findOne(id));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
@@ -60,9 +57,6 @@ public class ReportOrderController {
             @PathVariable("id") Long id,
             @PathVariable(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Order order = orderService.findOne(id);
         Map<String, Object> map = new HashMap<>();
         map.put("order", order);
@@ -80,9 +74,6 @@ public class ReportOrderController {
             @PathVariable("billSellId") Long billSellId,
             @PathVariable(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("order", orderService.findOne(orderId));
         map.put("billSell", billSellService.findOne(billSellId));
@@ -99,9 +90,6 @@ public class ReportOrderController {
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("orders", orderService.findByIdIn(ids));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
@@ -120,9 +108,6 @@ public class ReportOrderController {
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
@@ -144,9 +129,6 @@ public class ReportOrderController {
             @RequestParam(value = "dateTo") Long dateTo,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("orders", orderService.findByDateBetween(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
@@ -172,9 +154,6 @@ public class ReportOrderController {
             @RequestParam(value = "dateTo") Long dateTo,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();

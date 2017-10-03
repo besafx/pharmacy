@@ -11,7 +11,7 @@ app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetec
         $scope.items = [];
         $scope.items.push(
             {'id': 1, 'type': 'link', 'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application', 'link': 'menu'},
-            {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'}
+            {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'نتائج الفحص' : 'Detection Results'}
         );
 
         $scope.setSelected = function (object) {
@@ -127,7 +127,7 @@ app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetec
                         {
                             'id': 2,
                             'type': 'title',
-                            'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                            'name': $rootScope.lang === 'AR' ? 'نتائج الفحص' : 'Detection Results'
                         },
                         {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'بحث مخصص' : 'Filter'}
                     );
