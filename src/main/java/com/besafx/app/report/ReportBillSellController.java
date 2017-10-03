@@ -1,7 +1,5 @@
 package com.besafx.app.report;
 
-import com.besafx.app.entity.BillSell;
-import com.besafx.app.service.BillSellService;
 import com.besafx.app.service.BillSellService;
 import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -33,6 +31,22 @@ public class ReportBillSellController {
     @Autowired
     private ReportExporter reportExporter;
 
+    @RequestMapping(value = "/report/billSell/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportBillSell(
+            @PathVariable("id") Long id,
+            @PathVariable(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("billSell", billSellService.findOne(id));
+
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/Report.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export(exportType, response, jasperPrint);
+    }
+
 
     @RequestMapping(value = "/report/billSells", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
@@ -40,9 +54,6 @@ public class ReportBillSellController {
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("billSells", billSellService.findByIdIn(ids));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
@@ -61,9 +72,6 @@ public class ReportBillSellController {
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
@@ -85,9 +93,6 @@ public class ReportBillSellController {
             @RequestParam(value = "dateTo") Long dateTo,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("billSells", billSellService.findByDateBetween(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
@@ -113,9 +118,6 @@ public class ReportBillSellController {
             @RequestParam(value = "dateTo") Long dateTo,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
-        /**
-         * Insert Parameters
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();

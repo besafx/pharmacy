@@ -56,7 +56,7 @@ public class BillSell implements Serializable {
     @Type(type = "org.hibernate.type.TextType")
     private String note;
 
-    @OneToMany(mappedBy = "billSell", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "billSell", fetch = FetchType.EAGER)
     private List<TransactionSell> transactionSells = new ArrayList<>();
 
     public Double getUnitSellCostSum() {
