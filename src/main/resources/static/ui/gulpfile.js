@@ -168,6 +168,7 @@ gulp.task('scripts', function () {
         './partials/billBuy/billBuyHeadCreate.js',
         './partials/billBuy/transactionBuyCreate.js',
         './partials/billBuy/updatePrices.js',
+        './partials/billBuy/updateQuantity.js',
 
         './partials/billSell/billSell.js',
         './partials/billSell/billSellFilter.js',

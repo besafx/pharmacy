@@ -744,6 +744,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openUpdateQuantityModel = function (transactionBuy) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billBuy/updateQuantity.html',
+            controller: 'updateQuantityCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                transactionBuy: function () {
+                    return transactionBuy;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * BillSell Model                                             *

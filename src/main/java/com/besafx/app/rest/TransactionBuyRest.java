@@ -1,5 +1,6 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.BillBuy;
 import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.Person;
@@ -142,5 +143,23 @@ public class TransactionBuyRest {
         transactionBuy.setUnitSellCost(unitSellCost);
         transactionBuy = transactionBuyService.save(transactionBuy);
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionBuy);
+    }
+
+    @RequestMapping(value = "updateQuantity/{transactionBuyId}/{quantity}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @Transactional
+    public String updateQuantity(@PathVariable(value = "transactionBuyId") Long transactionBuyId,
+                               @PathVariable(value = "quantity") Double quantity) {
+        TransactionBuy transactionBuy = transactionBuyService.findOne(transactionBuyId);
+        if(transactionBuy != null){
+            if(!transactionBuy.getTransactionSells().isEmpty()){
+               throw new CustomException("لا يمكنك التعديل فى الكميات بعد عمليات البيع");
+            }
+            transactionBuy.setQuantity(quantity);
+            transactionBuy = transactionBuyService.save(transactionBuy);
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionBuy);
+        }else{
+            return null;
+        }
     }
 }

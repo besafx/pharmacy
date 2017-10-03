@@ -125,7 +125,7 @@
         </div>
     </header>
 
-    <div class="mdl-layout__drawer">
+    <div class="mdl-layout__drawer" style="padding-top: 50px !important;">
         <nav class="mdl-navigation">
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
                href="" ng-click="goToHome()">
@@ -268,58 +268,54 @@
 
         <div class="row" style="margin-top: 10px">
 
-            <div class="container">
+            <div class="form-group row">
 
-                <div class="form-group row">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                    <a href="" ng-click="ModalProvider.openReportOrderDetectionModel()">
+                        <img src="ui/img/widget-report.png" height="100" width="100">
+                        <p ng-if="lang==='AR'">طلب فحص</p>
+                        <p ng-if="lang==='EN'">Detection Order</p>
+                    </a>
+                </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="ModalProvider.openReportOrderDetectionModel()">
-                            <img src="ui/img/widget-report.png" height="100" width="100">
-                            <p ng-if="lang==='AR'">طلب فحص</p>
-                            <p ng-if="lang==='EN'">Detection Order</p>
-                        </a>
-                    </div>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                    <a href="" ng-click="ModalProvider.openReportOrderResultModel()">
+                        <img src="ui/img/widget-report.png" height="100" width="100">
+                        <p ng-if="lang==='AR'">نتيجة فحص</p>
+                        <p ng-if="lang==='EN'">Detection Results</p>
+                    </a>
+                </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="ModalProvider.openReportOrderResultModel()">
-                            <img src="ui/img/widget-report.png" height="100" width="100">
-                            <p ng-if="lang==='AR'">نتيجة فحص</p>
-                            <p ng-if="lang==='EN'">Detection Results</p>
-                        </a>
-                    </div>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                    <a href="" ng-click="ModalProvider.openReportOrderByDateModel()">
+                        <img src="ui/img/widget-report.png" height="100" width="100">
+                        <p ng-if="lang==='AR'">تقرير مختصر لطلبات الفحص بالتاريخ</p>
+                        <p ng-if="lang==='EN'">Orders Summery Report By Date</p>
+                    </a>
+                </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="ModalProvider.openReportOrderByDateModel()">
-                            <img src="ui/img/widget-report.png" height="100" width="100">
-                            <p ng-if="lang==='AR'">تقرير مختصر لطلبات الفحص بالتاريخ</p>
-                            <p ng-if="lang==='EN'">Orders Summery Report By Date</p>
-                        </a>
-                    </div>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                    <a href="" ng-click="ModalProvider.openReportOrderDetailsByDateModel()">
+                        <img src="ui/img/widget-report.png" height="100" width="100">
+                        <p ng-if="lang==='AR'">تقرير مفصل لطلبات الفحص بالتاريخ</p>
+                        <p ng-if="lang==='EN'">Orders Details Report By Date</p>
+                    </a>
+                </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="ModalProvider.openReportOrderDetailsByDateModel()">
-                            <img src="ui/img/widget-report.png" height="100" width="100">
-                            <p ng-if="lang==='AR'">تقرير مفصل لطلبات الفحص بالتاريخ</p>
-                            <p ng-if="lang==='EN'">Orders Details Report By Date</p>
-                        </a>
-                    </div>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                    <a href="" ng-click="ModalProvider.openReportBillSellByDateModel()">
+                        <img src="ui/img/widget-report.png" height="100" width="100">
+                        <p ng-if="lang==='AR'">تقرير مختصر للمبيعات بالتاريخ</p>
+                        <p ng-if="lang==='EN'">Orders Summery Report By Date</p>
+                    </a>
+                </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="ModalProvider.openReportBillSellByDateModel()">
-                            <img src="ui/img/widget-report.png" height="100" width="100">
-                            <p ng-if="lang==='AR'">تقرير مختصر للمبيعات بالتاريخ</p>
-                            <p ng-if="lang==='EN'">Orders Summery Report By Date</p>
-                        </a>
-                    </div>
-
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="ModalProvider.openReportBillSellDetailsByDateModel()">
-                            <img src="ui/img/widget-report.png" height="100" width="100">
-                            <p ng-if="lang==='AR'">تقرير مفصل للمبيعات بالتاريخ</p>
-                            <p ng-if="lang==='EN'">Orders Details Report By Date</p>
-                        </a>
-                    </div>
-
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                    <a href="" ng-click="ModalProvider.openReportBillSellDetailsByDateModel()">
+                        <img src="ui/img/widget-report.png" height="100" width="100">
+                        <p ng-if="lang==='AR'">تقرير مفصل للمبيعات بالتاريخ</p>
+                        <p ng-if="lang==='EN'">Orders Details Report By Date</p>
+                    </a>
                 </div>
 
             </div>

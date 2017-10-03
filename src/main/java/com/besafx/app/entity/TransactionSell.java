@@ -57,11 +57,22 @@ public class TransactionSell implements Serializable {
     private BillSell billSell;
 
     public Double getUnitSellCost() {
-        return DoubleRounder.round((this.transactionBuy.getUnitSellCost() / this.transactionBuy.getDrugUnit().getFactor()) * this.drugUnit.getFactor(), 3);
+        try{
+            return DoubleRounder.round((this.transactionBuy.getUnitSellCost() / this.transactionBuy.getDrugUnit().getFactor()) * this.drugUnit.getFactor(), 3);
+        }catch (Exception ex){
+            return 0.0;
+        }
     }
 
     public Double getUnitQuantity() {
-        return DoubleRounder.round((this.transactionBuy.getDrugUnit().getFactor() / this.drugUnit.getFactor()) * this.transactionBuy.getQuantity(), 3);
+        try{
+            if(this.transactionBuy.getDrugUnit().equals(this.drugUnit)){
+                return this.quantity;
+            }
+            return DoubleRounder.round((this.transactionBuy.getDrugUnit().getFactor() / this.drugUnit.getFactor()) * this.transactionBuy.getQuantity(), 3);
+        }catch (Exception ex){
+            return 0.0;
+        }
     }
 
     @JsonCreator

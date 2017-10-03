@@ -1,14 +1,8 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.BillSell;
-import com.besafx.app.entity.Drug;
-import com.besafx.app.entity.Person;
-import com.besafx.app.entity.TransactionSell;
-import com.besafx.app.service.BillSellService;
-import com.besafx.app.service.DrugService;
-import com.besafx.app.service.PersonService;
-import com.besafx.app.service.TransactionSellService;
+import com.besafx.app.entity.*;
+import com.besafx.app.service.*;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -41,6 +35,9 @@ public class TransactionSellRest {
 
     @Autowired
     private BillSellService billSellService;
+
+    @Autowired
+    private TransactionBuyService transactionBuyService;
 
     @Autowired
     private DrugService drugService;
@@ -114,6 +111,17 @@ public class TransactionSellRest {
         BillSell billSell = billSellService.findOne(id);
         if (billSell != null) {
             return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSell.getTransactionSells());
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "findByTransactionBuy/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByTransactionBuy(@PathVariable Long id) {
+        TransactionBuy transactionBuy = transactionBuyService.findOne(id);
+        if (transactionBuy != null) {
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionBuy.getTransactionSells());
         } else {
             return null;
         }

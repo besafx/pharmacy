@@ -31,6 +31,11 @@ app.factory("TransactionBuyService",
                 return $http.get("/api/transactionBuy/updatePrices/" + transactionBuyId + "/" + drugUnitId + "/" + unitBuyCost + "/" + unitSellCost).then(function (response) {
                     return response.data;
                 });
+            },
+            updateQuantity: function (transactionBuyId, quantity) {
+                return $http.get("/api/transactionBuy/updateQuantity/" + transactionBuyId + "/" + quantity).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

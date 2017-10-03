@@ -11,6 +11,11 @@ app.factory("TransactionSellService",
                     return response.data;
                 });
             },
+            findByTransactionBuy: function (id) {
+                return $http.get("/api/transactionSell/findByTransactionBuy/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (transactionSell) {
                 return $http.post("/api/transactionSell/create", transactionSell).then(function (response) {
                     return response.data;

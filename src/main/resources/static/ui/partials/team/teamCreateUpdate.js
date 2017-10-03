@@ -343,6 +343,12 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'تشخيص خدمات الفحص' : 'Diagnosing Detections',
                 value: 'ROLE_ORDER_DETECTION_TYPE_SAVE_CASE',
                 selected: false
+            },
+            {
+                id: 61,
+                name: $rootScope.lang === 'AR' ? 'تعديل كميات الاصناف' : 'Update Quantity',
+                value: 'ROLE_DRUG_QUANTITY_UPDATE',
+                selected: false
             }
         ];
 

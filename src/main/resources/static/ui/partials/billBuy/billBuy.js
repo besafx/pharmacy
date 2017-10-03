@@ -1,5 +1,5 @@
-app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (BillBuyService, TransactionBuyService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'TransactionSellService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (BillBuyService, TransactionBuyService, TransactionSellService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
         $scope.selectedTransactionBuy = {};
@@ -8,7 +8,7 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
         $scope.setSelected = function (object) {
             if (object) {
                 angular.forEach($scope.billBuys, function (billBuy) {
-                    if (object.id == billBuy.id) {
+                    if (object.id === billBuy.id) {
                         $scope.selected = billBuy;
                         return billBuy.isSelected = true;
                     } else {
@@ -20,8 +20,8 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
 
         $scope.setSelectedTransactionBuy = function (object) {
             if (object) {
-                angular.forEach(selected.transactionBuys, function (transactionBuy) {
-                    if (object.id == transactionBuy.id) {
+                angular.forEach($scope.selected.transactionBuys, function (transactionBuy) {
+                    if (object.id === transactionBuy.id) {
                         $scope.selectedTransactionBuy = transactionBuy;
                         return transactionBuy.isSelected = true;
                     } else {
@@ -104,6 +104,14 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
             }
         };
 
+        $scope.refreshTransactionSellByTransactionBuy = function () {
+            if ($scope.selectedTransactionBuy) {
+                TransactionSellService.findByTransactionBuy($scope.selectedTransactionBuy.id).then(function (data) {
+                    $scope.selectedTransactionBuy.transactionSells = data;
+                })
+            }
+        };
+
         $scope.delete = function (billBuy) {
             if (billBuy) {
                 $rootScope.showConfirmNotify("المخازن", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
@@ -138,10 +146,33 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
             }
         };
 
+        $scope.deleteTransactionSell = function (transactionSell) {
+            if (transactionSell) {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
+                    TransactionSellService.remove(transactionSell.id).then(function () {
+                        var index = $scope.selectedTransactionBuy.transactionSells.indexOf(transactionSell);
+                        $scope.selectedTransactionBuy.transactionSells.splice(index, 1);
+                        $scope.setSelected($scope.selectedTransactionBuy.transactionSells[0]);
+                    });
+                });
+
+            }
+        };
+
         $scope.updatePrices = function (transactionBuy) {
             if (transactionBuy) {
                 $rootScope.showConfirmNotify("المخازن", "هل تعديل أسعار الطلبية فعلاً؟", "warning", "fa-edit", function () {
                     ModalProvider.openUpdatePricesModel(transactionBuy).result.then(function (data) {
+                        return transactionBuy = data;
+                    });
+                });
+            }
+        };
+
+        $scope.updateQuantity = function (transactionBuy) {
+            if (transactionBuy) {
+                $rootScope.showConfirmNotify("المخازن", "هل تعديل كمية الطلبية فعلاً؟", "warning", "fa-edit", function () {
+                    ModalProvider.openUpdateQuantityModel(transactionBuy).result.then(function (data) {
                         return transactionBuy = data;
                     });
                 });
@@ -206,6 +237,15 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.updatePrices($itemScope.transactionBuy);
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعديل الكمية<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_DRUG_QUANTITY_UPDATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.updateQuantity($itemScope.transactionBuy);
                 }
             }
         ];

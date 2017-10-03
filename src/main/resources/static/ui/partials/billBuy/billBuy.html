@@ -342,7 +342,7 @@
                                 <a href=""
                                    ng-click="openFilter()"
                                    tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                   uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
                                     <span class="fa fa-filter"></span>
                                 </a>
                                 <a href=""
@@ -371,8 +371,8 @@
                                     </th>
 
                                     <th st-sort="code">
-                                        <span ng-if="lang==='AR'">رقم الفاتورة</span>
-                                        <span ng-if="lang==='EN'">Code</span>
+                                        <span ng-if="lang==='AR'">رقم فاتورة الشراء</span>
+                                        <span ng-if="lang==='EN'">Bill Purchace Code</span>
                                     </th>
 
                                     <th st-sort="supplier.name">
@@ -477,8 +477,8 @@
                             <h3 ng-if="lang==='AR'">حركات الشراء (طلبيات شراء الأدوية)</h3>
                             <h3 ng-if="lang==='EN'">Buys Transactions (Drugs Stock)</h3>
                             <fieldset ng-if="selected.id">
-                                <span ng-if="lang==='AR'">رقم الفاتورة / {{selected.code}}</span>
-                                <span ng-if="lang==='EN'">Bill Code / {{selected.code}}</span>
+                                <span ng-if="lang==='AR'">رقم فاتورة الشراء / {{selected.code}}</span>
+                                <span ng-if="lang==='EN'">Bill Purchace Code / {{selected.code}}</span>
                             </fieldset>
                         </div>
                     </div>
@@ -524,8 +524,18 @@
                                     </th>
 
                                     <th st-sort="quantity">
-                                        <span ng-if="lang==='AR'">الكمية</span>
-                                        <span ng-if="lang==='EN'">Quantity</span>
+                                        <span ng-if="lang==='AR'">كمبية المشتريات</span>
+                                        <span ng-if="lang==='EN'">Purchace Quantity</span>
+                                    </th>
+
+                                    <th st-sort="salesQuantity">
+                                        <span ng-if="lang==='AR'">كمية المبيعات</span>
+                                        <span ng-if="lang==='EN'">Sales Quantity</span>
+                                    </th>
+
+                                    <th st-sort="realQuantity">
+                                        <span ng-if="lang==='AR'">الرصيد الحالي</span>
+                                        <span ng-if="lang==='EN'">Real Quantity</span>
                                     </th>
 
                                     <th st-sort="productionDate">
@@ -544,7 +554,7 @@
                                 <tr ng-repeat="transactionBuy in collection2"
                                     st-select-mode="single"
                                     context-menu="transactionBuyRowMenu"
-                                    ng-click="setSelectedTransactionBuy(transactionBuy)"
+                                    ng-click="setSelectedTransactionBuy(transactionBuy);refreshTransactionSellByTransactionBuy()"
                                     ng-right-click="setSelectedTransactionBuy(transactionBuy)"
                                     ng-class="{'mdl-color--blue-grey-100':transactionBuy.isSelected}">
                                     <td st-select-row-custom="transactionBuy">{{$index+1}}</td>
@@ -572,6 +582,8 @@
                                         <span class="label label-danger">{{transactionBuy.unitSellCost}} SAR</span>
                                     </td>
                                     <td st-select-row-custom="transactionBuy">{{transactionBuy.quantity}}</td>
+                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.salesQuantity}}</td>
+                                    <td st-select-row-custom="transactionBuy" ng-class="{'danger' : (transactionBuy.salesQuantity > 0) && transactionBuy.realQuantity > (transactionBuy.quantity - 10)}">{{transactionBuy.realQuantity}}</td>
                                     <td st-select-row-custom="transactionBuy">
                                         <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                         <span ng-show="dateType==='G'">{{transactionBuy.productionDate | date: 'yyyy-MM-dd'}}</span>
@@ -581,7 +593,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection2 || collection2.length ==0">
-                                    <td colspan="10">
+                                    <td colspan="12">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -589,7 +601,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="10">
+                                    <td colspan="12">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
@@ -610,18 +622,10 @@
                             style="margin-top: 2px;">
                             <li>
                                 <a href=""
-                                   ng-click="refreshTransactionSellByBill()"
+                                   ng-click="refreshTransactionSellByTransactionBuy()"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
                                     <span class="fa fa-refresh"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
-                                   ng-show="selected.id"
-                                   ng-click="newTransactionSell()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلبية بيع' : 'New Order...'}}">
-                                    <span class="fa fa-plus-square"></span>
                                 </a>
                             </li>
                         </ul>
@@ -629,20 +633,31 @@
                             <h3 ng-if="lang==='AR'">حركات البيع (طلبيات بيع الأدوية)</h3>
                             <h3 ng-if="lang==='EN'">Sells Transactions (Drugs Stock)</h3>
                             <fieldset ng-if="selected.id">
-                                <span ng-if="lang==='AR'">رقم الفاتورة / {{selected.code}}</span>
-                                <span ng-if="lang==='EN'">Bill Code / {{selected.code}}</span>
+                                [{{selectedTransactionBuy.drug.code}}]
+                                [
+                                <span ng-if="lang==='AR'">{{selectedTransactionBuy.drug.nameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{selectedTransactionBuy.drug.nameEnglish}}</span>
+                                ][
+                                <span ng-if="lang==='AR'">{{selectedTransactionBuy.drug.medicalNameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{selectedTransactionBuy.drug.medicalNameEnglish}}</span>
+                                ]
                             </fieldset>
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
-                            <table st-table="collection3" st-safe-src="selected.transactionSells"
+                            <table st-table="collection3" st-safe-src="selectedTransactionBuy.transactionSells"
                                    class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>
                                         <span ng-if="lang==='AR'">م</span>
                                         <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">رقم فاتورة البيع</span>
+                                        <span ng-if="lang==='EN'">Bill Sell Code</span>
                                     </th>
 
                                     <th>
@@ -653,11 +668,6 @@
                                     <th st-sort="productionDate">
                                         <span ng-if="lang==='AR'">تاريخ الحركة</span>
                                         <span ng-if="lang==='EN'">Transaction Date</span>
-                                    </th>
-
-                                    <th st-sort="drug.code">
-                                        <span ng-if="lang==='AR'">الدواء</span>
-                                        <span ng-if="lang==='EN'">Drug</span>
                                     </th>
 
                                     <th st-sort="drugUnit">
@@ -685,21 +695,12 @@
                                 <tbody>
                                 <tr ng-repeat="transactionSell in collection3">
                                     <td>{{$index+1}}</td>
+                                    <td>{{transactionSell.billSell.code}}</td>
                                     <td>{{transactionSell.code}}</td>
                                     <td>
                                         <span ng-show="dateType==='H'">{{transactionSell.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                         <span ng-show="dateType==='G'">{{transactionSell.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{transactionSell.date | date:'h:m a'}}</span>
-                                    </td>
-                                    <td>
-                                        [{{transactionSell.transactionBuy.drug.code}}]
-                                        [
-                                        <span ng-if="lang==='AR'">{{transactionSell.transactionBuy.drug.nameArabic}}</span>
-                                        <span ng-if="lang==='EN'">{{transactionSell.transactionBuy.drug.nameEnglish}}</span>
-                                        ][
-                                        <span ng-if="lang==='AR'">{{transactionSell.transactionBuy.drug.medicalNameArabic}}</span>
-                                        <span ng-if="lang==='EN'">{{transactionSell.transactionBuy.drug.medicalNameEnglish}}</span>
-                                        ]
                                     </td>
                                     <td>{{transactionSell.drugUnit.name}}</td>
                                     <td>
