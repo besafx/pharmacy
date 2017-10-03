@@ -56,6 +56,37 @@ public class BillBuy implements Serializable {
     @OneToMany(mappedBy = "billBuy", fetch = FetchType.LAZY)
     private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
+    public Double getUnitBuyCostSum() {
+        try{
+            return this.transactionBuys
+                    .stream()
+                    .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitBuyCost())
+                    .sum();
+        }catch (Exception ex){
+            return null;
+        }
+    }
+
+    public Double getUnitSellCostSum() {
+        try{
+            return this.transactionBuys
+                    .stream()
+                    .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitSellCost())
+                    .sum();
+        }catch (Exception ex){
+            return null;
+        }
+    }
+
+    public Double getNet() {
+        try{
+            Double totalCost = this.getUnitBuyCostSum();
+            return totalCost - ((totalCost * this.discount) / 100);
+        }catch (Exception ex){
+            return null;
+        }
+    }
+
 
     @JsonCreator
     public static BillBuy Create(String jsonString) throws IOException {

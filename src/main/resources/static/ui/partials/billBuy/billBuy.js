@@ -2,6 +2,7 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
     function (BillBuyService, TransactionBuyService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
+        $scope.selectedTransactionBuy = {};
         $scope.buffer = {};
 
         $scope.setSelected = function (object) {
@@ -12,6 +13,19 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                         return billBuy.isSelected = true;
                     } else {
                         return billBuy.isSelected = false;
+                    }
+                });
+            }
+        };
+
+        $scope.setSelectedTransactionBuy = function (object) {
+            if (object) {
+                angular.forEach(selected.transactionBuys, function (transactionBuy) {
+                    if (object.id == transactionBuy.id) {
+                        $scope.selectedTransactionBuy = transactionBuy;
+                        return transactionBuy.isSelected = true;
+                    } else {
+                        return transactionBuy.isSelected = false;
                     }
                 });
             }
@@ -44,7 +58,7 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                 }
                 //
                 if (buffer.paymentMethodList) {
-                    var orderConditions = [];
+                    var paymentMethods = [];
                     for (var i = 0; i < buffer.paymentMethodList.length; i++) {
                         paymentMethods.push(buffer.paymentMethodList[i]);
                     }
@@ -118,7 +132,6 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                         var index = $scope.selected.transactionBuys.indexOf(transactionBuy);
                         $scope.selected.transactionBuys.splice(index, 1);
                         $scope.setSelected($scope.selected.transactionBuys[0]);
-                        $scope.calculateCostSum();
                     });
                 });
 
@@ -149,23 +162,10 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
             ModalProvider.openTransactionBuyCreateModel($scope.selected).result.then(function (data) {
                 if ($scope.selected) {
                     $scope.selected.transactionBuys.splice(0, 0, data);
-                    $scope.calculateCostSum();
                 }
             }, function () {
                 console.info('TransactionBuyCreateModel Closed.');
             });
-        };
-
-        $scope.calculateCostSum = function () {
-            $scope.totalCost = 0;
-            $scope.totalCostAfterDiscount = 0;
-            if ($scope.selected.transactionBuys) {
-                for (var i = 0; i < $scope.selected.transactionBuys.length; i++) {
-                    var transactionBuy = $scope.selected.transactionBuys[i];
-                    $scope.totalCost = $scope.totalCost + (transactionBuy.unitBuyCost * transactionBuy.quantity);
-                }
-                $scope.totalCostAfterDiscount = $scope.totalCost - (($scope.totalCost * $scope.selected.discount) / 100);
-            }
         };
 
         $scope.rowMenu = [
@@ -185,6 +185,27 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Modal
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.billBuy);
+                }
+            }
+        ];
+
+        $scope.transactionBuyRowMenu = [
+            {
+                html: '<div class="drop-menu">حذف<span class="fa fa-trash fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_BILL_BUY_DELETE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.deleteTransactionBuy($itemScope.transactionBuy);
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعديل الأسعار<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_DRUG_PRICE_UPDATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.updatePrices($itemScope.transactionBuy);
                 }
             }
         ];

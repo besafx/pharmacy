@@ -460,3 +460,28 @@ WebKit inertia scrolling is being added here for any present/future devices that
     border-top-left-radius: 3px !important;
     border-bottom-left-radius: 3px !important;
 }
+
+.mdl-layout-icon{
+    display: inherit !important;
+}
+
+.mdl-layout__drawer{
+    z-index: 2 !important;
+}
+
+.mdl-layout__drawer-button{
+    display: none !important;
+}
+
+.mdl-layout__drawer{
+    padding-top: 122px;
+}
+
+.mdl-layout__header{
+    margin-left: 0px !important;
+    width: 100% !important;
+}
+
+.mdl-navigation > a{
+    text-decoration: none !important;
+}
