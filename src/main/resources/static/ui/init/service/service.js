@@ -482,6 +482,32 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportOrderDetectionModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/order/orderDetection.html",
+            controller: "orderDetectionCtrl",
+            backdrop: 'static',
+            keyboard: false,
+            size:'lg'
+        });
+    };
+
+    this.openReportOrderResultModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/order/orderResult.html",
+            controller: "orderResultCtrl",
+            backdrop: 'static',
+            keyboard: false,
+            size:'lg'
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Diagnosis Model                                            *

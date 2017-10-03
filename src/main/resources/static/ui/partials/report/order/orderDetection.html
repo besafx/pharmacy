@@ -1,0 +1,386 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">print</i>
+                <strong ng-if="lang==='AR'">طباعة طلب فحص</strong>
+                <strong ng-if="lang==='EN'">Printing Order Detection</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title-box"
+                             ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">خيارات البحث</h3>
+                            <h3 ng-if="lang==='EN'">Search Options</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="height: 400px; overflow: auto">
+
+                        <div class="form-group row">
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="codeFrom" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم الطلب من</span>
+                                    <span ng-if="lang==='EN'">Code From</span>
+                                </label>
+                                <input id="codeFrom"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.codeFrom">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="codeTo" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم الطلب إلى</span>
+                                    <span ng-if="lang==='EN'">Code To</span>
+                                </label>
+                                <input id="codeTo"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.codeTo">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="customerName" class="control-label">
+                                    <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
+                                    <span ng-if="lang==='EN'">Customer Name Contains</span>
+                                </label>
+                                <input id="customerName"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.customerName">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="customerMobile" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم جوال العميل يحتوي على</span>
+                                    <span ng-if="lang==='EN'">Customer Mobile Contains</span>
+                                </label>
+                                <input id="customerMobile"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.customerMobile">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="customerIdentityNumber" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم بطاقة العميل تحتوي على</span>
+                                    <span ng-if="lang==='EN'">Customer ID Contains</span>
+                                </label>
+                                <input id="customerIdentityNumber"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.customerIdentityNumber">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="falconCode" class="control-label">
+                                    <span ng-if="lang==='AR'">رقم الصقر يحتوي على</span>
+                                    <span ng-if="lang==='EN'">Falcon Code Contains</span>
+                                </label>
+                                <input id="falconCode"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.falconCode">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="falconType" class="control-label">
+                                    <span ng-if="lang==='AR'">نوع الصقر يحتوي على</span>
+                                    <span ng-if="lang==='EN'">Falcon Type Contains</span>
+                                </label>
+                                <input id="falconType"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.falconType">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="weightFrom" class="control-label">
+                                    <span ng-if="lang==='AR'">وزن الصقر من</span>
+                                    <span ng-if="lang==='EN'">Falcon Weight From</span>
+                                </label>
+                                <input id="weightFrom"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.weightFrom">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="weightTo" class="control-label">
+                                    <span ng-if="lang==='AR'">وزن الصقر إلى</span>
+                                    <span ng-if="lang==='EN'">Falcon Weight To</span>
+                                </label>
+                                <input id="weightTo"
+                                       type="text"
+                                       class="form-control"
+                                       ng-model="buffer.weightTo">
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="dateType==='H'">
+                                <label for="dateFrom" class="control-label">
+                                    <span ng-if="lang==='AR'">تاريخ الطلب من</span>
+                                    <span ng-if="lang==='EN'">Order Date From</span>
+                                </label>
+                                <div dir="ltr" class="input-group">
+                                    <input dir="rtl"
+                                           id="dateFrom"
+                                           type="text"
+                                           class="form-control is-calendarPicker"
+                                           ng-model="buffer.dateFrom"
+                                           calendarType="ummalqura"
+                                           language="en"
+                                           dateFormat="yyyy/mm/dd"
+                                           showOnFocus="false"
+                                           readonly="readonly"
+                                           kdatepicker>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="dateType==='G'">
+                                <label for="G-dateFrom" class="control-label">
+                                    <span ng-if="lang==='AR'">تاريخ الطلب من</span>
+                                    <span ng-if="lang==='EN'">Order Date From</span>
+                                </label>
+                                <input id="G-dateFrom"
+                                       class="form-control "
+                                       type="date"
+                                       name="input"
+                                       ng-model="buffer.dateFrom"
+                                       placeholder="yyyy-MM-dd"
+                                       min="2017-01-01"
+                                       max="2030-12-31"/>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="dateType==='H'">
+                                <label for="dateTo" class="control-label">
+                                    <span ng-if="lang==='AR'">تاريخ الطلب إلى</span>
+                                    <span ng-if="lang==='EN'">Order Date To</span>
+                                </label>
+                                <div dir="ltr" class="input-group">
+                                    <input dir="rtl"
+                                           id="dateTo"
+                                           type="text"
+                                           class="form-control is-calendarPicker"
+                                           ng-model="buffer.dateTo"
+                                           calendarType="ummalqura"
+                                           language="en"
+                                           dateFormat="yyyy/mm/dd"
+                                           showOnFocus="false"
+                                           readonly="readonly"
+                                           kdatepicker>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="dateType==='G'">
+                                <label for="G-dateTo" class="control-label">
+                                    <span ng-if="lang==='AR'">تاريخ الطلب إلى</span>
+                                    <span ng-if="lang==='EN'">Order Date To</span>
+                                </label>
+                                <input id="G-dateTo"
+                                       class="form-control "
+                                       type="date"
+                                       name="input"
+                                       ng-model="buffer.dateTo"
+                                       placeholder="yyyy-MM-dd"
+                                       min="2017-01-01"
+                                       max="2030-12-31"/>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-click="search();"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                                <i class="material-icons">search</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                                    tooltip-append-to-body="true"
+                                    type="reset"
+                                    ng-click="buffer={};"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">نتائج البحث</h3>
+                            <h3 ng-if="lang==='EN'">Search Results</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection" st-safe-src="orders"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم الطلب</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">التاريخ</span>
+                                        <span ng-if="lang==='EN'">Date</span>
+                                    </th>
+
+                                    <th st-sort="falcon.code">
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Code</span>
+                                    </th>
+
+                                    <th st-sort="falcon.weight">
+                                        <span ng-if="lang==='AR'">وزن الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Weight</span>
+                                    </th>
+
+                                    <th st-sort="falcon.type">
+                                        <span ng-if="lang==='AR'">نوع الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Type</span>
+                                    </th>
+
+                                    <th st-sort="falcon.customer.name">
+                                        <span ng-if="lang==='AR'">العميل</span>
+                                        <span ng-if="lang==='EN'">Customer</span>
+                                    </th>
+
+                                    <th st-sort="orderAttaches.length">
+                                        <span ng-if="lang==='AR'">المرفقات والمستندات</span>
+                                        <span ng-if="lang==='EN'">Attachments</span>
+                                    </th>
+
+                                    <th st-sort="doctor.person.name">
+                                        <span ng-if="lang==='AR'">الطبيب المعالج</span>
+                                        <span ng-if="lang==='EN'">Doctor</span>
+                                    </th>
+
+                                    <th st-sort="detectionTypeCostSum">
+                                        <span ng-if="lang==='AR'">التكلفة</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
+                                    </th>
+
+                                    <th st-sort="discount">
+                                        <span ng-if="lang==='AR'">الخصم</span>
+                                        <span ng-if="lang==='EN'">Discount</span>
+                                    </th>
+
+                                    <th st-sort="net">
+                                        <span ng-if="lang==='AR'">الصافي</span>
+                                        <span ng-if="lang==='EN'">Net</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="order in collection"
+                                    st-select-mode="single"
+                                    ng-click="setSelected(order)"
+                                    ng-right-click="setSelected(order)"
+                                    ng-class="{'mdl-color--blue-grey-100':order.isSelected}">
+                                    <td st-select-row-custom="order">{{$index+1}}</td>
+                                    <td st-select-row-custom="order">{{order.code}}</td>
+                                    <td st-select-row-custom="order">
+                                        <span ng-show="dateType==='H'">{{order.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{order.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td st-select-row-custom="order">{{order.falcon.code}}</td>
+                                    <td st-select-row-custom="order">{{order.falcon.weight}} جرام</td>
+                                    <td st-select-row-custom="order">{{order.falcon.type}}</td>
+                                    <td st-select-row-custom="order">{{order.falcon.customer.name}}</td>
+                                    <td st-select-row-custom="order">
+                                        <span ng-repeat="orderAttach in order.orderAttaches">
+                                            <a uib-tooltip="{{orderAttach.attach.name}}" tooltip-append-to-body="true"
+                                               href="" ng-href="{{orderAttach.attach.link}}" target="_blank">
+                                                <i class="fa fa-link fa-lg"></i>
+                                            </a>
+                                        </span>
+                                        <span ng-if="order.orderAttaches.length === 0" class="label label-danger">
+                                            <span ng-if="lang==='AR'">لا توجد ملفات حتى الآن</span>
+                                            <span ng-if="lang==='EN'">No Attachments Yet</span>
+                                        </span>
+                                    </td>
+                                    <td st-select-row-custom="order">{{order.doctor.person.name}}</td>
+                                    <td st-select-row-custom="order">{{order.detectionTypeCostSum}} SAR</td>
+                                    <td st-select-row-custom="order">{{order.discount}} %</td>
+                                    <td st-select-row-custom="order">{{order.netCost}} SAR</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection || collection.length ==0">
+                                    <td colspan="12">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="12">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR'? 'طباعة' : 'Print'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                <i class="material-icons">print</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

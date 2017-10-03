@@ -194,6 +194,8 @@ gulp.task('scripts', function () {
         './partials/report/order/orderByList.js',
         './partials/report/order/orderDetailsByList.js',
         './partials/report/order/orderDetailsByDate.js',
+        './partials/report/order/orderDetection.js',
+        './partials/report/order/orderResult.js',
 
         './partials/report/billSell/billSellByDate.js',
         './partials/report/billSell/billSellByList.js',
