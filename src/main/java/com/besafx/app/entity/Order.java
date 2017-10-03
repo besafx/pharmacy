@@ -4,6 +4,8 @@ import com.besafx.app.entity.enums.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
@@ -69,6 +71,7 @@ public class Order implements Serializable {
     private List<Diagnosis> diagnoses = new ArrayList<>();
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @OrderBy(value = "detectionType")
     private List<OrderDetectionType> orderDetectionTypes = new ArrayList<>();
 

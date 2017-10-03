@@ -4,6 +4,8 @@ import com.besafx.app.entity.enums.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -57,6 +59,7 @@ public class BillSell implements Serializable {
     private String note;
 
     @OneToMany(mappedBy = "billSell", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<TransactionSell> transactionSells = new ArrayList<>();
 
     public Double getUnitSellCostSum() {
