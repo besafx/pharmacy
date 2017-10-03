@@ -138,10 +138,22 @@ app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetec
 
         $scope.deleteOrderDetectionType = function (orderDetectionType) {
             if (orderDetectionType) {
-                $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف خدمة الفحص فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("العيادة الطبية", "هل تود حذف خدمة الفحص فعلاً؟", "error", "fa-trash", function () {
                     OrderDetectionTypeService.remove(orderDetectionType.id).then(function (data) {
                         var index = $scope.selected.orderDetectionTypes.indexOf(data);
                         $scope.selected.orderDetectionTypes.splice(index, 1);
+                    });
+                });
+
+            }
+        };
+
+        $scope.deleteDiagnosis = function (diagnosis) {
+            if (diagnosis) {
+                $rootScope.showConfirmNotify("العيادة الطبية", "هل تود حذف العلاج فعلاً؟", "error", "fa-trash", function () {
+                    DiagnosisService.remove(diagnosis.id).then(function (data) {
+                        var index = $scope.selected.diagnoses.indexOf(data);
+                        $scope.selected.diagnoses.splice(index, 1);
                     });
                 });
 

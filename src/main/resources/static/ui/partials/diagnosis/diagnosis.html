@@ -523,6 +523,11 @@
                                             <span ng-if="lang==='EN'">Drug Unit</span>
                                         </th>
 
+                                        <th>
+                                            <span ng-if="lang==='AR'">العمليات</span>
+                                            <span ng-if="lang==='EN'">Action</span>
+                                        </th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -546,10 +551,20 @@
                                         </td>
                                         <td>{{diagnosis.quantity}}</td>
                                         <td>{{diagnosis.drugUnit.name}}</td>
+                                        <td>
+                                            <a href=""
+                                               class="btn btn-danger"
+                                               ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_DELETE'])"
+                                               ng-click="deleteDiagnosis(diagnosis)">
+                                                <span class="fa fa-trash"></span>
+                                                <strong ng-if="lang==='AR'">حذف</strong>
+                                                <strong ng-if="lang==='EN'">Remove</strong>
+                                            </a>
+                                        </td>
                                     </tr>
                                     <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                         ng-show="!collection3 || collection3.length ==0">
-                                        <td colspan="7">
+                                        <td colspan="8">
                                             <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                             <span ng-if="lang==='EN'">No Data Found.</span>
                                         </td>
