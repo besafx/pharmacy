@@ -63,6 +63,14 @@
                                    uib-tooltip="{{lang==='AR' ? 'عميل جديد' : 'New Customer...'}}">
                                     <span class="fa fa-plus-square"></span>
                                 </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
+                                   ng-click="newFalcon(buffer.customer)"
+                                   ng-hide="!customers || customers.length==0 || !buffer.customer"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'صقر جديد' : 'New Falcon...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
@@ -181,7 +189,7 @@
                                 </a>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
-                                   ng-click="newFalcon()"
+                                   ng-click="newFalcon(buffer.customer)"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'حساب جديد' : 'New Falcon...'}}">
                                     <span class="fa fa-plus-square"></span>

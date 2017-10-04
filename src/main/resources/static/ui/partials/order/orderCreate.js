@@ -41,7 +41,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             });
         };
 
-        $scope.newFalcon = function () {
+        $scope.newFalcon = function (customer) {
             $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
@@ -59,7 +59,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
                     },
                     falcon: function () {
                         var falcon = {};
-                        falcon.customer = $scope.buffer.customer;
+                        falcon.customer = customer;
                         return falcon;
                     }
                 }
