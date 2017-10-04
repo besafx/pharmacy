@@ -173,8 +173,8 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
         $scope.deleteOrderDetectionType = function (orderDetectionType) {
             if (orderDetectionType) {
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف خدمة الفحص فعلاً؟", "error", "fa-trash", function () {
-                    OrderDetectionTypeService.remove(orderDetectionType.id).then(function (data) {
-                        var index = $scope.selected.orderDetectionTypes.indexOf(data);
+                    OrderDetectionTypeService.remove(orderDetectionType.id).then(function () {
+                        var index = $scope.selected.orderDetectionTypes.indexOf(orderDetectionType);
                         $scope.selected.orderDetectionTypes.splice(index, 1);
                     });
                 });
