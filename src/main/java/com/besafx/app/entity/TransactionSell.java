@@ -69,7 +69,18 @@ public class TransactionSell implements Serializable {
             if(this.transactionBuy.getDrugUnit().equals(this.drugUnit)){
                 return this.quantity;
             }
-            return DoubleRounder.round((this.transactionBuy.getDrugUnit().getFactor() / this.drugUnit.getFactor()) * this.transactionBuy.getQuantity(), 3);
+            return DoubleRounder.round((this.quantity / this.drugUnit.getFactor()), 3);
+        }catch (Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getUnitQuantityByDrugUnit(DrugUnit drugUnit) {
+        try{
+            if(this.transactionBuy.getDrugUnit().equals(drugUnit)){
+                return this.quantity;
+            }
+            return DoubleRounder.round((this.quantity / drugUnit.getFactor()), 3);
         }catch (Exception ex){
             return 0.0;
         }

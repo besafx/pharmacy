@@ -88,11 +88,14 @@ public class DrugUnitRest {
                 //Another Unit
                 util.setObj4(false);
             }
-            //Calculate Quantity
-            util.setObj5(DoubleRounder.round((transactionBuy.getDrugUnit().getFactor() / unit.getFactor()) * transactionBuy.getQuantity(), 3));
+            //Calculate Stock
+            Double stock = DoubleRounder.round((transactionBuy.getQuantity() / unit.getFactor()), 3);
+            util.setObj5(stock);
+            //Calculate Real Stock
+            util.setObj6(stock - transactionBuy.getSalesQuantityByDrugUnit(unit));
             wrapperUtils.add(util);
         });
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5"), wrapperUtils);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5,obj6"), wrapperUtils);
     }
 
     @RequestMapping(value = "getRelatedPricesByDrug/{drugId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -101,9 +104,10 @@ public class DrugUnitRest {
         List<WrapperUtil> wrapperUtils = new ArrayList<>();
         Gson gson = new Gson();
         ListIterator<TransactionBuy> listIterator = transactionBuyService.findByDrugId(drugId).listIterator();
-        while(listIterator.hasNext()){
+        while (listIterator.hasNext()) {
             TransactionBuy transactionBuy = listIterator.next();
-            wrapperUtils.addAll(gson.fromJson(getRelatedPrices(transactionBuy.getId()), new TypeToken<List<WrapperUtil>>(){}.getType()));
+            wrapperUtils.addAll(gson.fromJson(getRelatedPrices(transactionBuy.getId()), new TypeToken<List<WrapperUtil>>() {
+            }.getType()));
         }
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5"), wrapperUtils.stream().distinct().collect(Collectors.toList()));
     }

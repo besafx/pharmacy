@@ -36,7 +36,7 @@ public class BillSellRest {
 
     private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
 
-    public static final String FILTER_TABLE = "**,order[id,code,falcon[**,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]]";
+    public static final String FILTER_TABLE = "**,order[id,code,treatedCount,unTreatedCount,falcon[**,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]]";
     public static final String FILTER_BILL_SELL_COMBO = "id,code";
 
     @Autowired

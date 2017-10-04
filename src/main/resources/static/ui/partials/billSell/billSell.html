@@ -441,6 +441,11 @@
                                         <span ng-if="lang==='EN'">Order Code</span>
                                     </th>
 
+                                    <th>
+                                        <span ng-if="lang==='AR'">الدواء المطلوبة</span>
+                                        <span ng-if="lang==='EN'">Required Drugs</span>
+                                    </th>
+
                                     <th st-sort="order.falcon.customer.name">
                                         <span ng-if="lang==='AR'">اسم العميل</span>
                                         <span ng-if="lang==='EN'">Customer Name</span>
@@ -498,6 +503,10 @@
                                     <td st-select-row-custom="billSell">{{$index+1}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.code}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.order.code}}</td>
+                                    <td st-select-row-custom="billSell">
+                                        <span class="label label-success" ng-hide="billSell.order.treatedCount===0">{{billSell.order.treatedCount}} مصروف</span>
+                                        <span class="label label-danger" ng-hide="billSell.order.unTreatedCount===0">{{billSell.order.unTreatedCount}} غير مصروف</span>
+                                    </td>
                                     <td st-select-row-custom="billSell">{{billSell.order.falcon.customer.name}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.order.falcon.code}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.order.falcon.weight}}</td>
@@ -514,7 +523,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="12">
+                                    <td colspan="13">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -522,7 +531,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="12">
+                                    <td colspan="13">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>

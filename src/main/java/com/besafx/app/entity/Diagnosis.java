@@ -1,11 +1,18 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.component.BeanUtil;
+import com.besafx.app.service.TransactionSellService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,9 +22,24 @@ import java.util.List;
 
 @Data
 @Entity
+@Component
 public class Diagnosis implements Serializable {
 
+    private static final Logger log = LoggerFactory.getLogger(Diagnosis.class);
+
     private static final long serialVersionUID = 1L;
+
+    @Transient
+    private static TransactionSellService transactionSellService;
+
+    @PostConstruct
+    public void init() {
+        try{
+            transactionSellService = BeanUtil.getBean(TransactionSellService.class);
+        }catch (Exception ex){
+            log.info(ex.getMessage());
+        }
+    }
 
     @GenericGenerator(
             name = "diagnosisSequenceGenerator",
@@ -55,6 +77,14 @@ public class Diagnosis implements Serializable {
     @JoinColumn(name = "[order]")
     @ManyToOne
     private Order order;
+
+    public Boolean isTreated(){
+        try{
+            return transactionSellService.countByBillSellOrderAndTransactionBuyDrug(this.order, this.getDrug()) > 0;
+        }catch (Exception ex){
+            return false;
+        }
+    }
 
     @JsonCreator
     public static Diagnosis Create(String jsonString) throws IOException {

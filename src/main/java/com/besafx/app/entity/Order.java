@@ -1,6 +1,8 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.component.BeanUtil;
 import com.besafx.app.entity.enums.PaymentMethod;
+import com.besafx.app.service.TransactionSellService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
@@ -22,7 +25,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "[Order]")
-@Component
 public class Order implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(Order.class);
@@ -95,6 +97,22 @@ public class Order implements Serializable {
             Double total = getDetectionTypeCostSum();
             return total - (total * this.discount / 100);
         } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Long getTreatedCount(){
+        try{
+            return this.diagnoses.stream().filter(Diagnosis::isTreated).count();
+        }catch (Exception ex){
+            return null;
+        }
+    }
+
+    public Long getUnTreatedCount(){
+        try{
+            return this.diagnoses.size() - getTreatedCount();
+        }catch (Exception ex){
             return null;
         }
     }
