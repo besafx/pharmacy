@@ -94,15 +94,10 @@ app.controller('billSellForOrderCreateCtrl', ['OrderService', 'DrugService', 'Dr
             OrderService.findOne($scope.billSell.order.id).then(function (data) {
                 $scope.billSell.order = data;
                 angular.forEach($scope.billSell.order.diagnoses, function (diagnosis) {
-                    if(diagnosis.treated){
+                    DrugService.findOne(diagnosis.drug.id).then(function (data) {
                         var index = $scope.billSell.order.diagnoses.indexOf(diagnosis);
-                        $scope.billSell.order.diagnoses.splice(index, 1);
-                    }else{
-                        DrugService.findOne(diagnosis.drug.id).then(function (data) {
-                            var index = $scope.billSell.order.diagnoses.indexOf(diagnosis);
-                            $scope.billSell.order.diagnoses[index].drug = data;
-                        });
-                    }
+                        $scope.billSell.order.diagnoses[index].drug = data;
+                    });
                 });
             }) 
         };
@@ -120,18 +115,20 @@ app.controller('billSellForOrderCreateCtrl', ['OrderService', 'DrugService', 'Dr
         $scope.submit = function () {
             var transactionSellList = [];
             angular.forEach($scope.billSell.order.diagnoses, function (diagnosis) {
-                var transactionSell = {};
-                transactionSell.transactionBuy = diagnosis.transactionBuy;
-                transactionSell.drug = diagnosis.drug;
-                transactionSell.drugUnit = diagnosis.related.obj1;
-                transactionSell.unitSellCost = diagnosis.related.obj3;
-                transactionSell.quantity = diagnosis.quantity;
-                transactionSell.note = diagnosis.note;
-                transactionSellList.push(transactionSell);
+                if(diagnosis.treated === false){
+                    var transactionSell = {};
+                    transactionSell.transactionBuy = diagnosis.transactionBuy;
+                    transactionSell.drug = diagnosis.drug;
+                    transactionSell.drugUnit = diagnosis.related.obj1;
+                    transactionSell.unitSellCost = diagnosis.related.obj3;
+                    transactionSell.quantity = diagnosis.quantity;
+                    transactionSell.note = diagnosis.note;
+                    transactionSellList.push(transactionSell);
+                }
             });
             $scope.billSell.transactionSells = transactionSellList;
             BillSellService.create($scope.billSell).then(function (data) {
-                $uibModalInstance.close(data);
+                // $uibModalInstance.close(data);
             });
         };
 

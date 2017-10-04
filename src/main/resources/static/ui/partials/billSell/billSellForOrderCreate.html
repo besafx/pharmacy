@@ -456,7 +456,7 @@
             </div>
 
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                 ng-repeat="diagnosis in billSell.order.diagnoses">
+                 ng-repeat="diagnosis in billSell.order.diagnoses | filter:{treated:false}">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
                         <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"

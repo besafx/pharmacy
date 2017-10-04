@@ -59,18 +59,25 @@ public class BillSellRest {
     @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
     @Transactional
     public String create(@RequestBody BillSell billSell, Principal principal) {
-        BillSell topBillSell = billSellService.findTopByOrderByCodeDesc();
-        if (topBillSell == null) {
-            billSell.setCode(1);
-        } else {
-            billSell.setCode(topBillSell.getCode() + 1);
+        BillSell billSellByOrder = billSellService.findByOrder(billSell.getOrder());
+        if(billSellByOrder == null){
+            BillSell topBillSell = billSellService.findTopByOrderByCodeDesc();
+            if (topBillSell == null) {
+                billSell.setCode(1);
+            } else {
+                billSell.setCode(topBillSell.getCode() + 1);
+            }
+            billSell.setDate(new DateTime().toDate());
+            billSell = billSellService.save(billSell);
         }
-        billSell.setDate(new DateTime().toDate());
-        billSell = billSellService.save(billSell);
         ListIterator<TransactionSell> listIterator = billSell.getTransactionSells().listIterator();
         while (listIterator.hasNext()) {
             TransactionSell transactionSell = listIterator.next();
-            transactionSell.setBillSell(billSell);
+            if(billSellByOrder == null){
+                transactionSell.setBillSell(billSell);
+            }else{
+                transactionSell.setBillSell(billSellByOrder);
+            }
             TransactionSell topTransactionSell = transactionSellService.findTopByOrderByCodeDesc();
             if (topTransactionSell == null) {
                 transactionSell.setCode(1);

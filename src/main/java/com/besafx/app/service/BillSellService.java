@@ -1,6 +1,7 @@
 package com.besafx.app.service;
 
 import com.besafx.app.entity.BillSell;
+import com.besafx.app.entity.Order;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -18,4 +19,5 @@ public interface BillSellService extends PagingAndSortingRepository<BillSell, Lo
     BillSell findByCodeAndIdIsNot(Integer code, Long id);
     List<BillSell> findByIdIn(List<Long> ids);
     List<BillSell> findByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    BillSell findByOrder(Order order);
 }
