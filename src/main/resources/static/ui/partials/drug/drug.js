@@ -187,6 +187,14 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
             })
         };
 
+        $scope.printList = function () {
+            var ids = [];
+            angular.forEach($scope.drugs, function (data) {
+                ids.push(data.id);
+            });
+            window.open('/report/drugs?ids=' + ids + "&exportType=PDF");
+        };
+
         $scope.rowMenu = [
             {
                 html: '<div class="drop-menu">انشاء دواء جديد<span class="fa fa-pencil fa-lg"></span></div>',
@@ -223,11 +231,23 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
                 click: function ($itemScope, $event, value) {
                     ModalProvider.openDrugDetailsModel($itemScope.drug);
                 }
+            },
+            {
+                html: '<div class="drop-menu">طباعة الكل<span class="fa fa-print fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.printList();
+                }
             }
         ];
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
+            DrugService.findAll().then(function (data) {
+                $scope.drugs = data;
+            });
         }, 1500);
 
     }]);

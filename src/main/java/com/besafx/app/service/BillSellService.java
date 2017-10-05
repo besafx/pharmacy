@@ -19,5 +19,5 @@ public interface BillSellService extends PagingAndSortingRepository<BillSell, Lo
     BillSell findByCodeAndIdIsNot(Integer code, Long id);
     List<BillSell> findByIdIn(List<Long> ids);
     List<BillSell> findByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-    BillSell findByOrder(Order order);
+    BillSell findByOrderAndOrderNotNull(Order order);
 }

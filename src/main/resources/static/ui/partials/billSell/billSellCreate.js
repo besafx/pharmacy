@@ -51,16 +51,6 @@ app.controller('billSellCreateCtrl', ['TransactionBuyService', 'DrugService', 'D
             });
         };
 
-        $scope.calculateCostSum = function () {
-            $scope.totalCost = 0;
-            if ($scope.transactionSellList) {
-                for (var i = 0; i < $scope.transactionSellList.length; i++) {
-                    var transactionSell = $scope.transactionSellList[i];
-                    $scope.totalCost = $scope.totalCost + (transactionSell.unitSellCost * transactionSell.quantity);
-                }
-            }
-        };
-
         $scope.addTransactionSellToList = function () {
             //Add To Table
             var transactionSell = {};
@@ -73,12 +63,10 @@ app.controller('billSellCreateCtrl', ['TransactionBuyService', 'DrugService', 'D
             $scope.transactionSellList.push(transactionSell);
             $scope.buffer = {};
             $scope.relatedPrices = {};
-            $scope.calculateCostSum();
         };
 
         $scope.removeTransactionSellFromList = function (index) {
             $scope.transactionSellList.splice(index, 1);
-            $scope.calculateCostSum();
         };
 
         $scope.submit = function () {

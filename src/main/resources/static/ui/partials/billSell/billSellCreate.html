@@ -252,8 +252,18 @@
                                                 </th>
 
                                                 <th st-sort="quantity">
-                                                    <span ng-if="lang==='AR'">الكمية</span>
-                                                    <span ng-if="lang==='EN'">Quantity</span>
+                                                    <span ng-if="lang==='AR'">كمية المشتريات</span>
+                                                    <span ng-if="lang==='EN'">Purchace Quantity</span>
+                                                </th>
+
+                                                <th st-sort="salesQuantity">
+                                                    <span ng-if="lang==='AR'">كمية المبيعات</span>
+                                                    <span ng-if="lang==='EN'">Sales Quantity</span>
+                                                </th>
+
+                                                <th st-sort="realQuantity">
+                                                    <span ng-if="lang==='AR'">الرصيد الحالي</span>
+                                                    <span ng-if="lang==='EN'">Real Quantity</span>
                                                 </th>
 
                                                 <th st-sort="productionDate">
@@ -290,7 +300,9 @@
                                                 <td st-select-row-custom="transactionBuy">
                                                     <span class="label label-danger">{{transactionBuy.unitSellCost}} SAR</span>
                                                 </td>
-                                                <td st-select-row-custom="transactionBuy">{{transactionBuy.quantity}}
+                                                <td st-select-row-custom="transactionBuy">{{transactionBuy.quantity}}</td>
+                                                <td st-select-row-custom="transactionBuy">{{transactionBuy.salesQuantity}}</td>
+                                                <td st-select-row-custom="transactionBuy">{{transactionBuy.realQuantity}}</td>
                                                 </td>
                                                 <td st-select-row-custom="transactionBuy">
                                                     <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
@@ -304,33 +316,13 @@
                                             <tr class="blank_row"
                                                 style="height: 10px !important; background-color: #FFFFFF;"
                                                 ng-show="!collection2 || collection2.length ==0">
-                                                <td colspan="9">
+                                                <td colspan="11>
                                                     <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                                     <span ng-if="lang==='EN'">No Data Found.</span>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                                     ng-show="selectedTransactionBuy.id">
-                                    <div class="alert alert-danger" role="alert">
-                                        <strong ng-if="lang==='AR'">بيان أسعار الطلبية رقم /
-                                            {{selectedTransactionBuy.code}}</strong>
-                                        <strong ng-if="lang==='EN'">Prices Information For Order Code /
-                                            {{selectedTransactionBuy.id}}</strong>
-                                        <br/>
-                                        <span ng-repeat="price in relatedPrices">
-                                            <strong>الوحدة / </strong>
-                                            <span>{{price.obj1.name}}</span>
-                                            <strong>سعر البيع / </strong>
-                                            <span>{{price.obj3}} SAR</span>
-                                            <strong>الكمية / </strong>
-                                            <span>{{price.obj5}} </span>
-                                            <br/>
-                                        </span>
                                     </div>
                                 </div>
 
@@ -363,7 +355,7 @@
                                         </span>
                                         <input dir="rtl"
                                                type="number"
-                                               ng-max="buffer.related.obj5"
+                                               ng-max="buffer.related.obj6"
                                                min="1"
                                                disable-validation-message=""
                                                class="form-control"

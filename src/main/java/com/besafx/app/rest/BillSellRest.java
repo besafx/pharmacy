@@ -59,7 +59,7 @@ public class BillSellRest {
     @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
     @Transactional
     public String create(@RequestBody BillSell billSell, Principal principal) {
-        BillSell billSellByOrder = billSellService.findByOrder(billSell.getOrder());
+        BillSell billSellByOrder = billSellService.findByOrderAndOrderNotNull(billSell.getOrder());
         if(billSellByOrder == null){
             BillSell topBillSell = billSellService.findTopByOrderByCodeDesc();
             if (topBillSell == null) {
