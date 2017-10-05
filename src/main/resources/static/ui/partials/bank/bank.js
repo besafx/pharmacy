@@ -1,12 +1,23 @@
-app.controller("bankCtrl", ['BankService', 'DepositService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (BankService, DepositService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("bankCtrl", ['BankService', 'DepositService', 'FundService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (BankService, DepositService, FundService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
+        $scope.buffer = {};
+        $scope.buffer.date = new Date();
 
         $scope.fetchTableData = function () {
             BankService.findAll().then(function (data) {
                 $scope.banks = data;
                 $scope.setSelected(data[0]);
+            });
+        };
+
+        $scope.calculateFunds = function () {
+            FundService.findDetectionsCostByDate($scope.buffer.date.getTime()).then(function (data) {
+                $scope.buffer.detectionsCost = data;
+            });
+            FundService.findSalesCostByDate($scope.buffer.date.getTime()).then(function (data) {
+                $scope.buffer.salesCost = data;
             });
         };
 
@@ -119,6 +130,7 @@ app.controller("bankCtrl", ['BankService', 'DepositService', 'ModalProvider', '$
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
             $scope.fetchTableData();
+            $scope.calculateFunds();
         }, 1500);
 
     }]);

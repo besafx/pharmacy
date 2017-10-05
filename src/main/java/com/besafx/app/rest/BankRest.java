@@ -1,9 +1,12 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.entity.Bank;
+import com.besafx.app.entity.Deposit;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.BankService;
+import com.besafx.app.service.DepositService;
 import com.besafx.app.service.PersonService;
+import com.besafx.app.service.WithdrawService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -34,6 +37,12 @@ public class BankRest {
 
     @Autowired
     private BankService bankService;
+
+    @Autowired
+    private WithdrawService withdrawService;
+
+    @Autowired
+    private DepositService depositService;
 
     @Autowired
     private PersonService personService;
@@ -88,6 +97,8 @@ public class BankRest {
     public void delete(@PathVariable Long id, Principal principal) {
         Bank bank = bankService.findOne(id);
         if (bank != null) {
+            withdrawService.delete(bank.getWithdraws());
+            depositService.delete(bank.getDeposits());
             bankService.delete(id);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();

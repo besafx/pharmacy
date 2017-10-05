@@ -124,6 +124,7 @@ gulp.task('scripts', function () {
         './init/factory/billSellFactory.js',
         './init/factory/transactionSellFactory.js',
         './init/factory/bankFactory.js',
+        './init/factory/fundFactory.js',
         './init/factory/depositFactory.js',
         './init/factory/withdrawFactory.js',
 
