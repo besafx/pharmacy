@@ -1,6 +1,7 @@
 package com.besafx.app.service;
 
 import com.besafx.app.entity.OrderDetectionType;
+import com.besafx.app.entity.enums.PaymentMethod;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -17,5 +18,5 @@ public interface OrderDetectionTypeService extends PagingAndSortingRepository<Or
     List<OrderDetectionType> findByOrderId(Long orderId);
     List<OrderDetectionType> findByDoneIsTrue();
     List<OrderDetectionType> findByDoneIsFalse();
-    List<OrderDetectionType> findByOrderDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    List<OrderDetectionType> findByOrderPaymentMethodAndOrderDateBetween(PaymentMethod paymentMethod, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 }

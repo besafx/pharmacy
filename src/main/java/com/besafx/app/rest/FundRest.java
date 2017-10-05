@@ -1,6 +1,8 @@
-package com.besafx.app.service;
+package com.besafx.app.rest;
 
-import com.besafx.app.entity.TransactionSell;
+import com.besafx.app.entity.enums.PaymentMethod;
+import com.besafx.app.service.OrderDetectionTypeService;
+import com.besafx.app.service.TransactionSellService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,7 @@ public class FundRest {
     @ResponseBody
     public Double findDetectionsCostByDate(@PathVariable(value = "date") Long date, Principal principal) {
         return orderDetectionTypeService
-                .findByOrderDateBetween(new DateTime(date).withTimeAtStartOfDay().toDate(),
+                .findByOrderPaymentMethodAndOrderDateBetween(PaymentMethod.Cash ,new DateTime(date).withTimeAtStartOfDay().toDate(),
                         new DateTime(date).plusDays(1).withTimeAtStartOfDay().toDate())
                 .stream()
                 .mapToDouble(orderDetectionType -> orderDetectionType.getDetectionType().getCost())
@@ -37,7 +39,7 @@ public class FundRest {
     @ResponseBody
     public Double findSalesCostByDate(@PathVariable(value = "date") Long date, Principal principal) {
         return transactionSellService
-                .findByDateBetween(new DateTime(date).withTimeAtStartOfDay().toDate(),
+                .findByBillSellPaymentMethodAndDateBetween(PaymentMethod.Cash, new DateTime(date).withTimeAtStartOfDay().toDate(),
                         new DateTime(date).plusDays(1).withTimeAtStartOfDay().toDate())
                 .stream()
                 .mapToDouble(transactionSell -> transactionSell.getUnitSellCost() * transactionSell.getQuantity())
