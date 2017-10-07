@@ -46,7 +46,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 }
                 //
                 if (buffer.paymentMethodList) {
-                    var orderConditions = [];
+                    var paymentMethods = [];
                     for (var i = 0; i < buffer.paymentMethodList.length; i++) {
                         paymentMethods.push(buffer.paymentMethodList[i]);
                     }

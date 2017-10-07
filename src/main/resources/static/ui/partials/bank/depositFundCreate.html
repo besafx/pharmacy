@@ -1,0 +1,174 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">create</i>
+                <strong ng-if="lang==='AR'">إيداع النقدية</strong>
+                <strong ng-if="lang==='EN'">Fund Deposit</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
+                            <h3 ng-if="lang==='EN'">Basic Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">تاريخ النقدية</span>
+                                        <span ng-if="lang==='EN'">Fund Date</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{deposit.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{deposit.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{deposit.date | date:'h:m a'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">إجمالي النقدية</span>
+                                        <span ng-if="lang==='EN'">Total Fund</span>
+                                    </td>
+                                    <td>{{deposit.amount}} SAR</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <span ng-if="lang==='AR'">البيانات المطلوبة</span>
+                        <span ng-if="lang==='EN'">Required Information</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                 ng-show="form.$invalid && form.$submitted">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="bank" class="control-label">
+                                    <span ng-if="lang==='AR'">الحساب البنكي</span>
+                                    <span ng-if="lang==='EN'">Bank Account</span>
+                                </label>
+                                <select id="bank" data-placeholder="{{lang==='AR' ? 'ابحث عن الحساب البنكي' : 'Search For Account...'}}"
+                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                        placeholder-text-single="'{{lang==='AR' ? 'اختر الحساب' : 'Please Select Account...'}}'"
+                                        class="form-control"
+                                        chosen=""
+                                        ng-model="deposit.bank"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="(bank.name + ' / ' + bank.branchName) for bank in banks track by bank.id">
+                                </select>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="code" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم الإيداع</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </label>
+                                    <input id="code"
+                                           type="text"
+                                           focus-autofocus="1"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control"
+                                           placeholder="{{lang==='AR' ? 'اذكر رقم الحساب...' : 'Type Code...'}}"
+                                           ng-model="deposit.code">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="depositor" class="control-label">
+                                        <span ng-if="lang==='AR'">المودع</span>
+                                        <span ng-if="lang==='EN'">Depositor</span>
+                                    </label>
+                                    <input id="depositor"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control"
+                                           placeholder="{{lang==='AR' ? 'اذكر رقم الحساب...' : 'Type Code...'}}"
+                                           ng-model="deposit.depositor">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="note" class="control-label">
+                                    <span ng-if="lang==='AR'">ملاحظات</span>
+                                    <span ng-if="lang==='EN'">Notes</span>
+                                </label>
+                                <textarea id="note"
+                                          type="text"
+                                          msd-elastic="\n"
+                                          class="form-control"
+                                          ng-model="deposit.note">
+                                </textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

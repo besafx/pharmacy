@@ -1,6 +1,7 @@
 package com.besafx.app.search;
 
 import com.besafx.app.entity.Order;
+import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.service.OrderService;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
@@ -27,6 +28,7 @@ public class OrderSearch {
     public List<Order> filter(
             final Long codeFrom,
             final Long codeTo,
+            final List<PaymentMethod> paymentMethods,
             final Long dateFrom,
             final Long dateTo,
             final String customerName,
@@ -43,6 +45,8 @@ public class OrderSearch {
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
         Optional.ofNullable(codeTo)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
+        Optional.ofNullable(paymentMethods)
+                .ifPresent(value -> predicates.add((root, cq, cb) -> root.get("paymentMethod").in(value)));
         Optional.ofNullable(dateFrom)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(dateTo)

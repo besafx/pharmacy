@@ -5,6 +5,7 @@ import com.besafx.app.entity.Order;
 import com.besafx.app.entity.OrderAttach;
 import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.search.OrderSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
@@ -191,6 +192,7 @@ public class OrderRest {
     public String filter(
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
             @RequestParam(value = "customerName", required = false) final String customerName,
@@ -212,7 +214,7 @@ public class OrderRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        List<Order> list = orderSearch.filter(codeFrom, codeTo, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
+        List<Order> list = orderSearch.filter(codeFrom, codeTo, paymentMethods, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")

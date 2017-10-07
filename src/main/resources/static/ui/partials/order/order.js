@@ -63,6 +63,17 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                     search.push(buffer.codeTo);
                     search.push('&');
                 }
+                //
+                if (buffer.paymentMethodList) {
+                    var paymentMethods = [];
+                    for (var i = 0; i < buffer.paymentMethodList.length; i++) {
+                        paymentMethods.push(buffer.paymentMethodList[i]);
+                    }
+                    search.push('paymentMethods=');
+                    search.push(paymentMethods);
+                    search.push('&');
+                }
+                //
                 if (buffer.dateTo) {
                     search.push('dateTo=');
                     search.push(buffer.dateTo.getTime());

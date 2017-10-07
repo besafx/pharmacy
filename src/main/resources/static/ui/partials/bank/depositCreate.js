@@ -5,6 +5,8 @@ app.controller('depositCreateCtrl', ['BankService', 'DepositService', '$scope', 
 
         $scope.deposit = {};
 
+        $scope.deposit.depositMethod = 'Manual';
+
         $scope.deposit.bank = bank;
 
         $scope.refreshBank = function () {

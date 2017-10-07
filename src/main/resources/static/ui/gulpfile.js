@@ -147,6 +147,7 @@ gulp.task('scripts', function () {
         './partials/bank/bank.js',
         './partials/bank/bankCreateUpdate.js',
         './partials/bank/depositCreate.js',
+        './partials/bank/depositFundCreate.js',
         './partials/bank/withdrawCreate.js',
         './partials/doctor/doctor.js',
         './partials/doctor/doctorCreateUpdate.js',

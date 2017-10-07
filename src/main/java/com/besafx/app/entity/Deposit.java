@@ -1,5 +1,7 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.enums.DepositMethod;
+import com.besafx.app.entity.enums.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -31,6 +33,9 @@ public class Deposit implements Serializable {
     private Long id;
 
     private Long code;
+
+    @Enumerated(EnumType.STRING)
+    private DepositMethod depositMethod;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;

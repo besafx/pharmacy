@@ -192,6 +192,26 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openDepositFundCreateModel = function (date, totalFund) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/bank/depositFundCreate.html',
+            controller: 'depositFundCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                date:function () {
+                    return date;
+                },
+                totalFund: function () {
+                    return totalFund;
+                }
+            }
+        });
+    };
+
     this.openWithdrawCreateModel = function (bank) {
         return $uibModal.open({
             animation: true,

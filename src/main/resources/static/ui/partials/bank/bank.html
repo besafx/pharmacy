@@ -442,7 +442,7 @@
                                 </li>
                             </ul>
                             <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                                <h3 ng-if="lang==='AR'">الصندوق</h3>
+                                <h3 ng-if="lang==='AR'">الصندوق (حساب النقدية)</h3>
                                 <h3 ng-if="lang==='EN'">Funds</h3>
                                 <span ng-if="lang==='AR'">يتم تحويل المبالغ يومياً الي البنك</span>
                                 <span ng-if="lang==='EN'">Transfer Funds Daily To Bank</span>
@@ -486,20 +486,34 @@
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <span class="label label-info">إيرادات الفحوصات</span>
-                                <h4>{{buffer.detectionsCost}} SAR</h4>
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <span class="label label-info">إيرادات الأدوية</span>
-                                <h4>{{buffer.salesCost}} SAR</h4>
-                            </div>
-                            <hr/>
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                <span class="label label-info">إجمالي الإيرادات</span>
-                                <h2>{{buffer.detectionsCost + buffer.salesCost}} SAR</h2>
+                                <h4>
+                                    <span>إيرادات الفحوصات = </span>
+                                    {{buffer.detectionsCost}} SAR
+                                </h4>
+                                <br/>
+                                <h4>
+                                    <span>إيرادات الأدوية = </span>
+                                    {{buffer.salesCost}} SAR
+                                </h4>
+                                <br/>
+                                <h4>
+                                    <span>إجمالي الإيرادات = </span>
+                                    {{buffer.totalFund = buffer.detectionsCost + buffer.salesCost}} SAR
+                                </h4>
                             </div>
                         </div>
-
+                        <div class="panel-footer">
+                            <div class="row">
+                                <button uib-tooltip="{{lang==='AR' ? 'تحويل' : 'Deposit'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-disabled="buffer.totalFund===0"
+                                        ng-click="ModalProvider.openDepositFundCreateModel(buffer.date, buffer.totalFund)"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-12 col-sm-12 col-md-12">
+                                    <i class="material-icons">attach_money</i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -547,9 +561,14 @@
                                             <span ng-if="lang==='EN'">#</span>
                                         </th>
 
-                                        <th>
+                                        <th st-sort="code">
                                             <span ng-if="lang==='AR'">رقم الإيداع</span>
                                             <span ng-if="lang==='EN'">Code</span>
+                                        </th>
+
+                                        <th st-sort="date">
+                                            <span ng-if="lang==='AR'">بند الإيداع</span>
+                                            <span ng-if="lang==='EN'">Deposit Method</span>
                                         </th>
 
                                         <th st-sort="date">
@@ -574,33 +593,28 @@
                                         <td>{{$index+1}}</td>
                                         <td>{{deposit.code}}</td>
                                         <td>
+                                            <span ng-if="deposit.depositMethod==='FromFund'">من الصندوق إلى البنك</span>
+                                            <span ng-if="deposit.depositMethod==='Manual'">يدوي</span>
+                                        </td>
+                                        <td>
                                             <span ng-show="dateType==='H'">{{deposit.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                             <span ng-show="dateType==='G'">{{deposit.date | date: 'yyyy-MM-dd'}}</span>
                                             <span class="label label-success">{{deposit.date | date:'h:m a'}}</span>
                                         </td>
                                         <td>
-                                            <span class="label label-danger">{{deposit.amount | currency:'SAR'}}</span>
+                                            <span>{{deposit.amount}} SAR</span>
                                         </td>
                                         <td>{{deposit.depositor}}</td>
                                     </tr>
                                     <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                         ng-show="!collection2 || collection2.length ==0">
-                                        <td colspan="5">
+                                        <td colspan="6">
                                             <span ng-if="lang==='AR'">لا توجد إيداعات</span>
                                             <span ng-if="lang==='EN'">No Deposits.</span>
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalDeposit > 0">
-                                <div class="alert alert-info" role="alert" style="font-size: 18px">
-                                    <strong ng-if="lang==='AR'">إجمالي الإيداعات</strong>
-                                    <strong ng-if="lang==='EN'">Total Deposits</strong>
-                                    <span>{{totalDeposit | currency:'SAR'}}</span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -682,7 +696,7 @@
                                             <span class="label label-success">{{withdraw.date | date:'h:m a'}}</span>
                                         </td>
                                         <td>
-                                            <span class="label label-danger">{{withdraw.amount | currency:'SAR'}}</span>
+                                            <span>{{withdraw.amount}} SAR</span>
                                         </td>
                                         <td>{{withdraw.drawer}}</td>
                                     </tr>
@@ -695,15 +709,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalWithdraw > 0">
-                                <div class="alert alert-info" role="alert" style="font-size: 18px">
-                                    <strong ng-if="lang==='AR'">إجمالي السحبيات</strong>
-                                    <strong ng-if="lang==='EN'">Total Withdraws</strong>
-                                    <span>{{totalWithdraw | currency:'SAR'}}</span>
-                                </div>
                             </div>
                         </div>
                     </div>

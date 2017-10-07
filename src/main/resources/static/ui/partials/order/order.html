@@ -523,6 +523,11 @@
                                         <span ng-if="lang==='EN'">Doctor</span>
                                     </th>
 
+                                    <th st-sort="paymentMethod">
+                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                                        <span ng-if="lang==='EN'">Payment Method</span>
+                                    </th>
+
                                     <th st-sort="detectionTypeCostSum">
                                         <span ng-if="lang==='AR'">التكلفة</span>
                                         <span ng-if="lang==='EN'">Cost</span>
@@ -571,13 +576,18 @@
                                         </span>
                                     </td>
                                     <td st-select-row-custom="order">{{order.doctor.person.name}}</td>
+                                    <td st-select-row-custom="order">
+                                        <span ng-if="order.paymentMethod==='Cash'">نقدي</span>
+                                        <span ng-if="order.paymentMethod==='Check'">شيك</span>
+                                        <span ng-if="order.paymentMethod==='Later'">آجل</span>
+                                    </td>
                                     <td st-select-row-custom="order">{{order.detectionTypeCostSum}} SAR</td>
                                     <td st-select-row-custom="order">{{order.discount}} %</td>
                                     <td st-select-row-custom="order">{{order.netCost}} SAR</td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="12">
+                                    <td colspan="13">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -585,7 +595,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="12">
+                                    <td colspan="13">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
