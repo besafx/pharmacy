@@ -140,7 +140,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 $rootScope.showConfirmNotify("فواتير البيع", "هل تود تسديد الفاتورة فعلاً؟", "warning", "fa-money", function () {
                     BillSellService.pay(billSell.id).then(function (data) {
                         var index = $scope.billSells.indexOf(billSell);
-                        $scope.billSells[index] = data;
+                        $scope.billSells[index].paymentMethod = data.paymentMethod;
                     });
                 });
                 return;
@@ -149,7 +149,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
             $rootScope.showConfirmNotify("فواتير البيع", "هل تود تسديد الفاتورة فعلاً؟", "warning", "fa-money", function () {
                 BillSellService.pay($scope.selected.id).then(function (data) {
                     var index = $scope.billSells.indexOf($scope.selected);
-                    $scope.billSells[index] = data;
+                    $scope.billSells[index].paymentMethod = data.paymentMethod;
                 });
             });
         };

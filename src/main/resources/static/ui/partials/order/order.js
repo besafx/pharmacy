@@ -5,6 +5,7 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
         $scope.selectedOrderDetectionType = {};
         $scope.buffer = {};
         $scope.wrappers = [];
+        $scope.orders = [];
 
         $scope.items = [];
         $scope.items.push(
@@ -166,6 +167,25 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             });
         };
 
+        $scope.payOrder = function (order) {
+            if (order) {
+                $rootScope.showConfirmNotify("طلبات الفحص", "هل تود تسديد مستحقات طلب الفحص فعلاً؟", "warning", "fa-money", function () {
+                    OrderService.pay(order.id).then(function (data) {
+                        var index = $scope.orders.indexOf(order);
+                        $scope.orders[index].paymentMethod = data.paymentMethod;
+                    });
+                });
+                return;
+            }
+
+            $rootScope.showConfirmNotify("طلبات الفحص", "هل تود تسديد مستحقات طلب الفحص فعلاً؟", "warning", "fa-money", function () {
+                OrderService.pay($scope.selected.id).then(function (data) {
+                    var index = $scope.orders.indexOf($scope.selected);
+                    $scope.orders[index].paymentMethod = data.paymentMethod;
+                });
+            });
+        };
+
         $scope.deleteOrderAttach = function (orderAttach) {
             if (orderAttach) {
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف المستند فعلاً؟", "error", "fa-trash", function () {
@@ -198,9 +218,7 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
                     $scope.printPending(data);
                 });
-                if ($scope.orders) {
-                    $scope.orders.splice(0, 0, data);
-                }
+                $scope.orders.splice(0, 0, data);
             }, function () {
                 console.info('OrderCreateModel Closed.');
             });
@@ -253,6 +271,15 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.order);
+                }
+            },
+            {
+                html: '<div class="drop-menu">تسديد مستحقات طلب الفحص<span class="fa fa-money fa-lg"></span></div>',
+                enabled: function ($itemScope) {
+                    return $itemScope.order.paymentMethod==='Later';
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.payOrder($itemScope.order);
                 }
             },
             {

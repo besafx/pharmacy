@@ -1,10 +1,8 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.config.CustomException;
 import com.besafx.app.config.DropboxManager;
-import com.besafx.app.entity.Order;
-import com.besafx.app.entity.OrderAttach;
-import com.besafx.app.entity.OrderDetectionType;
-import com.besafx.app.entity.Person;
+import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.search.OrderSearch;
 import com.besafx.app.service.*;
@@ -139,6 +137,20 @@ public class OrderRest {
         }
     }
 
+    @RequestMapping(value = "pay/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_ORDER_PAY')")
+    @Transactional
+    public String pay(@PathVariable Long id) {
+        Order order = orderService.findOne(id);
+        if(!order.getPaymentMethod().equals(PaymentMethod.Later)){
+            throw new CustomException("عفوا، تأكد من أن نوع الدفع آجل!");
+        }
+        order.setPaymentMethod(PaymentMethod.Cash);
+        order = orderService.save(order);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), order);
+    }
+
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAll() {
@@ -159,6 +171,18 @@ public class OrderRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findOne(id));
+    }
+
+    @RequestMapping(value = "findByCustomer/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByCustomer(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findByFalconCustomerId(id));
+    }
+
+    @RequestMapping(value = "findByFalcon/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByFalcon(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findByFalconId(id));
     }
 
     @RequestMapping(value = "findQuantityByDay", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

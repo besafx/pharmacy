@@ -1,5 +1,5 @@
-app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'ModalProvider', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', '$uibModal', 'customer',
-    function (CustomerService, FalconService, ModalProvider, $scope, $rootScope, $timeout, $log, $uibModalInstance, $uibModal, customer) {
+app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', '$uibModal', 'customer',
+    function (CustomerService, FalconService, OrderService, ModalProvider, $scope, $rootScope, $timeout, $log, $uibModalInstance, $uibModal, customer) {
 
         $scope.customer = customer;
 
@@ -12,6 +12,12 @@ app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'Moda
         $scope.refreshFalcons = function () {
             FalconService.findByCustomer($scope.customer).then(function (data) {
                 $scope.customer.falcons = data;
+            });
+        };
+
+        $scope.refreshOrders = function () {
+            OrderService.findByCustomer($scope.customer.id).then(function (data) {
+                $scope.customer.orders = data;
             });
         };
 
@@ -53,6 +59,10 @@ app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'Moda
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
+            CustomerService.findOne($scope.customer.id).then(function (data) {
+                $scope.customer = data;
+                $scope.refreshOrders();
+            });
         }, 1500);
 
     }]);

@@ -16,6 +16,16 @@ app.factory("OrderService",
                     return response.data;
                 });
             },
+            findByCustomer: function (customerId) {
+                return $http.get("/api/order/findByCustomer/" + customerId).then(function (response) {
+                    return response.data;
+                });
+            },
+            findByFalcon: function (falconId) {
+                return $http.get("/api/order/findByFalcon/" + falconId).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (order) {
                 return $http.post("/api/order/create", order).then(function (response) {
                     return response.data;
@@ -41,6 +51,11 @@ app.factory("OrderService",
             },
             filter: function (search) {
                 return $http.get("/api/order/filter?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
+            pay: function (id) {
+                return $http.get("/api/order/pay/" + id).then(function (response) {
                     return response.data;
                 });
             }

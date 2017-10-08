@@ -355,6 +355,12 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'تسديد فواتير البيع' : 'Pay For Bill Sales',
                 value: 'ROLE_BILL_SELL_PAY',
                 selected: false
+            },
+            {
+                id: 63,
+                name: $rootScope.lang === 'AR' ? 'تسديد مستحقات طلبات الفحص' : 'Pay For Order Costs',
+                value: 'ROLE_ORDER_PAY',
+                selected: false
             }
         ];
 

@@ -365,102 +365,286 @@
         <div class="row" style="margin-top: 10px">
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
-                <div class="panel panel-body">
-                    <div class="table-responsive">
-                        <table st-table="collection" st-safe-src="customers"
-                               class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <span ng-if="lang==='AR'">م</span>
-                                    <span ng-if="lang==='EN'">#</span>
-                                </th>
 
-                                <th st-sort="name">
-                                    <span ng-if="lang==='AR'">اسم العميل</span>
-                                    <span ng-if="lang==='EN'">Name</span>
-                                </th>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="fetchTableData()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
+                                   ng-click="newCustomer()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلب فحص' : 'New Order...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة العملاء</h3>
+                            <h3 ng-if="lang==='EN'">Customers List</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection1" st-safe-src="customers"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
 
-                                <th st-sort="registerDate">
-                                    <span ng-if="lang==='AR'">تاريخ التسجيل</span>
-                                    <span ng-if="lang==='EN'">Register Date</span>
-                                </th>
+                                    <th st-sort="name">
+                                        <span ng-if="lang==='AR'">اسم العميل</span>
+                                        <span ng-if="lang==='EN'">Name</span>
+                                    </th>
 
-                                <th st-sort="mobile">
-                                    <span ng-if="lang==='AR'">الجوال</span>
-                                    <span ng-if="lang==='EN'">Mobile</span>
-                                </th>
+                                    <th st-sort="registerDate">
+                                        <span ng-if="lang==='AR'">تاريخ التسجيل</span>
+                                        <span ng-if="lang==='EN'">Register Date</span>
+                                    </th>
 
-                                <th st-sort="identityNumber">
-                                    <span ng-if="lang==='AR'">رقم الهوية</span>
-                                    <span ng-if="lang==='EN'">Identity Card Number</span>
-                                </th>
+                                    <th st-sort="mobile">
+                                        <span ng-if="lang==='AR'">الجوال</span>
+                                        <span ng-if="lang==='EN'">Mobile</span>
+                                    </th>
 
-                                <th st-sort="nationality">
-                                    <span ng-if="lang==='AR'">الجنسية</span>
-                                    <span ng-if="lang==='EN'">Nationality</span>
-                                </th>
+                                    <th st-sort="identityNumber">
+                                        <span ng-if="lang==='AR'">رقم الهوية</span>
+                                        <span ng-if="lang==='EN'">Identity Card Number</span>
+                                    </th>
 
-                                <th st-sort="job">
-                                    <span ng-if="lang==='AR'">المهنة</span>
-                                    <span ng-if="lang==='EN'">job</span>
-                                </th>
+                                    <th st-sort="nationality">
+                                        <span ng-if="lang==='AR'">الجنسية</span>
+                                        <span ng-if="lang==='EN'">Nationality</span>
+                                    </th>
 
-                                <th st-sort="falcons.length">
-                                    <span ng-if="lang==='AR'">الصقور المسجلة</span>
-                                    <span ng-if="lang==='EN'">Registered Falcons</span>
-                                </th>
+                                    <th st-sort="job">
+                                        <span ng-if="lang==='AR'">المهنة</span>
+                                        <span ng-if="lang==='EN'">job</span>
+                                    </th>
 
-                            </tr>
-                            <tr>
-                                <th colspan="8">
-                                    <input st-search=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
-                                           type="text"/>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="customer in collection"
-                                st-select-mode="single"
-                                context-menu="rowMenu"
-                                ng-click="setSelected(customer)"
-                                ng-dblclick="ModalProvider.openCustomerDetailsModel(customer);"
-                                ng-right-click="setSelected(customer)"
-                                ng-class="{'mdl-color--blue-grey-100':customer.isSelected}">
-                                <td st-select-row-custom="customer">{{$index+1}}</td>
-                                <td st-select-row-custom="customer">
-                                    <span ng-show="customer.enabled" class="label label-success">مفعل</span>
-                                    <span ng-show="!customer.enabled" class="label label-danger">معطل</span>
-                                    {{customer.nickname}} / {{customer.name}}
-                                </td>
-                                <td st-select-row-custom="customer">
-                                    {{customer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
-                                    <span class="label label-success">{{customer.registerDate | date:'h:m a'}}</span>
-                                </td>
-                                <td st-select-row-custom="customer">{{customer.mobile}}</td>
-                                <td st-select-row-custom="customer">{{customer.identityNumber}}</td>
-                                <td st-select-row-custom="customer">{{customer.nationality}}</td>
-                                <td st-select-row-custom="customer">{{customer.job}}</td>
-                                <td st-select-row-custom="customer">{{customer.falcons.length}}</td>
-                            </tr>
-                            <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                ng-show="!collection || collection.length ==0">
-                                <td colspan="8">
-                                    <span ng-if="lang==='AR'">لا توجد بيانات</span>
-                                    <span ng-if="lang==='EN'">No Data Found.</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    <th st-sort="falcons.length">
+                                        <span ng-if="lang==='AR'">الصقور المسجلة</span>
+                                        <span ng-if="lang==='EN'">Registered Falcons</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="customer in collection1"
+                                    st-select-mode="single"
+                                    context-menu="rowMenu"
+                                    ng-click="setSelected(customer)"
+                                    ng-dblclick="ModalProvider.openCustomerDetailsModel(customer);"
+                                    ng-right-click="setSelected(customer)"
+                                    ng-class="{'mdl-color--blue-grey-100':customer.isSelected}">
+                                    <td st-select-row-custom="customer">{{$index+1}}</td>
+                                    <td st-select-row-custom="customer">
+                                        <span ng-show="customer.enabled" class="label label-success">مفعل</span>
+                                        <span ng-show="!customer.enabled" class="label label-danger">معطل</span>
+                                        {{customer.nickname}} / {{customer.name}}
+                                    </td>
+                                    <td st-select-row-custom="customer">
+                                        {{customer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span class="label label-success">{{customer.registerDate | date:'h:m a'}}</span>
+                                    </td>
+                                    <td st-select-row-custom="customer">{{customer.mobile}}</td>
+                                    <td st-select-row-custom="customer">{{customer.identityNumber}}</td>
+                                    <td st-select-row-custom="customer">{{customer.nationality}}</td>
+                                    <td st-select-row-custom="customer">{{customer.job}}</td>
+                                    <td st-select-row-custom="customer">{{customer.falcons.length}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection1 || collection1.length ==0">
+                                    <td colspan="8">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selected.id && customers.length > 0 && toggleList===1">
+
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshOrdersByCustomer()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
+                                   ng-click="newOrder()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلب فحص' : 'New Order...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة الطلبات</h3>
+                            <h3 ng-if="lang==='EN'">Orders List</h3>
+                            <span>{{selected.nickname}} / {{selected.name}}</span>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection2" st-safe-src="selected.orders"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم الطلب</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">التاريخ</span>
+                                        <span ng-if="lang==='EN'">Date</span>
+                                    </th>
+
+                                    <th st-sort="falcon.code">
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Code</span>
+                                    </th>
+
+                                    <th st-sort="falcon.weight">
+                                        <span ng-if="lang==='AR'">وزن الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Weight</span>
+                                    </th>
+
+                                    <th st-sort="falcon.type">
+                                        <span ng-if="lang==='AR'">نوع الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Type</span>
+                                    </th>
+
+                                    <th st-sort="orderAttaches.length">
+                                        <span ng-if="lang==='AR'">المرفقات والمستندات</span>
+                                        <span ng-if="lang==='EN'">Attachments</span>
+                                    </th>
+
+                                    <th st-sort="doctor.person.name">
+                                        <span ng-if="lang==='AR'">الطبيب المعالج</span>
+                                        <span ng-if="lang==='EN'">Doctor</span>
+                                    </th>
+
+                                    <th st-sort="paymentMethod">
+                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                                        <span ng-if="lang==='EN'">Payment Method</span>
+                                    </th>
+
+                                    <th st-sort="detectionTypeCostSum">
+                                        <span ng-if="lang==='AR'">التكلفة</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
+                                    </th>
+
+                                    <th st-sort="discount">
+                                        <span ng-if="lang==='AR'">الخصم</span>
+                                        <span ng-if="lang==='EN'">Discount</span>
+                                    </th>
+
+                                    <th st-sort="net">
+                                        <span ng-if="lang==='AR'">الصافي</span>
+                                        <span ng-if="lang==='EN'">Net</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="order in collection2"
+                                    context-menu="rowMenuOrder"
+                                    st-select-mode="single"
+                                    ng-click="setSelectedOrder(order)"
+                                    ng-right-click="setSelectedOrder(order)"
+                                    ng-class="{'mdl-color--blue-grey-100':order.isSelected}">
+                                    <td st-select-row-custom="order">{{$index+1}}</td>
+                                    <td st-select-row-custom="order">{{order.code}}</td>
+                                    <td st-select-row-custom="order">
+                                        <span ng-show="dateType==='H'">{{order.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{order.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td st-select-row-custom="order">{{order.falcon.code}}</td>
+                                    <td st-select-row-custom="order">{{order.falcon.weight}} جرام</td>
+                                    <td st-select-row-custom="order">{{order.falcon.type}}</td>
+                                    <td st-select-row-custom="order">
+                                        <span ng-repeat="orderAttach in order.orderAttaches">
+                                            <a uib-tooltip="{{orderAttach.attach.name}}" tooltip-append-to-body="true"
+                                               href="" ng-href="{{orderAttach.attach.link}}" target="_blank">
+                                                <i class="fa fa-link fa-lg"></i>
+                                            </a>
+                                        </span>
+                                        <span ng-if="order.orderAttaches.length === 0" class="label label-danger">
+                                            <span ng-if="lang==='AR'">لا توجد ملفات حتى الآن</span>
+                                            <span ng-if="lang==='EN'">No Attachments Yet</span>
+                                        </span>
+                                    </td>
+                                    <td st-select-row-custom="order">{{order.doctor.person.name}}</td>
+                                    <td st-select-row-custom="order">
+                                        <span ng-if="order.paymentMethod==='Cash'">نقدي</span>
+                                        <span ng-if="order.paymentMethod==='Check'">شيك</span>
+                                        <span ng-if="order.paymentMethod==='Later'">آجل</span>
+                                    </td>
+                                    <td st-select-row-custom="order">{{order.detectionTypeCostSum}} SAR</td>
+                                    <td st-select-row-custom="order">{{order.discount}} %</td>
+                                    <td st-select-row-custom="order">{{order.netCost}} SAR</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection2 || collection2.length ==0">
+                                    <td colspan="12">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="12">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div st-table="collection" st-safe-src="customers">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="customer in collection">
+                <div st-table="collection3" st-safe-src="customers">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="customer in collection3">
                         <!-- CONTACT ITEM -->
                         <div class="panel panel-default">
                             <div class="panel-body profile">

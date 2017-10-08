@@ -31,6 +31,7 @@ public class ScheduleDailyOrders {
 
     @Scheduled(cron = "0 0/30 22 * * *")
     public void run() throws Exception {
+        log.info("بداية عملية إرسال تقرير طلبات الفحص اليوم");
         Future<byte[]> work = asyncScheduleDailyOrders.getFile();
         byte[] fileBytes = work.get();
         if (fileBytes != null) {
@@ -42,6 +43,7 @@ public class ScheduleDailyOrders {
             Future<Boolean> mail = emailSender.send("تقرير بطلبات الفحص اليومية", "", Lists.newArrayList(Lists.newArrayList(companyService.findAll()).get(0).getEmail(), "islamhaker@gmail.com"), Lists.newArrayList(reportFile));
             mail.get();
             log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
+            log.info("نهاية عملية إرسال تقرير طلبات الفحص اليوم");
         }
     }
 

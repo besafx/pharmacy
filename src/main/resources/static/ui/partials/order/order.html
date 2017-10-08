@@ -562,7 +562,9 @@
                                     <td st-select-row-custom="order">{{order.falcon.code}}</td>
                                     <td st-select-row-custom="order">{{order.falcon.weight}} جرام</td>
                                     <td st-select-row-custom="order">{{order.falcon.type}}</td>
-                                    <td st-select-row-custom="order">{{order.falcon.customer.name}}</td>
+                                    <td st-select-row-custom="order">
+                                        <a ng-click="ModalProvider.openCustomerDetailsModel(order.falcon.customer);" href=""><strong>{{order.falcon.customer.name}}</strong></a>
+                                    </td>
                                     <td st-select-row-custom="order">
                                         <span ng-repeat="orderAttach in order.orderAttaches">
                                             <a uib-tooltip="{{orderAttach.attach.name}}" tooltip-append-to-body="true"
