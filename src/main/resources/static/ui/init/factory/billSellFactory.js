@@ -28,6 +28,11 @@ app.factory("BillSellService",
                 return $http.get("/api/billSell/filter?" + search).then(function (response) {
                     return response.data;
                 });
+            },
+            pay: function (id) {
+                return $http.get("/api/billSell/pay/" + id).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

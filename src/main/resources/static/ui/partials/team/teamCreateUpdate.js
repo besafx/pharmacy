@@ -349,6 +349,12 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'تعديل كميات الاصناف' : 'Update Quantity',
                 value: 'ROLE_DRUG_QUANTITY_UPDATE',
                 selected: false
+            },
+            {
+                id: 62,
+                name: $rootScope.lang === 'AR' ? 'تسديد فواتير البيع' : 'Pay For Bill Sales',
+                value: 'ROLE_BILL_SELL_PAY',
+                selected: false
             }
         ];
 

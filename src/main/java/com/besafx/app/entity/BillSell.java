@@ -39,6 +39,8 @@ public class BillSell implements Serializable {
 
     private String customerName;
 
+    private String falconCode;
+
     //Optional Field In Case Of Inside Selling
     @JoinColumn(name = "[order]")
     @ManyToOne

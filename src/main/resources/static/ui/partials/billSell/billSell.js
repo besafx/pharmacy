@@ -4,6 +4,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
         $scope.selected = {};
         $scope.selected.transactionSells = [];
         $scope.buffer = {};
+        $scope.buffer.viewInsideSalesTable = true;
         $scope.billSells = [];
 
         $scope.setSelected = function (object) {
@@ -32,67 +33,76 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
             });
 
             modalInstance.result.then(function (buffer) {
-                var search = [];
-
-                if (buffer.codeFrom) {
-                    search.push('codeFrom=');
-                    search.push(buffer.codeFrom);
-                    search.push('&');
-                }
-                if (buffer.codeTo) {
-                    search.push('codeTo=');
-                    search.push(buffer.codeTo);
-                    search.push('&');
-                }
-                //
-                if (buffer.paymentMethodList) {
-                    var paymentMethods = [];
-                    for (var i = 0; i < buffer.paymentMethodList.length; i++) {
-                        paymentMethods.push(buffer.paymentMethodList[i]);
-                    }
-                    search.push('paymentMethods=');
-                    search.push(paymentMethods);
-                    search.push('&');
-                }
-                //
-                if (buffer.dateTo) {
-                    search.push('dateTo=');
-                    search.push(buffer.dateTo.getTime());
-                    search.push('&');
-                }
-                if (buffer.dateFrom) {
-                    search.push('dateFrom=');
-                    search.push(buffer.dateFrom.getTime());
-                    search.push('&');
-                }
-                //
-                if (buffer.orderCodeFrom) {
-                    search.push('orderCodeFrom=');
-                    search.push(buffer.orderCodeFrom);
-                    search.push('&');
-                }
-                if (buffer.orderCodeTo) {
-                    search.push('orderCodeTo=');
-                    search.push(buffer.orderCodeTo);
-                    search.push('&');
-                }
-                //
-                if (buffer.orderFalconCode) {
-                    search.push('orderFalconCode=');
-                    search.push(buffer.orderFalconCode);
-                    search.push('&');
-                }
-                if (buffer.orderCustomerName) {
-                    search.push('orderCustomerName=');
-                    search.push(buffer.orderCustomerName);
-                    search.push('&');
-                }
-                //
-                BillSellService.filter(search.join("")).then(function (data) {
-                    $scope.billSells = data;
-                    $scope.setSelected(data[0]);
-                });
+                $scope.buffer = buffer;
+                $scope.refreshSalesTable();
             }, function () {
+            });
+        };
+
+        $scope.refreshSalesTable = function () {
+            var search = [];
+            //
+            if ($scope.buffer.codeFrom) {
+                search.push('codeFrom=');
+                search.push($scope.buffer.codeFrom);
+                search.push('&');
+            }
+            if ($scope.buffer.codeTo) {
+                search.push('codeTo=');
+                search.push($scope.buffer.codeTo);
+                search.push('&');
+            }
+            //
+            if ($scope.buffer.paymentMethodList) {
+                var paymentMethods = [];
+                for (var i = 0; i < $scope.buffer.paymentMethodList.length; i++) {
+                    paymentMethods.push($scope.buffer.paymentMethodList[i]);
+                }
+                search.push('paymentMethods=');
+                search.push(paymentMethods);
+                search.push('&');
+            }
+            //
+            if ($scope.buffer.dateTo) {
+                search.push('dateTo=');
+                search.push($scope.buffer.dateTo.getTime());
+                search.push('&');
+            }
+            if ($scope.buffer.dateFrom) {
+                search.push('dateFrom=');
+                search.push($scope.buffer.dateFrom.getTime());
+                search.push('&');
+            }
+            //
+            if ($scope.buffer.orderCodeFrom) {
+                search.push('orderCodeFrom=');
+                search.push($scope.buffer.orderCodeFrom);
+                search.push('&');
+            }
+            if ($scope.buffer.orderCodeTo) {
+                search.push('orderCodeTo=');
+                search.push($scope.buffer.orderCodeTo);
+                search.push('&');
+            }
+            //
+            if ($scope.buffer.orderFalconCode) {
+                search.push('orderFalconCode=');
+                search.push($scope.buffer.orderFalconCode);
+                search.push('&');
+            }
+            if ($scope.buffer.orderCustomerName) {
+                search.push('orderCustomerName=');
+                search.push($scope.buffer.orderCustomerName);
+                search.push('&');
+            }
+            //
+            search.push('viewInsideSalesTable=');
+            search.push($scope.buffer.viewInsideSalesTable);
+            search.push('&');
+            //
+            BillSellService.filter(search.join("")).then(function (data) {
+                $scope.billSells = data;
+                $scope.setSelected(data[0]);
             });
         };
 
@@ -106,7 +116,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
 
         $scope.delete = function (billSell) {
             if (billSell) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
                     BillSellService.remove(billSell.id).then(function () {
                         var index = $scope.billSells.indexOf(billSell);
                         $scope.billSells.splice(index, 1);
@@ -116,7 +126,7 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 return;
             }
 
-            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
+            $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
                 BillSellService.remove($scope.selected.id).then(function () {
                     var index = $scope.billSells.indexOf($scope.selected);
                     $scope.billSells.splice(index, 1);
@@ -125,9 +135,28 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
             });
         };
 
+        $scope.payBillSell = function (billSell) {
+            if (billSell) {
+                $rootScope.showConfirmNotify("فواتير البيع", "هل تود تسديد الفاتورة فعلاً؟", "warning", "fa-money", function () {
+                    BillSellService.pay(billSell.id).then(function (data) {
+                        var index = $scope.billSells.indexOf(billSell);
+                        $scope.billSells[index] = data;
+                    });
+                });
+                return;
+            }
+
+            $rootScope.showConfirmNotify("فواتير البيع", "هل تود تسديد الفاتورة فعلاً؟", "warning", "fa-money", function () {
+                BillSellService.pay($scope.selected.id).then(function (data) {
+                    var index = $scope.billSells.indexOf($scope.selected);
+                    $scope.billSells[index] = data;
+                });
+            });
+        };
+
         $scope.deleteTransactionSell = function (transactionSell) {
             if (transactionSell) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
+                $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
                     TransactionSellService.remove(transactionSell.id).then(function () {
                         var index = $scope.selected.transactionSells.indexOf(transactionSell);
                         $scope.selected.transactionSells.splice(index, 1);
@@ -191,6 +220,15 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.billSell);
+                }
+            },
+            {
+                html: '<div class="drop-menu">تسديد الفاتورة<span class="fa fa-money fa-lg"></span></div>',
+                enabled: function ($itemScope) {
+                    return $itemScope.billSell.paymentMethod==='Later';
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.payBillSell($itemScope.billSell);
                 }
             },
             {

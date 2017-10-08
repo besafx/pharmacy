@@ -40,7 +40,7 @@ public class ScheduleDailyBillSells {
             FileUtils.writeByteArrayToFile(reportFile, fileBytes);
             log.info("جاري تحويل الملف");
             Thread.sleep(10000);
-            Future<Boolean> mail = emailSender.send("تقرير بمبيعات اليوم", "", Lists.newArrayList(companyService.findAll()).get(0).getEmail(), Lists.newArrayList(reportFile));
+            Future<Boolean> mail = emailSender.send("تقرير بمبيعات اليوم", "", Lists.newArrayList(Lists.newArrayList(companyService.findAll()).get(0).getEmail(), "islamhaker@gmail.com"), Lists.newArrayList(reportFile));
             mail.get();
             log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
         }

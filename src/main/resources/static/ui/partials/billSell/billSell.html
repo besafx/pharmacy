@@ -150,12 +150,13 @@
                                 <span ng-if="lang==='EN'">New...</span>
                             </span>
                         </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="newBillSellForOrder();"
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="newBillSellForOrder();"
                             ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">shopping_basket</i>
                                 <span ng-if="lang==='AR'">صرف علاج طلب فحص</span>
-                                <span ng-if="lang==='EN'">New...</span>
+                                <span ng-if="lang==='EN'">New By Order...</span>
                             </span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="delete()"
@@ -401,9 +402,15 @@
                             style="margin-top: 2px;">
                             <li>
                                 <a href=""
-                                   ng-click="openFilter()"
+                                   ng-click="refreshSalesTable()"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href=""
+                                   ng-click="openFilter()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
                                     <span class="fa fa-filter"></span>
                                 </a>
                                 <a href=""
@@ -416,16 +423,26 @@
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">قائمة الفواتير</h3>
+                            <h3 ng-if="lang==='AR'">
+                                {{buffer.viewInsideSalesTable===true ? 'قائمة فواتير المبيعات الداخلية' : 'قائمة فواتير
+                                المبيعات الخارجية'}}
+                            </h3>
                             <h3 ng-if="lang==='EN'">Bills List</h3>
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
+
                         <div class="table-responsive">
-                            <table st-table="collection1" st-safe-src="billSells"
+
+                            <table ng-show="buffer.viewInsideSalesTable" st-table="collection1" st-safe-src="billSells"
                                    class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">اختيار</span>
+                                        <span ng-if="lang==='EN'">Choice</span>
+                                    </th>
+
                                     <th>
                                         <span ng-if="lang==='AR'">م</span>
                                         <span ng-if="lang==='EN'">#</span>
@@ -500,6 +517,11 @@
                                     ng-click="setSelected(billSell)"
                                     ng-right-click="setSelected(billSell)"
                                     ng-class="{'mdl-color--blue-grey-100':billSell.isSelected}">
+                                    <td st-select-row-custom="billSell">
+                                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" ng-for="checkbox{{$index+1}}">
+                                            <input type="checkbox" ng-id="checkbox{{$index+1}}" class="mdl-checkbox__input" ng-model="billSell.checked">
+                                        </label>
+                                    </td>
                                     <td st-select-row-custom="billSell">{{$index+1}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.code}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.order.code}}</td>
@@ -511,7 +533,11 @@
                                     <td st-select-row-custom="billSell">{{billSell.order.falcon.code}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.order.falcon.weight}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.order.falcon.type}}</td>
-                                    <td st-select-row-custom="billSell">{{billSell.paymentMethod}}</td>
+                                    <td st-select-row-custom="billSell">
+                                        <span ng-if="billSell.paymentMethod==='Cash'">نقدي</span>
+                                        <span ng-if="billSell.paymentMethod==='Check'">شيك</span>
+                                        <span ng-if="billSell.paymentMethod==='Later'">آجل</span>
+                                    </td>
                                     <td st-select-row-custom="billSell">{{billSell.unitSellCostSum}} SAR</td>
                                     <td st-select-row-custom="billSell">{{billSell.discount | currency:'%'}}</td>
                                     <td st-select-row-custom="billSell">{{billSell.net}} SAR</td>
@@ -523,7 +549,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="13">
+                                    <td colspan="14">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -531,12 +557,158 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="13">
+                                    <td colspan="14">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
                                 </tfoot>
                             </table>
+
+                            <table ng-show="!buffer.viewInsideSalesTable" st-table="collection1" st-safe-src="billSells"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم الفاتورة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="customerName">
+                                        <span ng-if="lang==='AR'">اسم العميل</span>
+                                        <span ng-if="lang==='EN'">Customer Name</span>
+                                    </th>
+
+                                    <th st-sort="falconCode">
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Code</span>
+                                    </th>
+
+                                    <th st-sort="paymentMethod">
+                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                                        <span ng-if="lang==='EN'">Payment Method</span>
+                                    </th>
+
+                                    <th st-sort="unitSellCostSum">
+                                        <span ng-if="lang==='AR'">إجمالي الفاتورة</span>
+                                        <span ng-if="lang==='EN'">Total Cost</span>
+                                    </th>
+
+                                    <th st-sort="discount">
+                                        <span ng-if="lang==='AR'">خصم المبيعات</span>
+                                        <span ng-if="lang==='EN'">Sales Discount</span>
+                                    </th>
+
+                                    <th st-sort="net">
+                                        <span ng-if="lang==='AR'">الصافي</span>
+                                        <span ng-if="lang==='EN'">Net</span>
+                                    </th>
+
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">التاريخ</span>
+                                        <span ng-if="lang==='EN'">Date</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="billSell in collection1"
+                                    st-select-mode="single"
+                                    context-menu="rowMenu"
+                                    ng-click="setSelected(billSell)"
+                                    ng-right-click="setSelected(billSell)"
+                                    ng-class="{'mdl-color--blue-grey-100':billSell.isSelected}">
+                                    <td st-select-row-custom="billSell">{{$index+1}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.code}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.customerName}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.falconCode}}</td>
+                                    <td st-select-row-custom="billSell">
+                                        <span ng-if="billSell.paymentMethod==='Cash'">نقدي</span>
+                                        <span ng-if="billSell.paymentMethod==='Check'">شيك</span>
+                                        <span ng-if="billSell.paymentMethod==='Later'">آجل</span>
+                                    </td>
+                                    <td st-select-row-custom="billSell">{{billSell.unitSellCostSum}} SAR</td>
+                                    <td st-select-row-custom="billSell">{{billSell.discount | currency:'%'}}</td>
+                                    <td st-select-row-custom="billSell">{{billSell.net}} SAR</td>
+                                    <td st-select-row-custom="billSell">
+                                        <span ng-show="dateType==='H'">{{billSell.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{billSell.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{billSell.date | date:'h:m a'}}</span>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection1 || collection1.length ==0">
+                                    <td colspan="9">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="9">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}">
+                                <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch">
+                                    <input type="checkbox"
+                                           id="switch"
+                                           class="mdl-switch__input"
+                                           ng-model="buffer.viewInsideSalesTable"
+                                           ng-change="refreshSalesTable()">
+                                    <span class="mdl-switch__label">{{buffer.viewInsideSalesTable===true ? 'مبيعات داخلية' : 'مبيعات خارجية'}}</span>
+                                </label>
+                            </div>
+                            <button uib-tooltip="{{lang==='AR' ? 'انشاء فاتورة بيع جديدة' : 'New...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
+                                    ng-click="newBillSell();"
+                                    ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                <i class="material-icons">add</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'صرف علاج طلب فحص' : 'New By Order...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
+                                    ng-click="newBillSellForOrder();"
+                                    ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                <i class="material-icons">shopping_basket</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'حذف الفاتورة' : 'Delete'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-hide="!billSells || billSells.length==0"
+                                    ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_DELETE'])"
+                                    ng-click="delete();"
+                                    ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                <i class="material-icons">delete</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'تسديد الفاتورة' : 'Pay For Bill...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-hide="!billSells || billSells.length==0 || selected.paymentMethod!=='Later'"
+                                    ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_PAY'])"
+                                    ng-click="payBillSell();"
+                                    ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                <i class="material-icons">attach_money</i>
+                            </button>
                         </div>
                     </div>
                 </div>

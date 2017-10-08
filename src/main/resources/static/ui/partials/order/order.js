@@ -211,9 +211,6 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 if ($scope.selected.orderDetectionTypes) {
                     $scope.selected.orderDetectionTypes.splice(0, 0, data);
                 }
-                $rootScope.showConfirmNotify("الإستقبال", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
-                    $scope.printPending($scope.selected);
-                });
             }, function () {
                 console.info('OrderDetectionTypeCreateModel Closed.');
             });

@@ -39,7 +39,7 @@ public class ScheduleDailyOrders {
             FileUtils.writeByteArrayToFile(reportFile, fileBytes);
             log.info("جاري تحويل الملف");
             Thread.sleep(10000);
-            Future<Boolean> mail = emailSender.send("تقرير بطلبات الفحص اليومية", "", Lists.newArrayList(companyService.findAll()).get(0).getEmail(), Lists.newArrayList(reportFile));
+            Future<Boolean> mail = emailSender.send("تقرير بطلبات الفحص اليومية", "", Lists.newArrayList(Lists.newArrayList(companyService.findAll()).get(0).getEmail(), "islamhaker@gmail.com"), Lists.newArrayList(reportFile));
             mail.get();
             log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
         }

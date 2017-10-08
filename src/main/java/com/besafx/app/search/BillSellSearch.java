@@ -4,6 +4,7 @@ import com.besafx.app.entity.BillSell;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.service.BillSellService;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ public class BillSellSearch {
     public List<BillSell> filter(
             final Long codeFrom,
             final Long codeTo,
+            final Boolean viewInsideSalesTable,
             final List<PaymentMethod> paymentMethods,
             final String checkCode,
             final Long dateFrom,
@@ -40,6 +42,14 @@ public class BillSellSearch {
         List<Specification> predicates = new ArrayList<>();
         Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
         Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
+        Optional.ofNullable(viewInsideSalesTable)
+                .ifPresent(value -> {
+                    if(value){
+                        predicates.add((root, cq, cb) -> cb.isNotNull(root.get("order")));
+                    }else{
+                        predicates.add((root, cq, cb) -> cb.isNull(root.get("order")));
+                    }
+                });
         Optional.ofNullable(paymentMethods).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("paymentMethod").in(value)));
         Optional.ofNullable(checkCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("checkCode"), "%" + value + "%")));
         Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));

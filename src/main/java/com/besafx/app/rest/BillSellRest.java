@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +123,17 @@ public class BillSellRest {
         }
     }
 
+    @RequestMapping(value = "pay/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BILL_SELL_PAY')")
+    @Transactional
+    public String pay(@PathVariable Long id) {
+        BillSell billSell = billSellService.findOne(id);
+        billSell.setPaymentMethod(PaymentMethod.Cash);
+        billSell = billSellService.save(billSell);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSell);
+    }
+
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findAll() {
@@ -149,6 +161,7 @@ public class BillSellRest {
     public String filter(
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "viewInsideSalesTable", required = false) final Boolean viewInsideSalesTable,
             @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
             @RequestParam(value = "checkCode", required = false) final String checkCode,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
@@ -168,7 +181,7 @@ public class BillSellRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        List<BillSell> list = billSellSearch.filter(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
+        List<BillSell> list = billSellSearch.filter(codeFrom, codeTo, viewInsideSalesTable, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
         notificationService.notifyOne(Notification
                 .builder()
                 .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
