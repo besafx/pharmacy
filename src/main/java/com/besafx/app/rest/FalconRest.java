@@ -29,8 +29,8 @@ import java.util.List;
 @RequestMapping(value = "/api/falcon/")
 public class FalconRest {
 
-    public static final String FILTER_TABLE = "**,customer[id,code,name,mobile]";
-    public static final String FILTER_FALCON_COMBO = "id,code,type,customer[id,code,name,mobile]";
+    public static final String FILTER_TABLE = "**,customer[id,code,nickname,name,mobile]";
+    public static final String FILTER_FALCON_COMBO = "id,code,type,customer[id,code,nickname,name,mobile]";
     public static final String FILTER_FALCON_CODE_COMBO = "id,code,customer[id]";
 
     @Autowired

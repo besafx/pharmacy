@@ -113,6 +113,15 @@ app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', 
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.falcon);
                 }
+            },
+            {
+                html: '<div class="drop-menu">التفاصيل<span class="fa fa-info fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    ModalProvider.openFalconDetailsModel($itemScope.falcon);
+                }
             }
         ];
 

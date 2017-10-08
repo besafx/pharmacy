@@ -559,7 +559,9 @@
                                         <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{order.date | date:'h:m a'}}</span>
                                     </td>
-                                    <td st-select-row-custom="order">{{order.falcon.code}}</td>
+                                    <td st-select-row-custom="order">
+                                        <a ng-click="ModalProvider.openFalconDetailsModel(order.falcon);" href=""><strong>{{order.falcon.code}}</strong></a>
+                                    </td>
                                     <td st-select-row-custom="order">{{order.falcon.weight}} جرام</td>
                                     <td st-select-row-custom="order">{{order.falcon.type}}</td>
                                     <td st-select-row-custom="order">

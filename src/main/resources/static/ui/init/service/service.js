@@ -968,6 +968,24 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openFalconDetailsModel = function (falcon) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/falcon/falconDetails.html',
+            controller: 'falconDetailsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                falcon: function () {
+                    return falcon;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Team Model                                                 *

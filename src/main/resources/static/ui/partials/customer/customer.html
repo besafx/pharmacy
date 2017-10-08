@@ -188,7 +188,7 @@
                             </span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item"
-                            ng-click="ModalProvider.openCustomerDetailsModel(customer);"
+                            ng-click="ModalProvider.openCustomerDetailsModel(selected);"
                             ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_READ']) && toggleList===1"
                             ng-hide="!customers || customers.length==0">
                             <span class="mdl-list__item-primary-content">
