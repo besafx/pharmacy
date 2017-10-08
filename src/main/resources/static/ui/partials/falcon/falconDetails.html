@@ -115,21 +115,6 @@
                                         <span ng-if="lang==='EN'">Date</span>
                                     </th>
 
-                                    <th st-sort="falcon.code">
-                                        <span ng-if="lang==='AR'">رقم الصقر</span>
-                                        <span ng-if="lang==='EN'">Falcon Code</span>
-                                    </th>
-
-                                    <th st-sort="falcon.weight">
-                                        <span ng-if="lang==='AR'">وزن الصقر</span>
-                                        <span ng-if="lang==='EN'">Falcon Weight</span>
-                                    </th>
-
-                                    <th st-sort="falcon.type">
-                                        <span ng-if="lang==='AR'">نوع الصقر</span>
-                                        <span ng-if="lang==='EN'">Falcon Type</span>
-                                    </th>
-
                                     <th st-sort="orderAttaches.length">
                                         <span ng-if="lang==='AR'">المرفقات والمستندات</span>
                                         <span ng-if="lang==='EN'">Attachments</span>
@@ -171,9 +156,6 @@
                                         <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{order.date | date:'h:m a'}}</span>
                                     </td>
-                                    <td>{{order.falcon.code}}</td>
-                                    <td>{{order.falcon.weight}} جرام</td>
-                                    <td>{{order.falcon.type}}</td>
                                     <td>
                                         <span ng-repeat="orderAttach in order.orderAttaches">
                                             <a uib-tooltip="{{orderAttach.attach.name}}" tooltip-append-to-body="true"
@@ -198,7 +180,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="12">
+                                    <td colspan="9">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -206,7 +188,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="12">
+                                    <td colspan="9">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
