@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -62,6 +63,17 @@ public class Drug implements Serializable {
         }
     }
 
+    public double getTransactionSellsSum() {
+        try{
+            return this.transactionBuys
+                    .stream()
+                    .mapToDouble(TransactionBuy::getSalesTotalCost)
+                    .sum();
+        }catch (Exception ex){
+            return 0.0;
+        }
+    }
+
     public double getBillBuyDiscountSum() {
         try{
             return this.transactionBuys
@@ -69,6 +81,20 @@ public class Drug implements Serializable {
                     .map(TransactionBuy::getBillBuy)
                     .distinct()
                     .mapToDouble(BillBuy::getDiscount)
+                    .sum();
+        }catch (Exception ex){
+            return 0.0;
+        }
+    }
+
+    public double getBillSellDiscountSum() {
+        try{
+            return this.transactionBuys
+                    .stream()
+                    .flatMap(transactionBuy -> transactionBuy.getTransactionSells().stream())
+                    .map(TransactionSell::getBillSell)
+                    .distinct()
+                    .mapToDouble(BillSell::getDiscount)
                     .sum();
         }catch (Exception ex){
             return 0.0;

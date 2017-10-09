@@ -1,18 +1,18 @@
-app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuyService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (DrugService, DrugUnitService, TransactionBuyService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuyService', 'TransactionSellService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (DrugService, DrugUnitService, TransactionBuyService, TransactionSellService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
 
         $scope.selectedTransactionBuy = {};
 
         $scope.buffer = {};
+        $scope.buffer.drugCategoryList =[];
 
         $scope.setSelected = function (object) {
             if (object) {
                 angular.forEach($scope.drugs, function (drug) {
                     if (object.id == drug.id) {
                         $scope.selected = drug;
-                        $scope.drugCalculation();
                         return drug.isSelected = true;
                     } else {
                         return drug.isSelected = false;
@@ -26,13 +26,65 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
                 angular.forEach($scope.selected.transactionBuys, function (transactionBuy) {
                     if (object.id == transactionBuy.id) {
                         $scope.selectedTransactionBuy = transactionBuy;
-                        $scope.transactionBuyCalculation();
+                        $scope.refreshTransactionSellByTransactionBuy();
                         return transactionBuy.isSelected = true;
                     } else {
                         return transactionBuy.isSelected = false;
                     }
                 });
             }
+        };
+
+        $scope.refreshDrugs = function () {
+            var search = [];
+            //
+            if ($scope.buffer.codeFrom) {
+                search.push('codeFrom=');
+                search.push($scope.buffer.codeFrom);
+                search.push('&');
+            }
+            if ($scope.buffer.codeTo) {
+                search.push('codeTo=');
+                search.push($scope.buffer.codeTo);
+                search.push('&');
+            }
+            //
+            if ($scope.buffer.nameArabic) {
+                search.push('nameArabic=');
+                search.push($scope.buffer.nameArabic);
+                search.push('&');
+            }
+            if ($scope.buffer.nameEnglish) {
+                search.push('nameEnglish=');
+                search.push($scope.buffer.nameEnglish);
+                search.push('&');
+            }
+            //
+            if ($scope.buffer.medicalNameArabic) {
+                search.push('medicalNameArabic=');
+                search.push($scope.buffer.medicalNameArabic);
+                search.push('&');
+            }
+            if ($scope.buffer.medicalNameEnglish) {
+                search.push('medicalNameEnglish=');
+                search.push($scope.buffer.medicalNameEnglish);
+                search.push('&');
+            }
+            //
+            if ($scope.buffer.drugCategoryList.length > 0) {
+                var drugCategories = [];
+                for (var i = 0; i < $scope.buffer.drugCategoryList.length; i++) {
+                    drugCategories.push($scope.buffer.drugCategoryList[i].id);
+                }
+                search.push('drugCategories=');
+                search.push(drugCategories);
+                search.push('&');
+            }
+            //
+            DrugService.filter(search.join("")).then(function (data) {
+                $scope.drugs = data;
+                $scope.setSelected(data[0]);
+            });
         };
 
         $scope.openFilter = function () {
@@ -48,56 +100,8 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
             });
 
             modalInstance.result.then(function (buffer) {
-                var search = [];
-
-                //
-                if (buffer.codeFrom) {
-                    search.push('codeFrom=');
-                    search.push(buffer.codeFrom);
-                    search.push('&');
-                }
-                if (buffer.codeTo) {
-                    search.push('codeTo=');
-                    search.push(buffer.codeTo);
-                    search.push('&');
-                }
-                //
-                if (buffer.nameArabic) {
-                    search.push('nameArabic=');
-                    search.push(buffer.nameArabic);
-                    search.push('&');
-                }
-                if (buffer.nameEnglish) {
-                    search.push('nameEnglish=');
-                    search.push(buffer.nameEnglish);
-                    search.push('&');
-                }
-                //
-                if (buffer.medicalNameArabic) {
-                    search.push('medicalNameArabic=');
-                    search.push(buffer.medicalNameArabic);
-                    search.push('&');
-                }
-                if (buffer.medicalNameEnglish) {
-                    search.push('medicalNameEnglish=');
-                    search.push(buffer.medicalNameEnglish);
-                    search.push('&');
-                }
-                //
-                if (buffer.drugCategoryList) {
-                    var drugCategories = [];
-                    for (var i = 0; i < buffer.drugCategoryList.length; i++) {
-                        drugCategories.push(buffer.drugCategoryList[i].id);
-                    }
-                    search.push('drugCategories=');
-                    search.push(drugCategories);
-                    search.push('&');
-                }
-                //
-                DrugService.filter(search.join("")).then(function (data) {
-                    $scope.drugs = data;
-                    $scope.setSelected(data[0]);
-                });
+                $scope.buffer = buffer;
+                $scope.refreshDrugs();
             }, function () {
             });
         };
@@ -130,7 +134,6 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
                         var index = $scope.selected.transactionBuys.indexOf(transactionBuy);
                         $scope.selected.transactionBuys.splice(index, 1);
                         $scope.setSelected($scope.selected.transactionBuys[0]);
-                        $scope.drugCalculation();
                     });
                 });
 
@@ -146,8 +149,17 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
         $scope.refreshTransactionBuyByDrug = function () {
             if ($scope.selected) {
                 TransactionBuyService.findByDrug($scope.selected.id).then(function (data) {
-                    $scope.selected.transactionBuys = data
+                    $scope.selected.transactionBuys = data;
+                    $scope.setSelectedTransactionBuy(data[0]);
                 });
+            }
+        };
+
+        $scope.refreshTransactionSellByTransactionBuy = function () {
+            if ($scope.selectedTransactionBuy) {
+                TransactionSellService.findByTransactionBuy($scope.selectedTransactionBuy.id).then(function (data) {
+                    $scope.selectedTransactionBuy.transactionSells = data;
+                })
             }
         };
 
@@ -173,18 +185,6 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
             }, function () {
                 console.info('DrugTransactionBuyCreateModel Closed.');
             });
-        };
-
-        $scope.drugCalculation = function () {
-            DrugService.getTransactionBuysSum($scope.selected.id).then(function (data) {
-                $scope.totalBuyCost = data;
-            });
-        };
-
-        $scope.transactionBuyCalculation = function () {
-            DrugUnitService.getRelatedPrices($scope.selectedTransactionBuy.id).then(function (data) {
-                $scope.relatedPrices = data;
-            })
         };
 
         $scope.printList = function () {
@@ -243,11 +243,72 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
             }
         ];
 
+        $scope.deleteTransactionBuy = function (transactionBuy) {
+            if (transactionBuy) {
+                $rootScope.showConfirmNotify("المخازن", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
+                    TransactionBuyService.remove(transactionBuy.id).then(function () {
+                        var index = $scope.selected.transactionBuys.indexOf(transactionBuy);
+                        $scope.selected.transactionBuys.splice(index, 1);
+                        $scope.setSelected($scope.selected.transactionBuys[0]);
+                    });
+                });
+
+            }
+        };
+
+        $scope.updatePrices = function (transactionBuy) {
+            if (transactionBuy) {
+                $rootScope.showConfirmNotify("المخازن", "هل تعديل أسعار الطلبية فعلاً؟", "warning", "fa-edit", function () {
+                    ModalProvider.openUpdatePricesModel(transactionBuy).result.then(function (data) {
+                        return transactionBuy = data;
+                    });
+                });
+            }
+        };
+
+        $scope.updateQuantity = function (transactionBuy) {
+            if (transactionBuy) {
+                $rootScope.showConfirmNotify("المخازن", "هل تعديل كمية الطلبية فعلاً؟", "warning", "fa-edit", function () {
+                    ModalProvider.openUpdateQuantityModel(transactionBuy).result.then(function (data) {
+                        return transactionBuy = data;
+                    });
+                });
+            }
+        };
+
+        $scope.transactionBuyRowMenu = [
+            {
+                html: '<div class="drop-menu">حذف<span class="fa fa-trash fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_BILL_BUY_DELETE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.deleteTransactionBuy($itemScope.transactionBuy);
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعديل الأسعار<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_DRUG_PRICE_UPDATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.updatePrices($itemScope.transactionBuy);
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعديل الكمية<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_DRUG_QUANTITY_UPDATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.updateQuantity($itemScope.transactionBuy);
+                }
+            }
+        ];
+
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
-            DrugService.findAll().then(function (data) {
-                $scope.drugs = data;
-            });
+            $scope.refreshDrugs();
         }, 1500);
 
     }]);

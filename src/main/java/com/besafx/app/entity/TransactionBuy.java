@@ -75,6 +75,14 @@ public class TransactionBuy implements Serializable {
         }
     }
 
+    public Double getSalesTotalCost() {
+        try {
+            return this.transactionSells.stream().mapToDouble(TransactionSell::getUnitSellCost).sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
     public Double getSalesQuantityByDrugUnit(DrugUnit drugUnit) {
         try {
             return this.transactionSells.stream().mapToDouble(transactionSell -> transactionSell.getUnitQuantityByDrugUnit(drugUnit)).sum();

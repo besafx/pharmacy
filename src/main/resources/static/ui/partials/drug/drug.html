@@ -380,8 +380,14 @@
                                 <a href=""
                                    ng-click="openFilter()"
                                    tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                   uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
                                     <span class="fa fa-filter"></span>
+                                </a>
+                                <a href=""
+                                   ng-click="refreshDrugs()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])"
@@ -428,14 +434,26 @@
                                         <span ng-if="lang==='EN'">Category</span>
                                     </th>
 
-                                </tr>
-                                <tr>
-                                    <th colspan="5">
-                                        <input st-search=""
-                                               class="form-control"
-                                               placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
-                                               type="text"/>
+                                    <th st-sort="transactionBuysSum">
+                                        <span ng-if="lang==='AR'">إجمالي المشتريات</span>
+                                        <span ng-if="lang==='EN'">Total Purchaces</span>
                                     </th>
+
+                                    <th st-sort="billBuyDiscountSum">
+                                        <span ng-if="lang==='AR'">إجمالي خصومات المشتريات</span>
+                                        <span ng-if="lang==='EN'">Total Purchaces Discounts</span>
+                                    </th>
+
+                                    <th st-sort="transactionSellsSum">
+                                        <span ng-if="lang==='AR'">إجمالي المبيعات</span>
+                                        <span ng-if="lang==='EN'">Total Sales</span>
+                                    </th>
+
+                                    <th st-sort="billSellDiscountSum">
+                                        <span ng-if="lang==='AR'">إجمالي خصومات المبيعات</span>
+                                        <span ng-if="lang==='EN'">Total Sales Discounts</span>
+                                    </th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -459,10 +477,14 @@
                                         <span ng-if="lang==='AR'">{{drug.drugCategory.nameArabic}}</span>
                                         <span ng-if="lang==='EN'">{{drug.drugCategory.nameEnglish}}</span>
                                     </td>
+                                    <td st-select-row-custom="drug">{{drug.transactionBuysSum}} SAR</td>
+                                    <td st-select-row-custom="drug">{{drug.billBuyDiscountSum}} %</td>
+                                    <td st-select-row-custom="drug">{{drug.transactionSellsSum}} SAR</td>
+                                    <td st-select-row-custom="drug">{{drug.billSellDiscountSum}} %</td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="5">
+                                    <td colspan="9">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -470,7 +492,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="5">
+                                    <td colspan="9">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>
@@ -482,24 +504,23 @@
 
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1" ng-hide="!selected.id || !drugs || drugs.length==0">
 
-                <div class="panel panel-info">
+                <div class="panel panel-warning">
                     <div class="panel-heading">
                         <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
                             style="margin-top: 2px;">
                             <li>
                                 <a href=""
                                    ng-click="refreshTransactionBuyByDrug()"
-                                   ng-show="selected.id"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
-                                   ng-click="newTransactionBuy()"
                                    ng-show="selected.id"
+                                   ng-click="newTransactionBuy()"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'انشاء طلبية شراء' : 'New Order...'}}">
                                     <span class="fa fa-plus-square"></span>
@@ -507,195 +528,23 @@
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">المخزون (حركات الشراء)</h3>
-                            <h3 ng-if="lang==='EN'">Stock (Purchace Transcations)</h3>
+                            <h3 ng-if="lang==='AR'">حركات الشراء (طلبيات شراء الأدوية)</h3>
+                            <h3 ng-if="lang==='EN'">Buys Transactions (Drugs Stock)</h3>
                             <fieldset ng-if="selected.id">
-                                <span ng-if="lang==='AR'">رقم الدواء / {{selected.code}}</span>
-                                <span ng-if="lang==='EN'">Drug Code / {{selected.code}}</span>
+                                [{{selected.code}}]
+                                [
+                                <span ng-if="lang==='AR'">{{selected.nameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{selected.nameEnglish}}</span>
+                                ][
+                                <span ng-if="lang==='AR'">{{selected.medicalNameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{selected.medicalNameEnglish}}</span>
+                                ]
                             </fieldset>
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
                             <table st-table="collection2" st-safe-src="selected.transactionBuys"
-                                   class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        <span ng-if="lang==='AR'">م</span>
-                                        <span ng-if="lang==='EN'">#</span>
-                                    </th>
-
-                                    <th>
-                                        <span ng-if="lang==='AR'">رقم الحركة</span>
-                                        <span ng-if="lang==='EN'">Transaction Code</span>
-                                    </th>
-
-                                    <th>
-                                        <span ng-if="lang==='AR'">رقم الفاتورة</span>
-                                        <span ng-if="lang==='EN'">Bill Code</span>
-                                    </th>
-
-                                    <th st-sort="productionDate">
-                                        <span ng-if="lang==='AR'">تاريخ الحركة</span>
-                                        <span ng-if="lang==='EN'">Transaction Date</span>
-                                    </th>
-
-                                    <th st-sort="drugUnit">
-                                        <span ng-if="lang==='AR'">وحدة القياس</span>
-                                        <span ng-if="lang==='EN'">Unit</span>
-                                    </th>
-
-                                    <th st-sort="unitBuyCost">
-                                        <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
-                                        <span ng-if="lang==='EN'">Unit Purchace Cost</span>
-                                    </th>
-
-                                    <th st-sort="unitSellCost">
-                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
-                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
-                                    </th>
-
-                                    <th st-sort="quantity">
-                                        <span ng-if="lang==='AR'">الكمية</span>
-                                        <span ng-if="lang==='EN'">Quantity</span>
-                                    </th>
-
-                                    <th st-sort="productionDate">
-                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                        <span ng-if="lang==='EN'">Production Date</span>
-                                    </th>
-
-                                    <th st-sort="warrantInMonth">
-                                        <span ng-if="lang==='AR'">مدة الصلاحية (بالشهر)</span>
-                                        <span ng-if="lang==='EN'">Shelf Life (In Month)</span>
-                                    </th>
-
-                                    <th>
-                                        <span ng-if="lang==='AR'">العمليات</span>
-                                        <span ng-if="lang==='EN'">Action</span>
-                                    </th>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="transactionBuy in collection2"
-                                    st-select-mode="single"
-                                    ng-click="setSelectedTransactionBuy(transactionBuy)"
-                                    ng-right-click="setSelectedTransactionBuy(transactionBuy)"
-                                    ng-class="{'mdl-color--blue-grey-100':transactionBuy.isSelected}">
-                                    <td st-select-row-custom="transactionBuy">{{$index+1}}</td>
-                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.code}}</td>
-                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.billBuy.code}}</td>
-                                    <td st-select-row-custom="transactionBuy">
-                                        <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{transactionBuy.date | date:'h:m a'}}</span>
-                                    </td>
-                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.drugUnit.name}}</td>
-                                    <td st-select-row-custom="transactionBuy">
-                                        <span class="label label-danger">{{transactionBuy.unitBuyCost}} SAR</span>
-                                    </td>
-                                    <td st-select-row-custom="transactionBuy">
-                                        <span class="label label-danger">{{transactionBuy.unitSellCost}} SAR</span>
-                                    </td>
-                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.quantity}}</td>
-                                    <td st-select-row-custom="transactionBuy">
-                                        <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span ng-show="dateType==='G'">{{transactionBuy.productionDate | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{transactionBuy.productionDate | date:'h:m a'}}</span>
-                                    </td>
-                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.warrantInMonth}}</td>
-                                    <td st-select-row-custom="transactionBuy">
-                                        <a href=""
-                                           ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
-                                           ng-click="deleteTransactionBuy(transactionBuy)">
-                                            <strong ng-if="lang==='AR'">حذف</strong>
-                                            <strong ng-if="lang==='EN'">Remove</strong>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collection2 || collection2.length ==0">
-                                    <td colspan="11">
-                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
-                                        <span ng-if="lang==='EN'">No Data Found.</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selectedTransactionBuy.id">
-                            <div class="alert alert-danger" role="alert">
-                                <strong ng-if="lang==='AR'">بيان أسعار الطلبية رقم /
-                                    {{selectedTransactionBuy.code}}</strong>
-                                <strong ng-if="lang==='EN'">Prices Information For Order Code /
-                                    {{selectedTransactionBuy.id}}</strong>
-                                <br/>
-                                <span ng-repeat="price in relatedPrices">
-                                    <strong>الوحدة / </strong>
-                                    <span>{{price.obj1.name}}</span>
-                                    <strong>سعر الشراء / </strong>
-                                    <span>{{price.obj2}} SAR</span>
-                                    <strong>سعر البيع / </strong>
-                                    <span>{{price.obj3}} SAR</span>
-                                    <strong>الكمية / </strong>
-                                    <span>{{price.obj5}} </span>
-                                    <br/>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selected.id">
-                            <div class="alert alert-info" role="alert">
-                                <strong ng-if="lang==='AR'">إجمالي المشتريات للدواء رقم / {{selected.code}} = </strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost For Drug Code / {{selected.id}}
-                                    = </strong>
-                                <span>{{totalBuyCost}} SAR</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
-
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
-                            style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshTransactionSellByDrug()"
-                                   ng-show="selectedTransactionBuy.id"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
-                                   ng-click="newTransactionSell()"
-                                   ng-show="selectedTransactionBuy.id"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلبية بيع' : 'New Sales Order...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">المبيعات (حركات البيع)</h3>
-                            <h3 ng-if="lang==='EN'">The Sales (Sales Transcations)</h3>
-                            <fieldset ng-if="selected.id">
-                                <span ng-if="lang==='AR'">رقم الدواء / {{selected.code}}</span>
-                                <span ng-if="lang==='EN'">Drug Code / {{selected.code}}</span>
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="panel-body panel-body-table">
-                        <div class="table-responsive">
-                            <table st-table="collection3" st-safe-src="selectedTransactionBuy.transactionSells"
                                    class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -719,7 +568,158 @@
                                         <span ng-if="lang==='EN'">Unit</span>
                                     </th>
 
+                                    <th st-sort="unitBuyCost">
+                                        <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Purchace Cost</span>
+                                    </th>
+
                                     <th st-sort="unitSellCost">
+                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
+                                    </th>
+
+                                    <th st-sort="quantity">
+                                        <span ng-if="lang==='AR'">كمية المشتريات</span>
+                                        <span ng-if="lang==='EN'">Purchace Quantity</span>
+                                    </th>
+
+                                    <th st-sort="salesQuantity">
+                                        <span ng-if="lang==='AR'">كمية المبيعات</span>
+                                        <span ng-if="lang==='EN'">Sales Quantity</span>
+                                    </th>
+
+                                    <th st-sort="realQuantity">
+                                        <span ng-if="lang==='AR'">الرصيد الحالي</span>
+                                        <span ng-if="lang==='EN'">Real Quantity</span>
+                                    </th>
+
+                                    <th st-sort="productionDate">
+                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
+                                        <span ng-if="lang==='EN'">Production Date</span>
+                                    </th>
+
+                                    <th st-sort="warrantInMonth">
+                                        <span ng-if="lang==='AR'">مدة الصلاحية (بالشهر)</span>
+                                        <span ng-if="lang==='EN'">Shelf Life (In Month)</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="transactionBuy in collection2"
+                                    st-select-mode="single"
+                                    context-menu="transactionBuyRowMenu"
+                                    ng-click="setSelectedTransactionBuy(transactionBuy)"
+                                    ng-right-click="setSelectedTransactionBuy(transactionBuy)"
+                                    ng-class="{'mdl-color--blue-grey-100':transactionBuy.isSelected}">
+                                    <td st-select-row-custom="transactionBuy">{{$index+1}}</td>
+                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.code}}</td>
+                                    <td st-select-row-custom="transactionBuy">
+                                        <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{transactionBuy.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.drugUnit.name}}</td>
+                                    <td st-select-row-custom="transactionBuy">
+                                        <span class="label label-danger">{{transactionBuy.unitBuyCost}} SAR</span>
+                                    </td>
+                                    <td st-select-row-custom="transactionBuy">
+                                        <span class="label label-danger">{{transactionBuy.unitSellCost}} SAR</span>
+                                    </td>
+                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.quantity}}</td>
+                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.salesQuantity}}</td>
+                                    <td st-select-row-custom="transactionBuy" ng-class="{'danger' : (transactionBuy.salesQuantity > 0) && transactionBuy.realQuantity > (transactionBuy.quantity - 10)}">{{transactionBuy.realQuantity}}</td>
+                                    <td st-select-row-custom="transactionBuy">
+                                        <span ng-show="dateType==='H'">{{transactionBuy.productionDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{transactionBuy.productionDate | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{transactionBuy.productionDate | date:'h:m a'}}</span>
+                                    </td>
+                                    <td st-select-row-custom="transactionBuy">{{transactionBuy.warrantInMonth}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection2 || collection2.length ==0">
+                                    <td colspan="11">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="11">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1" ng-hide="!selectedTransactionBuy.id">
+
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="refreshTransactionSellByTransactionBuy()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">حركات البيع (طلبيات بيع الأدوية)</h3>
+                            <h3 ng-if="lang==='EN'">Sells Transactions (Drugs Stock)</h3>
+                            <fieldset ng-if="selectedTransactionBuy.id">
+                                [{{selectedTransactionBuy.drug.code}}]
+                                [
+                                <span ng-if="lang==='AR'">{{selectedTransactionBuy.drug.nameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{selectedTransactionBuy.drug.nameEnglish}}</span>
+                                ][
+                                <span ng-if="lang==='AR'">{{selectedTransactionBuy.drug.medicalNameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{selectedTransactionBuy.drug.medicalNameEnglish}}</span>
+                                ]
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection3" st-safe-src="selectedTransactionBuy.transactionSells"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">رقم فاتورة البيع</span>
+                                        <span ng-if="lang==='EN'">Bill Sell Code</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">رقم الحركة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="productionDate">
+                                        <span ng-if="lang==='AR'">تاريخ الحركة</span>
+                                        <span ng-if="lang==='EN'">Transaction Date</span>
+                                    </th>
+
+                                    <th st-sort="drugUnit">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Unit</span>
+                                    </th>
+
+                                    <th st-sort="unitCost">
                                         <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
                                         <span ng-if="lang==='EN'">Unit Sell Cost</span>
                                     </th>
@@ -739,6 +739,7 @@
                                 <tbody>
                                 <tr ng-repeat="transactionSell in collection3">
                                     <td>{{$index+1}}</td>
+                                    <td>{{transactionSell.billSell.code}}</td>
                                     <td>{{transactionSell.code}}</td>
                                     <td>
                                         <span ng-show="dateType==='H'">{{transactionSell.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
@@ -761,30 +762,13 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection3 || collection3.length ==0">
-                                    <td colspan="7">
+                                    <td colspan="11">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="totalCost > 0">
-                            <div class="alert alert-info" role="alert" style="font-size: 18px">
-                                <strong ng-if="lang==='AR'">إجمالي الفاتورة</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost}} SAR</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">الخصم المكتسب</strong>
-                                <strong ng-if="lang==='EN'">Discount</strong>
-                                <span>{{(totalCost * selected.discount) / 100}} SAR</span>
-                                <br/>
-                                <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
-                                <strong ng-if="lang==='EN'">Total Purchace Cost</strong>
-                                <span>{{totalCost - ((totalCost * selected.discount) / 100)}} SAR</span>
-                            </div>
                         </div>
                     </div>
                 </div>
