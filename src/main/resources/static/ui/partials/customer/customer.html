@@ -125,6 +125,7 @@
         </div>
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
+
                 <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
                     <button id="customer-menu-lower-right" style="width: 100%;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                         <span ng-if="lang==='AR'">العمليات</span>
@@ -218,6 +219,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </header>
@@ -437,6 +439,14 @@
                                         <span ng-if="lang==='EN'">Registered Falcons</span>
                                     </th>
 
+                                </tr>
+                                <tr>
+                                    <th colspan="8">
+                                        <input st-search=""
+                                               class="form-control"
+                                               placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
+                                               type="text"/>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
