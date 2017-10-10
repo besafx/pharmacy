@@ -63,6 +63,11 @@
                                 <span ng-if="lang==='EN'">Qualification</span>
                             </th>
 
+                            <th st-sort="salary">
+                                <span ng-if="lang==='AR'">الراتب</span>
+                                <span ng-if="lang==='EN'">Salary</span>
+                            </th>
+
                             <th st-sort="person.lastLoginDate">
                                 <span ng-if="lang==='AR'">تاريخ آخر دخول</span>
                                 <span ng-if="lang==='EN'">Last Login Date</span>
@@ -97,6 +102,7 @@
                             <td st-select-row-custom="employee">{{employee.person.email}}</td>
                             <td st-select-row-custom="employee">{{employee.person.mobile}}</td>
                             <td st-select-row-custom="employee">{{employee.person.qualification}}</td>
+                            <td st-select-row-custom="employee">{{employee.salary}}</td>
                             <td st-select-row-custom="employee">
                                 <span ng-show="dateType==='H'">{{employee.person.lastLoginDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                 <span ng-show="dateType==='G'">{{employee.person.lastLoginDate | date: 'yyyy-MM-dd'}}</span>

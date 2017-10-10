@@ -125,6 +125,19 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="note" class="control-label">
+                                        <span ng-if="lang==='AR'">ملاحظات</span>
+                                        <span ng-if="lang==='EN'">Notes</span>
+                                    </label>
+                                    <textarea id="note"
+                                              type="text"
+                                              msd-elastic="\n"
+                                              class="form-control"
+                                              ng-model="vacation.note">
+                                </textarea>
+                                </div>
+
                             </div>
 
                         </div>

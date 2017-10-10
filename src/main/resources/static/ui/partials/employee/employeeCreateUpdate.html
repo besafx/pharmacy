@@ -34,6 +34,7 @@
                             </div>
 
                             <div class="row">
+
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     <label for="nickname" class="control-label">
                                         <span ng-if="lang==='AR'">اللقب</span>
@@ -62,9 +63,11 @@
                                            placeholder="{{lang==='AR' ? 'اذكر الاسم رباعي...' : 'Type Person Name...'}}"
                                            ng-model="employee.person.name">
                                 </div>
+
                             </div>
 
                             <div class="row">
+
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     <label for="nationality" class="control-label">
                                         <span ng-if="lang==='AR'">الجنسية</span>
@@ -90,10 +93,12 @@
                                            placeholder="{{lang==='AR' ? 'اذكر رقم البطاقة...' : 'Type Person ID...'}}"
                                            ng-model="employee.person.identityNumber">
                                 </div>
+
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="mobile" class="control-label">
                                         <span ng-if="lang==='AR'">الجوال</span>
                                         <span ng-if="lang==='EN'">Mobile</span>
@@ -107,7 +112,7 @@
                                            ng-model="employee.person.mobile">
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
 
                                     <label for="qualification" class="control-label">
                                         <span ng-if="lang==='AR'">المهنة</span>
@@ -119,6 +124,26 @@
                                            placeholder="{{lang==='AR' ? 'اذكر المهنة...' : 'Type Person Job...'}}"
                                            ng-model="employee.person.qualification">
                                 </div>
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="salary" class="control-label">
+                                        <span ng-if="lang==='AR'">الراتب</span>
+                                        <span ng-if="lang==='EN'">Salary</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group" id="salary">
+                                        <span class="input-group-addon">
+                                            <span>ريال سعودي</span>
+                                        </span>
+                                        <input dir="rtl"
+                                               type="number"
+                                               min="0"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="employee.salary">
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">

@@ -30,6 +30,8 @@ public class Employee implements Serializable {
 
     private Integer code;
 
+    private Double salary;
+
     @JoinColumn(name = "person")
     @OneToOne
     private Person person;
