@@ -169,7 +169,44 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
         $stateProvider.state("employee", {
             url: "/employee",
             templateUrl: "/ui/partials/employee/employee.html",
-            controller: "employeeCtrl"
+            controller: "employeeCtrl",
+            controllerAs: "employeeCtrl"
+        });
+
+        $stateProvider.state("employee.list", {
+            url: "/list",
+            views:{
+                'body@employee':{
+                    templateUrl: "/ui/partials/employee/list/list.html"
+                },
+                'options@employee':{
+                    templateUrl: "/ui/partials/employee/list/listOptions.html"
+                }
+            }
+        });
+
+        $stateProvider.state("employee.vacationType", {
+            url: "/vacationType",
+            views:{
+                'body@employee':{
+                    templateUrl: "/ui/partials/employee/vacationType/vacationType.html"
+                },
+                'options@employee':{
+                    templateUrl: "/ui/partials/employee/vacationType/vacationTypeOptions.html"
+                }
+            }
+        });
+
+        $stateProvider.state("employee.vacation", {
+            url: "/vacation",
+            views:{
+                'body@employee':{
+                    templateUrl: "/ui/partials/employee/vacation/vacation.html"
+                },
+                'options@employee':{
+                    templateUrl: "/ui/partials/employee/vacation/vacationOptions.html"
+                }
+            }
         });
 
         /**************************************************************

@@ -182,6 +182,7 @@ input[type=checkbox] {
 
 .mdl-layout__header-row .mdl-navigation {
     height: 50px !important;
+    margin-right: 10px !important;
 }
 
 .mdl-layout__header > .mdl-layout-icon {
@@ -488,4 +489,15 @@ WebKit inertia scrolling is being added here for any present/future devices that
 
 .mdl-navigation > a{
     text-decoration: none !important;
+}
+
+.mdl-navigation__link:hover{
+    background-color: white !important;
+    font-weight: bolder !important;
+}
+
+.mdl-navigation__link-active{
+    background-color: #e0e0e0 !important;
+    color: #000 !important;
+    font-weight: bolder !important;
 }

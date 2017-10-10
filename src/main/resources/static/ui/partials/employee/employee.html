@@ -11,35 +11,41 @@
 
             <span class="mdl-layout__title">{{pageTitle}}</span>
 
-            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation -->
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link"
+                   href=""
+                   ui-sref-active="mdl-navigation__link-active"
+                   ui-sref="employee.list">
+                    <span ng-if="lang==='AR'">سجل الموظفون</span>
+                    <span ng-if="lang==='EN'">DATE LIST</span>
+                </a>
+                <a class="mdl-navigation__link"
+                   href=""
+                   ui-sref-active="mdl-navigation__link-active"
+                   ui-sref="employee.vacationType">
+                    <span ng-if="lang==='AR'">بنود الاجازات</span>
+                    <span ng-if="lang==='EN'">VACATION TERMS</span>
+                </a>
+                <a class="mdl-navigation__link"
+                   href=""
+                   ui-sref-active="mdl-navigation__link-active"
+                   ui-sref="employee.vacation">
+                    <span ng-if="lang==='AR'">سجل الاجازات</span>
+                    <span ng-if="lang==='EN'">VACATIONS</span>
+                </a>
+                <a class="mdl-navigation__link" href="">بنود الإستقطاعات</a>
+                <a class="mdl-navigation__link" href="">سجل الإستقطاعات</a>
+                <a class="mdl-navigation__link" href="">سجل الرواتب</a>
+            </nav>
 
-            <div id="tasks-closed-menu-lower-left" class="material-icons mdl-badge mdl-badge--overlap mdl-icon-margin" data-badge="{{me.tasksClosedThisWeek.length}}">alarm</div>
-            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
-                for="tasks-closed-menu-lower-left">
-                <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
-                    <span ng-if="lang==='AR'">لديك {{me.tasksClosedThisWeek.length}} مهمة مغلقة هذا الاسبوع</span>
-                    <span ng-if="lang==='EN'">{{me.tasksClosedThisWeek.length}} Tasks will be closed this week</span>
-                </li>
-                <li ng-repeat="taskClosed in me.tasksClosedThisWeek"
-                    class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                    ng-click="ModalProvider.openTaskDetailsModel(taskClosed)">
-                    <span class="mdl-list__item-primary-content">
-                        <i class="material-icons mdl-list__item-icon">assignment</i>
-                        <span style="text-overflow: ellipsis;white-space: nowrap;width: 200px; overflow: hidden">[{{taskClosed.code}}] {{taskClosed.title}}</span>
-                    </span>
-                </li>
-                <li class="mdl-list__item">
-                    <button href="" ng-click="ModalProvider.openTasksClosedSoonModel()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                        <span ng-if="lang==='AR'">طباعة تقرير</span>
-                        <span ng-if="lang==='EN'">Print...</span>
-                    </button>
-                </li>
-            </ul>
+            <div class="mdl-layout-spacer"></div>
 
             <button id="options-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin">
                 <i class="material-icons">settings_applications</i>
             </button>
-            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
                 for="options-menu-lower-left">
                 <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
                     <span ng-if="lang==='AR'">خيارات البرنامج</span>
@@ -72,7 +78,8 @@
                     </span>
                 </li>
                 <li class="mdl-list__item">
-                    <button href="" ng-click="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                    <button href="" ng-click=""
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                         <span ng-if="lang==='AR'">المزيد من الخيارات</span>
                         <span ng-if="lang==='EN'">MORE...</span>
                     </button>
@@ -82,7 +89,8 @@
             <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin">
                 <i class="material-icons">more_vert</i>
             </button>
-            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
                 for="menu-lower-left">
                 <li class="mdl-list__item mdl-list__item--two-line mdl-menu__item--full-bleed-divider">
                     <span class="mdl-list__item-primary-content">
@@ -123,91 +131,13 @@
             </ul>
 
         </div>
-        <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
-            <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
-                <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-                    <button id="employee-menu-lower-right" style="width: 100%;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        <span ng-if="lang==='AR'">العمليات</span>
-                        <span ng-if="lang==='EN'">Actions</span>
-                    </button>
-                    <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                        class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                        for="employee-menu-lower-right">
-                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                            ng-click="fetchTableData()">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">visibility</i>
-                                <span ng-if="lang==='AR'">عرض البيانات</span>
-                                <span ng-if="lang==='EN'">View</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="newEmployee();"
-                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE'])">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">add</i>
-                                <span ng-if="lang==='AR'">انشاء موظف جديد</span>
-                                <span ng-if="lang==='EN'">New...</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="ModalProvider.openEmployeeUpdateModel(selected);"
-                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_UPDATE']) && toggleList===1"
-                            ng-hide="!employees || employees.length==0">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">edit</i>
-                                <span ng-if="lang==='AR'">تعديل بيانات الموظف</span>
-                                <span ng-if="lang==='EN'">Edit...</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="delete()"
-                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_DELETE']) && toggleList===1"
-                            ng-hide="!employees || employees.length==0">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">delete</i>
-                                <span ng-if="lang==='AR'">حذف الموظف</span>
-                                <span ng-if="lang==='EN'">Delete</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item"
-                            ng-click="enable(selected)"
-                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_ENABLE']) && toggleList===1"
-                            ng-hide="!employees || employees.length==0">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">flight_takeoff</i>
-                                <span>تفعيل الموظف</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item"
-                            ng-click="disable(selected)"
-                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_DISABLE']) && toggleList===1"
-                            ng-hide="!employees || employees.length==0">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">flight_land</i>
-                                <span>تعطيل الموظف</span>
-                            </span>
-                        </li>
-                    </ul>
-                </div>
 
-                <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="toggleList=1">
-                    <div class="btn-toolbar">
-                        <div class="btn-group" data-toggle="buttons">
-                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                                    type="button" ng-click="toggleList=1"
-                                    ng-class="{'active':toggleList===1}">
-                                <input type="radio" name="options"/>
-                                <i class="material-icons">reorder</i>
-                            </button>
-                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                                    type="button" ng-click="toggleList=2"
-                                    ng-class="{'active':toggleList===2}">
-                                <input type="radio" name="options"/>
-                                <i class="material-icons">view_column</i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
+            <div class="panel panel-body" style="min-height: 72px!important;width: 100%; margin-bottom: 0px !important;">
+                <div ui-view="options"></div>
             </div>
         </div>
+
     </header>
 
     <div class="mdl-layout__drawer">
@@ -350,185 +280,7 @@
 
     <main class="mdl-layout__content">
 
-        <div class="row" style="margin-top: 10px">
-
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
-                <div class="panel panel-body">
-                    <div class="table-responsive">
-                        <table st-table="collection" st-safe-src="employees"
-                               class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <span ng-if="lang==='AR'">م</span>
-                                    <span ng-if="lang==='EN'">#</span>
-                                </th>
-
-                                <th st-sort="code">
-                                    <span ng-if="lang==='AR'">اسم الموظف</span>
-                                    <span ng-if="lang==='EN'">Code</span>
-                                </th>
-
-                                <th st-sort="person.name">
-                                    <span ng-if="lang==='AR'">اسم الموظف</span>
-                                    <span ng-if="lang==='EN'">Name</span>
-                                </th>
-
-                                <th st-sort="person.email">
-                                    <span ng-if="lang==='AR'">البريد الإلكتروني</span>
-                                    <span ng-if="lang==='EN'">Email</span>
-                                </th>
-
-                                <th st-sort="person.mobile">
-                                    <span ng-if="lang==='AR'">الجوال</span>
-                                    <span ng-if="lang==='EN'">Mobile</span>
-                                </th>
-
-                                <th st-sort="person.qualification">
-                                    <span ng-if="lang==='AR'">المهنة</span>
-                                    <span ng-if="lang==='EN'">Qualification</span>
-                                </th>
-
-                                <th st-sort="person.lastLoginDate">
-                                    <span ng-if="lang==='AR'">تاريخ آخر دخول</span>
-                                    <span ng-if="lang==='EN'">Last Login Date</span>
-                                </th>
-
-                                <th st-sort="person.lastLoginLocation">
-                                    <span ng-if="lang==='AR'">الموقع</span>
-                                    <span ng-if="lang==='EN'">Location</span>
-                                </th>
-
-                                <th st-sort="person.ipAddress">
-                                    <span ng-if="lang==='AR'">أخر عنوان دخول</span>
-                                    <span ng-if="lang==='EN'">IP Address</span>
-                                </th>
-
-                            </tr>
-                            <tr>
-                                <th colspan="9">
-                                    <input st-search=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
-                                           type="text"/>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="employee in collection"
-                                st-select-mode="single"
-                                context-menu="rowMenu"
-                                ng-click="setSelected(employee)"
-                                ng-right-click="setSelected(employee)"
-                                ng-class="{'mdl-color--blue-grey-100':employee.isSelected}">
-                                <td st-select-row-custom="employee">{{$index+1}}</td>
-                                <td st-select-row-custom="employee">{{employee.code}}</td>
-                                <td st-select-row-custom="employee">
-                                    <span ng-if="employee.person.enabled" class="label label-success">مفعل</span>
-                                    <span ng-if="!employee.person.enabled" class="label label-danger">معطل</span>
-                                    {{employee.person.nickname}} /  {{employee.person.name}}
-                                </td>
-                                <td st-select-row-custom="employee">{{employee.person.email}}</td>
-                                <td st-select-row-custom="employee">{{employee.person.mobile}}</td>
-                                <td st-select-row-custom="employee">{{employee.person.qualification}}</td>
-                                <td st-select-row-custom="employee">
-                                    <span ng-show="dateType==='H'">{{employee.person.lastLoginDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                    <span ng-show="dateType==='G'">{{employee.person.lastLoginDate | date: 'yyyy-MM-dd'}}</span>
-                                    <span class="label label-success">{{employee.person.lastLoginDate | date:'h:m a'}}</span>
-                                </td>
-                                <td st-select-row-custom="employee">{{employee.person.lastLoginLocation}}</td>
-                                <td st-select-row-custom="employee">{{employee.person.ipAddress}}</td>
-                            </tr>
-                            <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                ng-show="!collection || collection.length ==0">
-                                <td colspan="9">
-                                    <span ng-if="lang==='AR'">لا توجد بيانات</span>
-                                    <span ng-if="lang==='EN'">No Data Found.</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div st-table="collection" st-safe-src="employees">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="employee in collection">
-                        <!-- CONTACT ITEM -->
-                        <div class="panel panel-default">
-                            <div class="panel-body profile">
-                                <div class="profile-image">
-                                    <img width="100" height="100"
-                                         src="/ui/img/no-image.jpg"
-                                         alt="{{employee.person.name}}"/>
-                                </div>
-                                <div class="profile-data">
-                                    <div class="profile-data-name">
-                                        {{employee.person.nickname}} / {{employee.person.name}}
-                                    </div>
-                                </div>
-                                <div class="profile-controls">
-                                    <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
-                                    <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="contact-info">
-                                    <p>
-                                        <strong ng-if="lang==='AR'">رقم الموظف</strong>
-                                        <strong ng-if="lang==='EN'">Code</strong>
-                                        {{employee.code}}
-                                    </p>
-                                    <hr>
-                                    <p>
-                                        <strong ng-if="lang==='AR'">البريد الإلكتروني</strong>
-                                        <strong ng-if="lang==='EN'">Email</strong>
-                                        {{employee.person.email}}
-                                    </p>
-                                    <hr>
-                                    <p>
-                                        <strong ng-if="lang==='AR'">رقم الجوال</strong>
-                                        <strong ng-if="lang==='EN'">Phone</strong>
-                                        {{employee.person.mobile}}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <button uib-tooltip="{{lang==='AR' ? 'انشاء مستخدم جديد' : 'New...'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE'])"
-                                            ng-click="ModalProvider.openEmployeeCreateModel();"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                    <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_UPDATE'])"
-                                            ng-click="ModalProvider.openEmployeeUpdateModel(employee)"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                    <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
-                                            tooltip-append-to-body="true"
-                                            type="button"
-                                            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_DELETE'])"
-                                            ng-click="delete(employee)"
-                                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END CONTACT ITEM -->
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <div ui-view="body"></div>
 
     </main>
 

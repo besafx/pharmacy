@@ -1,0 +1,186 @@
+<div class="row" style="margin-top: 10px" ng-init="employeeCtrl.fetchVacationData()">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="employeeCtrl.toggleList===1">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                    style="margin-top: 2px;">
+                    <li>
+                        <a href=""
+                           ng-click="employeeCtrl.fetchVacationData()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                            <span class="fa fa-refresh"></span>
+                        </a>
+                        <a href=""
+                           ng-if="contains(me.team.authorities, ['ROLE_VACATION_CREATE'])"
+                           ng-click="employeeCtrl.newVacation()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'انشاء اجازة' : 'New Vacation...'}}">
+                            <span class="fa fa-plus-square"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                    <h3 ng-if="lang==='AR'">قائمة الاجازات</h3>
+                    <h3 ng-if="lang==='EN'">Vacations List</h3>
+                </div>
+            </div>
+            <div class="panel-body panel-body-table">
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="employeeCtrl.vacations"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span ng-if="lang==='AR'">م</span>
+                                <span ng-if="lang==='EN'">#</span>
+                            </th>
+
+                            <th st-sort="employee.person.name">
+                                <span ng-if="lang==='AR'">اسم الموظف</span>
+                                <span ng-if="lang==='EN'">Name</span>
+                            </th>
+
+                            <th st-sort="employee.person.mobile">
+                                <span ng-if="lang==='AR'">الجوال</span>
+                                <span ng-if="lang==='EN'">Mobile</span>
+                            </th>
+
+                            <th st-sort="vacationType.code">
+                                <span ng-if="lang==='AR'">بند الاجازة</span>
+                                <span ng-if="lang==='EN'">Vacation Term</span>
+                            </th>
+
+                            <th st-sort="date">
+                                <span ng-if="lang==='AR'">تاريخ الاجازة</span>
+                                <span ng-if="lang==='EN'">Date</span>
+                            </th>
+
+                            <th st-sort="days">
+                                <span ng-if="lang==='AR'">عدد الايام</span>
+                                <span ng-if="lang==='EN'">Days</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="vacation in collection1"
+                            st-select-mode="single"
+                            context-menu="employeeCtrl.rowMenuVacation"
+                            ng-click="employeeCtrl.setSelectedVacation(vacation)"
+                            ng-right-click="employeeCtrl.setSelectedVacation(vacation)"
+                            ng-class="{'mdl-color--blue-grey-100':vacation.isSelected}">
+                            <td st-select-row-custom="vacation">{{$index+1}}</td>
+                            <td st-select-row-custom="vacation">
+                                <span ng-if="vacation.person.enabled" class="label label-success">مفعل</span>
+                                <span ng-if="!vacation.person.enabled" class="label label-danger">معطل</span>
+                                {{vacation.employee.person.nickname}} /  {{vacation.employee.person.name}}
+                            </td>
+                            <td st-select-row-custom="vacation">{{vacation.employee.person.mobile}}</td>
+                            <td st-select-row-custom="vacation">
+                                <span ng-if="lang==='AR'">{{vacation.vacationType.nameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{vacation.vacationType.nameEnglish}}</span>
+                            </td>
+                            <td st-select-row-custom="vacation">
+                                <span ng-show="dateType==='H'">{{vacation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                <span ng-show="dateType==='G'">{{vacation.date | date: 'yyyy-MM-dd'}}</span>
+                                <span class="label label-success">{{vacation.date | date:'h:m a'}}</span>
+                            </td>
+                            <td st-select-row-custom="vacation">{{vacation.days}}</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="6">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="employeeCtrl.toggleList===2">
+        <div st-table="collection2" st-safe-src="employeeCtrl.vacations">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="vacation in collection2">
+                <!-- CONTACT ITEM -->
+                <div class="panel panel-default">
+                    <div class="panel-body profile">
+                        <div class="profile-image">
+                            <img width="100" height="100"
+                                 src="/ui/img/no-image.jpg"
+                                 alt="{{vacation.id}}"/>
+                        </div>
+                        <div class="profile-data">
+                            <div class="profile-data-name">
+                                {{vacation.employee.person.nickname}} / {{vacation.employee.person.name}}
+                            </div>
+                        </div>
+                        <div class="profile-controls">
+                            <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                            <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="contact-info">
+                            <p>
+                                <strong ng-if="lang==='AR'">بند الاجازة</strong>
+                                <strong ng-if="lang==='EN'">Vacation Term</strong>
+                                <span ng-if="lang==='AR'">{{vacation.vacationType.nameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{vacation.vacationType.nameEnglish}}</span>
+                            </p>
+                            <hr>
+                            <p>
+                                <strong ng-if="lang==='AR'">رقم الجوال</strong>
+                                <strong ng-if="lang==='EN'">Phone</strong>
+                                {{vacation.employee.person.mobile}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <button uib-tooltip="{{lang==='AR' ? 'انشاء اجازة جديدة' : 'New...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_VACATION_CREATE'])"
+                                    ng-click="employeeCtrl.newVacation()"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">add</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_VACATION_UPDATE'])"
+                                    ng-click="ModalProvider.openVacationUpdateModel(vacation)"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_VACATION_DELETE'])"
+                                    ng-click="employeeCtrl.deleteVacation(vacation)"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CONTACT ITEM -->
+            </div>
+        </div>
+    </div>
+
+</div>

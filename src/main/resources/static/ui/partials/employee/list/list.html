@@ -1,0 +1,206 @@
+<div class="row" style="margin-top: 10px" ng-init="employeeCtrl.fetchTableData()">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="employeeCtrl.toggleList===1">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                    style="margin-top: 2px;">
+                    <li>
+                        <a href=""
+                           ng-click="employeeCtrl.fetchTableData()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                            <span class="fa fa-refresh"></span>
+                        </a>
+                        <a href=""
+                           ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE'])"
+                           ng-click="employeeCtrl.newEmployee()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'انشاء حساب موظف' : 'New Employee...'}}">
+                            <span class="fa fa-plus-square"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                    <h3 ng-if="lang==='AR'">قائمة الموظفون</h3>
+                    <h3 ng-if="lang==='EN'">Employees List</h3>
+                </div>
+            </div>
+            <div class="panel-body panel-body-table">
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="employeeCtrl.employees"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span ng-if="lang==='AR'">م</span>
+                                <span ng-if="lang==='EN'">#</span>
+                            </th>
+
+                            <th st-sort="code">
+                                <span ng-if="lang==='AR'">اسم الموظف</span>
+                                <span ng-if="lang==='EN'">Code</span>
+                            </th>
+
+                            <th st-sort="person.name">
+                                <span ng-if="lang==='AR'">اسم الموظف</span>
+                                <span ng-if="lang==='EN'">Name</span>
+                            </th>
+
+                            <th st-sort="person.email">
+                                <span ng-if="lang==='AR'">البريد الإلكتروني</span>
+                                <span ng-if="lang==='EN'">Email</span>
+                            </th>
+
+                            <th st-sort="person.mobile">
+                                <span ng-if="lang==='AR'">الجوال</span>
+                                <span ng-if="lang==='EN'">Mobile</span>
+                            </th>
+
+                            <th st-sort="person.qualification">
+                                <span ng-if="lang==='AR'">المهنة</span>
+                                <span ng-if="lang==='EN'">Qualification</span>
+                            </th>
+
+                            <th st-sort="person.lastLoginDate">
+                                <span ng-if="lang==='AR'">تاريخ آخر دخول</span>
+                                <span ng-if="lang==='EN'">Last Login Date</span>
+                            </th>
+
+                            <th st-sort="person.lastLoginLocation">
+                                <span ng-if="lang==='AR'">الموقع</span>
+                                <span ng-if="lang==='EN'">Location</span>
+                            </th>
+
+                            <th st-sort="person.ipAddress">
+                                <span ng-if="lang==='AR'">أخر عنوان دخول</span>
+                                <span ng-if="lang==='EN'">IP Address</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="employee in collection1"
+                            st-select-mode="single"
+                            context-menu="employeeCtrl.rowMenu"
+                            ng-click="employeeCtrl.setSelected(employee)"
+                            ng-right-click="employeeCtrl.setSelected(employee)"
+                            ng-class="{'mdl-color--blue-grey-100':employee.isSelected}">
+                            <td st-select-row-custom="employee">{{$index+1}}</td>
+                            <td st-select-row-custom="employee">{{employee.code}}</td>
+                            <td st-select-row-custom="employee">
+                                <span ng-if="employee.person.enabled" class="label label-success">مفعل</span>
+                                <span ng-if="!employee.person.enabled" class="label label-danger">معطل</span>
+                                {{employee.person.nickname}} /  {{employee.person.name}}
+                            </td>
+                            <td st-select-row-custom="employee">{{employee.person.email}}</td>
+                            <td st-select-row-custom="employee">{{employee.person.mobile}}</td>
+                            <td st-select-row-custom="employee">{{employee.person.qualification}}</td>
+                            <td st-select-row-custom="employee">
+                                <span ng-show="dateType==='H'">{{employee.person.lastLoginDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                <span ng-show="dateType==='G'">{{employee.person.lastLoginDate | date: 'yyyy-MM-dd'}}</span>
+                                <span class="label label-success">{{employee.person.lastLoginDate | date:'h:m a'}}</span>
+                            </td>
+                            <td st-select-row-custom="employee">{{employee.person.lastLoginLocation}}</td>
+                            <td st-select-row-custom="employee">{{employee.person.ipAddress}}</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="9">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="employeeCtrl.toggleList===2">
+        <div st-table="collection2" st-safe-src="employeeCtrl.employees">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="employee in collection2">
+                <!-- CONTACT ITEM -->
+                <div class="panel panel-default">
+                    <div class="panel-body profile">
+                        <div class="profile-image">
+                            <img width="100" height="100"
+                                 src="/ui/img/no-image.jpg"
+                                 alt="{{employee.person.name}}"/>
+                        </div>
+                        <div class="profile-data">
+                            <div class="profile-data-name">
+                                {{employee.person.nickname}} / {{employee.person.name}}
+                            </div>
+                        </div>
+                        <div class="profile-controls">
+                            <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                            <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="contact-info">
+                            <p>
+                                <strong ng-if="lang==='AR'">رقم الموظف</strong>
+                                <strong ng-if="lang==='EN'">Code</strong>
+                                {{employee.code}}
+                            </p>
+                            <hr>
+                            <p>
+                                <strong ng-if="lang==='AR'">البريد الإلكتروني</strong>
+                                <strong ng-if="lang==='EN'">Email</strong>
+                                {{employee.person.email}}
+                            </p>
+                            <hr>
+                            <p>
+                                <strong ng-if="lang==='AR'">رقم الجوال</strong>
+                                <strong ng-if="lang==='EN'">Phone</strong>
+                                {{employee.person.mobile}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <button uib-tooltip="{{lang==='AR' ? 'انشاء مستخدم جديد' : 'New...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE'])"
+                                    ng-click="employeeCtrl.newEmployee()"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">add</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_UPDATE'])"
+                                    ng-click="ModalProvider.openEmployeeUpdateModel(employee)"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_DELETE'])"
+                                    ng-click="employeeCtrl.delete(employee)"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CONTACT ITEM -->
+            </div>
+        </div>
+    </div>
+
+</div>

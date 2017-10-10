@@ -256,6 +256,19 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
             }
         };
 
+        $scope.deleteTransactionSell = function (transactionSell) {
+            if (transactionSell) {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
+                    TransactionSellService.remove(transactionSell.id).then(function () {
+                        var index = $scope.selectedTransactionBuy.transactionSells.indexOf(transactionSell);
+                        $scope.selectedTransactionBuy.transactionSells.splice(index, 1);
+                        $scope.setSelected($scope.selectedTransactionBuy.transactionSells[0]);
+                    });
+                });
+
+            }
+        };
+
         $scope.updatePrices = function (transactionBuy) {
             if (transactionBuy) {
                 $rootScope.showConfirmNotify("المخازن", "هل تعديل أسعار الطلبية فعلاً؟", "warning", "fa-edit", function () {

@@ -1,0 +1,85 @@
+<div class="row" style="margin-top: 10px" ng-init="employeeCtrl.fetchVacationTypeData()">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                    style="margin-top: 2px;">
+                    <li>
+                        <a href=""
+                           ng-click="employeeCtrl.fetchVacationTypeData()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                            <span class="fa fa-refresh"></span>
+                        </a>
+                        <a href=""
+                           ng-if="contains(me.team.authorities, ['ROLE_VACATION_TYPE_CREATE'])"
+                           ng-click="employeeCtrl.newVacationType()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'انشاء بند جديد' : 'New VacationType...'}}">
+                            <span class="fa fa-plus-square"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                    <h3 ng-if="lang==='AR'">بنود الاجازات</h3>
+                    <h3 ng-if="lang==='EN'">Vacation Terms</h3>
+                </div>
+            </div>
+            <div class="panel-body panel-body-table">
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="employeeCtrl.vacationTypes"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span ng-if="lang==='AR'">م</span>
+                                <span ng-if="lang==='EN'">#</span>
+                            </th>
+
+                            <th st-sort="nameArabic">
+                                <span ng-if="lang==='AR'">اسم البند عربي</span>
+                                <span ng-if="lang==='EN'">Arabic Name</span>
+                            </th>
+
+                            <th st-sort="nameEnglish">
+                                <span ng-if="lang==='AR'">اسم البند إنجليزي</span>
+                                <span ng-if="lang==='EN'">English Name</span>
+                            </th>
+
+                            <th st-sort="limitInDay">
+                                <span ng-if="lang==='AR'">الحد الأقصى لعدد الأيام</span>
+                                <span ng-if="lang==='EN'">Limit In Days</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="vacationType in collection1"
+                            st-select-mode="single"
+                            context-menu="employeeCtrl.rowMenuVacationType"
+                            ng-click="employeeCtrl.setSelectedVacationType(vacationType)"
+                            ng-right-click="employeeCtrl.setSelectedVacationType(vacationType)"
+                            ng-class="{'mdl-color--blue-grey-100':vacationType.isSelected}">
+                            <td st-select-row-custom="vacationType">{{$index+1}}</td>
+                            <td st-select-row-custom="vacationType">{{vacationType.nameArabic}}</td>
+                            <td st-select-row-custom="vacationType">{{vacationType.nameEnglish}}</td>
+                            <td st-select-row-custom="vacationType">{{vacationType.limitInDays}}</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="4">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

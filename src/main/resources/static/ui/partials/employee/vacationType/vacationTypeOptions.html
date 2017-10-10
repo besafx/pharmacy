@@ -1,0 +1,47 @@
+<div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+     class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+    <button id="employee-menu-lower-right" style="width: 100%;"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+        <span ng-if="lang==='AR'">العمليات</span>
+        <span ng-if="lang==='EN'">Actions</span>
+    </button>
+    <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+        class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+        for="employee-menu-lower-right">
+        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+            ng-click="employeeCtrl.fetchVacationTypeData()">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">visibility</i>
+                <span ng-if="lang==='AR'">عرض البيانات</span>
+                <span ng-if="lang==='EN'">View</span>
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item" ng-click="employeeCtrl.newVacationType();"
+            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE'])">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">add</i>
+                <span ng-if="lang==='AR'">انشاء بند جديد</span>
+                <span ng-if="lang==='EN'">New...</span>
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item"
+            ng-click="ModalProvider.openVacationTypeUpdateModel(employeeCtrl.selectedVacationType);"
+            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_UPDATE'])"
+            ng-hide="!employeeCtrl.vacationTypes || employeeCtrl.vacationTypes.length==0">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">edit</i>
+                <span ng-if="lang==='AR'">تعديل بيانات البند</span>
+                <span ng-if="lang==='EN'">Edit...</span>
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item" ng-click="employeeCtrl.delete()"
+            ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_DELETE'])"
+            ng-hide="!employeeCtrl.vacationTypes || employeeCtrl.vacationTypes.length==0">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">delete</i>
+                <span ng-if="lang==='AR'">حذف البند</span>
+                <span ng-if="lang==='EN'">Delete</span>
+            </span>
+        </li>
+    </ul>
+</div>

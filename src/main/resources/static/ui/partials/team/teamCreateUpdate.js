@@ -361,6 +361,42 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'تسديد مستحقات طلبات الفحص' : 'Pay For Order Costs',
                 value: 'ROLE_ORDER_PAY',
                 selected: false
+            },
+            {
+                id: 64,
+                name: $rootScope.lang === 'AR' ? 'إنشاء بنود الاجازات' : 'Create Vacation Terms',
+                value: 'ROLE_VACATION_TYPE_CREATE',
+                selected: false
+            },
+            {
+                id: 65,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات بنود الاجازات' : 'Update Vacation Terms Information',
+                value: 'ROLE_VACATION_TYPE_UPDATE',
+                selected: false
+            },
+            {
+                id: 66,
+                name: $rootScope.lang === 'AR' ? 'حذف بنود الاجازات' : 'Delete Vacation Terms',
+                value: 'ROLE_VACATION_TYPE_DELETE',
+                selected: false
+            },
+            {
+                id: 67,
+                name: $rootScope.lang === 'AR' ? 'إنشاء الاجازات' : 'Create Vacation',
+                value: 'ROLE_VACATION_CREATE',
+                selected: false
+            },
+            {
+                id: 68,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات الاجازات' : 'Update Vacation Information',
+                value: 'ROLE_VACATION_UPDATE',
+                selected: false
+            },
+            {
+                id: 69,
+                name: $rootScope.lang === 'AR' ? 'حذف الاجازات' : 'Delete Vacation',
+                value: 'ROLE_VACATION_DELETE',
+                selected: false
             }
         ];
 

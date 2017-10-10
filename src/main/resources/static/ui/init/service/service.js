@@ -73,6 +73,108 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * VacationType Model                                         *
+     *                                                            *
+     *************************************************************/
+    this.openVacationTypeCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/vacationType/vacationTypeCreateUpdate.html',
+            controller: 'vacationTypeCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء بند اجازة جديد' : 'New Vacation Type';
+                },
+                action: function () {
+                    return 'create';
+                },
+                vacationType: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openVacationTypeUpdateModel = function (vacationType) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/vacationType/vacationTypeCreateUpdate.html',
+            controller: 'vacationTypeCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل بند اجازة' : 'Update Vacation Type Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                vacationType: function () {
+                    return vacationType;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * Vacation Model                                             *
+     *                                                            *
+     *************************************************************/
+    this.openVacationCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/vacation/vacationCreateUpdate.html',
+            controller: 'vacationCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء اجازة جديد' : 'New Vacation';
+                },
+                action: function () {
+                    return 'create';
+                },
+                vacation: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openVacationUpdateModel = function (vacation) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/vacation/vacationCreateUpdate.html',
+            controller: 'vacationCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل بيانات الاجازة' : 'Update Vacation Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                vacation: function () {
+                    return vacation;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
      * Supplier Model                                             *
      *                                                            *
      *************************************************************/

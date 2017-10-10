@@ -1,20 +1,42 @@
-app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (EmployeeService, ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'VacationService', 'ModalProvider', '$rootScope', '$state', '$timeout',
+    function (EmployeeService, VacationTypeService, VacationService, ModalProvider, $rootScope, $state, $timeout) {
 
-        $scope.selected = {};
+        var vm = this;
 
-        $scope.fetchTableData = function () {
+        vm.selected = {};
+        vm.selectedVacationType = {};
+        vm.selectedVacation = {};
+
+        vm.employees = [];
+        vm.vacationTypes = [];
+        vm.vacations = [];
+
+        vm.fetchTableData = function () {
             EmployeeService.findAll().then(function (data) {
-                $scope.employees = data;
-                $scope.setSelected(data[0]);
+                vm.employees = data;
+                vm.setSelected(data[0]);
             });
         };
 
-        $scope.setSelected = function (object) {
+        vm.fetchVacationTypeData = function () {
+            VacationTypeService.findAll().then(function (data) {
+                vm.vacationTypes = data;
+                vm.setSelectedVacationType(data[0]);
+            });
+        };
+
+        vm.fetchVacationData = function () {
+            VacationService.findAll().then(function (data) {
+                vm.vacations = data;
+                vm.setSelectedVacation(data[0]);
+            });
+        };
+
+        vm.setSelected = function (object) {
             if (object) {
-                angular.forEach($scope.employees, function (employee) {
+                angular.forEach(vm.employees, function (employee) {
                     if (object.id == employee.id) {
-                        $scope.selected = employee;
+                        vm.selected = employee;
                         return employee.isSelected = true;
                     } else {
                         return employee.isSelected = false;
@@ -23,57 +45,141 @@ app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', '$scope', '$
             }
         };
 
-        $scope.delete = function (employee) {
+        vm.setSelectedVacationType = function (object) {
+            if (object) {
+                angular.forEach(vm.vacationTypes, function (vacationType) {
+                    if (object.id == vacationType.id) {
+                        vm.selectedVacationType = vacationType;
+                        return vacationType.isSelected = true;
+                    } else {
+                        return vacationType.isSelected = false;
+                    }
+                });
+            }
+        };
+
+        vm.setSelectedVacation = function (object) {
+            if (object) {
+                angular.forEach(vm.vacations, function (vacation) {
+                    if (object.id == vacation.id) {
+                        vm.selectedVacation = vacation;
+                        return vacation.isSelected = true;
+                    } else {
+                        return vacation.isSelected = false;
+                    }
+                });
+            }
+        };
+
+        vm.delete = function (employee) {
             if (employee) {
                 $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الموظف فعلاً؟", "error", "fa-trash", function () {
                     EmployeeService.remove(employee.id).then(function () {
-                        var index = $scope.employees.indexOf(employee);
-                        $scope.employees.splice(index, 1);
-                        $scope.setSelected($scope.employees[0]);
+                        var index = vm.employees.indexOf(employee);
+                        vm.employees.splice(index, 1);
+                        vm.setSelected(vm.employees[0]);
                     });
                 });
                 return;
             }
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الموظف فعلاً؟", "error", "fa-trash", function () {
-                EmployeeService.remove($scope.selected.id).then(function () {
-                    var index = $scope.employees.indexOf($scope.selected);
-                    $scope.employees.splice(index, 1);
-                    $scope.setSelected($scope.employees[0]);
+                EmployeeService.remove(vm.selected.id).then(function () {
+                    var index = vm.employees.indexOf(vm.selected);
+                    vm.employees.splice(index, 1);
+                    vm.setSelected(vm.employees[0]);
                 });
             });
         };
 
-        $scope.newEmployee = function () {
+        vm.deleteVacationType = function (vacationType) {
+            if (vacationType) {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف البند فعلاً؟", "error", "fa-trash", function () {
+                    VacationTypeService.remove(vacationType.id).then(function () {
+                        var index = vm.vacationTypes.indexOf(vacationType);
+                        vm.vacationTypes.splice(index, 1);
+                        vm.setSelected(vm.vacationTypes[0]);
+                    });
+                });
+                return;
+            }
+
+            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف البند فعلاً؟", "error", "fa-trash", function () {
+                VacationTypeService.remove(vm.selected.id).then(function () {
+                    var index = vm.vacationTypes.indexOf(vm.selected);
+                    vm.vacationTypes.splice(index, 1);
+                    vm.setSelected(vm.vacationTypes[0]);
+                });
+            });
+        };
+
+        vm.deleteVacation = function (vacation) {
+            if (vacation) {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الاجازة فعلاً؟", "error", "fa-trash", function () {
+                    VacationService.remove(vacation.id).then(function () {
+                        var index = vm.vacations.indexOf(vacation);
+                        vm.vacations.splice(index, 1);
+                        vm.setSelected(vm.vacations[0]);
+                    });
+                });
+                return;
+            }
+
+            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الاجازة فعلاً؟", "error", "fa-trash", function () {
+                VacationService.remove(vm.selected.id).then(function () {
+                    var index = vm.vacations.indexOf(vm.selected);
+                    vm.vacations.splice(index, 1);
+                    vm.setSelected(vm.vacations[0]);
+                });
+            });
+        };
+
+        vm.newEmployee = function () {
             ModalProvider.openEmployeeCreateModel().result.then(function (data) {
-                $scope.employees.splice(0,0,data);
+                vm.employees.splice(0,0,data);
             }, function () {
                 console.info('EmployeeCreateModel Closed.');
             });
         };
 
-        $scope.enable = function () {
-            EmployeeService.enable($scope.selected).then(function (data) {
-                var index = $scope.employees.indexOf($scope.selected);
-                $scope.employees[index] = data;
+        vm.newVacationType = function () {
+            ModalProvider.openVacationTypeCreateModel().result.then(function (data) {
+                vm.vacationTypes.splice(0,0,data);
+            }, function () {
+                console.info('VacationTypeCreateModel Closed.');
             });
         };
 
-        $scope.disable = function () {
-            EmployeeService.disable($scope.selected).then(function (data) {
-                var index = $scope.employees.indexOf($scope.selected);
-                $scope.employees[index] = data;
+        vm.newVacation = function () {
+            ModalProvider.openVacationCreateModel().result.then(function (data) {
+                vm.vacations.splice(0,0,data);
+            }, function () {
+                console.info('VacationCreateModel Closed.');
             });
         };
 
-        $scope.rowMenu = [
+        vm.enable = function () {
+            EmployeeService.enable(vm.selected).then(function (data) {
+                var index = vm.employees.indexOf(vm.selected);
+                vm.employees[index] = data;
+            });
+        };
+
+        vm.disable = function () {
+            EmployeeService.disable(vm.selected).then(function (data) {
+                var index = vm.employees.indexOf(vm.selected);
+                vm.employees[index] = data;
+            });
+        };
+
+        vm.rowMenu = [
             {
                 html: '<div class="drop-menu">انشاء موظف جديد<span class="fa fa-pencil fa-lg"></span></div>',
                 enabled: function () {
                     return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_EMPLOYEE_CREATE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.newEmployee();
+                    vm.newEmployee();
                 }
             },
             {
@@ -91,14 +197,73 @@ app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', '$scope', '$
                     return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_EMPLOYEE_DELETE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.delete($itemScope.employee);
+                    vm.delete($itemScope.employee);
+                }
+            }
+        ];
+
+        vm.rowMenuVacationType = [
+            {
+                html: '<div class="drop-menu">انشاء بند جديد<span class="fa fa-pencil fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_VACATION_TYPE_CREATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.newVacationType();
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعديل بيانات البند<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_VACATION_TYPE_UPDATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    ModalProvider.openVacationTypeUpdateModel($itemScope.vacationType);
+                }
+            },
+            {
+                html: '<div class="drop-menu">حذف البند<span class="fa fa-trash fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_VACATION_TYPE_DELETE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.deleteVacationType($itemScope.vacationType);
+                }
+            }
+        ];
+
+        vm.rowMenuVacation = [
+            {
+                html: '<div class="drop-menu">انشاء اجازة جديدة<span class="fa fa-pencil fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_VACATION_CREATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.newVacation();
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعديل بيانات الاجازة<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_VACATION_UPDATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    ModalProvider.openVacationUpdateModel($itemScope.vacation);
+                }
+            },
+            {
+                html: '<div class="drop-menu">حذف الاجازة<span class="fa fa-trash fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_VACATION_DELETE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.deleteVacation($itemScope.vacation);
                 }
             }
         ];
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
-            $scope.fetchTableData();
         }, 1500);
 
     }]);

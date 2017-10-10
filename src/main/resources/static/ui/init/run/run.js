@@ -1,7 +1,8 @@
-app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider', 'Fullscreen',
-    function ($http, $location, $state, $timeout, $window, PersonService, $rootScope, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider, Fullscreen) {
+app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$stateParams', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider', 'Fullscreen',
+    function ($http, $location, $state, $timeout, $window, PersonService, $rootScope, $stateParams, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider, Fullscreen) {
 
         $rootScope.state = $state;
+        $rootScope.stateParams = $stateParams;
 
         defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
             errorMessages['fieldRequired'] = 'هذا الحقل مطلوب';
@@ -99,7 +100,11 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
-                case 'employee': {
+                case 'employee':
+                case 'employee.list':
+                case 'employee.vacationType':
+                case 'employee.vacation':
+                    {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'person_pin_circle';
                     $css.removeAll();
@@ -349,6 +354,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                         }
                         break;
                     case 'employee':
+                    case 'employee.list':
+                    case 'employee.vacationType':
+                    case 'employee.vacation':
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'الموظفون';
                         } else {
@@ -440,6 +448,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $css.add('/ui/css/style-en.css');
                     break;
             }
+            $timeout(function () {
+                window.componentHandler.upgradeAllRegistered();
+            }, 1500);
         };
 
         $rootScope.ModalProvider = ModalProvider;
@@ -452,8 +463,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
             $rootScope.dateType = $rootScope.options.dateType;
             $rootScope.applyTitleLang();
             $rootScope.applyCssLang();
-            window.componentHandler.upgradeAllRegistered();
-            $rootScope.state.reload();
+            // $rootScope.state.reload();
         });
 
         $rootScope.goFullscreen = function () {
@@ -646,7 +656,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
             $state.go('doctor');
         };
         $rootScope.goToEmployee = function () {
-            $state.go('employee');
+            $state.go('employee.list');
         };
         $rootScope.goToDetectionType = function () {
             $state.go('detectionType');
