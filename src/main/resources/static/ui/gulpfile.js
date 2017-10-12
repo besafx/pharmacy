@@ -157,6 +157,8 @@ gulp.task('scripts', function () {
         './partials/employee/employeeCreateUpdate.js',
         './partials/employee/vacationType/vacationTypeCreateUpdate.js',
         './partials/employee/vacation/vacationCreateUpdate.js',
+        './partials/employee/deductionType/deductionTypeCreateUpdate.js',
+        './partials/employee/deduction/deductionCreateUpdate.js',
         './partials/detectionType/detectionType.js',
         './partials/detectionType/detectionTypeCreateUpdate.js',
         './partials/detectionType/detectionTypeHeavyWork.js',

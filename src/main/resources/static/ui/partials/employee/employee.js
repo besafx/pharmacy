@@ -1,15 +1,17 @@
-app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'VacationService', 'ModalProvider', '$rootScope', '$state', '$timeout',
-    function (EmployeeService, VacationTypeService, VacationService, ModalProvider, $rootScope, $state, $timeout) {
+app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'VacationService', 'ModalProvider', '$rootScope', '$state', '$timeout', '$location', '$anchorScroll',
+    function (EmployeeService, VacationTypeService, VacationService, ModalProvider, $rootScope, $state, $timeout, $location, $anchorScroll) {
 
         var vm = this;
 
         vm.selected = {};
         vm.selectedVacationType = {};
         vm.selectedVacation = {};
+        vm.selectedDeductionType = {};
 
         vm.employees = [];
         vm.vacationTypes = [];
         vm.vacations = [];
+        vm.deductionTypes = [];
 
         vm.fetchTableData = function () {
             EmployeeService.findAll().then(function (data) {
@@ -29,6 +31,13 @@ app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'Vacat
             VacationService.findAll().then(function (data) {
                 vm.vacations = data;
                 vm.setSelectedVacation(data[0]);
+            });
+        };
+
+        vm.fetchDeductionTypeData = function () {
+            DeductionTypeService.findAll().then(function (data) {
+                vm.vacationTypes = data;
+                vm.setSelectedDeductionType(data[0]);
             });
         };
 
@@ -66,6 +75,19 @@ app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'Vacat
                         return vacation.isSelected = true;
                     } else {
                         return vacation.isSelected = false;
+                    }
+                });
+            }
+        };
+
+        vm.setSelectedDeductionType = function (object) {
+            if (object) {
+                angular.forEach(vm.deductionTypes, function (deductionType) {
+                    if (object.id == deductionType.id) {
+                        vm.selectedDeductionType = deductionType;
+                        return deductionType.isSelected = true;
+                    } else {
+                        return deductionType.isSelected = false;
                     }
                 });
             }
@@ -134,6 +156,27 @@ app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'Vacat
             });
         };
 
+        vm.deleteDeductionType = function (deductionType) {
+            if (deductionType) {
+                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف البند فعلاً؟", "error", "fa-trash", function () {
+                    DeductionTypeService.remove(deductionType.id).then(function () {
+                        var index = vm.deductionTypes.indexOf(deductionType);
+                        vm.deductionTypes.splice(index, 1);
+                        vm.setSelected(vm.deductionTypes[0]);
+                    });
+                });
+                return;
+            }
+
+            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف البند فعلاً؟", "error", "fa-trash", function () {
+                DeductionTypeService.remove(vm.selected.id).then(function () {
+                    var index = vm.deductionTypes.indexOf(vm.selected);
+                    vm.deductionTypes.splice(index, 1);
+                    vm.setSelected(vm.deductionTypes[0]);
+                });
+            });
+        };
+
         vm.newEmployee = function () {
             ModalProvider.openEmployeeCreateModel().result.then(function (data) {
                 vm.employees.splice(0,0,data);
@@ -155,6 +198,14 @@ app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'Vacat
                 vm.vacations.splice(0,0,data);
             }, function () {
                 console.info('VacationCreateModel Closed.');
+            });
+        };
+
+        vm.newDeductionType = function () {
+            ModalProvider.openDeductionTypeCreateModel().result.then(function (data) {
+                vm.deductionTypes.splice(0,0,data);
+            }, function () {
+                console.info('DeductionTypeCreateModel Closed.');
             });
         };
 
@@ -262,7 +313,39 @@ app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'Vacat
             }
         ];
 
+        vm.rowMenuDeductionType = [
+            {
+                html: '<div class="drop-menu">انشاء بند جديد<span class="fa fa-pencil fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_DEDUCTION_TYPE_CREATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.newDeductionType();
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعديل بيانات البند<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_DEDUCTION_TYPE_UPDATE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    ModalProvider.openDeductionTypeUpdateModel($itemScope.vacationType);
+                }
+            },
+            {
+                html: '<div class="drop-menu">حذف البند<span class="fa fa-trash fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_DEDUCTION_TYPE_DELETE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.deleteDeductionType($itemScope.vacationType);
+                }
+            }
+        ];
+
         $timeout(function () {
+            $location.hash('employeeMenu');
+            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

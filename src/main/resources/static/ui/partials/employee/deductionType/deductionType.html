@@ -1,0 +1,85 @@
+<div class="row" style="margin-top: 10px" ng-init="employeeCtrl.fetchDeductionTypeData()">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                    style="margin-top: 2px;">
+                    <li>
+                        <a href=""
+                           ng-click="employeeCtrl.fetchDeductionTypeData()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                            <span class="fa fa-refresh"></span>
+                        </a>
+                        <a href=""
+                           ng-if="contains(me.team.authorities, ['ROLE_DEDUCTION_TYPE_CREATE'])"
+                           ng-click="employeeCtrl.newDeductionType()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'انشاء بند جديد' : 'New Deduction Type...'}}">
+                            <span class="fa fa-plus-square"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                    <h3 ng-if="lang==='AR'">بنود الاستقطاعات</h3>
+                    <h3 ng-if="lang==='EN'">Deduction Terms</h3>
+                </div>
+            </div>
+            <div class="panel-body panel-body-table">
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="employeeCtrl.deductionTypes"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span ng-if="lang==='AR'">م</span>
+                                <span ng-if="lang==='EN'">#</span>
+                            </th>
+
+                            <th st-sort="code">
+                                <span ng-if="lang==='AR'">رقم البند</span>
+                                <span ng-if="lang==='EN'">Code</span>
+                            </th>
+
+                            <th st-sort="nameArabic">
+                                <span ng-if="lang==='AR'">اسم البند عربي</span>
+                                <span ng-if="lang==='EN'">Arabic Name</span>
+                            </th>
+
+                            <th st-sort="nameEnglish">
+                                <span ng-if="lang==='AR'">اسم البند إنجليزي</span>
+                                <span ng-if="lang==='EN'">English Name</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="deductionType in collection1"
+                            st-select-mode="single"
+                            context-menu="employeeCtrl.rowMenuDeductionType"
+                            ng-click="employeeCtrl.setSelectedDeductionType(deductionType)"
+                            ng-right-click="employeeCtrl.setSelectedDeductionType(deductionType)"
+                            ng-class="{'mdl-color--blue-grey-100':deductionType.isSelected}">
+                            <td st-select-row-custom="deductionType">{{$index+1}}</td>
+                            <td st-select-row-custom="deductionType">{{deductionType.code}}</td>
+                            <td st-select-row-custom="deductionType">{{deductionType.nameArabic}}</td>
+                            <td st-select-row-custom="deductionType">{{deductionType.nameEnglish}}</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="4">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

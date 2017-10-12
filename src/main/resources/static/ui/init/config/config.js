@@ -209,6 +209,30 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             }
         });
 
+        $stateProvider.state("employee.deductionType", {
+            url: "/deductionType",
+            views:{
+                'body@employee':{
+                    templateUrl: "/ui/partials/employee/deductionType/deductionType.html"
+                },
+                'options@employee':{
+                    templateUrl: "/ui/partials/employee/deductionType/deductionTypeOptions.html"
+                }
+            }
+        });
+
+        $stateProvider.state("employee.deduction", {
+            url: "/deduction",
+            views:{
+                'body@employee':{
+                    templateUrl: "/ui/partials/employee/deduction/deduction.html"
+                },
+                'options@employee':{
+                    templateUrl: "/ui/partials/employee/deduction/deductionOptions.html"
+                }
+            }
+        });
+
         /**************************************************************
          *                                                            *
          * Detection Type State                                       *

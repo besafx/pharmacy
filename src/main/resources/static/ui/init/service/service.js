@@ -175,6 +175,108 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * DeductionType Model                                        *
+     *                                                            *
+     *************************************************************/
+    this.openDeductionTypeCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/deductionType/deductionTypeCreateUpdate.html',
+            controller: 'deductionTypeCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء بند استقطاع جديد' : 'New Deduction Type';
+                },
+                action: function () {
+                    return 'create';
+                },
+                deductionType: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openDeductionTypeUpdateModel = function (deductionType) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/deductionType/deductionTypeCreateUpdate.html',
+            controller: 'deductionTypeCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل بند استقطاع' : 'Update Deduction Type Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                deductionType: function () {
+                    return deductionType;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * Deduction Model                                            *
+     *                                                            *
+     *************************************************************/
+    this.openDeductionCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/deduction/deductionCreateUpdate.html',
+            controller: 'deductionCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء استقطاع جديد' : 'New Deduction';
+                },
+                action: function () {
+                    return 'create';
+                },
+                deduction: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openDeductionUpdateModel = function (deduction) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/deduction/deductionCreateUpdate.html',
+            controller: 'deductionCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل بيانات الاستقطاع' : 'Update Deduction Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                deduction: function () {
+                    return deduction;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
      * Supplier Model                                             *
      *                                                            *
      *************************************************************/

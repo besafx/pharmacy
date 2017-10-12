@@ -1,5 +1,5 @@
-app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (FalconService, OrderService, ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$location', '$anchorScroll',
+    function (FalconService, OrderService, ModalProvider, $scope, $rootScope, $state, $timeout, $location, $anchorScroll) {
 
         $scope.selected = {};
         $scope.selectedOrder = {};
@@ -221,8 +221,10 @@ app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', 
         ];
 
         $timeout(function () {
-            window.componentHandler.upgradeAllRegistered();
             $scope.fetchTableData();
+            $location.hash('falconMenu');
+            $anchorScroll();
+            window.componentHandler.upgradeAllRegistered();
         }, 1500);
 
     }]);

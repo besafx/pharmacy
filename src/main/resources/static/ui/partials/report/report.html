@@ -128,7 +128,7 @@
     <div class="mdl-layout__drawer" style="padding-top: 50px !important;">
         <nav class="mdl-navigation">
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToHome()">
+               href="" ui-sref="home" ui-sref-active="mdl-navigation__link-active mdl-color--primary">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">dashboard</i>
                     <span ng-if="lang==='AR'">الرئيسية</span>
@@ -136,7 +136,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToCompany()"
+               href="" ui-sref="company" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_COMPANY_UPDATE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">business</i>
@@ -145,7 +145,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToCustomer()"
+               href="" ui-sref="customer" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE', 'ROLE_CUSTOMER_UPDATE', 'ROLE_CUSTOMER_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">account_circle</i>
@@ -154,7 +154,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToFalcon()"
+               href="" ui-sref="falcon" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE', 'ROLE_FALCON_UPDATE', 'ROLE_FALCON_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">adb</i>
@@ -163,7 +163,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToDoctor()"
+               href="" ui-sref="doctor" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE', 'ROLE_DOCTOR_UPDATE', 'ROLE_DOCTOR_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">local_hospital</i>
@@ -172,7 +172,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToEmployee()"
+               href="" ui-sref="employee.list" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE', 'ROLE_EMPLOYEE_UPDATE', 'ROLE_EMPLOYEE_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">person_pin_circle</i>
@@ -181,7 +181,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToDetectionType()"
+               href="" ui-sref="detectionType" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE', 'ROLE_DETECTION_TYPE_UPDATE', 'ROLE_DETECTION_TYPE_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">spa</i>
@@ -190,7 +190,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToOrder()"
+               href="" ui-sref="order" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE', 'ROLE_ORDER_UPDATE', 'ROLE_ORDER_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">burst_mode</i>
@@ -199,7 +199,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToDiagnosis()"
+               href="" ui-sref="diagnosis" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE', 'ROLE_DIAGNOSIS_UPDATE', 'ROLE_DIAGNOSIS_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">assignment</i>
@@ -208,7 +208,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToDrug()"
+               href="" ui-sref="drug" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">favorite</i>
@@ -217,7 +217,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToSupplier()"
+               href="" ui-sref="supplier" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE', 'ROLE_SUPPLIER_UPDATE', 'ROLE_SUPPLIER_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">store</i>
@@ -226,7 +226,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToBillBuy()"
+               href="" ui-sref="billBuy" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE', 'ROLE_BILL_BUY_UPDATE', 'ROLE_BILL_BUY_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">shopping_cart</i>
@@ -235,7 +235,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToBillSell()"
+               href="" ui-sref="billSell" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE', 'ROLE_BILL_SELL_UPDATE', 'ROLE_BILL_SELL_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">shopping_cart</i>
@@ -244,7 +244,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToBank()"
+               href="" ui-sref="bank" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_BANK_CREATE', 'ROLE_BANK_UPDATE', 'ROLE_BANK_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">account_balance</i>
@@ -253,12 +253,20 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ng-click="goToTeam()"
+               href="" ui-sref="team" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">security</i>
                     <span ng-if="lang==='AR'">الصلاحيات</span>
                     <span ng-if="lang==='EN'">PRIVILEGES</span>
+                </span>
+            </a>
+            <a id="reportMenu" class="mdl-navigation__link mdl-menu__item mdl-list__item"
+               href="" ui-sref="report" ui-sref-active="mdl-navigation__link-active mdl-color--primary">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">assignment</i>
+                    <span ng-if="lang==='AR'">التقارير</span>
+                    <span ng-if="lang==='EN'">REPORTS</span>
                 </span>
             </a>
         </nav>

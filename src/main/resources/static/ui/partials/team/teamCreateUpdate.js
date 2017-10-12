@@ -397,6 +397,42 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'حذف الاجازات' : 'Delete Vacation',
                 value: 'ROLE_VACATION_DELETE',
                 selected: false
+            },
+            {
+                id: 70,
+                name: $rootScope.lang === 'AR' ? 'إنشاء بنود الاستقطاعات' : 'Create Deduction Terms',
+                value: 'ROLE_DEDUCTION_TYPE_CREATE',
+                selected: false
+            },
+            {
+                id: 71,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات بنود الاستقطاعات' : 'Update Deduction Terms Information',
+                value: 'ROLE_DEDUCTION_TYPE_UPDATE',
+                selected: false
+            },
+            {
+                id: 72,
+                name: $rootScope.lang === 'AR' ? 'حذف بنود الاستقطاعات' : 'Delete Deduction Terms',
+                value: 'ROLE_DEDUCTION_TYPE_DELETE',
+                selected: false
+            },
+            {
+                id: 73,
+                name: $rootScope.lang === 'AR' ? 'إنشاء الاستقطاعات' : 'Create Deduction',
+                value: 'ROLE_DEDUCTION_CREATE',
+                selected: false
+            },
+            {
+                id: 74,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات الاستقطاعات' : 'Update Deduction Information',
+                value: 'ROLE_DEDUCTION_UPDATE',
+                selected: false
+            },
+            {
+                id: 75,
+                name: $rootScope.lang === 'AR' ? 'حذف الاستقطاعات' : 'Delete Deduction',
+                value: 'ROLE_DEDUCTION_DELETE',
+                selected: false
             }
         ];
 

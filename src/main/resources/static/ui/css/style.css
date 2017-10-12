@@ -491,13 +491,7 @@ WebKit inertia scrolling is being added here for any present/future devices that
     text-decoration: none !important;
 }
 
-.mdl-navigation__link:hover{
-    background-color: white !important;
-    font-weight: bolder !important;
-}
-
-.mdl-navigation__link-active{
-    background-color: #e0e0e0 !important;
-    color: #000 !important;
-    font-weight: bolder !important;
+.mdl-navigation__link-active,
+.mdl-navigation__link-active .mdl-list__item-primary-content .mdl-list__item-icon{
+    color: white !important;
 }

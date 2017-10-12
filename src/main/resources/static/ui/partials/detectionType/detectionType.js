@@ -1,5 +1,5 @@
-app.controller("detectionTypeCtrl", ['DetectionTypeService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (DetectionTypeService, ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("detectionTypeCtrl", ['DetectionTypeService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$location', '$anchorScroll',
+    function (DetectionTypeService, ModalProvider, $scope, $rootScope, $state, $timeout, $location, $anchorScroll) {
 
         $scope.selected = {};
 
@@ -95,8 +95,10 @@ app.controller("detectionTypeCtrl", ['DetectionTypeService', 'ModalProvider', '$
         ];
 
         $timeout(function () {
-            window.componentHandler.upgradeAllRegistered();
             $scope.fetchTableData();
+            $location.hash('detectionTypeMenu');
+            $anchorScroll();
+            window.componentHandler.upgradeAllRegistered();
         }, 1500);
 
     }]);

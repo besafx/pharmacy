@@ -1,5 +1,5 @@
-app.controller("supplierCtrl", ['SupplierService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (SupplierService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("supplierCtrl", ['SupplierService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal', '$location', '$anchorScroll',
+    function (SupplierService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal, $location, $anchorScroll) {
 
         $scope.selected = {};
 
@@ -95,8 +95,10 @@ app.controller("supplierCtrl", ['SupplierService', 'ModalProvider', '$scope', '$
         ];
 
         $timeout(function () {
-            window.componentHandler.upgradeAllRegistered();
             $scope.fetchTableData();
+            $location.hash('supplierMenu');
+            $anchorScroll();
+            window.componentHandler.upgradeAllRegistered();
         }, 1500);
 
     }]);

@@ -1,7 +1,5 @@
-app.controller("reportCtrl", ['DrugService', '$rootScope', '$scope', '$timeout', function (DrugService, $rootScope, $scope, $timeout) {
-    $timeout(function () {
-        window.componentHandler.upgradeAllRegistered();
-    }, 1500);
+app.controller("reportCtrl", ['DrugService', '$rootScope', '$scope', '$timeout', '$location', '$anchorScroll',
+    function (DrugService, $rootScope, $scope, $timeout, $location, $anchorScroll) {
 
     $scope.printDrugsList = function () {
         $rootScope.showConfirmNotify("التقارير", "هل تود طباعة التقرير ؟", "notification", "fa-info", function () {
@@ -14,6 +12,12 @@ app.controller("reportCtrl", ['DrugService', '$rootScope', '$scope', '$timeout',
             });
         });
     };
+
+    $timeout(function () {
+        $location.hash('reportMenu');
+        $anchorScroll();
+        window.componentHandler.upgradeAllRegistered();
+    }, 1500);
 
 
 }]);

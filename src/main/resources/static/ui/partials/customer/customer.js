@@ -1,5 +1,5 @@
-app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (CustomerService, OrderService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal', '$location', '$anchorScroll',
+    function (CustomerService, OrderService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal, $location, $anchorScroll) {
 
         $scope.selected = {};
         $scope.selectedOrder = {};
@@ -254,8 +254,10 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
         ];
 
         $timeout(function () {
-            window.componentHandler.upgradeAllRegistered();
             $scope.fetchTableData();
+            $location.hash('customerMenu');
+            $anchorScroll();
+            window.componentHandler.upgradeAllRegistered();
         }, 1500);
 
     }]);

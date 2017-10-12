@@ -1,5 +1,5 @@
-app.controller("bankCtrl", ['BankService', 'DepositService', 'FundService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (BankService, DepositService, FundService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("bankCtrl", ['BankService', 'DepositService', 'FundService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal', '$location', '$anchorScroll',
+    function (BankService, DepositService, FundService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal, $location, $anchorScroll) {
 
         $scope.selected = {};
         $scope.buffer = {};
@@ -128,9 +128,11 @@ app.controller("bankCtrl", ['BankService', 'DepositService', 'FundService', 'Mod
         ];
 
         $timeout(function () {
-            window.componentHandler.upgradeAllRegistered();
             $scope.fetchTableData();
             $scope.calculateFunds();
+            $location.hash('bankMenu');
+            $anchorScroll();
+            window.componentHandler.upgradeAllRegistered();
         }, 1500);
 
     }]);

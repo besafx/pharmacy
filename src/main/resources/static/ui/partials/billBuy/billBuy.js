@@ -1,5 +1,5 @@
-app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'TransactionSellService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (BillBuyService, TransactionBuyService, TransactionSellService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'TransactionSellService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal', '$location', '$anchorScroll',
+    function (BillBuyService, TransactionBuyService, TransactionSellService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal, $location, $anchorScroll) {
 
         $scope.selected = {};
         $scope.selectedTransactionBuy = {};
@@ -251,6 +251,8 @@ app.controller("billBuyCtrl", ['BillBuyService', 'TransactionBuyService', 'Trans
         ];
 
         $timeout(function () {
+            $location.hash('billBuyMenu');
+            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

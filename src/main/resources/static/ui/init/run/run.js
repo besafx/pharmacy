@@ -1,8 +1,9 @@
-app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$stateParams', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider', 'Fullscreen',
-    function ($http, $location, $state, $timeout, $window, PersonService, $rootScope, $stateParams, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider, Fullscreen) {
+app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$stateParams', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider', 'Fullscreen', '$anchorScroll',
+    function ($http, $location, $state, $timeout, $window, PersonService, $rootScope, $stateParams, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider, Fullscreen, $anchorScroll) {
 
         $rootScope.state = $state;
         $rootScope.stateParams = $stateParams;
+        $anchorScroll.yOffset = 122;
 
         defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
             errorMessages['fieldRequired'] = 'هذا الحقل مطلوب';
@@ -104,6 +105,8 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 case 'employee.list':
                 case 'employee.vacationType':
                 case 'employee.vacation':
+                case 'employee.deductionType':
+                case 'employee.deduction':
                     {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'person_pin_circle';
@@ -357,6 +360,8 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     case 'employee.list':
                     case 'employee.vacationType':
                     case 'employee.vacation':
+                    case 'employee.deductionType':
+                    case 'employee.deduction':
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'الموظفون';
                         } else {
@@ -463,7 +468,6 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
             $rootScope.dateType = $rootScope.options.dateType;
             $rootScope.applyTitleLang();
             $rootScope.applyCssLang();
-            // $rootScope.state.reload();
         });
 
         $rootScope.goFullscreen = function () {

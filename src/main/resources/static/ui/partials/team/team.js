@@ -1,5 +1,5 @@
-app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scope', '$timeout', '$state',
-    function (TeamService, ModalProvider, $rootScope, $scope, $timeout, $state) {
+app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scope', '$timeout', '$state', '$anchorScroll', '$location',
+    function (TeamService, ModalProvider, $rootScope, $scope, $timeout, $state, $anchorScroll, $location) {
 
         $scope.selected = {};
 
@@ -82,8 +82,10 @@ app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scop
         ];
 
         $timeout(function () {
-            window.componentHandler.upgradeAllRegistered();
             $scope.fetchTableData();
+            $location.hash('teamMenu');
+            $anchorScroll();
+            window.componentHandler.upgradeAllRegistered();
         }, 1500);
 
     }]);

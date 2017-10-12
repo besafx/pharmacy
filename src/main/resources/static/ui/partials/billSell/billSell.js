@@ -1,5 +1,5 @@
-app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (BillSellService, TransactionSellService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal', '$location', '$anchorScroll',
+    function (BillSellService, TransactionSellService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal, $location, $anchorScroll) {
 
         $scope.selected = {};
         $scope.selected.transactionSells = [];
@@ -243,6 +243,8 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
         ];
 
         $timeout(function () {
+            $location.hash('billSellMenu');
+            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 
