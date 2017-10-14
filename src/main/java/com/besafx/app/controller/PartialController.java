@@ -78,6 +78,7 @@ public class PartialController {
             "/employee/vacationType",
             "/employee/deduction",
             "/employee/deductionType",
+            "/employee/salary",
             "/detectionType",
             "/order",
             "/diagnosis",

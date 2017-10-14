@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -35,6 +37,17 @@ public class Employee implements Serializable {
     @JoinColumn(name = "person")
     @OneToOne
     private Person person;
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<Salary> salaries = new ArrayList<>();
+
+    public Double getPaid(){
+        try{
+            return this.salaries.stream().mapToDouble(salary -> salary.getReceipt().getAmountNumber()).sum();
+        }catch (Exception ex){
+            return null;
+        }
+    }
 
     @JsonCreator
     public static Employee Create(String jsonString) throws IOException {

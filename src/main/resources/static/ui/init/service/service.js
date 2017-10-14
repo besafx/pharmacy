@@ -274,6 +274,56 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             }
         });
     };
+    /**************************************************************
+     *                                                            *
+     * Salary Model                                               *
+     *                                                            *
+     *************************************************************/
+    this.openSalaryCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/salary/salaryCreateUpdate.html',
+            controller: 'salaryCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء سند راتب جديد' : 'New Salary';
+                },
+                action: function () {
+                    return 'create';
+                },
+                salary: function () {
+                    return {};
+                }
+            }
+        });
+    };
+
+    this.openSalaryUpdateModel = function (salary) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/employee/salary/salaryCreateUpdate.html',
+            controller: 'salaryCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل بيانات سند الراتب' : 'Update Salary Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                salary: function () {
+                    return salary;
+                }
+            }
+        });
+    };
 
     /**************************************************************
      *                                                            *

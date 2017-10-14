@@ -433,6 +433,24 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'حذف الاستقطاعات' : 'Delete Deduction',
                 value: 'ROLE_DEDUCTION_DELETE',
                 selected: false
+            },
+            {
+                id: 76,
+                name: $rootScope.lang === 'AR' ? 'إنشاء الرواتب' : 'Create Salary',
+                value: 'ROLE_SALARY_CREATE',
+                selected: false
+            },
+            {
+                id: 77,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات الرواتب' : 'Update Salary Information',
+                value: 'ROLE_SALARY_UPDATE',
+                selected: false
+            },
+            {
+                id: 78,
+                name: $rootScope.lang === 'AR' ? 'حذف الرواتب' : 'Delete Salary',
+                value: 'ROLE_SALARY_DELETE',
+                selected: false
             }
         ];
 

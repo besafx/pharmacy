@@ -1,0 +1,113 @@
+<div class="row" style="margin-top: 10px" ng-init="employeeCtrl.fetchDeductionData()">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                    style="margin-top: 2px;">
+                    <li>
+                        <a href=""
+                           ng-click="employeeCtrl.fetchDeductionData()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                            <span class="fa fa-refresh"></span>
+                        </a>
+                        <a href=""
+                           ng-if="contains(me.team.authorities, ['ROLE_DEDUCTION_CREATE'])"
+                           ng-click="employeeCtrl.newDeduction()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'انشاء استقطاع' : 'New Deduction...'}}">
+                            <span class="fa fa-plus-square"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                    <h3 ng-if="lang==='AR'">قائمة الاستقطاعات</h3>
+                    <h3 ng-if="lang==='EN'">Deductions List</h3>
+                </div>
+            </div>
+            <div class="panel-body panel-body-table">
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="employeeCtrl.deductions"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span ng-if="lang==='AR'">م</span>
+                                <span ng-if="lang==='EN'">#</span>
+                            </th>
+
+                            <th st-sort="employee.person.name">
+                                <span ng-if="lang==='AR'">اسم الموظف</span>
+                                <span ng-if="lang==='EN'">Name</span>
+                            </th>
+
+                            <th st-sort="employee.person.mobile">
+                                <span ng-if="lang==='AR'">الجوال</span>
+                                <span ng-if="lang==='EN'">Mobile</span>
+                            </th>
+
+                            <th st-sort="deductionType.code">
+                                <span ng-if="lang==='AR'">بند الاستقطاع</span>
+                                <span ng-if="lang==='EN'">Deduction Term</span>
+                            </th>
+
+                            <th st-sort="date">
+                                <span ng-if="lang==='AR'">تاريخ الاستقطاع</span>
+                                <span ng-if="lang==='EN'">Date</span>
+                            </th>
+
+                            <th st-sort="amount">
+                                <span ng-if="lang==='AR'">مقدار الاستقطاع</span>
+                                <span ng-if="lang==='EN'">Amount</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="deduction in collection1"
+                            st-select-mode="single"
+                            context-menu="employeeCtrl.rowMenuDeduction"
+                            ng-click="employeeCtrl.setSelectedDeduction(deduction)"
+                            ng-right-click="employeeCtrl.setSelectedDeduction(deduction)"
+                            ng-class="{'mdl-color--blue-grey-100':deduction.isSelected}">
+                            <td st-select-row-custom="deduction">{{$index+1}}</td>
+                            <td st-select-row-custom="deduction">
+                                {{deduction.employee.person.nickname}} /  {{deduction.employee.person.name}}
+                            </td>
+                            <td st-select-row-custom="deduction">{{deduction.employee.person.mobile}}</td>
+                            <td st-select-row-custom="deduction">
+                                <span ng-if="lang==='AR'">{{deduction.deductionType.nameArabic}}</span>
+                                <span ng-if="lang==='EN'">{{deduction.deductionType.nameEnglish}}</span>
+                            </td>
+                            <td st-select-row-custom="deduction">
+                                <span ng-show="dateType==='H'">{{deduction.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                <span ng-show="dateType==='G'">{{deduction.date | date: 'yyyy-MM-dd'}}</span>
+                                <span class="label label-success">{{deduction.date | date:'h:m a'}}</span>
+                            </td>
+                            <td st-select-row-custom="deduction">{{deduction.amount}} SAR</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="6">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -33,8 +33,8 @@ public class EmployeeRest {
 
     private final static Logger log = LoggerFactory.getLogger(EmployeeRest.class);
 
-    public static final String FILTER_TABLE = "**,person[**,-hiddenPassword,team[id]]";
-    public static final String FILTER_EMPLOYEE_COMBO = "**,person[id,nickname,name,mobile]";
+    public static final String FILTER_TABLE = "**,salaries[id],person[**,-hiddenPassword,team[id]]";
+    public static final String FILTER_EMPLOYEE_COMBO = "**,-salaries,person[id,nickname,name,mobile]";
 
     @Autowired
     private EmployeeService employeeService;

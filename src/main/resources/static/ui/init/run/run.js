@@ -107,6 +107,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 case 'employee.vacation':
                 case 'employee.deductionType':
                 case 'employee.deduction':
+                case 'employee.salary':
                     {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'person_pin_circle';
@@ -362,6 +363,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     case 'employee.vacation':
                     case 'employee.deductionType':
                     case 'employee.deduction':
+                    case 'employee.salary':
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'الموظفون';
                         } else {

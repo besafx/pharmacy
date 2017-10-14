@@ -233,6 +233,18 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             }
         });
 
+        $stateProvider.state("employee.salary", {
+            url: "/salary",
+            views:{
+                'body@employee':{
+                    templateUrl: "/ui/partials/employee/salary/salary.html"
+                },
+                'options@employee':{
+                    templateUrl: "/ui/partials/employee/salary/salaryOptions.html"
+                }
+            }
+        });
+
         /**************************************************************
          *                                                            *
          * Detection Type State                                       *

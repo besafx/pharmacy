@@ -1,0 +1,121 @@
+<div class="row" style="margin-top: 10px" ng-init="employeeCtrl.fetchSalaryData()">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                    style="margin-top: 2px;">
+                    <li>
+                        <a href=""
+                           ng-click="employeeCtrl.fetchSalaryData()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                            <span class="fa fa-refresh"></span>
+                        </a>
+                        <a href=""
+                           ng-if="contains(me.team.authorities, ['ROLE_SALARY_CREATE'])"
+                           ng-click="employeeCtrl.newSalary()"
+                           tooltip-append-to-body="true"
+                           uib-tooltip="{{lang==='AR' ? 'انشاء دفعة راتب' : 'New Salary...'}}">
+                            <span class="fa fa-plus-square"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                    <h3 ng-if="lang==='AR'">قائمة الرواتب</h3>
+                    <h3 ng-if="lang==='EN'">Salaries List</h3>
+                </div>
+            </div>
+            <div class="panel-body panel-body-table">
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="employeeCtrl.salaries"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span ng-if="lang==='AR'">م</span>
+                                <span ng-if="lang==='EN'">#</span>
+                            </th>
+
+                            <th st-sort="employee.person.name">
+                                <span ng-if="lang==='AR'">اسم الموظف</span>
+                                <span ng-if="lang==='EN'">Name</span>
+                            </th>
+
+                            <th st-sort="employee.person.mobile">
+                                <span ng-if="lang==='AR'">الجوال</span>
+                                <span ng-if="lang==='EN'">Mobile</span>
+                            </th>
+
+                            <th st-sort="receipt.code">
+                                <span ng-if="lang==='AR'">رقم سند القبض</span>
+                                <span ng-if="lang==='EN'">Receipt Code</span>
+                            </th>
+
+                            <th st-sort="year">
+                                <span ng-if="lang==='AR'">العام</span>
+                                <span ng-if="lang==='EN'">Year</span>
+                            </th>
+
+                            <th st-sort="month">
+                                <span ng-if="lang==='AR'">الشهر</span>
+                                <span ng-if="lang==='EN'">Month</span>
+                            </th>
+
+                            <th st-sort="calendarType">
+                                <span ng-if="lang==='AR'">نوع التقويم</span>
+                                <span ng-if="lang==='EN'">Calendar Type</span>
+                            </th>
+
+                            <th st-sort="receipt.amountNumber">
+                                <span ng-if="lang==='AR'">مقدار الدفعة</span>
+                                <span ng-if="lang==='EN'">Amount</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="salary in collection1"
+                            st-select-mode="single"
+                            context-menu="employeeCtrl.rowMenuSalary"
+                            ng-click="employeeCtrl.setSelectedSalary(salary)"
+                            ng-right-click="employeeCtrl.setSelectedSalary(salary)"
+                            ng-class="{'mdl-color--blue-grey-100':salary.isSelected}">
+                            <td st-select-row-custom="salary">{{$index+1}}</td>
+                            <td st-select-row-custom="salary">
+                                {{salary.employee.person.nickname}} /  {{salary.employee.person.name}}
+                            </td>
+                            <td st-select-row-custom="salary">{{salary.employee.person.mobile}}</td>
+                            <td st-select-row-custom="salary">{{salary.receipt.code}}</td>
+                            <td st-select-row-custom="salary">{{salary.year}}</td>
+                            <td st-select-row-custom="salary">{{salary.month}}</td>
+                            <td st-select-row-custom="salary">
+                                <span ng-if="salary.calendarType==='Hijri'">هجري</span>
+                                <span ng-if="salary.calendarType==='Gregorian'">ميلادي</span>
+                            </td>
+                            <td st-select-row-custom="salary">{{salary.receipt.amountNumber}} SAR</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="8">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

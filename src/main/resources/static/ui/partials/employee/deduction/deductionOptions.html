@@ -1,0 +1,66 @@
+<div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+     class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+    <button id="employee-menu-lower-right" style="width: 100%;"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+        <span ng-if="lang==='AR'">العمليات</span>
+        <span ng-if="lang==='EN'">Actions</span>
+    </button>
+    <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+        class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+        for="employee-menu-lower-right">
+        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+            ng-click="employeeCtrl.fetchDeductionData()">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">visibility</i>
+                <span ng-if="lang==='AR'">عرض البيانات</span>
+                <span ng-if="lang==='EN'">View</span>
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item" ng-click="employeeCtrl.newDeduction();"
+            ng-if="contains(me.team.authorities, ['ROLE_DEDUCTION_CREATE'])">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">add</i>
+                <span ng-if="lang==='AR'">انشاء استقطاع جديد</span>
+                <span ng-if="lang==='EN'">New...</span>
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item"
+            ng-click="ModalProvider.openDeductionUpdateModel(employeeCtrl.selectedDeduction);"
+            ng-if="contains(me.team.authorities, ['ROLE_DEDUCTION_UPDATE']) && employeeCtrl.toggleList===1"
+            ng-hide="!employeeCtrl.deductions || employeeCtrl.deductions.length==0">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">edit</i>
+                <span ng-if="lang==='AR'">تعديل بيانات الاستقطاع</span>
+                <span ng-if="lang==='EN'">Edit...</span>
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item" ng-click="employeeCtrl.delete()"
+            ng-if="contains(me.team.authorities, ['ROLE_DEDUCTION_DELETE']) && employeeCtrl.toggleList===1"
+            ng-hide="!employeeCtrl.deductions || employeeCtrl.deductions.length==0">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">delete</i>
+                <span ng-if="lang==='AR'">حذف الاستقطاع</span>
+                <span ng-if="lang==='EN'">Delete</span>
+            </span>
+        </li>
+    </ul>
+</div>
+
+<div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="employeeCtrl.toggleList=1">
+    <div class="btn-toolbar">
+        <div class="btn-group" data-toggle="buttons">
+            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                    type="button" ng-click="employeeCtrl.toggleList=1"
+                    ng-class="{'active':employeeCtrl.toggleList===1}">
+                <input type="radio" name="options"/>
+                <i class="material-icons">reorder</i>
+            </button>
+            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                    type="button" ng-click="employeeCtrl.toggleList=2"
+                    ng-class="{'active':employeeCtrl.toggleList===2}">
+                <input type="radio" name="options"/>
+                <i class="material-icons">view_column</i>
+            </button>
+        </div>
+    </div>
+</div>

@@ -48,7 +48,13 @@
                     <span ng-if="lang==='AR'">سجل الاستقطاعات</span>
                     <span ng-if="lang==='EN'">DEDUCTIONS</span>
                 </a>
-                <a class="mdl-navigation__link" href="">سجل الرواتب</a>
+                <a class="mdl-navigation__link"
+                   href=""
+                   ui-sref-active="mdl-color-text--black mdl-color--blue-grey-50"
+                   ui-sref="employee.salary">
+                    <span ng-if="lang==='AR'">سجل الرواتب</span>
+                    <span ng-if="lang==='EN'">SALARIES</span>
+                </a>
             </nav>
 
             <div class="mdl-layout-spacer"></div>

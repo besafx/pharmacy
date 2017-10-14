@@ -74,8 +74,6 @@
                             ng-class="{'mdl-color--blue-grey-100':vacation.isSelected}">
                             <td st-select-row-custom="vacation">{{$index+1}}</td>
                             <td st-select-row-custom="vacation">
-                                <span ng-if="vacation.person.enabled" class="label label-success">مفعل</span>
-                                <span ng-if="!vacation.person.enabled" class="label label-danger">معطل</span>
                                 {{vacation.employee.person.nickname}} /  {{vacation.employee.person.name}}
                             </td>
                             <td st-select-row-custom="vacation">{{vacation.employee.person.mobile}}</td>

@@ -1,0 +1,190 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong>{{title}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <span ng-if="lang==='AR'">البيانات الاساسية</span>
+                        <span ng-if="lang==='EN'">Basic Information</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="employee" class="control-label">
+                                        <span ng-if="lang==='AR'">الموظف</span>
+                                        <span ng-if="lang==='EN'">Employee</span>
+                                    </label>
+                                    <select id="employee" data-placeholder="{{lang==='AR' ? 'ابحث عن الموظف' : 'Search For Employee...'}}"
+                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الموظف' : 'Please Select Employee...'}}'"
+                                            class="form-control"
+                                            chosen=""
+                                            ng-model="deduction.employee"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-options="(employee.person.nickname + ' / ' + employee.person.name) for employee in employees track by employee.id">
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="deductionType" class="control-label">
+                                        <span ng-if="lang==='AR'">بند الاستقطاع</span>
+                                        <span ng-if="lang==='EN'">Deduction Term</span>
+                                    </label>
+                                    <select id="deductionType" data-placeholder="{{lang==='AR' ? 'ابحث عن البند' : 'Search For Type...'}}"
+                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
+                                            placeholder-text-single="'{{lang==='AR' ? 'اختر البند' : 'Please Select Type...'}}'"
+                                            class="form-control"
+                                            chosen=""
+                                            ng-model="deduction.deductionType"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-options="(deductionType.nameArabic + ' / ' + deductionType.nameEnglish) for deductionType in deductionTypes track by deductionType.id">
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                                        <label for="date" class="control-label">
+                                            <span ng-if="lang==='AR'">التاريخ</span>
+                                            <span ng-if="lang==='EN'">Date</span>
+                                        </label>
+                                        <div dir="ltr" class="input-group">
+                                            <input dir="rtl"
+                                                   id="date"
+                                                   type="text"
+                                                   class="form-control is-calendarPicker"
+                                                   ng-model="deduction.date"
+                                                   calendarType="ummalqura"
+                                                   language="en"
+                                                   dateFormat="yyyy/mm/dd"
+                                                   showOnFocus="false"
+                                                   readonly="readonly"
+                                                   kdatepicker>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                                        <label for="G-date" class="control-label">
+                                            <span ng-if="lang==='AR'">التاريخ</span>
+                                            <span ng-if="lang==='EN'">Date</span>
+                                        </label>
+                                        <input id="G-date"
+                                               class="form-control"
+                                               type="date"
+                                               name="input"
+                                               ng-model="deduction.date"
+                                               placeholder="yyyy-MM-dd"
+                                               min="2017-01-01"
+                                               max="2030-12-31"/>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label for="amount" class="control-label">
+                                            <span ng-if="lang==='AR'">مقدار الاستقطاع</span>
+                                            <span ng-if="lang==='EN'">Amount</span>
+                                        </label>
+                                        <div dir="ltr" class="input-group" id="amount">
+                                        <span class="input-group-addon">
+                                            <span>ريال سعودي</span>
+                                        </span>
+                                            <input dir="rtl"
+                                                   type="number"
+                                                   min="0"
+                                                   ng-disabled="!deduction.deductionType.id"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   class="form-control"
+                                                   ng-model="deduction.amount">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="note" class="control-label">
+                                        <span ng-if="lang==='AR'">ملاحظات</span>
+                                        <span ng-if="lang==='EN'">Notes</span>
+                                    </label>
+                                    <textarea id="note"
+                                              type="text"
+                                              msd-elastic="\n"
+                                              class="form-control"
+                                              ng-model="deduction.note">
+                                </textarea>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button ng-if="action=='create'"
+                    uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button ng-if="action=='update'"
+                    uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>
