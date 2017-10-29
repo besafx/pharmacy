@@ -56,8 +56,16 @@ public class BillSellSearch {
         Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(orderCodeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("order").get("code"), value)));
         Optional.ofNullable(orderCodeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("order").get("code"), value)));
-        Optional.ofNullable(orderFalconCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("code"), "%" + value + "%")));
-        Optional.ofNullable(orderCustomerName).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("customer").get("name"), "%" + value + "%")));
+        Optional.ofNullable(viewInsideSalesTable)
+                .ifPresent(value -> {
+                    if(value){
+                        Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("code"), "%" + code + "%")));
+                        Optional.ofNullable(orderCustomerName).ifPresent(name -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("customer").get("name"), "%" + name + "%")));
+                    }else{
+                        Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("falconCode"), "%" + code + "%")));
+                        Optional.ofNullable(orderCustomerName).ifPresent(name -> predicates.add((root, cq, cb) -> cb.like(root.get("customerName"), "%" + name + "%")));
+                    }
+                });
         if (!predicates.isEmpty()) {
             Specification result = predicates.get(0);
             for (int i = 1; i < predicates.size(); i++) {

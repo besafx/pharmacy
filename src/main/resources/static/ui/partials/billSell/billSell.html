@@ -124,144 +124,159 @@
         </div>
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
-                <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
-                     class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-                    <button id="billSell-menu-lower-right" style="width: 100%;"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        <span ng-if="lang==='AR'">العمليات</span>
-                        <span ng-if="lang==='EN'">Actions</span>
-                    </button>
-                    <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                        class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                        for="billSell-menu-lower-right">
-                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                            ng-click="openFilter()">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">visibility</i>
-                                <span ng-if="lang==='AR'">عرض البيانات</span>
-                                <span ng-if="lang==='EN'">View</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="newBillSell();"
-                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">add</i>
-                                <span ng-if="lang==='AR'">انشاء فاتورة بيع جديدة</span>
-                                <span ng-if="lang==='EN'">New...</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item"
-                            ng-click="newBillSellForOrder();"
-                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">shopping_basket</i>
-                                <span ng-if="lang==='AR'">صرف علاج طلب فحص</span>
-                                <span ng-if="lang==='EN'">New By Order...</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="delete()"
-                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_DELETE']) && toggleList===1"
-                            ng-hide="!billSells || billSells.length==0">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">delete</i>
-                                <span ng-if="lang==='AR'">حذف الفاتورة</span>
-                                <span ng-if="lang==='EN'">Delete</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item" ng-click="payBillSell()"
-                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_PAY']) && toggleList===1"
-                            ng-hide="!billSells || billSells.length==0 || selected.paymentMethod!=='Later'">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">attach_money</i>
-                                <span ng-if="lang==='AR'">تسديد الفاتورة</span>
-                                <span ng-if="lang==='EN'">Pay Bill</span>
-                            </span>
+
+                <div class="row">
+                    <ul class="breadcrumb">
+                        <li ng-repeat="item in items | orderBy:'id' track by item.id">
+                            <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
+                            <span ng-if="item.type==='title'">{{item.name}}</span>
                         </li>
                     </ul>
                 </div>
 
-                <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
-                     class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-                    <button id="order-reports-menu-lower-right" style="width: 100%;"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        <span ng-if="lang==='AR'">التقارير</span>
-                        <span ng-if="lang==='EN'">Reports</span>
-                    </button>
-                    <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                        class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="order-reports-menu-lower-right">
-                        <li class="mdl-menu__item mdl-list__item" ng-click="print(selected)"
-                            ng-if="toggleList===1"
-                            ng-hide="!billSells || billSells.length==0">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">print</i>
-                                <span ng-if="lang==='AR'">طباعة الفاتورة</span>
-                                <span ng-if="lang==='EN'">Print...</span>
-                            </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item"
-                            ng-click="ModalProvider.openReportBillSellByListModel(billSells)"
-                            ng-if="toggleList===1"
-                            ng-hide="!billSells || billSells.length==0">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">print</i>
-                                    <span ng-if="lang==='AR'">تقرير مختصر بالقائمة</span>
-                                    <span ng-if="lang==='EN'">BillSells Summery By List...</span>
-                                </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                            ng-click="ModalProvider.openReportBillSellDetailsByListModel(billSells)"
-                            ng-if="toggleList===1"
-                            ng-hide="!billSells || billSells.length==0">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">print</i>
-                                    <span ng-if="lang==='AR'">تقرير مفصل بالقائمة</span>
-                                    <span ng-if="lang==='EN'">BillSells Details By List...</span>
-                                </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item"
-                            ng-click="ModalProvider.openReportBillSellDetailsByDateModel()"
-                            ng-if="toggleList===1">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">print</i>
-                                    <span ng-if="lang==='AR'">تقرير مفصل بالتاريخ</span>
-                                    <span ng-if="lang==='EN'">Orders Details By Date...</span>
-                                </span>
-                        </li>
-                        <li class="mdl-menu__item mdl-list__item"
-                            ng-click="ModalProvider.openReportBillSellByDateModel()"
-                            ng-if="toggleList===1">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">print</i>
-                                    <span ng-if="lang==='AR'">تقرير مختصر بالتاريخ</span>
-                                    <span ng-if="lang==='EN'">Orders Summery By Date...</span>
-                                </span>
-                        </li>
-                    </ul>
-                </div>
+                <div class="row">
 
-                <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="toggleList=1">
-                    <div class="btn-toolbar">
-                        <div class="btn-group" data-toggle="buttons">
-                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                                    type="button" ng-click="toggleList=1"
-                                    ng-class="{'active':toggleList===1}">
-                                <input type="radio" name="options"/>
-                                <i class="material-icons">reorder</i>
-                            </button>
-                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                                    type="button" ng-click="toggleList=2"
-                                    ng-class="{'active':toggleList===2}">
-                                <input type="radio" name="options"/>
-                                <i class="material-icons">view_column</i>
-                            </button>
+                    <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+                         class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+                        <button id="billSell-menu-lower-right" style="width: 100%;"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                            <span ng-if="lang==='AR'">العمليات</span>
+                            <span ng-if="lang==='EN'">Actions</span>
+                        </button>
+                        <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                            class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                            for="billSell-menu-lower-right">
+                            <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                                ng-click="openFilter()">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">visibility</i>
+                                    <span ng-if="lang==='AR'">عرض البيانات</span>
+                                    <span ng-if="lang==='EN'">View</span>
+                                </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item" ng-click="newBillSell();"
+                                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">add</i>
+                                    <span ng-if="lang==='AR'">انشاء فاتورة بيع جديدة</span>
+                                    <span ng-if="lang==='EN'">New...</span>
+                                </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item"
+                                ng-click="newBillSellForOrder();"
+                                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">shopping_basket</i>
+                                    <span ng-if="lang==='AR'">صرف علاج طلب فحص</span>
+                                    <span ng-if="lang==='EN'">New By Order...</span>
+                                </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item" ng-click="delete()"
+                                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_DELETE']) && toggleList===1"
+                                ng-hide="!billSells || billSells.length==0">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">delete</i>
+                                    <span ng-if="lang==='AR'">حذف الفاتورة</span>
+                                    <span ng-if="lang==='EN'">Delete</span>
+                                </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item" ng-click="payBillSell()"
+                                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_PAY']) && toggleList===1"
+                                ng-hide="!billSells || billSells.length==0 || selected.paymentMethod!=='Later'">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">attach_money</i>
+                                    <span ng-if="lang==='AR'">تسديد الفاتورة</span>
+                                    <span ng-if="lang==='EN'">Pay Bill</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+                         class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+                        <button id="order-reports-menu-lower-right" style="width: 100%;"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                            <span ng-if="lang==='AR'">التقارير</span>
+                            <span ng-if="lang==='EN'">Reports</span>
+                        </button>
+                        <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                            class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="order-reports-menu-lower-right">
+                            <li class="mdl-menu__item mdl-list__item" ng-click="print(selected)"
+                                ng-if="toggleList===1"
+                                ng-hide="!billSells || billSells.length==0">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">print</i>
+                                    <span ng-if="lang==='AR'">طباعة الفاتورة</span>
+                                    <span ng-if="lang==='EN'">Print...</span>
+                                </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item"
+                                ng-click="ModalProvider.openReportBillSellByListModel(billSells)"
+                                ng-if="toggleList===1"
+                                ng-hide="!billSells || billSells.length==0">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">print</i>
+                                        <span ng-if="lang==='AR'">تقرير مختصر بالقائمة</span>
+                                        <span ng-if="lang==='EN'">BillSells Summery By List...</span>
+                                    </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                                ng-click="ModalProvider.openReportBillSellDetailsByListModel(billSells)"
+                                ng-if="toggleList===1"
+                                ng-hide="!billSells || billSells.length==0">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">print</i>
+                                        <span ng-if="lang==='AR'">تقرير مفصل بالقائمة</span>
+                                        <span ng-if="lang==='EN'">BillSells Details By List...</span>
+                                    </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item"
+                                ng-click="ModalProvider.openReportBillSellDetailsByDateModel()"
+                                ng-if="toggleList===1">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">print</i>
+                                        <span ng-if="lang==='AR'">تقرير مفصل بالتاريخ</span>
+                                        <span ng-if="lang==='EN'">Orders Details By Date...</span>
+                                    </span>
+                            </li>
+                            <li class="mdl-menu__item mdl-list__item"
+                                ng-click="ModalProvider.openReportBillSellByDateModel()"
+                                ng-if="toggleList===1">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">print</i>
+                                        <span ng-if="lang==='AR'">تقرير مختصر بالتاريخ</span>
+                                        <span ng-if="lang==='EN'">Orders Summery By Date...</span>
+                                    </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="toggleList=1">
+                        <div class="btn-toolbar">
+                            <div class="btn-group" data-toggle="buttons">
+                                <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                        type="button" ng-click="toggleList=1"
+                                        ng-class="{'active':toggleList===1}">
+                                    <input type="radio" name="options"/>
+                                    <i class="material-icons">reorder</i>
+                                </button>
+                                <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                        type="button" ng-click="toggleList=2"
+                                        ng-class="{'active':toggleList===2}">
+                                    <input type="radio" name="options"/>
+                                    <i class="material-icons">view_column</i>
+                                </button>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
     </header>
 
-    <div class="mdl-layout__drawer">
+    <div class="mdl-layout__drawer" style="padding-top: 175px !important;">
         <nav class="mdl-navigation">
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
                href="" ui-sref="home" ui-sref-active="mdl-navigation__link-active mdl-color--primary">

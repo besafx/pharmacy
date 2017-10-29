@@ -208,6 +208,20 @@
 
             </div>
 
+            <div class="form-group row">
+
+                <div class="form-group" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}">
+                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch">
+                        <input type="checkbox"
+                               id="switch"
+                               class="mdl-switch__input"
+                               ng-model="buffer.viewInsideSalesTable">
+                        <span class="mdl-switch__label">{{buffer.viewInsideSalesTable===true ? 'مبيعات داخلية' : 'مبيعات خارجية'}}</span>
+                    </label>
+                </div>
+
+            </div>
+
         </div>
 
     </div>

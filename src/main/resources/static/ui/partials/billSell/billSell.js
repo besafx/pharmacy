@@ -7,6 +7,12 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
         $scope.buffer.viewInsideSalesTable = true;
         $scope.billSells = [];
 
+        $scope.items = [];
+        $scope.items.push(
+            {'id': 1, 'type': 'link', 'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application', 'link': 'menu'},
+            {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'}
+        );
+
         $scope.setSelected = function (object) {
             if (object) {
                 angular.forEach($scope.billSells, function (billSell) {
@@ -103,6 +109,41 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
             BillSellService.filter(search.join("")).then(function (data) {
                 $scope.billSells = data;
                 $scope.setSelected(data[0]);
+
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    }
+                );
+                if($scope.buffer.viewInsideSalesTable){
+                    $scope.items.push(
+                        {
+                            'id': 3,
+                            'type': 'link',
+                            'name': $rootScope.lang === 'AR' ? 'مبيعات داخلية' : 'Inside Sales',
+                            'link': 'menu'
+                        }
+                    );
+                }else{
+                    $scope.items.push(
+                        {
+                            'id': 3,
+                            'type': 'link',
+                            'name': $rootScope.lang === 'AR' ? 'مبيعات خارجية' : 'Outside Sales',
+                            'link': 'menu'
+                        }
+                    );
+                }
+
             });
         };
 
