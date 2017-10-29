@@ -1,44 +1,81 @@
 app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'order',
     function (OrderService, OrderDetectionTypeService, OrderAttachService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, order) {
 
+        $scope.selectedFalcon = {};
+        $scope.order = order;
+        $scope.param = {};
+        $scope.buffer = {};
+        $scope.buffer.selectedDetectionType = {};
+        $scope.orderDetectionTypeList = [];
+        $scope.wrappers = [];
+        $scope.title = title;
+
         $timeout(function () {
-            $scope.refreshCustomers();
-            $scope.refreshFalcons();
             $scope.refreshDetectionTypes();
             $scope.refreshDoctors();
         }, 2000);
 
-        $scope.order = order;
-
-        $scope.buffer = {};
-
-        $scope.buffer.selectedDetectionType = {};
-
-        $scope.orderDetectionTypeList = [];
-
-        $scope.wrappers = [];
-
-        $scope.title = title;
-
-        $scope.refreshCustomers = function () {
-            CustomerService.findAll().then(function (data) {
-                $scope.customers = data;
-            })
+        $scope.setSelectedFalcon = function (object) {
+            if (object) {
+                angular.forEach($scope.falcons, function (falcon) {
+                    if (object.id == falcon.id) {
+                        $scope.selectedFalcon = falcon;
+                        $scope.order.falcon = falcon;
+                        return falcon.isSelected = true;
+                    } else {
+                        return falcon.isSelected = false;
+                    }
+                });
+            }
         };
 
-        $scope.newCustomer = function () {
-            ModalProvider.openCustomerCreateModel().result.then(function (data) {
-                $scope.customers.splice(0, 0, data);
-                $scope.buffer.customer = data;
-            }, function () {
-                console.info('CustomerCreateModel Closed.');
-            });
-        };
+        $scope.search = function () {
 
-        $scope.refreshFalcons = function () {
-            FalconService.findAllCombo().then(function (data) {
+            var search = [];
+
+            //
+            if ($scope.param.customerName) {
+                search.push('customerName=');
+                search.push($scope.param.customerName);
+                search.push('&');
+            }
+            if ($scope.param.customerMobile) {
+                search.push('customerMobile=');
+                search.push($scope.param.customerMobile);
+                search.push('&');
+            }
+            if ($scope.param.customerIdentityNumber) {
+                search.push('customerIdentityNumber=');
+                search.push($scope.param.customerIdentityNumber);
+                search.push('&');
+            }
+            //
+            if ($scope.param.falconCode) {
+                search.push('falconCode=');
+                search.push($scope.param.falconCode);
+                search.push('&');
+            }
+            if ($scope.param.falconType) {
+                search.push('falconType=');
+                search.push($scope.param.falconType);
+                search.push('&');
+            }
+            if ($scope.param.weightTo) {
+                search.push('weightTo=');
+                search.push($scope.param.weightTo);
+                search.push('&');
+            }
+            if ($scope.param.weightFrom) {
+                search.push('weightFrom=');
+                search.push($scope.param.weightFrom);
+                search.push('&');
+            }
+            //
+            FalconService.filter(search.join("")).then(function (data) {
                 $scope.falcons = data;
+                $scope.setSelectedFalcon(data[0]);
             });
+
         };
 
         $scope.newFalcon = function (customer) {

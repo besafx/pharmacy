@@ -2,7 +2,10 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Falcon;
+import com.besafx.app.entity.Order;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.enums.PaymentMethod;
+import com.besafx.app.search.FalconSearch;
 import com.besafx.app.service.FalconService;
 import com.besafx.app.service.OrderService;
 import com.besafx.app.service.PersonService;
@@ -35,6 +38,9 @@ public class FalconRest {
 
     @Autowired
     private FalconService falconService;
+
+    @Autowired
+    private FalconSearch falconSearch;
 
     @Autowired
     private OrderService orderService;
@@ -154,5 +160,38 @@ public class FalconRest {
     @ResponseBody
     public String findByCustomer(@PathVariable Long customerId) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), falconService.findByCustomerId(customerId));
+    }
+
+    @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filter(
+            @RequestParam(value = "customerName", required = false) final String customerName,
+            @RequestParam(value = "customerMobile", required = false) final String customerMobile,
+            @RequestParam(value = "customerIdentityNumber", required = false) final String customerIdentityNumber,
+            @RequestParam(value = "falconCode", required = false) final Long falconCode,
+            @RequestParam(value = "falconType", required = false) final String falconType,
+            @RequestParam(value = "weightFrom", required = false) final Double weightFrom,
+            @RequestParam(value = "weightTo", required = false) final Double weightTo,
+            Principal principal) {
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        notificationService.notifyOne(Notification
+                .builder()
+                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
+                .message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا..." : "Filtering Data")
+                .type("success")
+                .icon("fa-plus-square")
+                .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                .build(), principal.getName());
+        List<Falcon> list = falconSearch.filter(customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo);
+        notificationService.notifyOne(Notification
+                .builder()
+                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
+                .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done")
+                .type("success")
+                .icon("fa-plus-square")
+                .layout(lang.equals("AR") ? "topLeft" : "topRight")
+                .build(), principal.getName());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

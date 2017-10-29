@@ -38,6 +38,11 @@ app.factory("FalconService",
                 return $http.put("/api/falcon/update", falcon).then(function (response) {
                     return response.data;
                 });
-            }
+            },
+            filter: function (search) {
+                return $http.get("/api/falcon/filter?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
         };
     }]);

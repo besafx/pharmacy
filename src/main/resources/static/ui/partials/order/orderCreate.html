@@ -25,258 +25,232 @@
                 </div>
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="" ng-click="searchByCustomer=true;searchByFalconCode=false">
-                    <strong ng-if="lang==='AR'">بحث من خلال بيانات العميل</strong>
-                    <strong ng-if="lang==='EN'">Search By Customer Data</strong>
-                </a>
-                <br/>
-                <a href="" ng-click="searchByFalconCode=true;searchByCustomer=false">
-                    <strong ng-if="lang==='AR'">بحث من خلال رقم الصقر</strong>
-                    <strong ng-if="lang==='EN'">Search By Falcon Code</strong>
-                </a>
-            </div>
+            <div class="row">
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="searchByCustomer===true" ng-hide="searchByFalconCode===true">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshCustomers()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_UPDATE'])"
-                                   ng-click="ModalProvider.openCustomerUpdateModel(buffer.customer);"
-                                   ng-hide="!customers || customers.length==0 || !buffer.customer"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تعديل بيانات العميل' : 'Edit Customer Information...'}}">
-                                    <span class="fa fa-edit"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
-                                   ng-click="newCustomer()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'عميل جديد' : 'New Customer...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
-                                   ng-click="newFalcon(buffer.customer)"
-                                   ng-hide="!customers || customers.length==0 || !buffer.customer"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'صقر جديد' : 'New Falcon...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">بيانات العملاء</h3>
-                            <h3 ng-if="lang==='EN'">Customers Information</h3>
-                            <span ng-if="lang==='AR'">بحث متعدد عن العملاء</span>
-                            <span ng-if="lang==='EN'">Multi-Search For Customers</span>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title-box"
+                                 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                                <h3 ng-if="lang==='AR'">خيارات البحث</h3>
+                                <h3 ng-if="lang==='EN'">Search Options</h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
+                        <div class="panel-body" style="height: 400px; overflow: auto">
 
                             <div class="form-group row">
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="name" class="control-label">
-                                        <span ng-if="lang==='AR'">الاسم</span>
-                                        <span ng-if="lang==='EN'">Name</span>
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="customerName" class="control-label">
+                                        <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
+                                        <span ng-if="lang==='EN'">Customer Name Contains</span>
                                     </label>
-                                    <select id="name"
-                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم' : 'Search For Name...'}}"
-                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم' : 'Please Select Name...'}}'"
-                                            class="form-control"
-                                            chosen=""
-                                            ng-model="buffer.customer"
-                                            ng-required="searchByCustomer===true"
-                                            disable-validation-message=""
-                                            ng-options="customer.name for customer in customers | orderBy:'name' track by customer.id">
-                                    </select>
+                                    <input id="customerName"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.customerName">
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <label for="identityNumber" class="control-label">
-                                    <span ng-if="lang==='AR'">رقم البطاقة</span>
-                                    <span ng-if="lang==='EN'">Identity Number</span>
-                                </label>
-                                <select id="identityNumber"
-                                        data-placeholder="{{lang==='AR' ? 'ابحث عن رقم البطاقة' : 'Search For ID...'}}"
-                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                        placeholder-text-single="'{{lang==='AR' ? 'اختر رقم البطاقة' : 'Please Select ID...'}}'"
-                                        class="form-control"
-                                        chosen=""
-                                        ng-model="buffer.customer"
-                                        ng-required="searchByCustomer===true"
-                                        disable-validation-message=""
-                                        ng-options="customer.identityNumber for customer in customers | orderBy:'identityNumber' track by customer.id">
-                                </select>
-                            </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="mobile" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم الجوال</span>
-                                        <span ng-if="lang==='EN'">Mobile</span>
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="customerMobile" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم جوال العميل يحتوي على</span>
+                                        <span ng-if="lang==='EN'">Customer Mobile Contains</span>
                                     </label>
-                                    <select id="mobile"
-                                            data-placeholder="{{lang==='AR' ? 'ابحث عن رقم الجوال' : 'Search For Mobile...'}}"
-                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                            placeholder-text-single="'{{lang==='AR' ? 'اختر رقم الجوال' : 'Please Select Mobile...'}}'"
-                                            class="form-control"
-                                            chosen=""
-                                            ng-model="buffer.customer"
-                                            ng-required="searchByCustomer===true"
-                                            disable-validation-message=""
-                                            ng-options="customer.mobile for customer in customers | orderBy:'mobile' track by customer.id">
-                                    </select>
+                                    <input id="customerMobile"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.customerMobile">
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <label for="customerFalcon" class="control-label">
-                                    <span ng-if="lang==='AR'">رقم الصقر</span>
-                                    <span ng-if="lang==='EN'">Code</span>
-                                </label>
-                                <select id="customerFalcon"
-                                        data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
-                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                        placeholder-text-single="'{{lang==='AR' ? 'اختر الرقم' : 'Please Select Code...'}}'"
-                                        class="form-control"
-                                        chosen=""
-                                        ng-model="order.falcon"
-                                        ng-required="searchByCustomer===true"
-                                        disable-validation-message=""
-                                        ng-options="(falcon.code + ' [ ' + falcon.type + ' ] [' + falcon.weight + ' ] ') for falcon in buffer.customer.falcons | orderBy:'code' track by falcon.id">
-                                </select>
-                            </div>
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="customerIdentityNumber" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم بطاقة العميل تحتوي على</span>
+                                        <span ng-if="lang==='EN'">Customer ID Contains</span>
+                                    </label>
+                                    <input id="customerIdentityNumber"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.customerIdentityNumber">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="falconCode" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم الصقر يحتوي على</span>
+                                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
+                                    </label>
+                                    <input id="falconCode"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.falconCode">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="falconType" class="control-label">
+                                        <span ng-if="lang==='AR'">نوع الصقر يحتوي على</span>
+                                        <span ng-if="lang==='EN'">Falcon Type Contains</span>
+                                    </label>
+                                    <input id="falconType"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.falconType">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="weightFrom" class="control-label">
+                                        <span ng-if="lang==='AR'">وزن الصقر من</span>
+                                        <span ng-if="lang==='EN'">Falcon Weight From</span>
+                                    </label>
+                                    <input id="weightFrom"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.weightFrom">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="weightTo" class="control-label">
+                                        <span ng-if="lang==='AR'">وزن الصقر إلى</span>
+                                        <span ng-if="lang==='EN'">Falcon Weight To</span>
+                                    </label>
+                                    <input id="weightTo"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.weightTo">
+                                </div>
 
                             </div>
 
                         </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-click="search();"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                                    <i class="material-icons">search</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                                        tooltip-append-to-body="true"
+                                        type="reset"
+                                        ng-click="buffer={};"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                                <li>
+                                    <a href=""
+                                       ng-click="search()"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                                        <span class="fa fa-refresh"></span>
+                                    </a>
+                                    <a href=""
+                                       ng-if="contains(me.team.authorities, ['ROLE_FALCON_UPDATE'])"
+                                       ng-click="ModalProvider.openFalconUpdateModel(order.falcon);"
+                                       ng-hide="!buffer.customer.falcons || buffer.customer.falcons.length==0 || !order.falcon"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="{{lang==='AR' ? 'تعديل بيانات الحساب' : 'Edit Falcon Information...'}}">
+                                        <span class="fa fa-edit"></span>
+                                    </a>
+                                    <a href=""
+                                       ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
+                                       ng-click="newFalcon(buffer.customer)"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="{{lang==='AR' ? 'حساب جديد' : 'New Falcon...'}}">
+                                        <span class="fa fa-plus-square"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                                <h3 ng-if="lang==='AR'">نتائج البحث (قائمة الصقور)</h3>
+                                <h3 ng-if="lang==='EN'">Search Results (Falcons List)</h3>
+                            </div>
+                        </div>
+                        <div class="panel-body panel-body-table">
+                            <div class="table-responsive">
+                                <table st-table="collection1" st-safe-src="falcons"
+                                       class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <span ng-if="lang==='AR'">م</span>
+                                            <span ng-if="lang==='EN'">#</span>
+                                        </th>
+
+                                        <th st-sort="code">
+                                            <span ng-if="lang==='AR'">رقم الصقر</span>
+                                            <span ng-if="lang==='EN'">Code</span>
+                                        </th>
+
+                                        <th st-sort="type">
+                                            <span ng-if="lang==='AR'">النوع</span>
+                                            <span ng-if="lang==='EN'">Type</span>
+                                        </th>
+
+                                        <th st-sort="weight">
+                                            <span ng-if="lang==='AR'">الوزن</span>
+                                            <span ng-if="lang==='EN'">Weight</span>
+                                        </th>
+
+                                        <th st-sort="customer.person.name">
+                                            <span ng-if="lang==='AR'">العميل</span>
+                                            <span ng-if="lang==='EN'">Customer</span>
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="falcon in collection1"
+                                        st-select-mode="single"
+                                        ng-click="setSelectedFalcon(falcon)"
+                                        ng-right-click="setSelectedFalcon(falcon)">
+                                        <td st-select-row-custom="falcon">{{$index+1}}</td>
+                                        <td st-select-row-custom="falcon">
+                                            <a ng-click="ModalProvider.openFalconDetailsModel(falcon);" href=""><strong>{{falcon.code}}</strong></a>
+                                        </td>
+                                        <td st-select-row-custom="falcon">{{falcon.type}}</td>
+                                        <td st-select-row-custom="falcon">
+                                            <span>{{falcon.weight}} جرام</span>
+                                        </td>
+                                        <td st-select-row-custom="falcon">{{falcon.customer.nickname}} {{falcon.customer.name}}</td>
+                                    </tr>
+                                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                        ng-show="!collection1 || collection1.length ==0">
+                                        <td colspan="5">
+                                            <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                            <span ng-if="lang==='EN'">No Data Found.</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="searchByFalconCode===true" ng-hide="searchByCustomer===true">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshFalcons()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_FALCON_UPDATE'])"
-                                   ng-click="ModalProvider.openFalconUpdateModel(order.falcon);"
-                                   ng-hide="!buffer.customer.falcons || buffer.customer.falcons.length==0 || !order.falcon"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تعديل بيانات الحساب' : 'Edit Falcon Information...'}}">
-                                    <span class="fa fa-edit"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
-                                   ng-click="newFalcon(buffer.customer)"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'حساب جديد' : 'New Falcon...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">بيانات الصقور</h3>
-                            <h3 ng-if="lang==='EN'">Falcons Information</h3>
-                            <fieldset ng-if="buffer.customer.name">
-                                <span ng-if="lang==='AR'">العميل / {{buffer.customer.name}}</span>
-                                <span ng-if="lang==='EN'">Customer / {{buffer.customer.name}}</span>
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="code" class="control-label">
-                                    <span ng-if="lang==='AR'">رقم الصقر</span>
-                                    <span ng-if="lang==='EN'">Code</span>
-                                </label>
-                                <select id="code"
-                                        data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
-                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                        placeholder-text-single="'{{lang==='AR' ? 'اختر الرقم' : 'Please Select Code...'}}'"
-                                        class="form-control"
-                                        chosen=""
-                                        ng-model="order.falcon"
-                                        ng-required="searchByFalconCode===true"
-                                        disable-validation-message=""
-                                        ng-options="falcon.code for falcon in falcons | orderBy:'code' track by falcon.id">
-                                </select>
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <span ng-if="lang==='AR'">نوع الصقر</span>
-                                                <span ng-if="lang==='EN'">Falcon Type</span>
-                                            </td>
-                                            <td>{{order.falcon.type}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span ng-if="lang==='AR'">وزن الصقر</span>
-                                                <span ng-if="lang==='EN'">Falcon Weight</span>
-                                            </td>
-                                            <td>{{order.falcon.weight}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span ng-if="lang==='AR'">اسم العميل</span>
-                                                <span ng-if="lang==='EN'">Name</span>
-                                            </td>
-                                            <td>{{order.falcon.customer.nickname}} {{order.falcon.customer.name}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span ng-if="lang==='AR'">الجوال</span>
-                                                <span ng-if="lang==='EN'">Mobile</span>
-                                            </td>
-                                            <td>{{order.falcon.customer.mobile}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span ng-if="lang==='AR'">رقم الهوية</span>
-                                                <span ng-if="lang==='EN'">Identity Card Number</span>
-                                            </td>
-                                            <td>{{order.falcon.customer.identityNumber}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="selectedFalcon.id" >
+                <div class="panel panel-danger">
                     <div class="panel-heading">
                         <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
                             <li>
@@ -296,11 +270,11 @@
                             </li>
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">الفحوصات المطلوبة(اختيار متعدد)</h3>
-                            <h3 ng-if="lang==='EN'">Required Detections(Multi Choice)</h3>
-                            <fieldset ng-if="order.falcon">
-                                <span ng-if="lang==='AR'">رقم الصقر / {{order.falcon.code}}</span>
-                                <span ng-if="lang==='EN'">Falcon Code / {{order.falcon.code}}</span>
+                            <h3 ng-if="lang==='AR'">الفحوصات المطلوبة (العميل / {{selectedFalcon.customer.name}})</h3>
+                            <h3 ng-if="lang==='EN'">Required Detections (Customer / {{selectedFalcons.customer.name}})</h3>
+                            <fieldset ng-if="selectedFalcon">
+                                <strong ng-if="lang==='AR'">رقم الصقر / {{selectedFalcon.code}}</strong>
+                                <strong ng-if="lang==='EN'">Falcon Code / {{selectedFalcon.code}}</strong>
                             </fieldset>
                         </div>
                     </div>
@@ -362,7 +336,7 @@
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="table-responsive">
-                                    <table st-table="collection" st-safe-src="orderDetectionTypeList"
+                                    <table st-table="collection2" st-safe-src="orderDetectionTypeList"
                                            class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                                         <thead>
                                         <tr>
@@ -394,7 +368,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="orderDetectionType in collection">
+                                        <tr ng-repeat="orderDetectionType in collection2">
                                             <td>{{$index+1}}</td>
                                             <td>
                                                 {{orderDetectionType.detectionType.code}}
@@ -414,7 +388,7 @@
                                             </td>
                                         </tr>
                                         <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                            ng-show="!collection || collection.length ==0">
+                                            ng-show="!collection2 || collection2.length ==0">
                                             <td colspan="5">
                                                 <span ng-if="lang==='AR'">فضلاً اختر الفحوصات المطلوبة</span>
                                                 <span ng-if="lang==='EN'">Please Select Required Detections</span>
@@ -496,7 +470,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="selectedFalcon.id">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
@@ -593,7 +567,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="selectedFalcon.id">
                 <input id="uploader" style="display: none" type="file" onchange="angular.element(this).scope().initFiles(this.files);" multiple/>
                 <div class="panel panel-danger">
                     <div class="panel-heading">
