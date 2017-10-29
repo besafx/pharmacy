@@ -1,5 +1,7 @@
-app.controller('falconCreateUpdateCtrl', ['CustomerService', 'FalconService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'falcon',
-        function (CustomerService, FalconService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, falcon) {
+app.controller('falconCreateUpdateCtrl', ['CustomerService', 'FalconService', 'ModalProvider', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'falcon',
+        function (CustomerService, FalconService, ModalProvider, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, falcon) {
+
+            $scope.customers = [];
 
             $timeout(function () {
                 CustomerService.findAllCombo().then(function (data) {
@@ -12,6 +14,15 @@ app.controller('falconCreateUpdateCtrl', ['CustomerService', 'FalconService', '$
             $scope.title = title;
 
             $scope.action = action;
+
+            $scope.newCustomer = function () {
+                ModalProvider.openCustomerCreateModel().result.then(function (data) {
+                    $scope.customers.splice(0, 0, data);
+                    $scope.falcon.customer = data;
+                }, function () {
+                    console.info('CustomerCreateModel Closed.');
+                });
+            };
 
             $scope.submit = function () {
                 switch ($scope.action) {

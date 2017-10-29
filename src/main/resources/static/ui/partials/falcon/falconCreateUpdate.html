@@ -20,8 +20,21 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <span ng-if="lang==='AR'">البيانات الاساسية</span>
-                        <span ng-if="lang==='EN'">Basic Information</span>
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
+                                   ng-click="newCustomer()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'عميل جديد' : 'New Customer...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
+                            <h3 ng-if="lang==='EN'">Basic Information</h3>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">

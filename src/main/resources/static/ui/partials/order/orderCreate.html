@@ -156,16 +156,8 @@
                                         <span class="fa fa-refresh"></span>
                                     </a>
                                     <a href=""
-                                       ng-if="contains(me.team.authorities, ['ROLE_FALCON_UPDATE'])"
-                                       ng-click="ModalProvider.openFalconUpdateModel(order.falcon);"
-                                       ng-hide="!buffer.customer.falcons || buffer.customer.falcons.length==0 || !order.falcon"
-                                       tooltip-append-to-body="true"
-                                       uib-tooltip="{{lang==='AR' ? 'تعديل بيانات الحساب' : 'Edit Falcon Information...'}}">
-                                        <span class="fa fa-edit"></span>
-                                    </a>
-                                    <a href=""
                                        ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
-                                       ng-click="newFalcon(buffer.customer)"
+                                       ng-click="newFalcon()"
                                        tooltip-append-to-body="true"
                                        uib-tooltip="{{lang==='AR' ? 'حساب جديد' : 'New Falcon...'}}">
                                         <span class="fa fa-plus-square"></span>

@@ -1,6 +1,7 @@
 app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 'OrderAttachService', 'CustomerService', 'FalconService', 'DetectionTypeService', 'DoctorService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'order',
     function (OrderService, OrderDetectionTypeService, OrderAttachService, CustomerService, FalconService, DetectionTypeService, DoctorService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, order) {
 
+        $scope.falcons = [];
         $scope.selectedFalcon = {};
         $scope.order = order;
         $scope.param = {};
@@ -78,34 +79,11 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
 
         };
 
-        $scope.newFalcon = function (customer) {
-            $uibModal.open({
-                animation: true,
-                ariaLabelledBy: 'modal-title',
-                ariaDescribedBy: 'modal-body',
-                templateUrl: '/ui/partials/customer/customerFalconCreateUpdate.html',
-                controller: 'customerFalconCreateUpdateCtrl',
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    title: function () {
-                        return $rootScope.lang === 'AR' ? 'انشاء حساب صقر جديد' : 'New Falcon Account';
-                    },
-                    action: function () {
-                        return 'create';
-                    },
-                    falcon: function () {
-                        var falcon = {};
-                        falcon.customer = customer;
-                        return falcon;
-                    }
-                }
-            }).result.then(function (data) {
-                $scope.buffer.customer.falcons.splice(0, 0, data);
+        $scope.newFalcon = function () {
+            ModalProvider.openFalconCreateModel().result.then(function (data) {
                 $scope.falcons.splice(0, 0, data);
-                $scope.order.falcon = data;
             }, function () {
-                console.info('CustomerFalconCreateModel Closed.');
+                console.info('FalconCreateModel Closed.');
             });
         };
 
