@@ -44,7 +44,7 @@ public class FalconSearch {
         Optional.ofNullable(customerIdentityNumber)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("customer").get("identityNumber"), "%" + value + "%")));
         Optional.ofNullable(falconCode)
-                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("code"), "%" + value + "%")));
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("code").as(String.class), "%" + value + "%")));
         Optional.ofNullable(falconType)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("type"), "%" + value + "%")));
         Optional.ofNullable(weightFrom)
@@ -60,9 +60,7 @@ public class FalconSearch {
             list.sort(Comparator.comparing(Falcon::getCode).reversed());
             return list;
         } else {
-            List<Falcon> list = Lists.newArrayList(falconService.findAll());
-            list.sort(Comparator.comparing(Falcon::getCode).reversed());
-            return list;
+            return new ArrayList<>();
         }
     }
 }

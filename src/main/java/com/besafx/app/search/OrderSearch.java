@@ -58,7 +58,7 @@ public class OrderSearch {
         Optional.ofNullable(customerIdentityNumber)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("customer").get("identityNumber"), "%" + value + "%")));
         Optional.ofNullable(falconCode)
-                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("code"), "%" + value + "%")));
+                .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("code").as(String.class), "%" + value + "%")));
         Optional.ofNullable(falconType)
                 .ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("falcon").get("type"), "%" + value + "%")));
         Optional.ofNullable(weightFrom)
