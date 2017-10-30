@@ -68,6 +68,14 @@ public class Order implements Serializable {
     @JoinColumn(name = "doctor")
     private Doctor doctor;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_update")
+    private Date lastUpdate;
+
+    @ManyToOne
+    @JoinColumn(name = "last_person")
+    private Person lastPerson;
+
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     @OrderBy(value = "drug")
     private List<Diagnosis> diagnoses = new ArrayList<>();

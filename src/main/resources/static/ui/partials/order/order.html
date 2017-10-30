@@ -552,6 +552,11 @@
                                         <span ng-if="lang==='EN'">Net</span>
                                     </th>
 
+                                    <th st-sort="lastPerson.name">
+                                        <span ng-if="lang==='AR'">بواسطة</span>
+                                        <span ng-if="lang==='EN'">Created By</span>
+                                    </th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -597,10 +602,13 @@
                                     <td st-select-row-custom="order">{{order.detectionTypeCostSum}} SAR</td>
                                     <td st-select-row-custom="order">{{order.discount}} %</td>
                                     <td st-select-row-custom="order">{{order.netCost}} SAR</td>
+                                    <td st-select-row-custom="order">
+                                        <span ng-if="order.lastPerson">{{order.lastPerson.nickname}} / {{order.lastPerson.name}}</span>
+                                    </td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="13">
+                                    <td colspan="14">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -608,7 +616,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="13">
+                                    <td colspan="14">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>

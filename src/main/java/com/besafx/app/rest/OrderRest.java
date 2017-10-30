@@ -37,7 +37,7 @@ public class OrderRest {
 
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
 
-    public static final String FILTER_TABLE = "**,falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
+    public static final String FILTER_TABLE = "**,lastPerson[id,nickname,name],falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
     public static final String FILTER_ORDER_COMBO = "id,code";
 
     @Autowired
@@ -69,6 +69,7 @@ public class OrderRest {
     @PreAuthorize("hasRole('ROLE_ORDER_CREATE')")
     @Transactional
     public String create(@RequestBody Order order, Principal principal) {
+        Person caller = personService.findByEmail(principal.getName());
         Order topOrder = orderService.findTopByOrderByCodeDesc();
         if (topOrder == null) {
             order.setCode(1);
@@ -76,6 +77,8 @@ public class OrderRest {
             order.setCode(topOrder.getCode() + 1);
         }
         order.setDate(new DateTime().toDate());
+        order.setLastUpdate(new DateTime().toDate());
+        order.setLastPerson(caller);
         order = orderService.save(order);
         ListIterator<OrderDetectionType> listIterator = order.getOrderDetectionTypes().listIterator();
         while (listIterator.hasNext()) {
@@ -83,7 +86,6 @@ public class OrderRest {
             orderDetectionType.setOrder(order);
             listIterator.set(orderDetectionTypeService.save(orderDetectionType));
         }
-        Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
