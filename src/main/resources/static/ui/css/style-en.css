@@ -231,26 +231,26 @@ input[type=checkbox] {
     margin-left: 0px !important;
 }
 
-.mdl-data-table {
-    width: 100%;
-}
+/*.mdl-data-table {*/
+/*width: 100%;*/
+/*}*/
 
-.mdl-data-table th {
-    font-size: 12px;
-}
+/*.mdl-data-table th {*/
+/*font-size: 12px;*/
+/*}*/
 
-.mdl-data-table tbody tr td {
-    font-size: 12px;
-}
+/*.mdl-data-table tbody tr td {*/
+/*font-size: 12px;*/
+/*}*/
 
-.mdl-data-table thead tr {
-    background-color: lightgray;
-}
+/*.mdl-data-table thead tr {*/
+/*background-color: lightgray;*/
+/*}*/
 
-.mdl-data-table th, .mdl-data-table tbody tr, .mdl-data-table tbody tr td {
-    line-height: 15px;
-    height: 30px;
-}
+/*.mdl-data-table th, .mdl-data-table tbody tr, .mdl-data-table tbody tr td {*/
+/*line-height: 15px;*/
+/*height: 30px;*/
+/*}*/
 
 .material-icons.md-18 {
     font-size: 18px;
@@ -321,6 +321,7 @@ ul.breadcrumb {
     list-style: none;
     background-color: #eee;
     font-size: 17px !important;
+    text-transform: uppercase !important;
 }
 
 ul.breadcrumb li {
@@ -393,11 +394,11 @@ select {
     direction: ltr !important;
 }
 
-.mdl-data-table thead th,
-.mdl-data-table tbody tr,
-.mdl-data-table tbody tr td{
-    text-align: left !important;
-}
+/*.mdl-data-table thead th,*/
+/*.mdl-data-table tbody tr,*/
+/*.mdl-data-table tbody tr td{*/
+/*text-align: left !important;*/
+/*}*/
 
 .help-block, .modal-header {
     direction: ltr !important;
@@ -484,10 +485,35 @@ WebKit inertia scrolling is being added here for any present/future devices that
 }
 
 .mdl-navigation{
-  padding-bottom: 16px;
+    padding-bottom: 16px;
+}
+
+.mdl-navigation > a {
+    text-decoration: none !important;
 }
 
 .mdl-navigation__link-active,
-.mdl-navigation__link-active .mdl-list__item-primary-content .mdl-list__item-icon{
+.mdl-navigation__link-active .mdl-list__item-primary-content .mdl-list__item-icon {
     color: white !important;
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link{
+    padding: 12px 40px 12px 40px !important;
+}
+
+.mdl-tabs__tab, .mdl-tabs.is-upgraded .mdl-tabs__tab.is-active{
+    text-decoration: none !important;
+    font-weight: bold !important;
+    font-size: 12px !important;
+}
+
+.mdl-tabs__tab-bar{
+    justify-content: left !important;
+}
+
+.table > thead > tr > th{
+    text-align: left !important;
+}
+.mdl-shadow--8dp-reverse{
+    box-shadow: 0px -8px 10px 1px rgba(0, 0, 0, .14), 0 -3px 14px 2px rgba(0, 0, 0, .12), 0 -5px 5px -3px rgba(0, 0, 0, .2) !important;
 }

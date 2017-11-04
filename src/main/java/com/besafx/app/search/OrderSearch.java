@@ -3,6 +3,7 @@ package com.besafx.app.search;
 import com.besafx.app.entity.Order;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.service.OrderService;
+import com.besafx.app.util.DateConverter;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -12,10 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class OrderSearch {
@@ -80,5 +78,65 @@ public class OrderSearch {
             list.sort(Comparator.comparing(Order::getCode).reversed());
             return list;
         }
+    }
+
+    public List<Order> findByToday() {
+        List<Specification> predicates = new ArrayList<>();
+        DateTime today = new DateTime().withTimeAtStartOfDay();
+        DateTime tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay();
+        predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), today.toDate()));
+        predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), tomorrow.toDate()));
+        Specification result = predicates.get(0);
+        for (int i = 1; i < predicates.size(); i++) {
+            result = Specifications.where(result).and(predicates.get(i));
+        }
+        List list = orderService.findAll(result);
+        list.sort(Comparator.comparing(Order::getCode).reversed());
+        return list;
+    }
+
+    public List<Order> findByWeek() {
+        List<Specification> predicates = new ArrayList<>();
+        Date weekStart = DateConverter.getCurrentWeekStart();
+        Date weekEnd = DateConverter.getCurrentWeekEnd();
+        predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), weekStart));
+        predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), weekEnd));
+        Specification result = predicates.get(0);
+        for (int i = 1; i < predicates.size(); i++) {
+            result = Specifications.where(result).and(predicates.get(i));
+        }
+        List list = orderService.findAll(result);
+        list.sort(Comparator.comparing(Order::getCode).reversed());
+        return list;
+    }
+
+    public List<Order> findByMonth() {
+        List<Specification> predicates = new ArrayList<>();
+        DateTime monthStart = new DateTime().withTimeAtStartOfDay().withDayOfMonth(1);
+        DateTime monthEnd = monthStart.plusMonths(1).minusDays(1);
+        predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), monthStart.toDate()));
+        predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), monthEnd.toDate()));
+        Specification result = predicates.get(0);
+        for (int i = 1; i < predicates.size(); i++) {
+            result = Specifications.where(result).and(predicates.get(i));
+        }
+        List list = orderService.findAll(result);
+        list.sort(Comparator.comparing(Order::getCode).reversed());
+        return list;
+    }
+
+    public List<Order> findByYear() {
+        List<Specification> predicates = new ArrayList<>();
+        DateTime yearStart = new DateTime().withTimeAtStartOfDay().withDayOfYear(1);
+        DateTime yearEnd = yearStart.plusYears(1).minusDays(1);
+        predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), yearStart.toDate()));
+        predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), yearEnd.toDate()));
+        Specification result = predicates.get(0);
+        for (int i = 1; i < predicates.size(); i++) {
+            result = Specifications.where(result).and(predicates.get(i));
+        }
+        List list = orderService.findAll(result);
+        list.sort(Comparator.comparing(Order::getCode).reversed());
+        return list;
     }
 }

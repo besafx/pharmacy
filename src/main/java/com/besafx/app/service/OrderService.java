@@ -29,7 +29,11 @@ public interface OrderService extends PagingAndSortingRepository<Order, Long>, J
 
     List<Order> findByFalconId(Long falconId);
 
+    List<Order> findByFalconIdAndCodeNot(Long falconId, Integer code);
+
     List<Order> findByFalconCustomerId(Long customerId);
+
+    List<Order> findByFalconCustomerIdAndCodeNot(Long customerId, Integer code);
 
     Long countByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 }

@@ -1,4 +1,5 @@
 package com.besafx.app.entity;
+import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +39,11 @@ public class Receipt implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
 
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    private Integer checkCode;
+
     private String amountString;
 
     private Double amountNumber;
@@ -56,6 +62,14 @@ public class Receipt implements Serializable {
     @ManyToOne
     @JoinColumn(name = "lastPerson")
     private Person lastPerson;
+
+    public String getPaymentMethodInArabic(){
+        try{
+            return this.paymentMethod.getName();
+        }catch (Exception ex){
+            return "";
+        }
+    }
 
     @JsonCreator
     public static Receipt Create(String jsonString) throws IOException {

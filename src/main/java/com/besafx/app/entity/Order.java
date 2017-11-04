@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -88,6 +90,9 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderAttach> orderAttaches = new ArrayList<>();
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<OrderReceipt> orderReceipts = new ArrayList<>();
+
     public Double getDetectionTypeCostSum() {
         try {
             return this.orderDetectionTypes
@@ -96,7 +101,7 @@ public class Order implements Serializable {
                     .mapToDouble(DetectionType::getCost)
                     .sum();
         } catch (Exception ex) {
-            return null;
+            return 0.0;
         }
     }
 
@@ -105,7 +110,29 @@ public class Order implements Serializable {
             Double total = getDetectionTypeCostSum();
             return total - (total * this.discount / 100);
         } catch (Exception ex) {
-            return null;
+            return 0.0;
+        }
+    }
+
+    public Double getPaid() {
+        try {
+            return this.orderReceipts.stream()
+                    .map(OrderReceipt::getReceipt)
+                    .collect(Collectors.toList())
+                    .stream()
+                    .mapToDouble(Receipt::getAmountNumber)
+                    .sum();
+
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getRemain() {
+        try {
+            return this.getNetCost() - this.getPaid();
+        } catch (Exception ex) {
+            return 0.0;
         }
     }
 
@@ -113,7 +140,7 @@ public class Order implements Serializable {
         try{
             return this.diagnoses.stream().filter(Diagnosis::isTreated).count();
         }catch (Exception ex){
-            return null;
+            return new Long(0);
         }
     }
 
@@ -121,7 +148,7 @@ public class Order implements Serializable {
         try{
             return this.diagnoses.size() - getTreatedCount();
         }catch (Exception ex){
-            return null;
+            return new Long(0);
         }
     }
 

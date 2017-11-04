@@ -26,6 +26,16 @@ app.factory("OrderService",
                     return response.data;
                 });
             },
+            findByFalconAndCodeNot: function (falconId, code) {
+                return $http.get("/api/order/findByFalconAndCodeNot/" + falconId + "/" + code).then(function (response) {
+                    return response.data;
+                });
+            },
+            findByFalconCustomerAndCodeNot: function (customerId, code) {
+                return $http.get("/api/order/findByFalconCustomerAndCodeNot/" + customerId + "/" + code).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (order) {
                 return $http.post("/api/order/create", order).then(function (response) {
                     return response.data;
@@ -51,6 +61,26 @@ app.factory("OrderService",
             },
             filter: function (search) {
                 return $http.get("/api/order/filter?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
+            findByToday: function () {
+                return $http.get("/api/order/findByToday").then(function (response) {
+                    return response.data;
+                });
+            },
+            findByWeek: function () {
+                return $http.get("/api/order/findByWeek").then(function (response) {
+                    return response.data;
+                });
+            },
+            findByMonth: function () {
+                return $http.get("/api/order/findByMonth").then(function (response) {
+                    return response.data;
+                });
+            },
+            findByYear: function () {
+                return $http.get("/api/order/findByYear").then(function (response) {
                     return response.data;
                 });
             },

@@ -1,0 +1,232 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">add</i>
+                <strong ng-if="lang==='AR'">تسديد دفعة جديدة للطلب رقم /  </strong>
+                <strong ng-if="lang==='EN'">New Payment For Order Number \  </strong>
+                <strong>{{orderReceipt.order.code}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">بيانات طلب الفحص</h3>
+                            <h3 ng-if="lang==='EN'">Order Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الطلب</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">تاريخ الطلب</span>
+                                        <span ng-if="lang==='EN'">Order Date</span>
+                                    </td>
+                                    <td>
+                                        {{orderReceipt.order.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span class="label label-success">{{orderReceipt.order.date | date:'h:m a'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Code</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.falcon.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">العميل</span>
+                                        <span ng-if="lang==='EN'">Customer</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.falcon.customer.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الطبيب المعالج</span>
+                                        <span ng-if="lang==='EN'">Doctor</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.doctor.person.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">التكلفة</span>
+                                        <span ng-if="lang==='EN'">Cost</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.detectionTypeCostSum}} SAR</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الخصم</span>
+                                        <span ng-if="lang==='EN'">Discount</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.discount}} SAR</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الصافي</span>
+                                        <span ng-if="lang==='EN'">Net</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.net}} SAR</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">المدفوع</span>
+                                        <span ng-if="lang==='EN'">Paid</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.paid}} SAR</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الباقي</span>
+                                        <span ng-if="lang==='EN'">Remain</span>
+                                    </td>
+                                    <td>{{orderReceipt.order.remain}} SAR</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">البيانات المطلوبة</h3>
+                            <h3 ng-if="lang==='EN'">Required Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="paymentMethod" class="control-label">
+                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                                        <span ng-if="lang==='EN'">Payment Method</span>
+                                    </label>
+                                    <select id="paymentMethod"
+                                            class="form-control"
+                                            required="required"
+                                            disable-validation-message=""
+                                            ng-model="orderReceipt.receipt.paymentMethod">
+                                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
+                                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
+                                        <option ng-if="lang==='AR'" value="Check">شيك</option>
+                                        <option ng-if="lang==='EN'" value="Check">Check</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="amountNumber" class="control-label">
+                                        <span ng-if="lang==='AR'">المبلغ المدفوع</span>
+                                        <span ng-if="lang==='EN'">Payment</span>
+                                    </label>
+                                    <input id="amountNumber"
+                                           type="number"
+                                           ng-min="0"
+                                           ng-max="orderReceipt.order.remain"
+                                           required=""
+                                           disable-validation-message=""
+                                           class="form-control"
+                                           ng-model="orderReceipt.receipt.amountNumber">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="checkCode" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم الشيك</span>
+                                        <span ng-if="lang==='EN'">Check Code</span>
+                                    </label>
+                                    <input id="checkCode"
+                                           type="number"
+                                           ng-required="orderReceipt.receipt.paymentMethod==='Check'"
+                                           ng-disabled="orderReceipt.receipt.paymentMethod!=='Check'"
+                                           disable-validation-message=""
+                                           class="form-control"
+                                           ng-model="orderReceipt.receipt.checkCode">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="description" class="control-label">
+                                    <span ng-if="lang==='AR'">ملاحظات الدفع</span>
+                                    <span ng-if="lang==='EN'">Payment Notes</span>
+                                </label>
+                                <textarea id="description"
+                                          type="text"
+                                          msd-elastic="\n"
+                                          class="form-control"
+                                          ng-model="orderReceipt.receipt.note">
+                                </textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'حفظ' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">save</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

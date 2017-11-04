@@ -1,5 +1,5 @@
-app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout', '$location', '$anchorScroll',
-    function (OrderService, DiagnosisService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout, $location, $anchorScroll) {
+app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
+    function (OrderService, DiagnosisService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
         $scope.selectedOrderDetectionType = {};
@@ -18,6 +18,7 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 angular.forEach($scope.orders, function (order) {
                     if (object.id == order.id) {
                         $scope.selected = order;
+                        window.componentHandler.upgradeAllRegistered();
                         return order.isSelected = true;
                     } else {
                         return order.isSelected = false;
@@ -37,6 +38,118 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                     }
                 });
             }
+        };
+
+        $scope.findOrdersByToday = function () {
+            OrderService.findByToday().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected(data[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات اليوم' : 'Orders For Today'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        $scope.findOrdersByWeek = function () {
+            OrderService.findByWeek().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected(data[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الاسبوع' : 'Orders For Week'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        $scope.findOrdersByMonth = function () {
+            OrderService.findByMonth().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected(data[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الشهر' : 'Orders For Month'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        $scope.findOrdersByYear = function () {
+            OrderService.findByYear().then(function (data) {
+                $scope.orders = data;
+                $scope.setSelected(data[0]);
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات العام' : 'Orders For Year'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        $scope.findOrdersByFalcon = function (falcon, code) {
+            OrderService.findByFalconAndCodeNot(falcon.id, code).then(function (data) {
+                return falcon.orders = data;
+            });
+        };
+
+        $scope.findOrdersByCustomer = function (customer, code) {
+            OrderService.findByFalconCustomerAndCodeNot(customer.id, code).then(function (data) {
+                return customer.orders = data;
+            });
         };
 
         $scope.openFilter = function () {
@@ -141,6 +254,11 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                         },
                         {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'بحث مخصص' : 'Filter'}
                     );
+
+                    $timeout(function () {
+                        window.componentHandler.upgradeAllRegistered();
+                    }, 500);
+
                 });
             }, function () {
             });
@@ -167,23 +285,24 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             });
         };
 
-        $scope.payOrder = function (order) {
-            if (order) {
-                $rootScope.showConfirmNotify("طلبات الفحص", "هل تود تسديد مستحقات طلب الفحص فعلاً؟", "warning", "fa-money", function () {
-                    OrderService.pay(order.id).then(function (data) {
-                        var index = $scope.orders.indexOf(order);
-                        $scope.orders[index].paymentMethod = data.paymentMethod;
-                    });
+        $scope.newOrderReceipt = function (order) {
+            if(order){
+                ModalProvider.openOrderReceiptCreateModel(order).result.then(function (data) {
+                    if (order.orderReceipts) {
+                        return order.orderReceipts.splice(0, 0, data);
+                    }
+                }, function () {
+                    console.info('OrderReceiptCreateModel Closed.');
                 });
-                return;
+            }else{
+                ModalProvider.openOrderReceiptCreateModel($scope.selected).result.then(function (data) {
+                    if ($scope.selected.orderReceipts) {
+                        $scope.selected.orderReceipts.splice(0, 0, data);
+                    }
+                }, function () {
+                    console.info('OrderReceiptCreateModel Closed.');
+                });
             }
-
-            $rootScope.showConfirmNotify("طلبات الفحص", "هل تود تسديد مستحقات طلب الفحص فعلاً؟", "warning", "fa-money", function () {
-                OrderService.pay($scope.selected.id).then(function (data) {
-                    var index = $scope.orders.indexOf($scope.selected);
-                    $scope.orders[index].paymentMethod = data.paymentMethod;
-                });
-            });
         };
 
         $scope.deleteOrderAttach = function (orderAttach) {
@@ -224,14 +343,24 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             });
         };
 
-        $scope.newOrderDetectionType = function () {
-            ModalProvider.openOrderDetectionTypeCreateModel($scope.selected).result.then(function (data) {
-                if ($scope.selected.orderDetectionTypes) {
-                    $scope.selected.orderDetectionTypes.splice(0, 0, data);
-                }
-            }, function () {
-                console.info('OrderDetectionTypeCreateModel Closed.');
-            });
+        $scope.newOrderDetectionType = function (order) {
+            if(order){
+                ModalProvider.openOrderDetectionTypeCreateModel(order).result.then(function (data) {
+                    if (order.orderDetectionTypes) {
+                        return order.orderDetectionTypes.splice(0, 0, data);
+                    }
+                }, function () {
+                    console.info('OrderDetectionTypeCreateModel Closed.');
+                });
+            }else{
+                ModalProvider.openOrderDetectionTypeCreateModel($scope.selected).result.then(function (data) {
+                    if ($scope.selected.orderDetectionTypes) {
+                        $scope.selected.orderDetectionTypes.splice(0, 0, data);
+                    }
+                }, function () {
+                    console.info('OrderDetectionTypeCreateModel Closed.');
+                });
+            }
         };
 
         $scope.printPending = function (order) {
@@ -242,10 +371,16 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             window.open('/report/order/diagnosed/' + order.id + '/PDF');
         };
 
-        $scope.refreshOrderDetectionTypeByOrder = function () {
-            OrderDetectionTypeService.findByOrder($scope.selected).then(function (data) {
-                $scope.selected.orderDetectionTypes = data;
-            });
+        $scope.refreshOrderDetectionTypeByOrder = function (order) {
+            if(order){
+                OrderDetectionTypeService.findByOrder(order).then(function (data) {
+                    return order.orderDetectionTypes = data;
+                });
+            }else{
+                OrderDetectionTypeService.findByOrder($scope.selected).then(function (data) {
+                    $scope.selected.orderDetectionTypes = data;
+                });
+            }
         };
 
         $scope.refreshOrderAttachByOrder = function () {
@@ -274,12 +409,12 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 }
             },
             {
-                html: '<div class="drop-menu">تسديد مستحقات طلب الفحص<span class="fa fa-money fa-lg"></span></div>',
+                html: '<div class="drop-menu">تسديد دفعة<span class="fa fa-money fa-lg"></span></div>',
                 enabled: function ($itemScope) {
-                    return $itemScope.order.paymentMethod==='Later';
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_CREATE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.payOrder($itemScope.order);
+                    $scope.newOrderReceipt($itemScope.order);
                 }
             },
             {
@@ -312,11 +447,15 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
         ];
 
         //////////////////////////File Manager///////////////////////////////////
-        $scope.uploadFiles = function () {
-            document.getElementById('uploader').click();
+        $scope.orderForUpload = {};
+        $scope.uploadFiles = function (order) {
+            $scope.orderForUpload = order;
+            document.getElementById('uploader-' + $scope.orders.indexOf(order)).click();
         };
 
         $scope.initFiles = function (files) {
+
+            $scope.wrappers = [];
 
             angular.forEach(files, function (file) {
                 var wrapper = {};
@@ -340,10 +479,9 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
 
             modalInstance.result.then(function () {
                 angular.forEach($scope.wrappers, function (wrapper) {
-                    console.info(wrapper);
-                    OrderAttachService.upload($scope.selected, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
-                        if ($scope.selected.orderAttaches) {
-                            $scope.selected.orderAttaches.splice(0, 0, data);
+                    OrderAttachService.upload($scope.orderForUpload, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
+                        if ($scope.orderForUpload.orderAttaches) {
+                            return $scope.orderForUpload.orderAttaches.splice(0, 0, data);
                         }
                     });
                 });
@@ -354,7 +492,8 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
         //////////////////////////File Manager///////////////////////////////////
 
         //////////////////////////Scan Manager///////////////////////////////////
-        $scope.scanToJpg = function () {
+        $scope.scanToJpg = function (order) {
+            $scope.orderForUpload = order;
             scanner.scan(displayImagesOnPage,
                 {
                     "output_settings": [
@@ -445,13 +584,7 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
         //////////////////////////Area Chart///////////////////////////////////
 
         $timeout(function () {
-            OrderService.findAll().then(function (data) {
-                $scope.orders = data;
-                $scope.setSelected(data[0]);
-            });
-            $location.hash('orderMenu');
-            $anchorScroll();
-            window.componentHandler.upgradeAllRegistered();
+            $scope.findOrdersByWeek();
         }, 1500);
 
     }]);

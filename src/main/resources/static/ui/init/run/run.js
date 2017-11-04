@@ -261,17 +261,6 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
             PersonService.setDateType($rootScope.dateType);
         };
 
-        $rootScope.switchNotyBox = function (title, icon, message) {
-            switch ($rootScope.lang) {
-                case 'AR':
-                    return '<div class="activity-item text-right"><span>' + title + '</span> <i class="fa ' + icon + '"></i><div class="activity">' + message + '</div></div>';
-                    break;
-                case 'EN':
-                    return '<div class="activity-item text-left"><i class="fa ' + icon + '"></i> <span>' + title + '</span><div class="activity">' + message + '</div></div>';
-                    break;
-            }
-        };
-
         $rootScope.switchLang = function () {
             switch ($rootScope.lang) {
                 case 'AR':
@@ -479,16 +468,16 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 Fullscreen.all();
         };
 
-        $rootScope.showNotify = function (title, message, type, icon, layout) {
+        $rootScope.showNotify = function (title, message, type, icon) {
             noty({
-                layout: layout,
-                theme: 'metroui', // or relax
+                layout: 'bottomCenter',
+                theme: 'relax', // or relax, metroui
                 type: type, // success, error, warning, information, notification
-                text: $rootScope.switchNotyBox(title, icon, message),
+                text: '<div class="activity-item text-center"><div class="activity">' + message + '</div></div>',
                 dismissQueue: true, // [boolean] If you want to use queue feature set this true
                 force: true, // [boolean] adds notification to the beginning of queue when set to true
                 maxVisible: 3, // [integer] you can set max visible notification count for dismissQueue true option,
-                template: '<div class="noty_message"><span class="noty_text"></span></div>',
+                template: '<div class="noty_message text-center"><span class="noty_text"></span></div>',
                 timeout: 1500, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
                 progressBar: true, // [boolean] - displays a progress bar
                 animation: {

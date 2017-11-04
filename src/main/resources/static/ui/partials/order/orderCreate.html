@@ -200,6 +200,7 @@
                                                max="100"
                                                required="required"
                                                disable-validation-message=""
+                                               ng-change="calculateCostSum()"
                                                class="form-control"
                                                ng-model="order.discount">
                                     </div>
@@ -238,7 +239,7 @@
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="table-responsive">
                                     <table st-table="collection2" st-safe-src="orderDetectionTypeList"
-                                           class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                           class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
                                             <th>
@@ -312,13 +313,13 @@
                                     <br/>
                                     <strong ng-if="lang==='AR'">الإجمالي بعد الخصم</strong>
                                     <strong ng-if="lang==='EN'">Net Cost</strong>
-                                    <span>{{totalCost - ((totalCost * order.discount) / 100)}} SAR</span>
+                                    <span>{{totalCostAfterDiscount}} SAR</span>
                                 </div>
                             </div>
 
                             <div class="row">
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="paymentMethod" class="control-label">
                                         <span ng-if="lang==='AR'">طريقة الدفع</span>
                                         <span ng-if="lang==='EN'">Payment Method</span>
@@ -327,7 +328,7 @@
                                             class="form-control"
                                             required="required"
                                             disable-validation-message=""
-                                            ng-model="order.paymentMethod">
+                                            ng-model="receipt.paymentMethod">
                                         <option ng-if="lang==='AR'" value="Cash">نقدي</option>
                                         <option ng-if="lang==='EN'" value="Cash">Cash</option>
                                         <option ng-if="lang==='AR'" value="Check">شيك</option>
@@ -337,23 +338,39 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="amountNumber" class="control-label">
+                                        <span ng-if="lang==='AR'">المبلغ المدفوع</span>
+                                        <span ng-if="lang==='EN'">Payment</span>
+                                    </label>
+                                    <input id="amountNumber"
+                                           type="number"
+                                           ng-min="0"
+                                           ng-max="totalCostAfterDiscount"
+                                           ng-required="receipt.paymentMethod!=='Later'"
+                                           ng-disabled="receipt.paymentMethod==='Later'"
+                                           disable-validation-message=""
+                                           class="form-control"
+                                           ng-model="receipt.amountNumber">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="checkCode" class="control-label">
                                         <span ng-if="lang==='AR'">رقم الشيك</span>
                                         <span ng-if="lang==='EN'">Check Code</span>
                                     </label>
                                     <input id="checkCode"
                                            type="number"
-                                           ng-required="order.paymentMethod==='Check'"
-                                           ng-disabled="order.paymentMethod!=='Check'"
+                                           ng-required="receipt.paymentMethod==='Check'"
+                                           ng-disabled="receipt.paymentMethod!=='Check'"
                                            disable-validation-message=""
                                            class="form-control"
-                                           ng-model="order.checkCode">
+                                           ng-model="receipt.checkCode">
                                 </div>
 
                             </div>
 
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-hide="receipt.paymentMethod==='Later'">
                                 <label for="description" class="control-label">
                                     <span ng-if="lang==='AR'">ملاحظات الدفع</span>
                                     <span ng-if="lang==='EN'">Payment Notes</span>
@@ -362,7 +379,7 @@
                                           type="text"
                                           msd-elastic="\n"
                                           class="form-control"
-                                          ng-model="order.note">
+                                          ng-model="receipt.note">
                                 </textarea>
                             </div>
 

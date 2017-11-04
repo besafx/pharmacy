@@ -21,9 +21,6 @@ gulp.task('css', function () {
         './css/font-awesome-animation.css',
         './kdate/css/jquery.calendars.picker.css',
         './chosen/chosen.css'
-        // './css/mdl-style.css',
-        // './css/theme-black.css',
-        // './css/style.css'
     ])
         .pipe(replace('/*!', '/*'))
         .pipe(concat('app.css'))
@@ -120,6 +117,7 @@ gulp.task('scripts', function () {
         './init/factory/orderDetectionTypeAttachFactory.js',
         './init/factory/orderDetectionTypeFactory.js',
         './init/factory/orderFactory.js',
+        './init/factory/orderReceiptFactory.js',
         './init/factory/personFactory.js',
         './init/factory/teamFactory.js',
         './init/factory/billBuyFactory.js',
@@ -195,6 +193,7 @@ gulp.task('scripts', function () {
         './partials/order/order.js',
         './partials/order/orderCreate.js',
         './partials/order/orderDetectionTypeCreate.js',
+        './partials/order/orderReceiptCreate.js',
         './partials/order/orderFilter.js',
         './partials/order/orderAttachUpload.js',
 

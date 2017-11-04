@@ -4,12 +4,10 @@ import com.besafx.app.config.CustomException;
 import com.besafx.app.config.DropboxManager;
 import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
+import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.search.OrderSearch;
 import com.besafx.app.service.*;
-import com.besafx.app.util.DateConverter;
-import com.besafx.app.util.JSONConverter;
-import com.besafx.app.util.Options;
-import com.besafx.app.util.WrapperUtil;
+import com.besafx.app.util.*;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +35,7 @@ public class OrderRest {
 
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
 
-    public static final String FILTER_TABLE = "**,lastPerson[id,nickname,name],falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
+    public static final String FILTER_TABLE = "**,orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,nickname,name],falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
     public static final String FILTER_ORDER_COMBO = "id,code";
 
     @Autowired
@@ -48,6 +46,12 @@ public class OrderRest {
 
     @Autowired
     private OrderDetectionTypeService orderDetectionTypeService;
+
+    @Autowired
+    private ReceiptService receiptService;
+
+    @Autowired
+    private OrderReceiptService orderReceiptService;
 
     @Autowired
     private DiagnosisService diagnosisService;
@@ -80,12 +84,37 @@ public class OrderRest {
         order.setLastUpdate(new DateTime().toDate());
         order.setLastPerson(caller);
         order = orderService.save(order);
-        ListIterator<OrderDetectionType> listIterator = order.getOrderDetectionTypes().listIterator();
-        while (listIterator.hasNext()) {
-            OrderDetectionType orderDetectionType = listIterator.next();
-            orderDetectionType.setOrder(order);
-            listIterator.set(orderDetectionTypeService.save(orderDetectionType));
+        {
+            ListIterator<OrderDetectionType> listIterator = order.getOrderDetectionTypes().listIterator();
+            while (listIterator.hasNext()) {
+                OrderDetectionType orderDetectionType = listIterator.next();
+                orderDetectionType.setOrder(order);
+                listIterator.set(orderDetectionTypeService.save(orderDetectionType));
+            }
         }
+        {
+            ListIterator<OrderReceipt> listIterator = order.getOrderReceipts().listIterator();
+            while (listIterator.hasNext()) {
+                OrderReceipt orderReceipt = listIterator.next();
+                //
+                Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
+                if(topReceipt == null){
+                    orderReceipt.getReceipt().setCode(new Long(1));
+                }else{
+                    orderReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
+                }
+                orderReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(orderReceipt.getReceipt().getAmountNumber()));
+                orderReceipt.getReceipt().setReceiptType(ReceiptType.In);
+                orderReceipt.getReceipt().setDate(new DateTime().toDate());
+                orderReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
+                orderReceipt.getReceipt().setLastPerson(caller);
+                orderReceipt.setReceipt(receiptService.save(orderReceipt.getReceipt()));
+                //
+                orderReceipt.setOrder(order);
+                listIterator.set(orderReceiptService.save(orderReceipt));
+            }
+        }
+
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
@@ -187,6 +216,18 @@ public class OrderRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findByFalconId(id));
     }
 
+    @RequestMapping(value = "findByFalconAndCodeNot/{id}/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByFalconAndCodeNot(@PathVariable Long id, @PathVariable Integer code) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findByFalconIdAndCodeNot(id, code));
+    }
+
+    @RequestMapping(value = "findByFalconCustomerAndCodeNot/{id}/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByFalconCustomerAndCodeNot(@PathVariable Long id, @PathVariable Integer code) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findByFalconCustomerIdAndCodeNot(id, code));
+    }
+
     @RequestMapping(value = "findQuantityByDay", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findQuantityByDay() {
@@ -250,5 +291,30 @@ public class OrderRest {
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+    }
+
+    @RequestMapping(value = "findByToday", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByToday() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByToday());
+    }
+
+    @RequestMapping(value = "findByWeek", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByWeek() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByWeek());
+    }
+
+
+    @RequestMapping(value = "findByMonth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByMonth() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByMonth());
+    }
+
+    @RequestMapping(value = "findByYear", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findByYear() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByYear());
     }
 }

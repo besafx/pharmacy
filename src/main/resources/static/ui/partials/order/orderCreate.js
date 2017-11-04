@@ -9,6 +9,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
         $scope.buffer.selectedDetectionType = {};
         $scope.orderDetectionTypeList = [];
         $scope.wrappers = [];
+        $scope.receipt = {};
         $scope.title = title;
 
         $timeout(function () {
@@ -104,11 +105,13 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
 
         $scope.calculateCostSum = function () {
             $scope.totalCost = 0;
+            $scope.totalCostAfterDiscount = 0;
             if ($scope.orderDetectionTypeList) {
                 for (var i = 0; i < $scope.orderDetectionTypeList.length; i++) {
                     var orderDetectionType = $scope.orderDetectionTypeList[i];
                     $scope.totalCost = $scope.totalCost + orderDetectionType.detectionType.cost;
                 }
+                $scope.totalCostAfterDiscount = $scope.totalCost - (($scope.totalCost * $scope.order.discount) / 100);
             }
         };
 
@@ -228,6 +231,15 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
 
         $scope.submit = function () {
             $scope.order.orderDetectionTypes = $scope.orderDetectionTypeList;
+            //
+            if($scope.receipt.paymentMethod!=='Later'){
+                var orderReceipts = [];
+                var orderReceipt = {};
+                orderReceipt.receipt = $scope.receipt;
+                orderReceipts.push(orderReceipt);
+                $scope.order.orderReceipts = orderReceipts;
+            }
+            //
             OrderService.create($scope.order).then(function (data) {
                 //رفع الملفات
                 angular.forEach($scope.wrappers, function (wrapper) {
