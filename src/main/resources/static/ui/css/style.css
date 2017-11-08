@@ -200,7 +200,7 @@ input[type=checkbox] {
     height: 50px !important;
 }
 
-.mdl-layout__title, .mdl-layout-title, .mdl-button > span {
+.mdl-layout__title, .mdl-layout-title{
     font-family: 'Changa', sans-serif !important;
 }
 

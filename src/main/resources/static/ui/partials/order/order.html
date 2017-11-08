@@ -466,17 +466,17 @@
                     </div>
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
-                            <table st-table="collection1" st-safe-src="orders"
+                            <table st-table="collection1"
+                                   st-safe-src="orders"
                                    class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th></th>
                                     <th>
                                         <span ng-if="lang==='AR'">م</span>
                                         <span ng-if="lang==='EN'">#</span>
                                     </th>
 
-                                    <th st-sort="code">
+                                    <th st-sort="code" st-sort-default="reverse">
                                         <span ng-if="lang==='AR'">رقم الطلب</span>
                                         <span ng-if="lang==='EN'">Code</span>
                                     </th>
@@ -526,33 +526,32 @@
                                 <tbody>
                                 <tr ng-repeat-start="order in collection1"
                                     context-menu="rowMenu"
-                                    ng-class="{'mdl-shadow--8dp-reverse' : order.checked}"
-                                    st-select-mode="single"
-                                    ng-click="setSelected(order)"
-                                    ng-right-click="setSelected(order)">
-                                    <td st-select-row-custom="task" class="fit">
-                                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" ng-for="checkbox{{$index+1}}">
-                                            <input type="checkbox" ng-id="checkbox{{$index+1}}" class="mdl-checkbox__input" ng-model="order.checked">
-                                        </label>
-                                    </td>
-                                    <td st-select-row-custom="order">{{$index+1}}</td>
-                                    <td st-select-row-custom="order">{{order.code}}</td>
-                                    <td st-select-row-custom="order">
+                                    ng-class="{'mdl-shadow--8dp-reverse' : order.isSelected}">
+                                    <td st-select-row-multi="order">{{$index+1}}</td>
+                                    <td st-select-row-multi="order">{{order.code}}</td>
+                                    <td st-select-row-multi="order">
                                         <span ng-show="dateType==='H'">{{order.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                         <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{order.date | date:'h:m a'}}</span>
                                     </td>
-                                    <td st-select-row-custom="order">{{order.falcon.code}}</td>
-                                    <td st-select-row-custom="order">{{order.falcon.customer.name}}</td>
-                                    <td st-select-row-custom="order">{{order.detectionTypeCostSum}} SAR</td>
-                                    <td st-select-row-custom="order">{{order.discount}} %</td>
-                                    <td st-select-row-custom="order">{{order.netCost}} SAR</td>
-                                    <td st-select-row-custom="order">{{order.paid}} SAR</td>
-                                    <td st-select-row-custom="order">{{order.remain}} SAR</td>
+                                    <td st-select-row-multi="order">{{order.falcon.code}}</td>
+                                    <td st-select-row-multi="order">{{order.falcon.customer.name}}</td>
+                                    <td st-select-row-multi="order">{{order.detectionTypeCostSum}} SAR</td>
+                                    <td st-select-row-multi="order">{{order.discount}} %</td>
+                                    <td st-select-row-multi="order">{{order.netCost}} SAR</td>
+                                    <td st-select-row-multi="order">{{order.paid}} SAR</td>
+                                    <td st-select-row-multi="order">{{order.remain}} SAR</td>
                                 </tr>
-                                <tr ng-repeat-end="" ng-if="order.checked" class="mdl-shadow--8dp">
-                                    <td colspan="12">
+                                <tr ng-repeat-end="" ng-if="order.isSelected" class="mdl-shadow--8dp">
+                                    <td colspan="11">
                                         <div class="form-group row">
+                                            <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-click="refreshOrder(order)"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                <i class="material-icons">cached</i>
+                                            </button>
                                             <button uib-tooltip="{{lang==='AR' ? 'حذف الطلب' : 'Delete'}}"
                                                     tooltip-append-to-body="true"
                                                     type="button"
@@ -788,7 +787,7 @@
                                                                         <a href=""
                                                                            class="btn btn-danger"
                                                                            ng-if="contains(me.team.authorities, ['ROLE_ORDER_DELETE'])"
-                                                                           ng-click="deleteOrderDetectionType(orderDetectionType)">
+                                                                           ng-click="deleteOrderDetectionType(orderDetectionType, order)">
                                                                             <span class="fa fa-trash"></span>
                                                                             <strong ng-if="lang==='AR'">حذف</strong>
                                                                             <strong ng-if="lang==='EN'">Remove</strong>
@@ -1027,7 +1026,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="12">
+                                    <td colspan="11">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>

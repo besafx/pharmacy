@@ -200,7 +200,7 @@ input[type=checkbox] {
     height: 50px !important;
 }
 
-.mdl-layout__title, .mdl-layout-title, .mdl-button > span {
+.mdl-layout__title, .mdl-layout-title{
     font-family: 'Cairo Black', serif !important;
 }
 
@@ -518,6 +518,7 @@ WebKit inertia scrolling is being added here for any present/future devices that
 .table > tfoot > tr > th, .table > thead > tr > td,
 .table > tbody > tr > td, .table > tfoot > tr > td{
     font-size: 15px !important;
+    font-weight: 800!important;
 }
 
 .mdl-tabs__tab, .mdl-tabs.is-upgraded .mdl-tabs__tab.is-active{

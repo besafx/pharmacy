@@ -40,7 +40,7 @@
             }
         });
     ng.module('smart-table')
-        .controller('stTableController', ['$scope', '$parse', '$filter', '$attrs', function StTableController($scope, $parse, $filter, $attrs) {
+        .controller('stTableController', ['$scope', '$parse', '$filter', '$attrs', '$window', '$document', function StTableController($scope, $parse, $filter, $attrs, $window, $document) {
             var propertyName = $attrs.stTable;
             var displayGetter = $parse(propertyName);
             var displaySetter = displayGetter.assign;
@@ -190,6 +190,70 @@
                         lastSelected = row.isSelected === true ? row : undefined;
                     } else {
                         rows[index].isSelected = !rows[index].isSelected;
+                    }
+                }
+            };
+
+            /**
+             * select a dataRow (it will add the attribute isSelected to the row object)
+             * @param {Object} row - the row to select
+             * @param {String} [mode] - "single", "multiple" or "multiKey" (single by default)
+             */
+            this.select = function select(row, mode, shiftKey, ctrlKey) {
+                var rows = safeCopy;
+                var index = rows.indexOf(row);
+                var i;
+                if (index !== -1) {
+                    if (mode === 'single') {
+                        row.isSelected = row.isSelected !== true;
+                        if (lastSelected) {
+                            lastSelected.isSelected = false;
+                        }
+                        lastSelected = row.isSelected === true ? row : undefined;
+
+                    } else if (mode === 'multiple') {
+                        rows[index].isSelected = !rows[index].isSelected;
+
+                    } else if (mode === 'multiKey') {
+                        if (shiftKey) {
+                            /* Hack to remove selection created by the browser when using the shift key
+                             * The user will see this briefly flicker.
+                             */
+                            if ($window.getSelection) {
+                                $window.getSelection().removeAllRanges();
+                            } else if ($document.selection) {
+                                $document.selection.empty();
+                            }
+
+                            for (i = 0; i < rows.length; i++) {
+                                if (rows[i].isSelected)
+                                    rows[i].isSelected = false;
+                            }
+
+                            if (lastSelected) {
+                                var start = Math.min(rows.indexOf(lastSelected), rows.indexOf(row));
+                                var end = Math.max(rows.indexOf(lastSelected), rows.indexOf(row));
+                                for (i = start; i <= end; i++) {
+                                    rows[i].isSelected = true;
+                                }
+
+                            } else {
+                                row.isSelected = true;
+                                lastSelected = row;
+                            }
+
+                        } else if (ctrlKey) {
+                            row.isSelected = row.isSelected !== true;
+                            lastSelected = row.isSelected === true ? row : undefined;
+
+                        } else {
+                            for (i = 0; i < rows.length; i++) {
+                                if (rows[i] !== row && rows[i].isSelected)
+                                    rows[i].isSelected = false;
+                            }
+                            row.isSelected = row.isSelected !== true;
+                            lastSelected = row.isSelected === true ? row : undefined;
+                        }
                     }
                 }
             };
