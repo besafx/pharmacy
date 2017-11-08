@@ -1,5 +1,5 @@
-app.controller("doctorCtrl", ['DoctorService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$location', '$anchorScroll',
-    function (DoctorService, ModalProvider, $scope, $rootScope, $state, $timeout, $location, $anchorScroll) {
+app.controller("doctorCtrl", ['DoctorService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
+    function (DoctorService, ModalProvider, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
 
@@ -97,8 +97,6 @@ app.controller("doctorCtrl", ['DoctorService', 'ModalProvider', '$scope', '$root
 
         $timeout(function () {
             $scope.fetchTableData();
-            $location.hash('doctorMenu');
-            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

@@ -134,7 +134,7 @@
                 <div class="form-group row">
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="goToHome()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="home" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">dashboard</i>
                             <p ng-if="lang==='AR'">الرئيسية</p>
                             <p ng-if="lang==='EN'">DASHBOARD</p>
@@ -143,7 +143,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_COMPANY_UPDATE'])">
-                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="company" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">business</i>
                             <p ng-if="lang==='AR'">الشركة</p>
                             <p ng-if="lang==='EN'">COMPANY</p>
@@ -152,7 +152,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE', 'ROLE_CUSTOMER_UPDATE', 'ROLE_CUSTOMER_DELETE'])">
-                        <a href="" ng-click="goToCustomer()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="customer" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">account_circle</i>
                             <p ng-if="lang==='AR'">العملاء</p>
                             <p ng-if="lang==='EN'">CUSTOMERS</p>
@@ -161,7 +161,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE', 'ROLE_FALCON_UPDATE', 'ROLE_FALCON_DELETE'])">
-                        <a href="" ng-click="goToFalcon()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="falcon" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">adb</i>
                             <p ng-if="lang==='AR'">حسابات الصقور</p>
                             <p ng-if="lang==='EN'">FALCONS</p>
@@ -170,7 +170,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE', 'ROLE_DOCTOR_UPDATE', 'ROLE_DOCTOR_DELETE'])">
-                        <a href="" ng-click="goToDoctor()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="doctor" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">local_hospital</i>
                             <p ng-if="lang==='AR'">الاطباء</p>
                             <p ng-if="lang==='EN'">DOCTORS</p>
@@ -179,7 +179,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE', 'ROLE_EMPLOYEE_UPDATE', 'ROLE_EMPLOYEE_DELETE'])">
-                        <a href="" ng-click="goToEmployee()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="employee.list" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">person_pin_circle</i>
                             <p ng-if="lang==='AR'">الموظفون</p>
                             <p ng-if="lang==='EN'">EMPLOYEES</p>
@@ -188,7 +188,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE', 'ROLE_DETECTION_TYPE_UPDATE', 'ROLE_DETECTION_TYPE_DELETE'])">
-                        <a href="" ng-click="goToDetectionType()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="detectionType" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">spa</i>
                             <p ng-if="lang==='AR'">أنواع الفحص</p>
                             <p ng-if="lang==='EN'">DETECTION TYPES</p>
@@ -197,7 +197,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE', 'ROLE_ORDER_UPDATE', 'ROLE_ORDER_DELETE'])">
-                        <a href="" ng-click="goToOrder()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="order" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">burst_mode</i>
                             <p ng-if="lang==='AR'">طلبات الفحص</p>
                             <p ng-if="lang==='EN'">DETECTION ORDERS</p>
@@ -206,7 +206,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE', 'ROLE_DIAGNOSIS_UPDATE', 'ROLE_DIAGNOSIS_DELETE'])">
-                        <a href="" ng-click="goToDiagnosis()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="diagnosis" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">assignment</i>
                             <p ng-if="lang==='AR'">نتائج الفحص</p>
                             <p ng-if="lang==='EN'">DETECTION RESULTS</p>
@@ -215,7 +215,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE'])">
-                        <a href="" ng-click="goToDrug()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="drug" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">favorite</i>
                             <p ng-if="lang==='AR'">الدواء</p>
                             <p ng-if="lang==='EN'">DRUGS</p>
@@ -233,7 +233,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE', 'ROLE_BILL_BUY_UPDATE', 'ROLE_BILL_BUY_DELETE'])">
-                        <a href="" ng-click="goToBillBuy()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="billBuy" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">shopping_cart</i>
                             <p ng-if="lang==='AR'">فواتير الشراء</p>
                             <p ng-if="lang==='EN'">BILL BUYS</p>
@@ -242,7 +242,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE', 'ROLE_BILL_SELL_UPDATE', 'ROLE_BILL_SELL_DELETE'])">
-                        <a href="" ng-click="goToBillSell()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="billSell" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">shopping_cart</i>
                             <p ng-if="lang==='AR'">فواتير البيع</p>
                             <p ng-if="lang==='EN'">BILL SELL</p>
@@ -251,7 +251,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_BANK_CREATE', 'ROLE_BANK_UPDATE', 'ROLE_BANK_DELETE'])">
-                        <a href="" ng-click="goToBank()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="bank" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">account_balance</i>
                             <p ng-if="lang==='AR'">الحسابات البنكية</p>
                             <p ng-if="lang==='EN'">BANKS</p>
@@ -260,7 +260,7 @@
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
                          ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE'])">
-                        <a href="" ng-click="goToTeam()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="team" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">security</i>
                             <p ng-if="lang==='AR'">الصلاحيات</p>
                             <p ng-if="lang==='EN'">PRIVILEGES</p>
@@ -268,7 +268,7 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                        <a href="" ng-click="goToReport()" class="card-square mdl-card mdl-shadow--8dp">
+                        <a href="" ui-sref="report" class="card-square mdl-card mdl-shadow--8dp">
                             <i class="material-icons md-48">assignment</i>
                             <p ng-if="lang==='AR'">التقارير</p>
                             <p ng-if="lang==='EN'">REPORTS</p>

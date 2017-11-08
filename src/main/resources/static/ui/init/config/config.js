@@ -61,14 +61,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         $httpProvider.interceptors.push('errorInterceptor');
 
-        angular.extend($cssProvider.defaults, {
-            container: 'head',
-            method: 'append',
-            persist: true,
-            preload: true,
-            bustCache: true
-        });
-
         /**************************************************************
          *                                                            *
          * Home State                                                 *
@@ -76,6 +68,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("home", {
             url: "/home",
+            css: [
+                '/ui/css/mdl-style.css',
+                '/ui/css/theme-black.css'
+            ],
             views: {
                 '': {
                     templateUrl: "/ui/partials/home/home.html",
@@ -91,6 +87,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("menu", {
             url: "/menu",
+            css: [
+                '/ui/css/mdl-style.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/menu/menu.html",
             controller: "menuCtrl"
         });
@@ -102,6 +102,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("company", {
             url: "/company",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/company/company.html",
             controller: "companyCtrl"
         });
@@ -113,6 +117,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("customer", {
             url: "/customer",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/customer/customer.html",
             controller: "customerCtrl"
         });
@@ -124,6 +132,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("supplier", {
             url: "/supplier",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/supplier/supplier.html",
             controller: "supplierCtrl"
         });
@@ -135,6 +147,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("bank", {
             url: "/bank",
+            css: [
+                '/ui/css/mdl-style-grey-deep_orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/bank/bank.html",
             controller: "bankCtrl"
         });
@@ -146,6 +162,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("falcon", {
             url: "/falcon",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/falcon/falcon.html",
             controller: "falconCtrl"
         });
@@ -157,6 +177,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("doctor", {
             url: "/doctor",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/doctor/doctor.html",
             controller: "doctorCtrl"
         });
@@ -175,6 +199,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         $stateProvider.state("employee.list", {
             url: "/list",
+            css: [
+                '/ui/css/mdl-style-indigo-pink.css',
+                '/ui/css/theme-black.css'
+            ],
             views:{
                 'body@employee':{
                     templateUrl: "/ui/partials/employee/list/list.html"
@@ -187,6 +215,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         $stateProvider.state("employee.vacationType", {
             url: "/vacationType",
+            css: [
+                '/ui/css/mdl-style-light_green-lime.css',
+                '/ui/css/theme-black.css'
+            ],
             views:{
                 'body@employee':{
                     templateUrl: "/ui/partials/employee/vacationType/vacationType.html"
@@ -199,6 +231,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         $stateProvider.state("employee.vacation", {
             url: "/vacation",
+            css: [
+                '/ui/css/mdl-style-lime-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             views:{
                 'body@employee':{
                     templateUrl: "/ui/partials/employee/vacation/vacation.html"
@@ -211,6 +247,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         $stateProvider.state("employee.deductionType", {
             url: "/deductionType",
+            css: [
+                '/ui/css/mdl-style-purple-pink.css',
+                '/ui/css/theme-black.css'
+            ],
             views:{
                 'body@employee':{
                     templateUrl: "/ui/partials/employee/deductionType/deductionType.html"
@@ -223,6 +263,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         $stateProvider.state("employee.deduction", {
             url: "/deduction",
+            css: [
+                '/ui/css/mdl-style-red-deep_orange.css',
+                '/ui/css/theme-black.css'
+            ],
             views:{
                 'body@employee':{
                     templateUrl: "/ui/partials/employee/deduction/deduction.html"
@@ -235,6 +279,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         $stateProvider.state("employee.salary", {
             url: "/salary",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             views:{
                 'body@employee':{
                     templateUrl: "/ui/partials/employee/salary/salary.html"
@@ -252,6 +300,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("detectionType", {
             url: "/detectionType",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/detectionType/detectionType.html",
             controller: "detectionTypeCtrl"
         });
@@ -263,6 +315,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("order", {
             url: "/order",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/order/order.html",
             controller: "orderCtrl"
         });
@@ -274,6 +330,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("diagnosis", {
             url: "/diagnosis",
+            css: [
+                '/ui/css/mdl-style-lime-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/diagnosis/diagnosis.html",
             controller: "diagnosisCtrl"
         });
@@ -285,6 +345,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("drug", {
             url: "/drug",
+            css: [
+                '/ui/css/mdl-style-red-deep_orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/drug/drug.html",
             controller: "drugCtrl"
         });
@@ -296,6 +360,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("billBuy", {
             url: "/billBuy",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/billBuy/billBuy.html",
             controller: "billBuyCtrl"
         });
@@ -307,6 +375,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("billSell", {
             url: "/billSell",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/billSell/billSell.html",
             controller: "billSellCtrl"
         });
@@ -318,6 +390,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("team", {
             url: "/team",
+            css: [
+                '/ui/css/mdl-style-red-deep_orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/team/team.html",
             controller: "teamCtrl"
         });
@@ -329,6 +405,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("help", {
             url: "/help",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/help/help.html",
             controller: "helpCtrl"
         });
@@ -340,6 +420,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("profile", {
             url: "/profile",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/profile/profile.html",
             controller: "profileCtrl"
         });
@@ -351,6 +435,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("about", {
             url: "/about",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/about/about.html",
             controller: "aboutCtrl"
         });
@@ -362,6 +450,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("report", {
             url: "/report",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
             templateUrl: "/ui/partials/report/report.html",
             controller: "reportCtrl"
         });

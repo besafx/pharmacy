@@ -1,5 +1,5 @@
-app.controller("companyCtrl", ['CompanyService', 'PersonService', 'ModalProvider', '$scope', '$rootScope', '$log', '$http', '$state', '$timeout', '$location', '$anchorScroll',
-    function (CompanyService, PersonService, ModalProvider, $scope, $rootScope, $log, $http, $state, $timeout, $location, $anchorScroll) {
+app.controller("companyCtrl", ['CompanyService', 'PersonService', 'ModalProvider', '$scope', '$rootScope', '$log', '$http', '$state', '$timeout',
+    function (CompanyService, PersonService, ModalProvider, $scope, $rootScope, $log, $http, $state, $timeout) {
 
         $scope.selected = {};
 
@@ -32,8 +32,6 @@ app.controller("companyCtrl", ['CompanyService', 'PersonService', 'ModalProvider
                 $scope.selected = data[0];
                 $scope.options = JSON.parse(data[0].options);
             });
-            $location.hash('companyMenu');
-            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

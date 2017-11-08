@@ -1,5 +1,5 @@
-app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'VacationService', 'DeductionTypeService', 'DeductionService', 'SalaryService', 'ModalProvider', '$rootScope', '$state', '$timeout', '$location', '$anchorScroll',
-    function (EmployeeService, VacationTypeService, VacationService, DeductionTypeService, DeductionService, SalaryService, ModalProvider, $rootScope, $state, $timeout, $location, $anchorScroll) {
+app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'VacationService', 'DeductionTypeService', 'DeductionService', 'SalaryService', 'ModalProvider', '$rootScope', '$state', '$timeout',
+    function (EmployeeService, VacationTypeService, VacationService, DeductionTypeService, DeductionService, SalaryService, ModalProvider, $rootScope, $state, $timeout) {
 
         var vm = this;
 
@@ -507,8 +507,6 @@ app.controller("employeeCtrl", ['EmployeeService', 'VacationTypeService', 'Vacat
          *                                                            *
          *************************************************************/
         $timeout(function () {
-            $location.hash('employeeMenu');
-            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

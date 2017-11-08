@@ -1,5 +1,5 @@
-app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuyService', 'TransactionSellService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal', '$location', '$anchorScroll',
-    function (DrugService, DrugUnitService, TransactionBuyService, TransactionSellService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal, $location, $anchorScroll) {
+app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuyService', 'TransactionSellService', 'DrugCategoryService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (DrugService, DrugUnitService, TransactionBuyService, TransactionSellService, DrugCategoryService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
         $scope.selected = {};
 
@@ -321,8 +321,6 @@ app.controller("drugCtrl", ['DrugService', 'DrugUnitService', 'TransactionBuySer
 
         $timeout(function () {
             $scope.refreshDrugs();
-            $location.hash('drugMenu');
-            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

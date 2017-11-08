@@ -1,5 +1,5 @@
-app.controller("reportCtrl", ['DrugService', '$rootScope', '$scope', '$timeout', '$location', '$anchorScroll',
-    function (DrugService, $rootScope, $scope, $timeout, $location, $anchorScroll) {
+app.controller("reportCtrl", ['DrugService', '$rootScope', '$scope', '$timeout',
+    function (DrugService, $rootScope, $scope, $timeout) {
 
     $scope.printDrugsList = function () {
         $rootScope.showConfirmNotify("التقارير", "هل تود طباعة التقرير ؟", "notification", "fa-info", function () {
@@ -14,8 +14,6 @@ app.controller("reportCtrl", ['DrugService', '$rootScope', '$scope', '$timeout',
     };
 
     $timeout(function () {
-        $location.hash('reportMenu');
-        $anchorScroll();
         window.componentHandler.upgradeAllRegistered();
     }, 1500);
 

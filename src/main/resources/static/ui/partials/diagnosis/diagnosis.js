@@ -1,5 +1,5 @@
-app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout', '$location', '$anchorScroll',
-    function (OrderService, DiagnosisService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout, $location, $anchorScroll) {
+app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
+    function (OrderService, DiagnosisService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.selected = {};
         $scope.selected.orderDetectionTypes = [];
@@ -307,8 +307,6 @@ app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetec
                 $scope.orders = data;
                 $scope.setSelected(data[0]);
             });
-            $location.hash('diagnosisMenu');
-            $anchorScroll();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

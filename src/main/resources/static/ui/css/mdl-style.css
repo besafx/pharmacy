@@ -4569,7 +4569,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
 .mdl-layout__title, .mdl-layout-title {
     display: block;
     position: relative;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    /*font-family: "Roboto", "Helvetica", "Arial", sans-serif;*/
     font-size: 20px;
     line-height: 1;
     letter-spacing: .02em;
@@ -7623,36 +7623,4 @@ iframe.heightSet {
 
 .demo-wrapper iframe {
     border: 1px solid rgba(0, 0, 0, .5)
-}
-
-/****************************************************************************************************/
-/*                                                                                                  */
-/*                                                                                                  */
-/*                                      PERSONAL STYLE                                              */
-/*                                                                                                  */
-/*                                                                                                  */
-/****************************************************************************************************/
-.card-square.mdl-card {
-    width: auto;
-    padding: 10px 0px 10px 0px;
-}
-
-.card-square > .mdl-card__title {
-    color: #fff;
-}
-
-.card-square > .title-card {
-    background-color: #313534;
-}
-
-.card-square {
-    margin: 10px;
-    min-height: auto;
-    background-color: #313534;
-}
-
-.card-square, .card-square:hover, .card-square:focus {
-    color: white !important;
-    font-weight: 500;
-    text-decoration: none !important;
 }

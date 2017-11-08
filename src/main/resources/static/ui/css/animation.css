@@ -13,13 +13,65 @@
 }
 
 [ui-view].ng-enter {
-    -webkit-animation: 1s fadeIn ease-in-out;
-    animation: 1s fadeIn ease-in-out;
+    -webkit-animation: 1s bounceInRight ease-in-out;
+    animation: 1s bounceInRight ease-in-out;
+    /*animation-delay: 0.3s;*/
 }
 
 [ui-view].ng-leave {
-    /*-webkit-animation: 0.5s zoomOut ease-in-out;*/
-    /*animation: 0.5s zoomOut ease-in-out;*/
+    -webkit-animation: 0.3s fadeOut ease-in-out;
+    animation: 0.3s fadeOut ease-in-out;
+    /*animation-delay: 0.3s;*/
+}
+/**************************************************************
+ *                                                            *
+ * Body Animation                                             *
+ *                                                            *
+ *************************************************************/
+.template-body.ng-enter {
+    -webkit-animation: 1s zoomIn ease-in-out;
+    animation: 1s zoomIn ease-in-out;
+    /*animation-delay: 0.3s;*/
+}
+
+.template-body.ng-leave {
+    -webkit-animation: 0.3s fadeOut ease-in-out;
+    animation: 0.3s fadeOut ease-in-out;
+    /*animation-delay: 0.3s;*/
+}
+
+/**************************************************************
+ *                                                            *
+ * Options Animation                                          *
+ *                                                            *
+ *************************************************************/
+.template-options.ng-enter {
+    -webkit-animation: 1s fadeIn ease-in-out;
+    animation: 1s fadeIn ease-in-out;
+    /*animation-delay: 0.3s;*/
+}
+
+.template-options.ng-leave {
+    -webkit-animation: 0.3s fadeOut ease-in-out;
+    animation: 0.3s fadeOut ease-in-out;
+    /*animation-delay: 0.3s;*/
+}
+
+/**************************************************************
+ *                                                            *
+ * Menu Animation                                             *
+ *                                                            *
+ *************************************************************/
+.template-menu.ng-enter {
+    -webkit-animation: 1s slideInUp ease-in-out;
+    animation: 1s slideInUp ease-in-out;
+    /*animation-delay: 0.3s;*/
+}
+
+.template-menu.ng-leave {
+    -webkit-animation: 0.3s fadeOut ease-in-out;
+    animation: 0.3s fadeOut ease-in-out;
+    /*animation-delay: 0.3s;*/
 }
 
 /**************************************************************
@@ -27,17 +79,17 @@
  * General Animation                                          *
  *                                                            *
  *************************************************************/
-/* when hiding the thing */
-/*.ng-hide-add {
-    -webkit-animation: 0.5s zoomOut ease;
-    animation: 0.5s zoomOut ease;
-}*/
+ /*when hiding the thing */
+/*.ng-hide-add {*/
+    /*-webkit-animation: 0.5s zoomOut ease;*/
+    /*animation: 0.5s zoomOut ease;*/
+/*}*/
 
-/* when showing the thing */
-/*.ng-hide-remove {
-    -webkit-animation: 0.5s zoomIn ease;
-    animation: 0.5s zoomIn ease;
-}*/
+ /*when showing the thing */
+/*.ng-hide-remove {*/
+    /*-webkit-animation: 0.5s zoomIn ease;*/
+    /*animation: 0.5s zoomIn ease;*/
+/*}*/
 
 /**************************************************************
  *                                                            *

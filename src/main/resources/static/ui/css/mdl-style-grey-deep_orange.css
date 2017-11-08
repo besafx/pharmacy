@@ -7623,35 +7623,3 @@ iframe.heightSet {
 .demo-wrapper iframe {
     border: 1px solid rgba(0, 0, 0, .5)
 }
-
-/****************************************************************************************************/
-/*                                                                                                  */
-/*                                                                                                  */
-/*                                      PERSONAL STYLE                                              */
-/*                                                                                                  */
-/*                                                                                                  */
-/****************************************************************************************************/
-.card-square.mdl-card {
-    width: auto;
-    padding: 10px 0px 10px 0px;
-}
-
-.card-square > .mdl-card__title {
-    color: #fff;
-}
-
-.card-square > .title-card {
-    background-color: rgb(158, 158, 158);
-}
-
-.card-square {
-    margin: 10px;
-    min-height: auto;
-    background-color: rgb(158, 158, 158);
-}
-
-.card-square, .card-square:hover, .card-square:focus {
-    color: white !important;
-    font-weight: 500;
-    text-decoration: none !important;
-}
