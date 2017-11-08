@@ -4,7 +4,20 @@ var concat = require('gulp-concat');
 var cleanCSS = require('gulp-clean-css');
 var strip = require('gulp-strip-comments');
 var replace = require('gulp-replace');
+var googleWebFonts = require('gulp-google-webfonts');
 
+var options = {
+    fontsDir: './font/googlefonts/',
+    cssDir: './css/',
+    cssFilename: 'myGoogleFonts.css'
+};
+
+
+gulp.task('fonts', function () {
+    return gulp.src('./font/googlefonts/fonts.list')
+        .pipe(googleWebFonts(options))
+        .pipe(gulp.dest('./'));
+});
 
 gulp.task('css', function () {
 
@@ -24,7 +37,7 @@ gulp.task('css', function () {
     ])
         .pipe(replace('/*!', '/*'))
         .pipe(concat('app.css'))
-        .pipe(cleanCSS({specialComments : 'all'}))
+        .pipe(cleanCSS({specialComments: 'all'}))
         .pipe(gulp.dest('./'));
 
 });
