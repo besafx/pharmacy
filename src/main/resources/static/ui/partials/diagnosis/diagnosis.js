@@ -40,6 +40,108 @@ app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetec
             }
         };
 
+        $scope.refreshOrder = function (order) {
+            OrderService.findOne(order.id).then(function (data) {
+                return order = data;
+            });
+        };
+
+        $scope.findOrdersByToday = function () {
+            OrderService.findByToday().then(function (data) {
+                $scope.orders = data;
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات اليوم' : 'Orders For Today'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        $scope.findOrdersByWeek = function () {
+            OrderService.findByWeek().then(function (data) {
+                $scope.orders = data;
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الاسبوع' : 'Orders For Week'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        $scope.findOrdersByMonth = function () {
+            OrderService.findByMonth().then(function (data) {
+                $scope.orders = data;
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات الشهر' : 'Orders For Month'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        $scope.findOrdersByYear = function () {
+            OrderService.findByYear().then(function (data) {
+                $scope.orders = data;
+                $scope.items = [];
+                $scope.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'طلبات الفحص' : 'Detection Orders'
+                    },
+                    {'id': 3, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'طلبات العام' : 'Orders For Year'}
+                );
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
         $scope.openFilter = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -303,11 +405,7 @@ app.controller("diagnosisCtrl", ['OrderService', 'DiagnosisService', 'OrderDetec
         //////////////////////////Scan Manager///////////////////////////////////
 
         $timeout(function () {
-            OrderService.findAll().then(function (data) {
-                $scope.orders = data;
-                $scope.setSelected(data[0]);
-            });
-            window.componentHandler.upgradeAllRegistered();
+            $scope.findOrdersByWeek();
         }, 1500);
 
     }]);
