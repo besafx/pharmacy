@@ -13,29 +13,6 @@
 
             <div class="mdl-layout-spacer"></div>
 
-            <div id="tasks-closed-menu-lower-left" class="material-icons mdl-badge mdl-badge--overlap mdl-icon-margin" data-badge="{{me.tasksClosedThisWeek.length}}">alarm</div>
-            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
-                for="tasks-closed-menu-lower-left">
-                <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
-                    <span ng-if="lang==='AR'">لديك {{me.tasksClosedThisWeek.length}} مهمة مغلقة هذا الاسبوع</span>
-                    <span ng-if="lang==='EN'">{{me.tasksClosedThisWeek.length}} Tasks will be closed this week</span>
-                </li>
-                <li ng-repeat="taskClosed in me.tasksClosedThisWeek"
-                    class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                    ng-click="ModalProvider.openTaskDetailsModel(taskClosed)">
-                    <span class="mdl-list__item-primary-content">
-                        <i class="material-icons mdl-list__item-icon">assignment</i>
-                        <span style="text-overflow: ellipsis;white-space: nowrap;width: 200px; overflow: hidden">[{{taskClosed.code}}] {{taskClosed.title}}</span>
-                    </span>
-                </li>
-                <li class="mdl-list__item">
-                    <button href="" ng-click="ModalProvider.openTasksClosedSoonModel()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                        <span ng-if="lang==='AR'">طباعة تقرير</span>
-                        <span ng-if="lang==='EN'">Print...</span>
-                    </button>
-                </li>
-            </ul>
-
             <button id="options-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin">
                 <i class="material-icons">settings_applications</i>
             </button>
@@ -334,7 +311,7 @@
                 </span>
             </a>
             <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
-               href="" ui-sref="billSell" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
+               href="" ui-sref="billSell.insideSales" ui-sref-active="mdl-navigation__link-active mdl-color--primary"
                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE', 'ROLE_BILL_SELL_UPDATE', 'ROLE_BILL_SELL_DELETE'])">
                 <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">shopping_cart</i>

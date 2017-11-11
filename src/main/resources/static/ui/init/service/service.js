@@ -1109,6 +1109,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openBillSellReceiptCreateModel = function (billSell) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/billSellReceiptCreate.html',
+            controller: 'billSellReceiptCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                billSell: function () {
+                    return billSell;
+                }
+            }
+        });
+    };
+
     this.openTransactionSellCreateModel = function (billSell) {
         return $uibModal.open({
             animation: true,

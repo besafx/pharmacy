@@ -1,8 +1,9 @@
-app.controller('billSellFilterCtrl', ['CustomerService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
-    function (CustomerService, $scope, $rootScope, $timeout, $log, $uibModalInstance) {
+app.controller('billSellFilterCtrl', ['CustomerService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title',
+    function (CustomerService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title) {
 
         $scope.buffer = {};
-        $scope.buffer.viewInsideSalesTable = true;
+
+        $scope.title = title;
 
         $timeout(function () {
             CustomerService.findAllCombo().then(function (data) {

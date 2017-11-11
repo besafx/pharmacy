@@ -1,32 +1,88 @@
-app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
-    function (BillSellService, TransactionSellService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
+app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
+    function (BillSellService, TransactionSellService, OrderService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
-        $scope.selected = {};
-        $scope.selected.transactionSells = [];
-        $scope.buffer = {};
-        $scope.buffer.viewInsideSalesTable = true;
-        $scope.billSells = [];
+        /**************************************************************
+         *                                                            *
+         * Variables                                                  *
+         *                                                            *
+         *************************************************************/
+        var vm = this;
 
-        $scope.items = [];
-        $scope.items.push(
+        vm.buffer = {};
+
+        vm.insideBillSells = [];
+        vm.outsideBillSells = [];
+
+        vm.items = [];
+        vm.items.push(
             {'id': 1, 'type': 'link', 'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application', 'link': 'menu'},
             {'id': 2, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'}
         );
 
-        $scope.setSelected = function (object) {
-            if (object) {
-                angular.forEach($scope.billSells, function (billSell) {
-                    if (object.id == billSell.id) {
-                        $scope.selected = billSell;
-                        return billSell.isSelected = true;
-                    } else {
-                        return billSell.isSelected = false;
-                    }
+        /**************************************************************
+         *                                                            *
+         * Bill Sell                                                  *
+         *                                                            *
+         *************************************************************/
+        vm.refreshBillSell = function (billSell) {
+            BillSellService.findOne(billSell.id).then(function (data) {
+                return billSell = data;
+            });
+        };
+
+        vm.refreshOrderByBillSell = function (billSell) {
+            OrderService.findOne(billSell.order.id).then(function (data) {
+                return billSell.order = data;
+            });
+        };
+
+        vm.refreshTransactionSellByBill = function (billSell) {
+            TransactionSellService.findByBillSell(billSell.id).then(function (data) {
+                return billSell.transactionSells = data
+            });
+        };
+
+        vm.deleteTransactionSell = function (transactionSell) {
+            if (transactionSell) {
+                $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
+                    TransactionSellService.remove(transactionSell.id).then(function () {
+                        var index = vm.selected.transactionSells.indexOf(transactionSell);
+                        vm.selected.transactionSells.splice(index, 1);
+                        vm.setSelected(vm.selected.transactionSells[0]);
+                    });
                 });
+
             }
         };
 
-        $scope.openFilter = function () {
+        vm.newTransactionSell = function (billSell) {
+            ModalProvider.openTransactionSellCreateModel(billSell).result.then(function (data) {
+                return billSell.transactionSells.splice(0, 0, data);
+            }, function () {
+                console.info('TransactionSellCreateModel Closed.');
+            });
+        };
+
+        vm.newBillSellReceipt = function (billSell) {
+            ModalProvider.openBillSellReceiptCreateModel(billSell).result.then(function (data) {
+                if (billSell.billSellReceipts) {
+                    return billSell.billSellReceipts.splice(0, 0, data);
+                }
+            }, function () {
+                console.info('OrderReceiptCreateModel Closed.');
+            });
+        };
+
+        vm.print = function (billSell) {
+            window.open('/report/billSell/' + billSell.id + '/PDF');
+        };
+
+        /**************************************************************
+         *                                                            *
+         * Inside Sales                                               *
+         *                                                            *
+         *************************************************************/
+        vm.openInsideSalesFilter = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
@@ -35,83 +91,77 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                 controller: 'billSellFilterCtrl',
                 scope: $scope,
                 backdrop: 'static',
-                keyboard: false
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return $rootScope.lang==='AR' ? 'البحث فى المبيعات الداخلية' : 'Searching For Inside Sales';
+                    }
+                }
             });
 
             modalInstance.result.then(function (buffer) {
-                $scope.buffer = buffer;
-                $scope.refreshSalesTable();
-            }, function () {
-            });
+                vm.buffer = buffer;
+                vm.refreshInsideSalesTable();
+            }, function () {});
         };
 
-        $scope.refreshSalesTable = function () {
+        vm.refreshInsideSalesTable = function () {
             var search = [];
             //
-            if ($scope.buffer.codeFrom) {
+            if (vm.buffer.codeFrom) {
                 search.push('codeFrom=');
-                search.push($scope.buffer.codeFrom);
+                search.push(vm.buffer.codeFrom);
                 search.push('&');
             }
-            if ($scope.buffer.codeTo) {
+            if (vm.buffer.codeTo) {
                 search.push('codeTo=');
-                search.push($scope.buffer.codeTo);
+                search.push(vm.buffer.codeTo);
                 search.push('&');
             }
             //
-            if ($scope.buffer.paymentMethodList) {
-                var paymentMethods = [];
-                for (var i = 0; i < $scope.buffer.paymentMethodList.length; i++) {
-                    paymentMethods.push($scope.buffer.paymentMethodList[i]);
-                }
-                search.push('paymentMethods=');
-                search.push(paymentMethods);
-                search.push('&');
-            }
-            //
-            if ($scope.buffer.dateTo) {
+            if (vm.buffer.dateTo) {
                 search.push('dateTo=');
-                search.push($scope.buffer.dateTo.getTime());
+                search.push(vm.buffer.dateTo.getTime());
                 search.push('&');
             }
-            if ($scope.buffer.dateFrom) {
+            if (vm.buffer.dateFrom) {
                 search.push('dateFrom=');
-                search.push($scope.buffer.dateFrom.getTime());
+                search.push(vm.buffer.dateFrom.getTime());
                 search.push('&');
             }
             //
-            if ($scope.buffer.orderCodeFrom) {
+            if (vm.buffer.orderCodeFrom) {
                 search.push('orderCodeFrom=');
-                search.push($scope.buffer.orderCodeFrom);
+                search.push(vm.buffer.orderCodeFrom);
                 search.push('&');
             }
-            if ($scope.buffer.orderCodeTo) {
+            if (vm.buffer.orderCodeTo) {
                 search.push('orderCodeTo=');
-                search.push($scope.buffer.orderCodeTo);
+                search.push(vm.buffer.orderCodeTo);
                 search.push('&');
             }
             //
-            if ($scope.buffer.orderFalconCode) {
+            if (vm.buffer.orderFalconCode) {
                 search.push('orderFalconCode=');
-                search.push($scope.buffer.orderFalconCode);
+                search.push(vm.buffer.orderFalconCode);
                 search.push('&');
             }
-            if ($scope.buffer.orderCustomerName) {
+            if (vm.buffer.orderCustomerName) {
                 search.push('orderCustomerName=');
-                search.push($scope.buffer.orderCustomerName);
+                search.push(vm.buffer.orderCustomerName);
                 search.push('&');
             }
             //
             search.push('viewInsideSalesTable=');
-            search.push($scope.buffer.viewInsideSalesTable);
+            search.push(true);
             search.push('&');
             //
             BillSellService.filter(search.join("")).then(function (data) {
-                $scope.billSells = data;
-                $scope.setSelected(data[0]);
 
-                $scope.items = [];
-                $scope.items.push(
+                vm.insideBillSells = data;
+
+                vm.items = [];
+                vm.items.push(
                     {
                         'id': 1,
                         'type': 'link',
@@ -122,167 +172,461 @@ app.controller("billSellCtrl", ['BillSellService', 'TransactionSellService', 'Mo
                         'id': 2,
                         'type': 'title',
                         'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات داخلية' : 'Inside Sales',
+                        'link': 'menu'
                     }
                 );
-                if($scope.buffer.viewInsideSalesTable){
-                    $scope.items.push(
-                        {
-                            'id': 3,
-                            'type': 'link',
-                            'name': $rootScope.lang === 'AR' ? 'مبيعات داخلية' : 'Inside Sales',
-                            'link': 'menu'
-                        }
-                    );
-                }else{
-                    $scope.items.push(
-                        {
-                            'id': 3,
-                            'type': 'link',
-                            'name': $rootScope.lang === 'AR' ? 'مبيعات خارجية' : 'Outside Sales',
-                            'link': 'menu'
-                        }
-                    );
-                }
 
             });
         };
 
-        $scope.refreshTransactionSellByBill = function () {
-            if ($scope.selected) {
-                TransactionSellService.findByBillSell($scope.selected.id).then(function (data) {
-                    $scope.selected.transactionSells = data
-                });
-            }
-        };
+        vm.findInsideSalesByToday = function () {
+            BillSellService.findInsideSalesByToday().then(function (data) {
 
-        $scope.delete = function (billSell) {
-            if (billSell) {
-                $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
-                    BillSellService.remove(billSell.id).then(function () {
-                        var index = $scope.billSells.indexOf(billSell);
-                        $scope.billSells.splice(index, 1);
-                        $scope.setSelected($scope.billSells[0]);
-                    });
-                });
-                return;
-            }
+                vm.insideBillSells = data;
 
-            $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
-                BillSellService.remove($scope.selected.id).then(function () {
-                    var index = $scope.billSells.indexOf($scope.selected);
-                    $scope.billSells.splice(index, 1);
-                    $scope.setSelected($scope.billSells[0]);
-                });
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات داخلية' : 'Inside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير اليوم' : 'Today Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
             });
         };
 
-        $scope.payBillSell = function (billSell) {
-            if (billSell) {
-                $rootScope.showConfirmNotify("فواتير البيع", "هل تود تسديد الفاتورة فعلاً؟", "warning", "fa-money", function () {
-                    BillSellService.pay(billSell.id).then(function (data) {
-                        var index = $scope.billSells.indexOf(billSell);
-                        $scope.billSells[index].paymentMethod = data.paymentMethod;
-                    });
-                });
-                return;
-            }
+        vm.findInsideSalesByWeek = function () {
+            BillSellService.findInsideSalesByWeek().then(function (data) {
 
-            $rootScope.showConfirmNotify("فواتير البيع", "هل تود تسديد الفاتورة فعلاً؟", "warning", "fa-money", function () {
-                BillSellService.pay($scope.selected.id).then(function (data) {
-                    var index = $scope.billSells.indexOf($scope.selected);
-                    $scope.billSells[index].paymentMethod = data.paymentMethod;
-                });
+                vm.insideBillSells = data;
+
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات داخلية' : 'Inside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير الاسبوع' : 'Week Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
             });
         };
 
-        $scope.deleteTransactionSell = function (transactionSell) {
-            if (transactionSell) {
-                $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
-                    TransactionSellService.remove(transactionSell.id).then(function () {
-                        var index = $scope.selected.transactionSells.indexOf(transactionSell);
-                        $scope.selected.transactionSells.splice(index, 1);
-                        $scope.setSelected($scope.selected.transactionSells[0]);
-                    });
-                });
+        vm.findInsideSalesByMonth = function () {
+            BillSellService.findInsideSalesByMonth().then(function (data) {
 
-            }
-        };
+                vm.insideBillSells = data;
 
-        $scope.newBillSell = function () {
-            ModalProvider.openBillSellCreateModel().result.then(function (data) {
-                $rootScope.showConfirmNotify("المبيعات", "هل تود طباعة الفاتورة ؟", "notification", "fa-info", function () {
-                    $scope.print(data);
-                });
-                $scope.billSells.splice(0, 0, data);
-                $scope.setSelected(data);
-            }, function () {
-                console.info('BillSellCreateModel Closed.');
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات داخلية' : 'Inside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير الشهر' : 'Month Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
             });
         };
 
-        $scope.newBillSellForOrder = function () {
+        vm.findInsideSalesByYear = function () {
+            BillSellService.findInsideSalesByYear().then(function (data) {
+
+                vm.insideBillSells = data;
+
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات داخلية' : 'Inside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير العام' : 'Year Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        vm.newBillSellForOrder = function () {
             ModalProvider.openBillSellForOrderCreateModel().result.then(function (data) {
                 $rootScope.showConfirmNotify("المبيعات", "هل تود طباعة الفاتورة ؟", "notification", "fa-info", function () {
-                    $scope.print(data);
+                    vm.print(data);
                 });
-                $scope.billSells.splice(0, 0, data);
-                $scope.setSelected(data);
+                vm.insideBillSells.splice(0, 0, data);
             }, function () {
                 console.info('BillSellCreateModel Closed.');
             });
         };
 
-        $scope.newTransactionSell = function () {
-            ModalProvider.openTransactionSellCreateModel($scope.selected).result.then(function (data) {
-                $scope.selected.transactionSells.splice(0, 0, data);
-            }, function () {
-                console.info('TransactionSellCreateModel Closed.');
+        vm.deleteInsideBillSell = function (billSell) {
+            $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
+                BillSellService.remove(billSell.id).then(function () {
+                    var index = vm.insideBillSells.indexOf(billSell);
+                    vm.insideBillSells.splice(index, 1);
+                });
             });
         };
 
-        $scope.print = function (billSell) {
-            window.open('/report/billSell/' + billSell.id + '/PDF');
+        /**************************************************************
+         *                                                            *
+         * Outside Sales                                              *
+         *                                                            *
+         *************************************************************/
+        vm.openOutsideSalesFilter = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/billSell/billSellFilter.html',
+                controller: 'billSellFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return $rootScope.lang==='AR' ? 'البحث فى المبيعات الخارجية' : 'Searching For Outside Sales';
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                vm.buffer = buffer;
+                vm.refreshOutsideSalesTable();
+            }, function () {});
         };
 
-        $scope.rowMenu = [
-            {
-                html: '<div class="drop-menu">انشاء فاتورة جديد<span class="fa fa-pencil fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_BILL_SELL_CREATE']);
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.newBillSell();
-                }
-            },
-            {
-                html: '<div class="drop-menu">حذف الفاتورة<span class="fa fa-trash fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_BILL_SELL_DELETE']);
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.delete($itemScope.billSell);
-                }
-            },
-            {
-                html: '<div class="drop-menu">تسديد الفاتورة<span class="fa fa-money fa-lg"></span></div>',
-                enabled: function ($itemScope) {
-                    return $itemScope.billSell.paymentMethod==='Later';
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.payBillSell($itemScope.billSell);
-                }
-            },
-            {
-                html: '<div class="drop-menu">طباعة الفاتورة<span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true;
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.print($itemScope.billSell);
-                }
+        vm.refreshOutsideSalesTable = function () {
+            var search = [];
+            //
+            if (vm.buffer.codeFrom) {
+                search.push('codeFrom=');
+                search.push(vm.buffer.codeFrom);
+                search.push('&');
             }
-        ];
+            if (vm.buffer.codeTo) {
+                search.push('codeTo=');
+                search.push(vm.buffer.codeTo);
+                search.push('&');
+            }
+            //
+            if (vm.buffer.dateTo) {
+                search.push('dateTo=');
+                search.push(vm.buffer.dateTo.getTime());
+                search.push('&');
+            }
+            if (vm.buffer.dateFrom) {
+                search.push('dateFrom=');
+                search.push(vm.buffer.dateFrom.getTime());
+                search.push('&');
+            }
+            //
+            if (vm.buffer.orderCodeFrom) {
+                search.push('orderCodeFrom=');
+                search.push(vm.buffer.orderCodeFrom);
+                search.push('&');
+            }
+            if (vm.buffer.orderCodeTo) {
+                search.push('orderCodeTo=');
+                search.push(vm.buffer.orderCodeTo);
+                search.push('&');
+            }
+            //
+            if (vm.buffer.orderFalconCode) {
+                search.push('orderFalconCode=');
+                search.push(vm.buffer.orderFalconCode);
+                search.push('&');
+            }
+            if (vm.buffer.orderCustomerName) {
+                search.push('orderCustomerName=');
+                search.push(vm.buffer.orderCustomerName);
+                search.push('&');
+            }
+            //
+            search.push('viewInsideSalesTable=');
+            search.push(false);
+            search.push('&');
+            //
+            BillSellService.filter(search.join("")).then(function (data) {
+                vm.outsideBillSells = data;
 
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات خارجية' : 'Outside Sales',
+                        'link': 'menu'
+                    }
+
+                );
+
+
+            });
+        };
+
+        vm.findOutsideSalesByToday = function () {
+            BillSellService.findOutsideSalesByToday().then(function (data) {
+
+                vm.outsideBillSells = data;
+
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات خارجية' : 'Outside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير اليوم' : 'Today Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        vm.findOutsideSalesByWeek = function () {
+            BillSellService.findOutsideSalesByWeek().then(function (data) {
+
+                vm.outsideBillSells = data;
+
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات خارجية' : 'Outside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير الاسبوع' : 'Week Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        vm.findOutsideSalesByMonth = function () {
+            BillSellService.findOutsideSalesByMonth().then(function (data) {
+
+                vm.outsideBillSells = data;
+
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات خارجية' : 'Outside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير الشهر' : 'Month Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        vm.findOutsideSalesByYear = function () {
+            BillSellService.findOutsideSalesByYear().then(function (data) {
+
+                vm.outsideBillSells = data;
+
+                vm.items = [];
+                vm.items.push(
+                    {
+                        'id': 1,
+                        'type': 'link',
+                        'name': $rootScope.lang === 'AR' ? 'البرامج' : 'Application',
+                        'link': 'menu'
+                    },
+                    {
+                        'id': 2,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير البيع' : 'Bill Sales'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'مبيعات خارجية' : 'Outside Sales'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'title',
+                        'name': $rootScope.lang === 'AR' ? 'فواتير العام' : 'Year Bills'
+                    }
+                );
+
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        vm.newBillSell = function () {
+            ModalProvider.openBillSellCreateModel().result.then(function (data) {
+                $rootScope.showConfirmNotify("المبيعات", "هل تود طباعة الفاتورة ؟", "notification", "fa-info", function () {
+                    vm.print(data);
+                });
+                vm.outsideBillSells.splice(0, 0, data);
+                vm.setSelected(data);
+            }, function () {
+                console.info('BillSellCreateModel Closed.');
+            });
+        };
+
+        vm.deleteOutsideBillSell = function (billSell) {
+            $rootScope.showConfirmNotify("فواتير البيع", "هل تود حذف الفاتورة فعلاً؟", "error", "fa-trash", function () {
+                BillSellService.remove(billSell.id).then(function () {
+                    var index = vm.outsideBillSells.indexOf(billSell);
+                    vm.outsideBillSells.splice(index, 1);
+                });
+            });
+        };
+
+
+        /**************************************************************
+         *                                                            *
+         * General                                                    *
+         *                                                            *
+         *************************************************************/
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
         }, 1500);

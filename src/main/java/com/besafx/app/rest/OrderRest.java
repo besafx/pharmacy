@@ -1,6 +1,5 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.config.CustomException;
 import com.besafx.app.config.DropboxManager;
 import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
@@ -14,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
-import org.bouncycastle.jce.provider.symmetric.AES;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +22,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.crypto.Data;
-import java.beans.Transient;
 import java.security.Principal;
 import java.util.*;
 
@@ -96,11 +92,15 @@ public class OrderRest {
             ListIterator<OrderReceipt> listIterator = order.getOrderReceipts().listIterator();
             while (listIterator.hasNext()) {
                 OrderReceipt orderReceipt = listIterator.next();
+                if(orderReceipt.getReceipt().getAmountNumber() == 0){
+                    log.info("تجاهل إنشاء السند لقيمته الصفرية");
+                    break;
+                }
                 //
                 Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
-                if(topReceipt == null){
+                if (topReceipt == null) {
                     orderReceipt.getReceipt().setCode(new Long(1));
-                }else{
+                } else {
                     orderReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
                 }
                 orderReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(orderReceipt.getReceipt().getAmountNumber()));
@@ -137,7 +137,7 @@ public class OrderRest {
             diagnosisService.delete(order.getDiagnoses());
             orderDetectionTypeService.delete(order.getOrderDetectionTypes());
             ListIterator<OrderAttach> listIterator = order.getOrderAttaches().listIterator();
-            while (listIterator.hasNext()){
+            while (listIterator.hasNext()) {
                 OrderAttach orderAttach = listIterator.next();
                 dropboxManager.deleteFile("/Pharmacy4Falcon/Orders/" + orderAttach.getOrder().getId() + "/" + orderAttach.getAttach().getName() + "." + orderAttach.getAttach().getMimeType()).get();
                 orderAttachService.delete(orderAttach);
@@ -166,20 +166,6 @@ public class OrderRest {
             order.setNote(note);
             orderService.save(order);
         }
-    }
-
-    @RequestMapping(value = "pay/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_ORDER_PAY')")
-    @Transactional
-    public String pay(@PathVariable Long id) {
-        Order order = orderService.findOne(id);
-        if(!order.getPaymentMethod().equals(PaymentMethod.Later)){
-            throw new CustomException("عفوا، تأكد من أن نوع الدفع آجل!");
-        }
-        order.setPaymentMethod(PaymentMethod.Cash);
-        order = orderService.save(order);
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), order);
     }
 
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -304,7 +290,6 @@ public class OrderRest {
     public String findByWeek() {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByWeek());
     }
-
 
     @RequestMapping(value = "findByMonth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

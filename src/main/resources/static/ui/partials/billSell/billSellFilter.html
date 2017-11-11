@@ -7,9 +7,8 @@
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
             <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
-                <strong ng-if="lang==='AR'">تصفية وعرض فواتير البيع</strong>
-                <strong ng-if="lang==='EN'">Filter Data</strong>
+                <i class="material-icons mdl-list__item-icon">search</i>
+                <strong>{{title}}</strong>
             </span>
         </h3>
     </div>
@@ -17,58 +16,6 @@
     <div class="modal-body" id="modal-body">
 
         <div class="row">
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for=.orderCodeFrom" class="control-label">
-                        <span ng-if="lang==='AR'">رقم الطلب من</span>
-                        <span ng-if="lang==='EN'">Order Code From</span>
-                    </label>
-                    <input id=.orderCodeFrom"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.orderCodeFrom">
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="orderCodeTo" class="control-label">
-                        <span ng-if="lang==='AR'">رقم الطلب إلى</span>
-                        <span ng-if="lang==='EN'">Order Code To</span>
-                    </label>
-                    <input id="orderCodeTo"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.orderCodeTo">
-                </div>
-
-            </div>
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for=.orderFalconCode" class="control-label">
-                        <span ng-if="lang==='AR'">رقم الصقر يحتوي علي</span>
-                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
-                    </label>
-                    <input id=.orderFalconCode"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.orderFalconCode">
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="orderCustomerName" class="control-label">
-                        <span ng-if="lang==='AR'">اسم العميل</span>
-                        <span ng-if="lang==='EN'">Customer Name Contains</span>
-                    </label>
-                    <input id="orderCustomerName"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.orderCustomerName">
-                </div>
-
-            </div>
 
             <div class="form-group row">
 
@@ -92,44 +39,6 @@
                            type="text"
                            class="form-control"
                            ng-model="buffer.codeTo">
-                </div>
-
-            </div>
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="paymentMethod" class="control-label">
-                        <span ng-if="lang==='AR'">طريقة الدفع</span>
-                        <span ng-if="lang==='EN'">Payment Method</span>
-                    </label>
-                    <select id="paymentMethod"
-                            class="form-control"
-                            chosen=""
-                            multiple=""
-                            disable-validation-message=""
-                            ng-model="buffer.paymentMethodList">
-                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
-                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
-                        <option ng-if="lang==='AR'" value="Check">شيك</option>
-                        <option ng-if="lang==='EN'" value="Check">Check</option>
-                        <option ng-if="lang==='AR'" value="Later">آجل</option>
-                        <option ng-if="lang==='EN'" value="Later">Later</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="checkCode" class="control-label">
-                        <span ng-if="lang==='AR'">رقم الشيك</span>
-                        <span ng-if="lang==='EN'">Check Code</span>
-                    </label>
-                    <input id="checkCode"
-                           type="number"
-                           ng-required="billSellDetection.paymentMethod==='Check'"
-                           ng-disabled="billSellDetection.paymentMethod!=='Check'"
-                           disable-validation-message=""
-                           class="form-control"
-                           ng-model="buffer.checkCode">
                 </div>
 
             </div>
@@ -210,14 +119,52 @@
 
             <div class="form-group row">
 
-                <div class="form-group" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}">
-                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch">
-                        <input type="checkbox"
-                               id="switch"
-                               class="mdl-switch__input"
-                               ng-model="buffer.viewInsideSalesTable">
-                        <span class="mdl-switch__label">{{buffer.viewInsideSalesTable===true ? 'مبيعات داخلية' : 'مبيعات خارجية'}}</span>
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for=.orderCodeFrom" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الطلب من</span>
+                        <span ng-if="lang==='EN'">Order Code From</span>
                     </label>
+                    <input id=.orderCodeFrom"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderCodeFrom">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="orderCodeTo" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الطلب إلى</span>
+                        <span ng-if="lang==='EN'">Order Code To</span>
+                    </label>
+                    <input id="orderCodeTo"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderCodeTo">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for=.orderFalconCode" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الصقر يحتوي علي</span>
+                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
+                    </label>
+                    <input id=.orderFalconCode"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderFalconCode">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="orderCustomerName" class="control-label">
+                        <span ng-if="lang==='AR'">اسم العميل</span>
+                        <span ng-if="lang==='EN'">Customer Name Contains</span>
+                    </label>
+                    <input id="orderCustomerName"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.orderCustomerName">
                 </div>
 
             </div>

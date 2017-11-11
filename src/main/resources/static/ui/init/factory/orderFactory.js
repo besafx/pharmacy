@@ -83,11 +83,6 @@ app.factory("OrderService",
                 return $http.get("/api/order/findByYear").then(function (response) {
                     return response.data;
                 });
-            },
-            pay: function (id) {
-                return $http.get("/api/order/pay/" + id).then(function (response) {
-                    return response.data;
-                });
             }
         };
     }]);

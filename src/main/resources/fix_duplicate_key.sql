@@ -2,6 +2,7 @@ SELECT setval('attach_sequence', (SELECT MAX(id) FROM attach) + 1);
 SELECT setval('bank_sequence', (SELECT MAX(id) FROM bank) + 1);
 SELECT setval('bill_buy_sequence', (SELECT MAX(id) FROM bill_buy) + 1);
 SELECT setval('bill_sell_sequence', (SELECT MAX(id) FROM bill_sell) + 1);
+SELECT setval('bill_sell_receipt_sequence', (SELECT MAX(id) FROM bill_sell_receipt) + 1);
 SELECT setval('company_sequence', (SELECT MAX(id) FROM company) + 1);
 SELECT setval('customer_sequence', (SELECT MAX(id) FROM customer) + 1);
 SELECT setval('deduction_sequence', (SELECT MAX(id) FROM deduction) + 1);

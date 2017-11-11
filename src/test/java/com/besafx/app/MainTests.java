@@ -1,13 +1,11 @@
 package com.besafx.app;
 
-import com.besafx.app.entity.OrderReceipt;
+import com.besafx.app.entity.BillSellReceipt;
 import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.schedule.ScheduleDailyOrders;
-import com.besafx.app.service.OrderReceiptService;
-import com.besafx.app.service.OrderService;
-import com.besafx.app.service.ReceiptService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.ArabicLiteralNumberParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,29 +28,40 @@ public class MainTests {
     private OrderReceiptService orderReceiptService;
 
     @Autowired
+    private BillSellReceiptService billSellReceiptService;
+
+    @Autowired
     private ReceiptService receiptService;
 
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private BillSellService billSellService;
+
     @Test
     public void contextLoads() throws Exception {
-        orderService.findAll().forEach(order -> {
-            if(order.getPaymentMethod().equals(PaymentMethod.Cash)){
-                OrderReceipt orderReceipt = new OrderReceipt();
-                orderReceipt.setOrder(order);
+        billSellService.findAll().forEach(billSell -> {
+            if (billSell.getPaymentMethod().equals(PaymentMethod.Cash)) {
+                BillSellReceipt billSellReceipt = new BillSellReceipt();
+                billSellReceipt.setBillSell(billSell);
                 //
                 Receipt receipt = new Receipt();
                 receipt.setReceiptType(ReceiptType.In);
-                receipt.setDate(order.getDate());
-                receipt.setAmountNumber(order.getNetCost());
-                receipt.setAmountString(ArabicLiteralNumberParser.literalValueOf(order.getNetCost()));
-                receipt.setCode(order.getCode().longValue());
-                receipt.setNote("ايراد الطلب رقم " + order.getCode());
+                receipt.setDate(billSell.getDate());
+                receipt.setAmountNumber(billSell.getNet());
+                receipt.setAmountString(ArabicLiteralNumberParser.literalValueOf(billSell.getNet()));
+                Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
+                if (topReceipt == null) {
+                     receipt.setCode(new Long(1));
+                } else {
+                     receipt.setCode(topReceipt.getCode() + 1);
+                }
+                receipt.setNote("دفعة مالية للفاتورة رقم / " + billSell.getCode());
                 receipt.setPaymentMethod(PaymentMethod.Cash);
                 //
-                orderReceipt.setReceipt(receiptService.save(receipt));
-                orderReceiptService.save(orderReceipt);
+                billSellReceipt.setReceipt(receiptService.save(receipt));
+                billSellReceiptService.save(billSellReceipt);
             }
         });
     }

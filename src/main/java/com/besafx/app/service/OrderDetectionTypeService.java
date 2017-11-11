@@ -18,5 +18,4 @@ public interface OrderDetectionTypeService extends PagingAndSortingRepository<Or
     List<OrderDetectionType> findByOrderId(Long orderId);
     List<OrderDetectionType> findByDoneIsTrue();
     List<OrderDetectionType> findByDoneIsFalse();
-    List<OrderDetectionType> findByOrderPaymentMethodAndOrderDateBetween(PaymentMethod paymentMethod, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 }

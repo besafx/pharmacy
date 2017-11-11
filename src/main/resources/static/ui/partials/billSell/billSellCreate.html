@@ -37,7 +37,7 @@
 
                             <div class="form-group row">
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="customerName" class="control-label">
                                         <span ng-if="lang==='AR'">اسم العميل</span>
                                         <span ng-if="lang==='EN'">Customer Name</span>
@@ -46,10 +46,11 @@
                                            type="text"
                                            disable-validation-message=""
                                            class="form-control"
+                                           placeholder="{{lang==='AR' ? 'اذكر اسم العميل...' : 'Type Customer Name...'}}"
                                            ng-model="billSell.customerName">
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="code" class="control-label">
                                         <span ng-if="lang==='AR'">رقم الصقر</span>
                                         <span ng-if="lang==='EN'">Falcon Code</span>
@@ -59,43 +60,6 @@
                                            class="form-control"
                                            placeholder="{{lang==='AR' ? 'اذكر رقم الصقر...' : 'Type Falcon Code...'}}"
                                            ng-model="billSell.falconCode">
-                                </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="paymentMethod" class="control-label">
-                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
-                                        <span ng-if="lang==='EN'">Payment Method</span>
-                                    </label>
-                                    <select id="paymentMethod"
-                                            class="form-control"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-model="billSell.paymentMethod">
-                                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
-                                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
-                                        <option ng-if="lang==='AR'" value="Check">شيك</option>
-                                        <option ng-if="lang==='EN'" value="Check">Check</option>
-                                        <option ng-if="lang==='AR'" value="Later">آجل</option>
-                                        <option ng-if="lang==='EN'" value="Later">Later</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="checkCode" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم الشيك</span>
-                                        <span ng-if="lang==='EN'">Check Code</span>
-                                    </label>
-                                    <input id="checkCode"
-                                           type="number"
-                                           ng-required="billSellDetection.paymentMethod==='Check'"
-                                           ng-disabled="billSellDetection.paymentMethod!=='Check'"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           ng-model="billSell.checkCode">
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -122,8 +86,8 @@
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label for="note" class="control-label">
-                                    <span ng-if="lang==='AR'">ملاحظات</span>
-                                    <span ng-if="lang==='EN'">Notes</span>
+                                    <span ng-if="lang==='AR'">ملاحظات الفاتورة</span>
+                                    <span ng-if="lang==='EN'">Bill Notes</span>
                                 </label>
                                 <textarea id="note"
                                           type="text"
@@ -141,8 +105,7 @@
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
-                            style="margin-top: 2px;">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
                             <li>
                                 <a href=""
                                    ng-click="refreshDrugs()"

@@ -27,12 +27,7 @@ public class FundRest {
     @RequestMapping(value = "findDetectionsCostByDate/{date}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Double findDetectionsCostByDate(@PathVariable(value = "date") Long date, Principal principal) {
-        return orderDetectionTypeService
-                .findByOrderPaymentMethodAndOrderDateBetween(PaymentMethod.Cash ,new DateTime(date).withTimeAtStartOfDay().toDate(),
-                        new DateTime(date).plusDays(1).withTimeAtStartOfDay().toDate())
-                .stream()
-                .mapToDouble(orderDetectionType -> orderDetectionType.getDetectionType().getCost())
-                .sum();
+        return 0.0;
     }
 
     @RequestMapping(value = "findSalesCostByDate/{date}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

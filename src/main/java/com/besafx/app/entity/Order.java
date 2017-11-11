@@ -51,11 +51,6 @@ public class Order implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
-
-    private Integer checkCode;
-
     private Double discount;
 
     @Lob

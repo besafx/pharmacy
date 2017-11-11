@@ -1,11 +1,10 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.OrderReceipt;
+import com.besafx.app.entity.BillSellReceipt;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.ReceiptType;
-import com.besafx.app.service.OrderReceiptService;
+import com.besafx.app.service.BillSellReceiptService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.ReceiptService;
 import com.besafx.app.util.ArabicLiteralNumberParser;
@@ -30,15 +29,15 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/orderReceipt/")
-public class OrderReceiptRest {
+@RequestMapping(value = "/api/billSellReceipt/")
+public class BillSellReceiptRest {
 
-    private final static Logger log = LoggerFactory.getLogger(OrderReceiptRest.class);
+    private final static Logger log = LoggerFactory.getLogger(BillSellReceiptRest.class);
 
-    public static final String FILTER_TABLE = "**,order[id],receipt[**,lastPerson[id,nickname,name]]";
+    public static final String FILTER_TABLE = "**,billSell[id],receipt[**,lastPerson[id,nickname,name]]";
 
     @Autowired
-    private OrderReceiptService orderReceiptService;
+    private BillSellReceiptService billSellReceiptService;
 
     @Autowired
     private ReceiptService receiptService;
@@ -51,41 +50,38 @@ public class OrderReceiptRest {
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_ORDER_CREATE')")
-    public String create(@RequestBody OrderReceipt orderReceipt, Principal principal) {
-        if(orderReceipt.getReceipt().getAmountNumber() == 0){
-            throw new CustomException("لا يمكن إنشاء سند بقيمة صفر");
-        }
+    @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
+    public String create(@RequestBody BillSellReceipt billSellReceipt, Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
         if (topReceipt == null) {
-            orderReceipt.getReceipt().setCode(new Long(1));
+            billSellReceipt.getReceipt().setCode(new Long(1));
         } else {
-            orderReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
+            billSellReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
         }
-        orderReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(orderReceipt.getReceipt().getAmountNumber()));
-        orderReceipt.getReceipt().setReceiptType(ReceiptType.In);
-        orderReceipt.getReceipt().setDate(new DateTime().toDate());
-        orderReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
-        orderReceipt.getReceipt().setLastPerson(caller);
-        orderReceipt.setReceipt(receiptService.save(orderReceipt.getReceipt()));
-        orderReceipt = orderReceiptService.save(orderReceipt);
+        billSellReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(billSellReceipt.getReceipt().getAmountNumber()));
+        billSellReceipt.getReceipt().setReceiptType(ReceiptType.In);
+        billSellReceipt.getReceipt().setDate(new DateTime().toDate());
+        billSellReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
+        billSellReceipt.getReceipt().setLastPerson(caller);
+        billSellReceipt.setReceipt(receiptService.save(billSellReceipt.getReceipt()));
+        billSellReceipt = billSellReceiptService.save(billSellReceipt);
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
                 .message(lang.equals("AR") ? "تم انشاء السند بنجاح" : "Create Receipt Successfully")
                 .build(), principal.getName());
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderReceipt);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellReceipt);
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_ORDER_DELETE')")
+    @PreAuthorize("hasRole('ROLE_BILL_SELL_DELETE')")
     public void delete(@PathVariable Long id, Principal principal) {
-        OrderReceipt orderOrderReceipt = orderReceiptService.findOne(id);
-        if (orderOrderReceipt != null) {
-            receiptService.delete(orderOrderReceipt.getReceipt());
-            orderReceiptService.delete(orderOrderReceipt);
+        BillSellReceipt billSellBillSellReceipt = billSellReceiptService.findOne(id);
+        if (billSellBillSellReceipt != null) {
+            receiptService.delete(billSellBillSellReceipt.getReceipt());
+            billSellReceiptService.delete(billSellBillSellReceipt);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
@@ -95,17 +91,17 @@ public class OrderReceiptRest {
         }
     }
 
-    @RequestMapping(value = "findByOrder/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "findByBillSell/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByOrder(@PathVariable Long id) {
-        List<OrderReceipt> list = Lists.newArrayList(orderReceiptService.findByOrderId(id));
-        list.sort(Comparator.comparing(orderReceipt -> orderReceipt.getReceipt().getCode()));
+    public String findByBillSell(@PathVariable Long id) {
+        List<BillSellReceipt> list = Lists.newArrayList(billSellReceiptService.findByBillSellId(id));
+        list.sort(Comparator.comparing(billSellReceipt -> billSellReceipt.getReceipt().getCode()));
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOne(@PathVariable Long id) {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderReceiptService.findOne(id));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellReceiptService.findOne(id));
     }
 }

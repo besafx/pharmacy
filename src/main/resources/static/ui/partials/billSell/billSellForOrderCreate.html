@@ -380,61 +380,24 @@
                     <div class="panel-body">
                         <div class="row">
 
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="paymentMethod" class="control-label">
-                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
-                                        <span ng-if="lang==='EN'">Payment Method</span>
-                                    </label>
-                                    <select id="paymentMethod"
-                                            class="form-control"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-model="billSell.paymentMethod">
-                                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
-                                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
-                                        <option ng-if="lang==='AR'" value="Check">شيك</option>
-                                        <option ng-if="lang==='EN'" value="Check">Check</option>
-                                        <option ng-if="lang==='AR'" value="Later">آجل</option>
-                                        <option ng-if="lang==='EN'" value="Later">Later</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="checkCode" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم الشيك</span>
-                                        <span ng-if="lang==='EN'">Check Code</span>
-                                    </label>
-                                    <input id="checkCode"
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="discount" class="control-label">
+                                    <span ng-if="lang==='AR'">خصم المبيعات</span>
+                                    <span ng-if="lang==='EN'">Discount</span>
+                                </label>
+                                <div dir="ltr" class="input-group" id="discount">
+                                    <span class="input-group-addon">
+                                        <span>%</span>
+                                    </span>
+                                    <input dir="rtl"
                                            type="number"
-                                           ng-required="billSell.paymentMethod==='Check'"
-                                           ng-disabled="billSell.paymentMethod!=='Check'"
+                                           min="0"
+                                           max="100"
+                                           required="required"
                                            disable-validation-message=""
                                            class="form-control"
-                                           ng-model="billSell.checkCode">
+                                           ng-model="billSell.discount">
                                 </div>
-
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="discount" class="control-label">
-                                        <span ng-if="lang==='AR'">خصم المبيعات</span>
-                                        <span ng-if="lang==='EN'">Discount</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="discount">
-                                        <span class="input-group-addon">
-                                            <span>%</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               min="0"
-                                               max="100"
-                                               required="required"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="billSell.discount">
-                                    </div>
-                                </div>
-
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">

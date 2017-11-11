@@ -375,12 +375,41 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("billSell", {
             url: "/billSell",
+            templateUrl: "/ui/partials/billSell/billSell.html",
+            controller: "billSellCtrl",
+            controllerAs: "billSellCtrl"
+        });
+
+        $stateProvider.state("billSell.insideSales", {
+            url: "/insideSales",
             css: [
-                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/mdl-style-indigo-pink.css',
                 '/ui/css/theme-black.css'
             ],
-            templateUrl: "/ui/partials/billSell/billSell.html",
-            controller: "billSellCtrl"
+            views:{
+                'body@billSell':{
+                    templateUrl: "/ui/partials/billSell/insideSales/insideSales.html"
+                },
+                'options@billSell':{
+                    templateUrl: "/ui/partials/billSell/insideSales/insideSalesOptions.html"
+                }
+            }
+        });
+
+        $stateProvider.state("billSell.outsideSales", {
+            url: "/outsideSales",
+            css: [
+                '/ui/css/mdl-style-light_green-lime.css',
+                '/ui/css/theme-black.css'
+            ],
+            views:{
+                'body@billSell':{
+                    templateUrl: "/ui/partials/billSell/outsideSales/outsideSales.html"
+                },
+                'options@billSell':{
+                    templateUrl: "/ui/partials/billSell/outsideSales/outsideSalesOptions.html"
+                }
+            }
         });
 
         /**************************************************************

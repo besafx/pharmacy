@@ -67,8 +67,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 case 'employee.vacation':
                 case 'employee.deductionType':
                 case 'employee.deduction':
-                case 'employee.salary':
-                    {
+                case 'employee.salary': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'person_pin_circle';
                     $rootScope.applyCssLang();
@@ -104,7 +103,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
-                case 'billSell': {
+                case 'billSell':
+                case 'billSell.insideSales':
+                case 'billSell.outsideSales': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'shopping_cart';
                     $rootScope.applyCssLang();
@@ -301,6 +302,8 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                         }
                         break;
                     case 'billSell':
+                    case 'billSell.insideSales':
+                    case 'billSell.outsideSales':
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'فواتير البيع';
                         } else {

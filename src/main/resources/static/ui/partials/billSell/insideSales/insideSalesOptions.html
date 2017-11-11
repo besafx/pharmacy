@@ -1,0 +1,128 @@
+<div class="row">
+    <ul class="breadcrumb">
+        <li ng-repeat="item in billSellCtrl.items | orderBy:'id' track by item.id">
+            <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
+            <span ng-if="item.type==='title'">{{item.name}}</span>
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+
+    <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+         class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <button id="billSell-menu-lower-right" style="width: 100%;"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+            <span ng-if="lang==='AR'">العمليات</span>
+            <span ng-if="lang==='EN'">Actions</span>
+        </button>
+        <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+            class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+            for="billSell-menu-lower-right">
+            <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                ng-click="billSellCtrl.openInsideSalesFilter()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">search</i>
+                    <span ng-if="lang==='AR'">بحث</span>
+                    <span ng-if="lang==='EN'">Search</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item"
+                ng-click="billSellCtrl.findInsideSalesByToday()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير اليوم</span>
+                    <span ng-if="lang==='EN'">Bills For Today</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item"
+                ng-click="billSellCtrl.findInsideSalesByWeek()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير الاسبوع</span>
+                    <span ng-if="lang==='EN'">Bills For Week</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item"
+                ng-click="billSellCtrl.findInsideSalesByMonth()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير الشهر</span>
+                    <span ng-if="lang==='EN'">Bills For Month</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                ng-click="billSellCtrl.findInsideSalesByYear()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير العام</span>
+                    <span ng-if="lang==='EN'">Bills For Year</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item" ng-click="billSellCtrl.newBillSell();"
+                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">add</i>
+                    <span ng-if="lang==='AR'">انشاء فاتورة بيع جديدة</span>
+                    <span ng-if="lang==='EN'">New...</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item"
+                ng-click="billSellCtrl.newBillSellForOrder();"
+                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">shopping_basket</i>
+                    <span ng-if="lang==='AR'">صرف علاج طلب فحص</span>
+                    <span ng-if="lang==='EN'">New By Order...</span>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+         class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+        <button id="order-reports-menu-lower-right" style="width: 100%;"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+            <span ng-if="lang==='AR'">التقارير</span>
+            <span ng-if="lang==='EN'">Reports</span>
+        </button>
+        <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+            class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="order-reports-menu-lower-right">
+            <li class="mdl-menu__item mdl-list__item"
+                ng-click="ModalProvider.openReportBillSellByListModel(billSellCtrl.insideBillSells)"
+                ng-hide="!billSellCtrl.insideBillSells || billSellCtrl.insideBillSells.length==0">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">print</i>
+                    <span ng-if="lang==='AR'">تقرير مختصر بالقائمة</span>
+                    <span ng-if="lang==='EN'">BillSells Summery By List...</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                ng-click="ModalProvider.openReportBillSellDetailsByListModel(billSellCtrl.insideBillSells)"
+                ng-hide="!billSellCtrl.insideBillSells || billSellCtrl.insideBillSells.length==0">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">print</i>
+                    <span ng-if="lang==='AR'">تقرير مفصل بالقائمة</span>
+                    <span ng-if="lang==='EN'">BillSells Details By List...</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item"
+                ng-click="ModalProvider.openReportBillSellDetailsByDateModel()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">print</i>
+                    <span ng-if="lang==='AR'">تقرير مفصل بالتاريخ</span>
+                    <span ng-if="lang==='EN'">Orders Details By Date...</span>
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item"
+                ng-click="ModalProvider.openReportBillSellByDateModel()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">print</i>
+                    <span ng-if="lang==='AR'">تقرير مختصر بالتاريخ</span>
+                    <span ng-if="lang==='EN'">Orders Summery By Date...</span>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+</div>

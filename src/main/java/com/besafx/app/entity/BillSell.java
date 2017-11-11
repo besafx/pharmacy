@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -60,9 +61,20 @@ public class BillSell implements Serializable {
     @Type(type = "org.hibernate.type.TextType")
     private String note;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_update")
+    private Date lastUpdate;
+
+    @ManyToOne
+    @JoinColumn(name = "last_person")
+    private Person lastPerson;
+
     @OneToMany(mappedBy = "billSell", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<TransactionSell> transactionSells = new ArrayList<>();
+
+    @OneToMany(mappedBy = "billSell", fetch = FetchType.LAZY)
+    private List<BillSellReceipt> billSellReceipts = new ArrayList<>();
 
     public Double getUnitSellCostSum() {
         try{
@@ -81,6 +93,28 @@ public class BillSell implements Serializable {
             return totalCost - ((totalCost * this.discount) / 100);
         }catch (Exception ex){
             return null;
+        }
+    }
+
+    public Double getPaid() {
+        try {
+            return this.billSellReceipts.stream()
+                    .map(BillSellReceipt::getReceipt)
+                    .collect(Collectors.toList())
+                    .stream()
+                    .mapToDouble(Receipt::getAmountNumber)
+                    .sum();
+
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getRemain() {
+        try {
+            return this.getNet() - this.getPaid();
+        } catch (Exception ex) {
+            return 0.0;
         }
     }
 
