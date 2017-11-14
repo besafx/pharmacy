@@ -210,6 +210,7 @@ gulp.task('scripts', function () {
         './partials/order/orderDetectionTypeCreate.js',
         './partials/order/orderReceiptCreate.js',
         './partials/order/orderFilter.js',
+        './partials/order/orderDetails.js',
         './partials/order/orderAttachUpload.js',
 
         './partials/diagnosis/diagnosis.js',

@@ -48,12 +48,22 @@ public class OrderDetectionType implements Serializable {
     @OneToMany(mappedBy = "orderDetectionType", fetch = FetchType.LAZY)
     private List<OrderDetectionTypeAttach> orderDetectionTypeAttaches = new ArrayList<>();
 
-    public String getCondition(){
+    public String getConditionInArabic(){
        try{
            return this.done ? "تم التشخيص" : "غير مُشخص";
        }catch (Exception ex){
-           return null;
+           this.done = false;
+           return getConditionInArabic();
        }
+    }
+
+    public String getConditionInEnglish(){
+        try{
+            return this.done ? "Done" : "Pending";
+        }catch (Exception ex){
+            this.done = false;
+            return getConditionInEnglish();
+        }
     }
 
     @JsonCreator

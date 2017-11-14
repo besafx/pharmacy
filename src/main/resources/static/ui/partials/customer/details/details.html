@@ -1,0 +1,33 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="customerCtrl.refreshCustomer()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}">
+                        <span class="fa fa-refresh"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
+                       ng-click="customerCtrl.newCustomer()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء طلب فحص' : 'New Order...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">العميل / {{customerCtrl.selected.name}}</h3>
+                <h3 ng-if="lang==='EN'">Customer \ {{customerCtrl.selected.name}}</h3>
+            </div>
+        </div>
+        <div class="panel-body panel-body-table">
+
+        </div>
+    </div>
+
+</div>

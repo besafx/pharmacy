@@ -698,6 +698,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openOrderDetailsModel = function (order) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/order/orderDetails.html',
+            controller: 'orderDetailsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                order: function () {
+                    return order;
+                }
+            }
+        });
+    };
+
     this.openOrderReceiptCreateModel = function (order) {
         return $uibModal.open({
             animation: true,

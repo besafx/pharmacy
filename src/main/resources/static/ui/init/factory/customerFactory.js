@@ -6,6 +6,16 @@ app.factory("CustomerService",
                     return response.data;
                 });
             },
+            findAllInfo: function () {
+                return $http.get("/api/customer/findAllInfo").then(function (response) {
+                    return response.data;
+                });
+            },
+            findPage: function (page, size) {
+                return $http.get("/api/customer/findPage" + "?page=" + page + "&size=" + size).then(function (response) {
+                    return response.data;
+                });
+            },
             findAllCombo: function () {
                 return $http.get("/api/customer/findAllCombo").then(function (response) {
                     return response.data;

@@ -1,29 +1,57 @@
 app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout', '$uibModal',
     function (CustomerService, OrderService, ModalProvider, $scope, $rootScope, $state, $timeout, $uibModal) {
 
-        $scope.selected = {};
-        $scope.selectedOrder = {};
+        var vm = this;
 
-        $scope.fetchTableData = function () {
-            CustomerService.findAll().then(function (data) {
-                $scope.customers = data;
-                $scope.setSelected(data[0]);
+        /**************************************************************
+         *                                                            *
+         * GENERAL                                                    *
+         *                                                            *
+         *************************************************************/
+        vm.state = $state;
+
+        vm.toggleList = 1;
+
+        vm.selected = {};
+
+        vm.selectedOrder = {};
+
+        vm.findPage = function (tableState) {
+
+            var pagination = tableState.pagination;
+
+            console.log(pagination.number);
+            console.log(pagination.start);
+
+            var start = pagination.start || 0;
+            var number = pagination.number || 5;
+
+            CustomerService.findPage(start, number).then(function (result) {
+                vm.customers = result.content;
+                tableState.pagination.numberOfPages = result.totalPages;
+            });
+
+        };
+
+        vm.fetchTableData = function () {
+            CustomerService.findPage(1, 10).then(function (data) {
+                vm.customers = data.content;
+                vm.setSelected(data[0]);
             });
         };
 
-        $scope.refreshOrdersByCustomer = function () {
-            OrderService.findByCustomer($scope.selected.id).then(function (data) {
-                $scope.selected.orders = data;
-                $scope.setSelectedOrder(data[0]);
+        vm.refreshOrdersByCustomer = function () {
+            OrderService.findByCustomer(vm.selected.id).then(function (data) {
+                vm.selected.orders = data;
+                vm.setSelectedOrder(data[0]);
             });
         };
 
-        $scope.setSelected = function (object) {
+        vm.setSelected = function (object) {
             if (object) {
-                angular.forEach($scope.customers, function (customer) {
+                angular.forEach(vm.customers, function (customer) {
                     if (object.id == customer.id) {
-                        $scope.selected = customer;
-                        $scope.refreshOrdersByCustomer();
+                        vm.selected = customer;
                         return customer.isSelected = true;
                     } else {
                         return customer.isSelected = false;
@@ -32,11 +60,11 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
             }
         };
 
-        $scope.setSelectedOrder = function (object) {
+        vm.setSelectedOrder = function (object) {
             if (object) {
-                angular.forEach($scope.selected.orders, function (order) {
+                angular.forEach(vm.selected.orders, function (order) {
                     if (object.id == order.id) {
-                        $scope.selectedOrder = order;
+                        vm.selectedOrder = order;
                         return order.isSelected = true;
                     } else {
                         return order.isSelected = false;
@@ -45,37 +73,37 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
             }
         };
 
-        $scope.delete = function (customer) {
+        vm.delete = function (customer) {
             if (customer) {
                 $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل وكل ما يتعلق به من حسابات فعلاً؟", "error", "fa-trash", function () {
                     CustomerService.remove(customer.id).then(function () {
-                        var index = $scope.customers.indexOf(customer);
-                        $scope.customers.splice(index, 1);
-                        $scope.setSelected($scope.customers[0]);
+                        var index = vm.customers.indexOf(customer);
+                        vm.customers.splice(index, 1);
+                        vm.setSelected(vm.customers[0]);
                     });
                 });
                 return;
             }
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف العميل وكل ما يتعلق به من حسابات فعلاً؟", "error", "fa-trash", function () {
-                CustomerService.remove($scope.selected.id).then(function () {
-                    var index = $scope.customers.indexOf($scope.selected);
-                    $scope.customers.splice(index, 1);
-                    $scope.setSelected($scope.customers[0]);
+                CustomerService.remove(vm.selected.id).then(function () {
+                    var index = vm.customers.indexOf(vm.selected);
+                    vm.customers.splice(index, 1);
+                    vm.setSelected(vm.customers[0]);
                 });
             });
         };
 
-        $scope.newCustomer = function () {
+        vm.newCustomer = function () {
             ModalProvider.openCustomerCreateModel().result.then(function (data) {
-                $scope.customers.splice(0, 0, data);
-                $scope.newFalcon(data);
+                vm.customers.splice(0, 0, data);
+                vm.newFalcon(data);
             }, function () {
                 console.info('CustomerCreateModel Closed.');
             });
         };
 
-        $scope.newFalcon = function (customer) {
+        vm.newFalcon = function (customer) {
             $rootScope.showConfirmNotify("العمليات على قواعد البيانات", "هل تود ربط حساب صقر جديد بالعميل؟", "information", "fa-database", function () {
                 $uibModal.open({
                     animation: true,
@@ -107,26 +135,26 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
             });
         };
 
-        $scope.enable = function () {
-            CustomerService.enable($scope.selected).then(function (data) {
-                $scope.fetchTableData();
+        vm.enable = function () {
+            CustomerService.enable(vm.selected).then(function (data) {
+                vm.fetchTableData();
             });
         };
 
-        $scope.disable = function () {
-            CustomerService.disable($scope.selected).then(function (data) {
-                $scope.fetchTableData();
+        vm.disable = function () {
+            CustomerService.disable(vm.selected).then(function (data) {
+                vm.fetchTableData();
             });
         };
 
-        $scope.rowMenu = [
+        vm.rowMenu = [
             {
                 html: '<div class="drop-menu">انشاء عميل جديد<span class="fa fa-pencil fa-lg"></span></div>',
                 enabled: function () {
                     return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_CREATE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.newCustomer();
+                    vm.newCustomer();
                 }
             },
             {
@@ -139,12 +167,30 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
                 }
             },
             {
+                html: '<div class="drop-menu">تفعيل العميل<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_ENABLE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.enable($itemScope.customer);
+                }
+            },
+            {
+                html: '<div class="drop-menu">تعطيل العميل<span class="fa fa-edit fa-lg"></span></div>',
+                enabled: function () {
+                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_DISABLE']);
+                },
+                click: function ($itemScope, $event, value) {
+                    vm.disable($itemScope.customer);
+                }
+            },
+            {
                 html: '<div class="drop-menu">حذف العميل<span class="fa fa-trash fa-lg"></span></div>',
                 enabled: function () {
                     return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_CUSTOMER_DELETE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.delete($itemScope.customer);
+                    vm.delete($itemScope.customer);
                 }
             },
             {
@@ -158,52 +204,52 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
             }
         ];
 
-        $scope.printPending = function (order) {
+        vm.printPending = function (order) {
             window.open('/report/order/pending/' + order.id + '/PDF');
         };
 
-        $scope.printDiagnosed = function (order) {
+        vm.printDiagnosed = function (order) {
             window.open('/report/order/diagnosed/' + order.id + '/PDF');
         };
 
-        $scope.newOrder = function () {
+        vm.newOrder = function () {
             ModalProvider.openOrderCreateModel().result.then(function (data) {
                 $rootScope.showConfirmNotify("طلبات الفحص", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
-                    $scope.printPending(data);
+                    vm.printPending(data);
                 });
-                $scope.selected.orders.splice(0, 0, data);
+                vm.selected.orders.splice(0, 0, data);
             }, function () {
                 console.info('OrderCreateModel Closed.');
             });
         };
 
-        $scope.deleteOrder = function (order) {
+        vm.deleteOrder = function (order) {
             $rootScope.showConfirmNotify("طلبات الفحص", "هل تود حذف الطلب فعلاً؟", "error", "fa-trash", function () {
                 OrderService.remove(order.id).then(function () {
-                    var index = $scope.selected.orders.indexOf(order);
-                    $scope.selected.orders.splice(index, 1);
-                    $scope.setSelected($scope.selected.orders[0]);
+                    var index = vm.selected.orders.indexOf(order);
+                    vm.selected.orders.splice(index, 1);
+                    vm.setSelected(vm.selected.orders[0]);
                 });
             });
         };
 
-        $scope.payOrder = function (order) {
+        vm.payOrder = function (order) {
             $rootScope.showConfirmNotify("طلبات الفحص", "هل تود تسديد مستحقات طلب الفحص فعلاً؟", "warning", "fa-money", function () {
                 OrderService.pay(order.id).then(function (data) {
-                    var index = $scope.selected.orders.indexOf(order);
-                    $scope.selected.orders[index].paymentMethod = data.paymentMethod;
+                    var index = vm.selected.orders.indexOf(order);
+                    vm.selected.orders[index].paymentMethod = data.paymentMethod;
                 });
             });
         };
 
-        $scope.rowMenuOrder = [
+        vm.rowMenuOrder = [
             {
                 html: '<div class="drop-menu">انشاء طلب جديد<span class="fa fa-pencil fa-lg"></span></div>',
                 enabled: function () {
                     return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_CREATE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.newOrder();
+                    vm.newOrder();
                 }
             },
             {
@@ -212,7 +258,7 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
                     return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_DELETE']);
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.deleteOrder($itemScope.order);
+                    vm.deleteOrder($itemScope.order);
                 }
             },
             {
@@ -221,7 +267,7 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
                     return $itemScope.order.paymentMethod==='Later';
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.payOrder($itemScope.order);
+                    vm.payOrder($itemScope.order);
                 }
             },
             {
@@ -230,7 +276,7 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
                     return true;
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.printPending($itemScope.order);
+                    vm.printPending($itemScope.order);
                 }
             },
             {
@@ -239,7 +285,7 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
                     return true;
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.printDiagnosed($itemScope.order);
+                    vm.printDiagnosed($itemScope.order);
                 }
             },
             {
@@ -248,13 +294,13 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
                     return true;
                 },
                 click: function ($itemScope, $event, value) {
-                    ModalProvider.openReportOrderByListModel($scope.selected.orders);
+                    ModalProvider.openReportOrderByListModel(vm.selected.orders);
                 }
             }
         ];
 
         $timeout(function () {
-            $scope.fetchTableData();
+            vm.fetchTableData();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

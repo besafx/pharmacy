@@ -817,6 +817,11 @@
                                                                         <span ng-if="lang==='EN'">Net</span>
                                                                     </th>
 
+                                                                    <th>
+                                                                        <span ng-if="lang==='AR'">العمليات</span>
+                                                                        <span ng-if="lang==='EN'">Action</span>
+                                                                    </th>
+
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -831,10 +836,16 @@
                                                                     <td>{{order.detectionTypeCostSum}} SAR</td>
                                                                     <td>{{order.discount}} %</td>
                                                                     <td>{{order.netCost}} SAR</td>
+                                                                    <td>
+                                                                        <a href="" ng-click="ModalProvider.openOrderDetailsModel(order);">
+                                                                            <strong ng-if="lang==='AR'">التفاصيل</strong>
+                                                                            <strong ng-if="lang==='EN'">Details</strong>
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                                                     ng-show="!collectionFalconOrders || collectionFalconOrders.length ==0">
-                                                                    <td colspan="6">
+                                                                    <td colspan="7">
                                                                         <span ng-if="lang==='AR'">لا توجد زيارات</span>
                                                                         <span ng-if="lang==='EN'">No Visits Found.</span>
                                                                     </td>

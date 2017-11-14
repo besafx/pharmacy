@@ -15,6 +15,10 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +34,8 @@ import java.util.List;
 public class CustomerRest {
 
     public static final String FILTER_TABLE = "**,falcons[**,customer[id,code,name,mobile,identityNumber]]";
+    public static final String FILTER_CUSTOMER_INFO = "id,nickname,name,registerDate,mobile,identityNumber,nationality,job";
+    public static final String FILTER_CUSTOMER_PAGE = "**,content[id,nickname,name,registerDate,mobile,identityNumber,nationality,job]";
     public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name,mobile,identityNumber";
     private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
     @Autowired
@@ -160,6 +166,25 @@ public class CustomerRest {
         List<Customer> list = Lists.newArrayList(customerService.findAll());
         list.sort(Comparator.comparing(Customer::getCode));
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+    }
+
+    @RequestMapping(value = "findAllInfo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findAllInfo() {
+        List<Customer> list = Lists.newArrayList(customerService.findAll());
+        list.sort(Comparator.comparing(Customer::getCode));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_CUSTOMER_INFO), list);
+    }
+
+    @RequestMapping(value = "findPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findPage(@RequestParam( "page" ) int page, @RequestParam( "size" ) int size) {
+        Pageable pageable = new PageRequest(page, size);
+        Page<Customer> resultPage = customerService.findAll(pageable);
+        if( page > resultPage.getTotalPages() ) {
+            throw new CustomException("هناك خطأ ما فى قراءة الصفحات");
+        }
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_CUSTOMER_PAGE), resultPage);
     }
 
     @RequestMapping(value = "findAllCombo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -29,7 +29,7 @@ public class ScheduleDailyOrders {
     @Autowired
     private EmailSender emailSender;
 
-    @Scheduled(cron = "0 0/30 22 * * *")
+    @Scheduled(cron = "0 0 22 * * *")
     public void run() throws Exception {
         log.info("بداية عملية إرسال تقرير طلبات الفحص اليوم");
         Future<byte[]> work = asyncScheduleDailyOrders.getFile();

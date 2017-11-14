@@ -85,6 +85,9 @@ public class OrderRest {
             while (listIterator.hasNext()) {
                 OrderDetectionType orderDetectionType = listIterator.next();
                 orderDetectionType.setOrder(order);
+                if(orderDetectionType.getDone() == null){
+                    orderDetectionType.setDone(true);
+                }
                 listIterator.set(orderDetectionTypeService.save(orderDetectionType));
             }
         }

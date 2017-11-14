@@ -117,12 +117,41 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
          *************************************************************/
         $stateProvider.state("customer", {
             url: "/customer",
+            templateUrl: "/ui/partials/customer/customer.html",
+            controller: "customerCtrl",
+            controllerAs: "customerCtrl"
+        });
+
+        $stateProvider.state("customer.list", {
+            url: "/list",
             css: [
                 '/ui/css/mdl-style-green-orange.css',
                 '/ui/css/theme-black.css'
             ],
-            templateUrl: "/ui/partials/customer/customer.html",
-            controller: "customerCtrl"
+            views:{
+                'body@customer':{
+                    templateUrl: "/ui/partials/customer/list/list.html"
+                },
+                'options@customer':{
+                    templateUrl: "/ui/partials/customer/list/options.html"
+                }
+            }
+        });
+
+        $stateProvider.state("customer.details", {
+            url: "/details",
+            css: [
+                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/theme-black.css'
+            ],
+            views:{
+                'body@customer':{
+                    templateUrl: "/ui/partials/customer/details/details.html"
+                },
+                'options@customer':{
+                    templateUrl: "/ui/partials/customer/details/options.html"
+                }
+            }
         });
 
         /**************************************************************

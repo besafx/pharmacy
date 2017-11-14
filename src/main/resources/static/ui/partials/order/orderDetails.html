@@ -1,0 +1,275 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">add</i>
+                <strong ng-if="lang==='AR'">تفاصيل الطلب رقم /  </strong>
+                <strong ng-if="lang==='EN'">Order Details Number \  </strong>
+                <strong>{{order.code}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">بيانات طلب الفحص</h3>
+                            <h3 ng-if="lang==='EN'">Order Information</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الطلب</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </td>
+                                    <td>{{order.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">تاريخ الطلب</span>
+                                        <span ng-if="lang==='EN'">Order Date</span>
+                                    </td>
+                                    <td>
+                                        {{order.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span class="label label-success">{{order.date | date:'h:m a'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                        <span ng-if="lang==='EN'">Falcon Code</span>
+                                    </td>
+                                    <td>{{order.falcon.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">العميل</span>
+                                        <span ng-if="lang==='EN'">Customer</span>
+                                    </td>
+                                    <td>{{order.falcon.customer.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الطبيب المعالج</span>
+                                        <span ng-if="lang==='EN'">Doctor</span>
+                                    </td>
+                                    <td>{{order.doctor.person.name}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">التشخيص</h3>
+                            <h3 ng-if="lang==='EN'">Diagnosis</h3>
+                            <strong ng-if="lang==='AR'">رقم الطلب / </strong>
+                            <strong ng-if="lang==='EN'">Order Code \ </strong>
+                            <span>{{order.code}}</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <strong ng-if="lang==='AR'">{{order.note ? order.note : 'لا يوجد تشخيص'}}</strong>
+                        <strong ng-if="lang==='EN'">{{order.note ? order.note : 'No Diagnosis Yet'}}</strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة الفحوصات المطلوبة</h3>
+                            <h3 ng-if="lang==='EN'">Required Detections</h3>
+                            <strong ng-if="lang==='AR'">رقم الطلب / </strong>
+                            <strong ng-if="lang==='EN'">Order Code \ </strong>
+                            <span>{{order.code}}</span>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection2" st-safe-src="order.orderDetectionTypes"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th st-sort="detectionType.code">
+                                        <span ng-if="lang==='AR'">رقم الفحص</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="detectionType.nameArabic">
+                                        <span ng-if="lang==='AR'">اسم الفحص</span>
+                                        <span ng-if="lang==='EN'">Name</span>
+                                    </th>
+
+                                    <th st-sort="done">
+                                        <span ng-if="lang==='AR'">تم التشخيص</span>
+                                        <span ng-if="lang==='EN'">Done</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="orderDetectionType in collection2">
+                                    <td st-select-row-custom="orderDetectionType">{{$index+1}}</td>
+                                    <td st-select-row-custom="orderDetectionType">
+                                        {{orderDetectionType.detectionType.code}}
+                                    </td>
+                                    <td st-select-row-custom="orderDetectionType">
+                                        [{{orderDetectionType.detectionType.nameArabic}}]
+                                        [{{orderDetectionType.detectionType.nameEnglish}}]
+                                    </td>
+                                    <td st-select-row-custom="orderDetectionType">
+                                        <span ng-if="lang==='AR'">{{orderDetectionType.conditionInArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{orderDetectionType.conditionInEnglish}}</span>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection2 || collection2.length ==0">
+                                    <td colspan="4">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة العلاج المطلوب</h3>
+                            <h3 ng-if="lang==='EN'">Prescriptions</h3>
+                            <strong ng-if="lang==='AR'">رقم الطلب / </strong>
+                            <strong ng-if="lang==='EN'">Order Code \ </strong>
+                            <span>{{order.code}}</span>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collection3" st-safe-src="order.diagnoses"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم الوصفة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">تاريخ الوصفة</span>
+                                        <span ng-if="lang==='EN'">Date</span>
+                                    </th>
+
+                                    <th st-sort="drug.code">
+                                        <span ng-if="lang==='AR'">الدواء</span>
+                                        <span ng-if="lang==='EN'">Drug</span>
+                                    </th>
+
+                                    <th st-sort="quantity">
+                                        <span ng-if="lang==='AR'">الكمية المطلوبة</span>
+                                        <span ng-if="lang==='EN'">Required Quantity</span>
+                                    </th>
+
+                                    <th st-sort="drugUnit">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Drug Unit</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="diagnosis in collection3">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{diagnosis.code}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{diagnosis.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{diagnosis.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{diagnosis.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>
+                                        [{{diagnosis.drug.code}}]
+                                        [
+                                        <span ng-if="lang==='AR'">{{diagnosis.drug.nameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{diagnosis.drug.nameEnglish}}</span>
+                                        ][
+                                        <span ng-if="lang==='AR'">{{diagnosis.drug.medicalNameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{diagnosis.drug.medicalNameEnglish}}</span>
+                                        ]
+                                    </td>
+                                    <td>{{diagnosis.quantity}}</td>
+                                    <td>{{diagnosis.drugUnit.name}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection3 || collection3.length ==0">
+                                    <td colspan="8">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

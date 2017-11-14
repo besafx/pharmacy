@@ -31,7 +31,9 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
-                case 'customer': {
+                case 'customer':
+                case 'customer.list':
+                case 'customer.details': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'account_circle';
                     $rootScope.applyCssLang();
@@ -219,6 +221,8 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                         }
                         break;
                     case 'customer':
+                    case 'customer.list':
+                    case 'customer.details':
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'العملاء';
                         } else {

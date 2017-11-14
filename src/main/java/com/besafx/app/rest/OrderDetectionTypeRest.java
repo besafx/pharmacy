@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/orderDetectionType/")
@@ -46,6 +47,9 @@ public class OrderDetectionTypeRest {
     @PreAuthorize("hasRole('ROLE_ORDER_CREATE')")
     @Transactional
     public String create(@RequestBody OrderDetectionType orderDetectionType, Principal principal) {
+        if(orderDetectionType.getDone() == null){
+            orderDetectionType.setDone(true);
+        }
         orderDetectionType = orderDetectionTypeService.save(orderDetectionType);
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
