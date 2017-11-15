@@ -1,7 +1,6 @@
 package com.besafx.app.schedule;
 
 import com.besafx.app.Async.AsyncScheduleDailyBillSells;
-import com.besafx.app.Async.AsyncScheduleDailyOrders;
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.service.CompanyService;
 import com.google.common.collect.Lists;
@@ -13,6 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,7 +42,10 @@ public class ScheduleDailyBillSells {
             FileUtils.writeByteArrayToFile(reportFile, fileBytes);
             log.info("جاري تحويل الملف");
             Thread.sleep(10000);
-            Future<Boolean> mail = emailSender.send("تقرير بمبيعات اليوم", "", Lists.newArrayList(Lists.newArrayList(companyService.findAll()).get(0).getEmail(), "islamhaker@gmail.com"), Lists.newArrayList(reportFile));
+            List<String> emails = new ArrayList<>();
+            emails.add(Lists.newArrayList(companyService.findAll()).get(0).getEmail());
+            emails.add("anni4ksa@gmail.com");
+            Future<Boolean> mail = emailSender.send("تقرير بمبيعات اليوم", "", emails, Lists.newArrayList(reportFile));
             mail.get();
             log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             log.info("نهاية عملية إرسال تقرير مبيعات اليوم");

@@ -12,6 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -40,7 +42,10 @@ public class ScheduleDailyOrders {
             FileUtils.writeByteArrayToFile(reportFile, fileBytes);
             log.info("جاري تحويل الملف");
             Thread.sleep(10000);
-            Future<Boolean> mail = emailSender.send("تقرير بطلبات الفحص اليومية", "", Lists.newArrayList(Lists.newArrayList(companyService.findAll()).get(0).getEmail(), "islamhaker@gmail.com"), Lists.newArrayList(reportFile));
+            List<String> emails = new ArrayList<>();
+            emails.add(Lists.newArrayList(companyService.findAll()).get(0).getEmail());
+            emails.add("anni4ksa@gmail.com");
+            Future<Boolean> mail = emailSender.send("تقرير بطلبات الفحص اليومية", "", emails, Lists.newArrayList(reportFile));
             mail.get();
             log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             log.info("نهاية عملية إرسال تقرير طلبات الفحص اليوم");
