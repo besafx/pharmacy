@@ -40,6 +40,8 @@
 		<field name="order" class="com.besafx.app.entity.Order"/>
 		<field name="unitSellCostSum" class="java.lang.Double"/>
 		<field name="net" class="java.lang.Double"/>
+		<field name="customerName" class="java.lang.String"/>
+		<field name="falconCode" class="java.lang.String"/>
 		<variable name="NET_SUM" class="java.lang.Double" calculation="Sum">
 			<variableExpression><![CDATA[$F{net}]]></variableExpression>
 			<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
@@ -335,7 +337,7 @@
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial" size="8"/>
 										</textElement>
-										<textFieldExpression><![CDATA[$F{order} != null ? $F{order}.getFalcon().getCustomer().getName() : ""]]></textFieldExpression>
+										<textFieldExpression><![CDATA[$F{order} != null ? $F{order}.getFalcon().getCustomer().getName() :$F{customerName}]]></textFieldExpression>
 									</textField>
 								</jr:detailCell>
 							</jr:column>
@@ -368,7 +370,7 @@
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial" size="8"/>
 										</textElement>
-										<textFieldExpression><![CDATA[$F{order} != null ? $F{order}.getFalcon().getCode() : ""]]></textFieldExpression>
+										<textFieldExpression><![CDATA[$F{order} != null ? $F{order}.getFalcon().getCode() : $F{falconCode}]]></textFieldExpression>
 									</textField>
 								</jr:detailCell>
 							</jr:column>
