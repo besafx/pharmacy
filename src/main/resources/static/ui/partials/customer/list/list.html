@@ -116,6 +116,11 @@
                             <span ng-if="lang==='EN'">#</span>
                         </th>
 
+                        <th st-sort="code">
+                            <span ng-if="lang==='AR'">رقم العميل</span>
+                            <span ng-if="lang==='EN'">Code</span>
+                        </th>
+
                         <th st-sort="name">
                             <span ng-if="lang==='AR'">اسم العميل</span>
                             <span ng-if="lang==='EN'">Name</span>
@@ -156,6 +161,7 @@
                         ng-dblclick="customerCtrl.goToCustomer()"
                         ng-right-click="customerCtrl.setSelected(customer)">
                         <td st-select-row-custom="customer">{{$index+1}}</td>
+                        <td st-select-row-custom="customer">{{customer.code}}</td>
                         <td st-select-row-custom="customer">
                             <span ng-show="customer.enabled" class="label label-success">مفعل</span>
                             <span ng-show="!customer.enabled" class="label label-danger">معطل</span>
@@ -172,7 +178,7 @@
                     </tr>
                     <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                         ng-show="!collection1 || collection1.length ==0">
-                        <td colspan="7">
+                        <td colspan="8">
                             <span ng-if="lang==='AR'">لا توجد بيانات</span>
                             <span ng-if="lang==='EN'">No Data Found.</span>
                         </td>
@@ -180,7 +186,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="7">
+                        <td colspan="8">
                             <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                         </td>
                     </tr>
@@ -231,7 +237,7 @@
                             <div class="profile-image">
                                 <img width="100" height="100"
                                      src="/ui/img/no-image.jpg"
-                                     alt="{{customer.name}}"/>
+                                     alt="{{customer.code}}"/>
                             </div>
                             <div class="profile-data">
                                 <div class="profile-data-name">
