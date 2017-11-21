@@ -141,7 +141,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
         $stateProvider.state("customer.details", {
             url: "/details",
             css: [
-                '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/mdl-style-indigo-pink.css',
                 '/ui/css/theme-black.css'
             ],
             views:{

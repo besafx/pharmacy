@@ -2,7 +2,9 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Customer;
+import com.besafx.app.entity.Falcon;
 import com.besafx.app.entity.Person;
+import com.besafx.app.search.CustomerSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -34,12 +36,17 @@ import java.util.List;
 public class CustomerRest {
 
     public static final String FILTER_TABLE = "**,falcons[**,customer[id,code,name,mobile,identityNumber]]";
-    public static final String FILTER_CUSTOMER_INFO = "id,nickname,name,registerDate,mobile,identityNumber,nationality,job";
+    public static final String FILTER_CUSTOMER_INFO = "id,nickname,name,registerDate,mobile,identityNumber,nationality,job,enabled";
     public static final String FILTER_CUSTOMER_PAGE = "**,content[id,nickname,name,registerDate,mobile,identityNumber,nationality,job]";
     public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name,mobile,identityNumber";
+
     private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
+
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private CustomerSearch customerSearch;
 
     @Autowired
     private FalconService falconService;
@@ -199,5 +206,17 @@ public class CustomerRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), customerService.findOne(id));
+    }
+
+    @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filter(
+            @RequestParam(value = "code", required = false) final String code,
+            @RequestParam(value = "name", required = false) final String name,
+            @RequestParam(value = "mobile", required = false) final String mobile,
+            @RequestParam(value = "identityNumber", required = false) final String identityNumber,
+            @RequestParam(value = "email", required = false) final String email) {
+        List<Customer> list = customerSearch.filter(code, name, mobile, identityNumber, email);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_CUSTOMER_INFO), list);
     }
 }

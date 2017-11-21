@@ -43,6 +43,6 @@ app.factory("FalconService",
                 return $http.get("/api/falcon/filter?" + search).then(function (response) {
                     return response.data;
                 });
-            },
+            }
         };
     }]);

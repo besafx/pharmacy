@@ -10,11 +10,55 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
          *************************************************************/
         vm.state = $state;
 
+        vm.param = {};
+
         vm.toggleList = 1;
 
         vm.selected = {};
 
         vm.selectedOrder = {};
+
+        /**************************************************************
+         *                                                            *
+         * SEARCH                                                     *
+         *                                                            *
+         *************************************************************/
+        vm.search = function () {
+
+            var search = [];
+
+            //
+            if (vm.param.code) {
+                search.push('code=');
+                search.push(vm.param.code);
+                search.push('&');
+            }
+            if (vm.param.name) {
+                search.push('name=');
+                search.push(vm.param.name);
+                search.push('&');
+            }
+            if (vm.param.mobile) {
+                search.push('mobile=');
+                search.push(vm.param.mobile);
+                search.push('&');
+            }
+            if (vm.param.identityNumber) {
+                search.push('identityNumber=');
+                search.push(vm.param.identityNumber);
+                search.push('&');
+            }
+            if (vm.param.email) {
+                search.push('email=');
+                search.push(vm.param.email);
+                search.push('&');
+            }
+            CustomerService.filter(search.join("")).then(function (data) {
+                vm.customers = data;
+                vm.setSelected(data[0]);
+            });
+
+        };
 
         vm.findPage = function (tableState) {
 
@@ -34,9 +78,17 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
         };
 
         vm.fetchTableData = function () {
-            CustomerService.findPage(1, 10).then(function (data) {
-                vm.customers = data.content;
+            CustomerService.findAllInfo().then(function (data) {
+                vm.customers = data;
                 vm.setSelected(data[0]);
+            });
+        };
+
+        vm.goToCustomer = function () {
+            CustomerService.findOne(vm.selected.id).then(function (data) {
+                vm.selected = data;
+                vm.state.go('customer.details');
+                vm.refreshOrdersByCustomer();
             });
         };
 
@@ -300,7 +352,6 @@ app.controller("customerCtrl", ['CustomerService', 'OrderService', 'ModalProvide
         ];
 
         $timeout(function () {
-            vm.fetchTableData();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

@@ -48,6 +48,11 @@ app.factory("CustomerService",
                 return $http.get("/api/customer/disable/" + customer.id).then(function (response) {
                     return response.data;
                 });
-            }
+            },
+            filter: function (search) {
+                return $http.get("/api/customer/filter?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
         };
     }]);

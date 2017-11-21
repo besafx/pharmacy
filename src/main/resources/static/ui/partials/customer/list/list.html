@@ -1,3 +1,82 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="customerCtrl.showFilter===true">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="customerCtrl.showFilter=false"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'إغلاق' : 'Close'}}">
+                        <span class="fa fa-close"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">تصفية وبحث</h3>
+                <h3 ng-if="lang==='EN'">Filter & Search</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <label for="customerCode" class="control-label">
+                        <span ng-if="lang==='AR'">رقم العميل</span>
+                        <span ng-if="lang==='EN'">Customer Code</span>
+                    </label>
+                    <input id="customerCode"
+                           type="text"
+                           class="form-control"
+                           ng-change="customerCtrl.search()"
+                           ng-model="customerCtrl.param.code">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <label for="customerName" class="control-label">
+                        <span ng-if="lang==='AR'">اسم العميل</span>
+                        <span ng-if="lang==='EN'">Customer Name</span>
+                    </label>
+                    <input id="customerName"
+                           type="text"
+                           class="form-control"
+                           ng-change="customerCtrl.search()"
+                           ng-model="customerCtrl.param.name">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <label for="customerMobile" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الجوال</span>
+                        <span ng-if="lang==='EN'">Mobile Number</span>
+                    </label>
+                    <input id="customerMobile"
+                           type="text"
+                           class="form-control"
+                           ng-change="customerCtrl.search()"
+                           ng-model="customerCtrl.param.mobile">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <label for="customerIdentityNumber" class="control-label">
+                        <span ng-if="lang==='AR'">رقم البطاقة</span>
+                        <span ng-if="lang==='EN'">Identity Number</span>
+                    </label>
+                    <input id="customerIdentityNumber"
+                           type="text"
+                           class="form-control"
+                           ng-change="customerCtrl.search()"
+                           ng-model="customerCtrl.param.identityNumber">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="customerCtrl.toggleList===1">
 
     <div class="panel panel-primary">
@@ -6,10 +85,10 @@
                 style="margin-top: 2px;">
                 <li>
                     <a href=""
-                       ng-click="customerCtrl.fetchTableData()"
+                       ng-click="customerCtrl.showFilter=true"
                        tooltip-append-to-body="true"
-                       uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                        <span class="fa fa-refresh"></span>
+                       uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
+                        <span class="fa fa-filter"></span>
                     </a>
                     <a href=""
                        ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
@@ -26,8 +105,9 @@
             </div>
         </div>
         <div class="panel-body panel-body-table">
+
             <div class="table-responsive">
-                <table st-table="customerCtrl.customers" st-pipe="customerCtrl.findPage"
+                <table st-table="collection1" st-safe-src="customerCtrl.customers"
                        class="table table-bordered table-hover">
                     <thead>
                     <tr>
@@ -67,21 +147,13 @@
                         </th>
 
                     </tr>
-                    <tr>
-                        <th colspan="7">
-                            <input st-search=""
-                                   class="form-control"
-                                   placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
-                                   type="text"/>
-                        </th>
-                    </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="customer in customerCtrl.customers"
+                    <tr ng-repeat="customer in collection1"
                         st-select-mode="single"
                         context-menu="customerCtrl.rowMenu"
                         ng-click="customerCtrl.setSelected(customer)"
-                        ng-dblclick="customerCtrl.state.go('customer.details')"
+                        ng-dblclick="customerCtrl.goToCustomer()"
                         ng-right-click="customerCtrl.setSelected(customer)">
                         <td st-select-row-custom="customer">{{$index+1}}</td>
                         <td st-select-row-custom="customer">
@@ -99,7 +171,7 @@
                         <td st-select-row-custom="customer">{{customer.job}}</td>
                     </tr>
                     <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                        ng-show="!customerCtrl.customers || customerCtrl.customers.length ==0">
+                        ng-show="!collection1 || collection1.length ==0">
                         <td colspan="7">
                             <span ng-if="lang==='AR'">لا توجد بيانات</span>
                             <span ng-if="lang==='EN'">No Data Found.</span>
@@ -107,98 +179,141 @@
                     </tr>
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colspan="7">
-                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="7">
+                            <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                        </td>
+                    </tr>
                     </tfoot>
                 </table>
             </div>
+
         </div>
     </div>
 
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="customerCtrl.toggleList===2">
-    <div st-table="collection2" st-safe-src="customerCtrl.customers">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="customer in collection2">
-            <!-- CONTACT ITEM -->
-            <div class="panel panel-default">
-                <div class="panel-body profile">
-                    <div class="profile-image">
-                        <img width="100" height="100"
-                             src="/ui/img/no-image.jpg"
-                             alt="{{customer.name}}"/>
-                    </div>
-                    <div class="profile-data">
-                        <div class="profile-data-name">
-                            {{customer.nickname}} / {{customer.name}}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="customerCtrl.showFilter=true"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
+                        <span class="fa fa-filter"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
+                       ng-click="customerCtrl.newCustomer()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء حساب عميل جديد' : 'New Customer...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة العملاء</h3>
+                <h3 ng-if="lang==='EN'">Customers List</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div st-table="collection2" st-safe-src="customerCtrl.customers">
+
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="customer in collection2">
+                    <!-- CONTACT ITEM -->
+                    <div class="panel panel-default">
+                        <div class="panel-body profile">
+                            <div class="profile-image">
+                                <img width="100" height="100"
+                                     src="/ui/img/no-image.jpg"
+                                     alt="{{customer.name}}"/>
+                            </div>
+                            <div class="profile-data">
+                                <div class="profile-data-name">
+                                    {{customer.nickname}} / {{customer.name}}
+                                </div>
+                            </div>
+                            <div class="profile-controls">
+                                <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                                <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="contact-info">
+                                <p>
+                                    <strong ng-if="lang==='AR'">المهنة</strong>
+                                    <strong ng-if="lang==='EN'">Job</strong>
+                                    {{customer.qualification}}
+                                </p>
+                                <hr>
+                                <p>
+                                    <strong ng-if="lang==='AR'">رقم الجوال</strong>
+                                    <strong ng-if="lang==='EN'">Phone</strong>
+                                    {{customer.mobile}}
+                                </p>
+                                <hr>
+                                <p>
+                                    <strong ng-if="lang==='AR'">الصقور المسجلة</strong>
+                                    <strong ng-if="lang==='EN'">Registered Falcons</strong>
+                                    <span class="label label-success">{{customer.falcons.length}}</span>
+                                </p>
+                                <hr>
+                                <p>
+                                    <a href="" ng-click="ModalProvider.openCustomerDetailsModel(customer);">
+                                        <strong ng-if="lang==='AR'">المزيد...</strong>
+                                        <strong ng-if="lang==='EN'">More...</strong>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <button uib-tooltip="{{lang==='AR' ? 'انشاء عميل جديد' : 'New...'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
+                                        ng-click="customerCtrl.newCustomer();"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">add</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_UPDATE'])"
+                                        ng-click="ModalProvider.openCustomerUpdateModel(customer)"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_DELETE'])"
+                                        ng-click="customerCtrl.delete(customer)"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="profile-controls">
-                        <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
-                        <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
-                    </div>
+                    <!-- END CONTACT ITEM -->
                 </div>
-                <div class="panel-body">
-                    <div class="contact-info">
-                        <p>
-                            <strong ng-if="lang==='AR'">المهنة</strong>
-                            <strong ng-if="lang==='EN'">Job</strong>
-                            {{customer.qualification}}
-                        </p>
-                        <hr>
-                        <p>
-                            <strong ng-if="lang==='AR'">رقم الجوال</strong>
-                            <strong ng-if="lang==='EN'">Phone</strong>
-                            {{customer.mobile}}
-                        </p>
-                        <hr>
-                        <p>
-                            <strong ng-if="lang==='AR'">الصقور المسجلة</strong>
-                            <strong ng-if="lang==='EN'">Registered Falcons</strong>
-                            <span class="label label-success">{{customer.falcons.length}}</span>
-                        </p>
-                        <hr>
-                        <p>
-                            <a href="" ng-click="ModalProvider.openCustomerDetailsModel(customer);">
-                                <strong ng-if="lang==='AR'">المزيد...</strong>
-                                <strong ng-if="lang==='EN'">More...</strong>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <button uib-tooltip="{{lang==='AR' ? 'انشاء عميل جديد' : 'New...'}}"
-                                tooltip-append-to-body="true"
-                                type="button"
-                                ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
-                                ng-click="newCustomer();"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                            <i class="material-icons">add</i>
-                        </button>
-                        <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
-                                tooltip-append-to-body="true"
-                                type="button"
-                                ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_UPDATE'])"
-                                ng-click="ModalProvider.openCustomerUpdateModel(customer)"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                            <i class="material-icons">edit</i>
-                        </button>
-                        <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
-                                tooltip-append-to-body="true"
-                                type="button"
-                                ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_DELETE'])"
-                                ng-click="delete(customer)"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                            <i class="material-icons">delete</i>
-                        </button>
-                    </div>
-                </div>
+
+                <tfoot>
+                <tr>
+                    <td>
+                        <div st-pagination="" st-items-by-page="4" st-displayed-pages="10"></div>
+                    </td>
+                </tr>
+                </tfoot>
+
             </div>
-            <!-- END CONTACT ITEM -->
+
         </div>
     </div>
+
 </div>

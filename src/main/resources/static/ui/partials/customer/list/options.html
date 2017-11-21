@@ -7,36 +7,36 @@
         class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
         for="customer-menu-lower-right">
         <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-            ng-click="fetchTableData()">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">visibility</i>
-                                <span ng-if="lang==='AR'">عرض البيانات</span>
-                                <span ng-if="lang==='EN'">View</span>
-                            </span>
+            ng-click="customerCtrl.showFilter=true">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">visibility</i>
+                <span ng-if="lang==='AR'">عرض البيانات</span>
+                <span ng-if="lang==='EN'">View</span>
+            </span>
         </li>
-        <li class="mdl-menu__item mdl-list__item" ng-click="newCustomer();"
+        <li class="mdl-menu__item mdl-list__item" ng-click="customerCtrl.newCustomer();"
             ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">add</i>
-                                <span ng-if="lang==='AR'">انشاء عميل جديد</span>
-                                <span ng-if="lang==='EN'">New...</span>
-                            </span>
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">add</i>
+                <span ng-if="lang==='AR'">انشاء عميل جديد</span>
+                <span ng-if="lang==='EN'">New...</span>
+            </span>
         </li>
     </ul>
 </div>
 
-<div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="toggleList=1">
+<div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="customerCtrl.toggleList=1">
     <div class="btn-toolbar">
         <div class="btn-group" data-toggle="buttons">
             <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                    type="button" ng-click="toggleList=1"
-                    ng-class="{'active':toggleList===1}">
+                    type="button" ng-click="customerCtrl.toggleList=1"
+                    ng-class="{'active':customerCtrl.toggleList===1}">
                 <input type="radio" name="options"/>
                 <i class="material-icons">reorder</i>
             </button>
             <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                    type="button" ng-click="toggleList=2"
-                    ng-class="{'active':toggleList===2}">
+                    type="button" ng-click="customerCtrl.toggleList=2"
+                    ng-class="{'active':customerCtrl.toggleList===2}">
                 <input type="radio" name="options"/>
                 <i class="material-icons">view_column</i>
             </button>
