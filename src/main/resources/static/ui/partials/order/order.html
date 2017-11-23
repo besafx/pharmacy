@@ -797,6 +797,11 @@
                                                                         <span ng-if="lang==='EN'">Code</span>
                                                                     </th>
 
+                                                                    <th st-sort="note">
+                                                                        <span ng-if="lang==='AR'">التشخيص</span>
+                                                                        <span ng-if="lang==='EN'">Note</span>
+                                                                    </th>
+
                                                                     <th st-sort="date">
                                                                         <span ng-if="lang==='AR'">التاريخ</span>
                                                                         <span ng-if="lang==='EN'">Date</span>
@@ -828,6 +833,7 @@
                                                                 <tr ng-repeat="order in collectionFalconOrders">
                                                                     <td>{{$index+1}}</td>
                                                                     <td>{{order.code}}</td>
+                                                                    <td>{{order.note}}</td>
                                                                     <td>
                                                                         <span ng-show="dateType==='H'">{{order.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                                                         <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
@@ -845,7 +851,7 @@
                                                                 </tr>
                                                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                                                     ng-show="!collectionFalconOrders || collectionFalconOrders.length ==0">
-                                                                    <td colspan="7">
+                                                                    <td colspan="8">
                                                                         <span ng-if="lang==='AR'">لا توجد زيارات</span>
                                                                         <span ng-if="lang==='EN'">No Visits Found.</span>
                                                                     </td>
