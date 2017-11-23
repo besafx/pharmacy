@@ -609,3 +609,21 @@ WebKit inertia scrolling is being added here for any present/future devices that
 .mdl-tabs__panel{
     padding: 10px!important;
 }
+
+/**********************************
+*                                 *
+*          UI-SELECT              *
+*                                 *
+**********************************/
+.ui-select-bootstrap>.ui-select-match>.btn{
+    text-align: right!important;
+    padding: 10px!important;
+}
+.ui-select-bootstrap .ui-select-toggle>.caret{
+    left: 10px!important;
+    right:auto!important;
+}
+.dropdown-menu{
+    text-align: right!important;
+}
+/*********************************/

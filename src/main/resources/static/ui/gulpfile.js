@@ -33,6 +33,7 @@ gulp.task('css', function () {
         './bootstrap-select/css/nya-bs-select.css',
         './css/font-awesome-animation.css',
         './kdate/css/jquery.calendars.picker.css',
+        './css/select.css',
         './chosen/chosen.css'
     ])
         .pipe(replace('/*!', '/*'))
@@ -76,6 +77,8 @@ gulp.task('scripts', function () {
 
         './js/ui-bootstrap.js',
         './js/ui-bootstrap-tpls.js',
+
+        './js/select.js',
 
         './sockjs/sockjs.js',
         './stomp-websocket/lib/stomp.js',

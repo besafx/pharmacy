@@ -1,14 +1,12 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.BillSell;
-import com.besafx.app.entity.Person;
-import com.besafx.app.entity.TransactionSell;
+import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
+import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.search.BillSellSearch;
-import com.besafx.app.service.BillSellService;
-import com.besafx.app.service.PersonService;
-import com.besafx.app.service.TransactionSellService;
+import com.besafx.app.service.*;
+import com.besafx.app.util.ArabicLiteralNumberParser;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -48,6 +46,12 @@ public class BillSellRest {
     private TransactionSellService transactionSellService;
 
     @Autowired
+    private ReceiptService receiptService;
+
+    @Autowired
+    private BillSellReceiptService billSellReceiptService;
+
+    @Autowired
     private PersonService personService;
 
     @Autowired
@@ -61,6 +65,7 @@ public class BillSellRest {
     @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
     @Transactional
     public String create(@RequestBody BillSell billSell, Principal principal) {
+        Person caller = personService.findByEmail(principal.getName());
         BillSell billSellByOrder = billSellService.findByOrderAndOrderNotNull(billSell.getOrder());
         if(billSellByOrder == null){
             BillSell topBillSell = billSellService.findTopByOrderByCodeDesc();
@@ -72,32 +77,56 @@ public class BillSellRest {
             billSell.setDate(new DateTime().toDate());
             billSell = billSellService.save(billSell);
         }
-        ListIterator<TransactionSell> listIterator = billSell.getTransactionSells().listIterator();
-        while (listIterator.hasNext()) {
-            TransactionSell transactionSell = listIterator.next();
-            if(billSellByOrder == null){
-                transactionSell.setBillSell(billSell);
-            }else{
-                transactionSell.setBillSell(billSellByOrder);
+        {
+            ListIterator<TransactionSell> listIterator = billSell.getTransactionSells().listIterator();
+            while (listIterator.hasNext()) {
+                TransactionSell transactionSell = listIterator.next();
+                if(billSellByOrder == null){
+                    transactionSell.setBillSell(billSell);
+                }else{
+                    transactionSell.setBillSell(billSellByOrder);
+                }
+                TransactionSell topTransactionSell = transactionSellService.findTopByOrderByCodeDesc();
+                if (topTransactionSell == null) {
+                    transactionSell.setCode(1);
+                } else {
+                    transactionSell.setCode(topTransactionSell.getCode() + 1);
+                }
+                transactionSell.setDate(new DateTime().toDate());
+                listIterator.set(transactionSellService.save(transactionSell));
             }
-            TransactionSell topTransactionSell = transactionSellService.findTopByOrderByCodeDesc();
-            if (topTransactionSell == null) {
-                transactionSell.setCode(1);
-            } else {
-                transactionSell.setCode(topTransactionSell.getCode() + 1);
-            }
-            transactionSell.setDate(new DateTime().toDate());
-            listIterator.set(transactionSellService.save(transactionSell));
         }
-        Person caller = personService.findByEmail(principal.getName());
+        {
+            ListIterator<BillSellReceipt> listIterator = billSell.getBillSellReceipts().listIterator();
+            while (listIterator.hasNext()) {
+                BillSellReceipt billSellReceipt = listIterator.next();
+                if(billSellReceipt.getReceipt().getAmountNumber() == 0){
+                    log.info("تجاهل إنشاء السند لقيمته الصفرية");
+                    break;
+                }
+                //
+                Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
+                if (topReceipt == null) {
+                    billSellReceipt.getReceipt().setCode(new Long(1));
+                } else {
+                    billSellReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
+                }
+                billSellReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(billSellReceipt.getReceipt().getAmountNumber()));
+                billSellReceipt.getReceipt().setReceiptType(ReceiptType.In);
+                billSellReceipt.getReceipt().setDate(new DateTime().toDate());
+                billSellReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
+                billSellReceipt.getReceipt().setLastPerson(caller);
+                billSellReceipt.setReceipt(receiptService.save(billSellReceipt.getReceipt()));
+                //
+                billSellReceipt.setBillSell(billSell);
+                listIterator.set(billSellReceiptService.save(billSellReceipt));
+            }
+        }
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
                 .message(lang.equals("AR") ? "تم انشاء فاتورة بيع بنجاح" : "Create Bill Sell Successfully")
                 .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSell);
     }
@@ -115,11 +144,8 @@ public class BillSellRest {
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
                     .message(lang.equals("AR") ? "تم حذف فاتورة بيع بنجاح" : "Delete Bill Sell Successfully")
                     .type("error")
-                    .icon("fa-trash")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
         }
     }
@@ -179,20 +205,14 @@ public class BillSellRest {
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
                 .message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا..." : "Filtering Data")
                 .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
         List<BillSell> list = billSellSearch.filter(codeFrom, codeTo, viewInsideSalesTable, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
         notificationService.notifyOne(Notification
                 .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
                 .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done")
                 .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
