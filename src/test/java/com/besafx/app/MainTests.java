@@ -40,7 +40,6 @@ public class MainTests {
 
     @Test
     public void contextLoads() throws Exception {
-        scheduleWatchOrders.runWeekly();
-        scheduleWatchBillSells.runWeekly();
+        scheduleWatchOrders.runMonthly();
     }
 }

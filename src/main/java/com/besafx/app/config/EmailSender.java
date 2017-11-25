@@ -62,7 +62,6 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + toEmailList);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            message.setHeader("X-Priority", "1");
             message.setSubject(title, "UTF-8");
             message.setText(content, "UTF-8", "html");
             message.setFrom(new InternetAddress("admin@ararhni.com", "مستشفي السلطان للصقور", "UTF-8"));
@@ -94,7 +93,6 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + toEmailList);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            message.setHeader("X-Priority", "1");
             message.setFrom(new InternetAddress("admin@ararhni.com", "مستشفي السلطان للصقور", "UTF-8"));
             message.setSubject(title, "UTF-8");
             toEmailList.stream().distinct().forEach(email -> {
@@ -139,7 +137,6 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + email);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            message.setHeader("X-Priority", "1");
             message.setSubject(title, "UTF-8");
             message.setText(content, "UTF-8", "html");
             message.setFrom(new InternetAddress("admin@ararhni.com", "مستشفي السلطان للصقور", "UTF-8"));
@@ -164,7 +161,6 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + email);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            message.setHeader("X-Priority", "1");
             message.setFrom(new InternetAddress("admin@ararhni.com", "مستشفي السلطان للصقور", "UTF-8"));
             message.setSubject(title, "UTF-8");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
