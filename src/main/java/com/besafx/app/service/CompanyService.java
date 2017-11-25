@@ -9,4 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public interface CompanyService extends PagingAndSortingRepository<Company, Long>, JpaSpecificationExecutor<Company> {
+    Company findFirstBy();
 }

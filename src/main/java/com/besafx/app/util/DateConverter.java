@@ -168,4 +168,15 @@ public class DateConverter {
         }
         return dates;
     }
+
+    public static String getNowFileName(){
+        StringBuilder builder = new StringBuilder();
+        DateTime dateTime = new DateTime();
+        builder.append(dateTime.getDayOfMonth());
+        builder.append("_");
+        builder.append(dateTime.getMonthOfYear());
+        builder.append("_");
+        builder.append(dateTime.getYear());
+        return builder.toString();
+    }
 }

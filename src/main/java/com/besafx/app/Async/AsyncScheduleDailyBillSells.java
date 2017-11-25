@@ -22,24 +22,52 @@ public class AsyncScheduleDailyBillSells {
 
     private final Logger log = LoggerFactory.getLogger(AsyncScheduleDailyBillSells.class);
 
+    private DateTime startDate, endDate;
+
     @Autowired
     private BillSellService billSellService;
 
     @Async("ByteGenerate")
-    public Future<byte[]> getFile() throws Exception {
-        DateTime startDate = new DateTime().withTimeAtStartOfDay();
-        DateTime endDate = new DateTime();
-        Map<String, Object> map = new HashMap<>();
-        map.put("billSells", billSellService.findByDateBetween(new DateTime(startDate).withTimeAtStartOfDay().toDate(), new DateTime(endDate).plusDays(1).withTimeAtStartOfDay().toDate()));
-        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+    public Future<byte[]> getFile(String timeType) throws Exception {
         StringBuilder title = new StringBuilder();
-        title.append("تقرير مختصر للمبيعات حسب الفترة من");
-        title.append(" ");
+        switch (timeType) {
+            case "Day":
+                startDate = new DateTime().withTimeAtStartOfDay();
+                endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
+                title.append("تقرير يومي للمبيعات حسب الفترة من");
+                title.append(" ");
+                break;
+            case "Week":
+                startDate = new DateTime(DateConverter.getCurrentWeekStart()).withTimeAtStartOfDay();
+                endDate = new DateTime(DateConverter.getCurrentWeekEnd()).plusDays(1).withTimeAtStartOfDay();
+                title.append("تقرير اسبوعي للمبيعات حسب الفترة من");
+                title.append(" ");
+                break;
+            case "Month":
+                startDate = new DateTime().withDayOfMonth(1).withTimeAtStartOfDay();
+                endDate = startDate.plusMonths(1).minusDays(1);
+                title.append("تقرير شهري للمبيعات حسب الفترة من");
+                title.append(" ");
+                break;
+            case "Year":
+                startDate = new DateTime().withDayOfYear(1).withTimeAtStartOfDay();
+                endDate = startDate.plusYears(1).minusDays(1);
+                title.append("تقرير سنوي للمبيعات حسب الفترة من");
+                title.append(" ");
+                break;
+        }
+        DateTime startDate = new DateTime().withTimeAtStartOfDay();
+        DateTime endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
+        Map<String, Object> map = new HashMap<>();
+        map.put("billSells", billSellService.findByDateBetween(startDate.toDate(), endDate.toDate()));
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));
         title.append(" ");
         title.append("إلى الفترة");
         title.append(" ");
         title.append(DateConverter.getHijriStringFromDateLTR(endDate.toDate()));
+
         map.put("title", title.toString());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/ReportBillSells.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.concurrent.Future;
 
 @Service
@@ -62,6 +63,20 @@ public class DropboxManager {
             log.info("Sleeping for 1 seconds...");
             Thread.sleep(1000);
             client.files().uploadBuilder(path).uploadAndFinish(new FileInputStream(file));
+            return new AsyncResult<>(true);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return new AsyncResult<>(false);
+        }
+    }
+
+    @Async("threadPoolFileUploader")
+    public Future<Boolean> uploadFile(InputStream inputStream, String fileName, String path){
+        try {
+            log.info("Trying to upload file: " + fileName);
+            log.info("Sleeping for 5 seconds...");
+            Thread.sleep(5000);
+            client.files().uploadBuilder(path).uploadAndFinish(inputStream);
             return new AsyncResult<>(true);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);

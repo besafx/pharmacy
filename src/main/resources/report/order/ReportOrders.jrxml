@@ -35,7 +35,6 @@
 		</queryString>
 		<field name="code" class="java.lang.Integer"/>
 		<field name="date" class="java.util.Date"/>
-		<field name="paymentMethod" class="com.besafx.app.entity.enums.PaymentMethod"/>
 		<field name="discount" class="java.lang.Double"/>
 		<field name="falcon" class="com.besafx.app.entity.Falcon"/>
 		<field name="doctor" class="com.besafx.app.entity.Doctor"/>
