@@ -16,7 +16,8 @@
             <button id="options-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin">
                 <i class="material-icons">settings_applications</i>
             </button>
-            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
                 for="options-menu-lower-left">
                 <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
                     <span ng-if="lang==='AR'">خيارات البرنامج</span>
@@ -49,7 +50,8 @@
                     </span>
                 </li>
                 <li class="mdl-list__item">
-                    <button href="" ng-click="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                    <button href="" ng-click=""
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                         <span ng-if="lang==='AR'">المزيد من الخيارات</span>
                         <span ng-if="lang==='EN'">MORE...</span>
                     </button>
@@ -429,6 +431,14 @@
                                                     class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                                 <i class="material-icons">create</i>
                                             </button>
+                                            <button uib-tooltip="{{lang==='AR' ? 'اضافة علاج' : 'Add Diagnosis'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-click="newDiagnosis(order)"
+                                                    ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
+                                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                <i class="material-icons">assignment</i>
+                                            </button>
                                         </div>
                                         <div class="form-group row">
                                             <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
@@ -445,20 +455,31 @@
                                                         <span ng-if="lang==='AR'">قائمة العلاج المطلوب</span>
                                                         <span ng-if="lang==='EN'">Prescriptions</span>
                                                     </a>
-                                                    <a href="#panel-4-{{$index}}" ng-click="refreshOrderDetectionTypeByOrder(order)" class="mdl-tabs__tab">
+                                                    <a href="#panel-4-{{$index}}"
+                                                       ng-click="refreshOrderDetectionTypeByOrder(order)"
+                                                       class="mdl-tabs__tab">
                                                         <span ng-if="lang==='AR'">الفحوصات المطلوبة</span>
                                                         <span ng-if="lang==='EN'">Requires Detections</span>
-                                                        <span ng-if="order.orderDetectionTypes.length > 0" class="mdl-badge" data-badge="{{order.orderDetectionTypes.length}}"></span>
+                                                        <span ng-if="order.orderDetectionTypes.length > 0"
+                                                              class="mdl-badge"
+                                                              data-badge="{{order.orderDetectionTypes.length}}"></span>
                                                     </a>
-                                                    <a href="#panel-5-{{$index}}" ng-click="findOrdersByFalcon(order.falcon, order.code)" class="mdl-tabs__tab">
+                                                    <a href="#panel-5-{{$index}}"
+                                                       ng-click="findOrdersByFalcon(order.falcon, order.code)"
+                                                       class="mdl-tabs__tab">
                                                         <span ng-if="lang==='AR'">الزيارات السابقة للصقر</span>
                                                         <span ng-if="lang==='EN'">Falcon Visits</span>
-                                                        <span ng-if="order.falcon.orders.length > 0" class="mdl-badge" data-badge="{{order.falcon.orders.length}}"></span>
+                                                        <span ng-if="order.falcon.orders.length > 0" class="mdl-badge"
+                                                              data-badge="{{order.falcon.orders.length}}"></span>
                                                     </a>
-                                                    <a href="#panel-6-{{$index}}" ng-click="findOrdersByCustomer(order.falcon.customer, order.code)" class="mdl-tabs__tab">
+                                                    <a href="#panel-6-{{$index}}"
+                                                       ng-click="findOrdersByCustomer(order.falcon.customer, order.code)"
+                                                       class="mdl-tabs__tab">
                                                         <span ng-if="lang==='AR'">الزيارات السابقة للعميل</span>
                                                         <span ng-if="lang==='EN'">Customer Visits</span>
-                                                        <span ng-if="order.falcon.customer.orders.length > 0" class="mdl-badge" data-badge="{{order.falcon.customer.orders.length}}"></span>
+                                                        <span ng-if="order.falcon.customer.orders.length > 0"
+                                                              class="mdl-badge"
+                                                              data-badge="{{order.falcon.customer.orders.length}}"></span>
                                                     </a>
                                                 </div>
 
@@ -484,7 +505,8 @@
                                                                 <tr>
                                                                     <td class="fit">
                                                                         <strong ng-if="lang==='AR'">وزن الصقر</strong>
-                                                                        <strong ng-if="lang==='EN'">Falcon Weight</strong>
+                                                                        <strong ng-if="lang==='EN'">Falcon
+                                                                            Weight</strong>
                                                                     </td>
                                                                     <td>{{order.falcon.weight}} جرام</td>
                                                                 </tr>
@@ -506,7 +528,8 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="fit">
-                                                                        <strong ng-if="lang==='AR'">الطبيب المعالج</strong>
+                                                                        <strong ng-if="lang==='AR'">الطبيب
+                                                                            المعالج</strong>
                                                                         <strong ng-if="lang==='EN'">Doctor</strong>
                                                                     </td>
                                                                     <td ng-if="order.doctor">
@@ -515,17 +538,23 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="fit">
-                                                                        <strong ng-if="lang==='AR'">المرفقات والمستندات</strong>
+                                                                        <strong ng-if="lang==='AR'">المرفقات
+                                                                            والمستندات</strong>
                                                                         <strong ng-if="lang==='EN'">Attachments</strong>
                                                                     </td>
                                                                     <td>
                                                                         <span ng-repeat="orderAttach in order.orderAttaches">
-                                                                            <a uib-tooltip="{{orderAttach.attach.name}}" tooltip-append-to-body="true"
-                                                                               href="" ng-href="{{orderAttach.attach.link}}" target="_blank">
+                                                                            <a uib-tooltip="{{orderAttach.attach.name}}"
+                                                                               tooltip-append-to-body="true"
+                                                                               href=""
+                                                                               ng-href="{{orderAttach.attach.link}}"
+                                                                               target="_blank">
                                                                                 <i class="fa fa-link fa-lg"></i>
                                                                             </a>
                                                                         </span>
-                                                                        <strong class="label-danger label" ng-if="order.orderAttaches.length === 0">لا توجد مرفقات</strong>
+                                                                        <strong class="label-danger label"
+                                                                                ng-if="order.orderAttaches.length === 0">لا
+                                                                            توجد مرفقات</strong>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -628,11 +657,16 @@
                                                                         </a>
                                                                     </td>
                                                                 </tr>
-                                                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                                                <tr class="blank_row"
+                                                                    style="height: 10px !important; background-color: #FFFFFF;"
                                                                     ng-show="!collection3 || collection3.length ==0">
                                                                     <td colspan="8">
-                                                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
-                                                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                                                        <a href=""
+                                                                           ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
+                                                                           ng-click="newDiagnosis(order)">
+                                                                            <span ng-if="lang==='AR'">علاج جديد...</span>
+                                                                            <span ng-if="lang==='EN'">New Diagnosis...</span>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                                 </tbody>
@@ -643,7 +677,8 @@
                                                 <div class="mdl-tabs__panel" id="panel-4-{{$index}}">
                                                     <div class="form-group row">
                                                         <div class="table-responsive">
-                                                            <table st-table="collection2" st-safe-src="order.orderDetectionTypes"
+                                                            <table st-table="collection2"
+                                                                   st-safe-src="order.orderDetectionTypes"
                                                                    class="table table-bordered">
                                                                 <thead>
                                                                 <tr>
@@ -676,7 +711,9 @@
                                                                 </thead>
                                                                 <tbody>
                                                                 <tr ng-repeat="orderDetectionType in collection2">
-                                                                    <td st-select-row-custom="orderDetectionType">{{$index+1}}</td>
+                                                                    <td st-select-row-custom="orderDetectionType">
+                                                                        {{$index+1}}
+                                                                    </td>
                                                                     <td st-select-row-custom="orderDetectionType">
                                                                         {{orderDetectionType.detectionType.code}}
                                                                     </td>
@@ -685,7 +722,8 @@
                                                                         [{{orderDetectionType.detectionType.nameEnglish}}]
                                                                     </td>
                                                                     <td st-select-row-custom="orderDetectionType">
-                                                                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-{{$index}}">
+                                                                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                                                                               for="checkbox-{{$index}}">
                                                                             <input type="checkbox"
                                                                                    id="checkbox-{{$index}}"
                                                                                    class="mdl-checkbox__input"
@@ -702,7 +740,8 @@
                                                                         </a>
                                                                     </td>
                                                                 </tr>
-                                                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                                                <tr class="blank_row"
+                                                                    style="height: 10px !important; background-color: #FFFFFF;"
                                                                     ng-show="!collection2 || collection2.length ==0">
                                                                     <td colspan="5">
                                                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
@@ -717,7 +756,8 @@
                                                 <div class="mdl-tabs__panel" id="panel-5-{{$index}}">
                                                     <div class="form-group row">
                                                         <div class="table-responsive">
-                                                            <table st-table="collectionFalconOrders" st-safe-src="order.falcon.orders"
+                                                            <table st-table="collectionFalconOrders"
+                                                                   st-safe-src="order.falcon.orders"
                                                                    class="table table-bordered table-hover">
                                                                 <thead>
                                                                 <tr>
@@ -774,13 +814,15 @@
                                                                     <td>{{order.discount}} %</td>
                                                                     <td>{{order.netCost}} SAR</td>
                                                                     <td>
-                                                                        <a href="" ng-click="ModalProvider.openOrderDetailsModel(order);">
+                                                                        <a href=""
+                                                                           ng-click="ModalProvider.openOrderDetailsModel(order);">
                                                                             <strong ng-if="lang==='AR'">التفاصيل</strong>
                                                                             <strong ng-if="lang==='EN'">Details</strong>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
-                                                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                                                <tr class="blank_row"
+                                                                    style="height: 10px !important; background-color: #FFFFFF;"
                                                                     ng-show="!collectionFalconOrders || collectionFalconOrders.length ==0">
                                                                     <td colspan="8">
                                                                         <span ng-if="lang==='AR'">لا توجد زيارات</span>
@@ -795,7 +837,8 @@
                                                 <div class="mdl-tabs__panel" id="panel-6-{{$index}}">
                                                     <div class="form-group row">
                                                         <div class="table-responsive">
-                                                            <table st-table="collectionCustomerOrders" st-safe-src="order.falcon.customer.orders"
+                                                            <table st-table="collectionCustomerOrders"
+                                                                   st-safe-src="order.falcon.customer.orders"
                                                                    class="table table-bordered table-hover">
                                                                 <thead>
                                                                 <tr>
@@ -859,7 +902,8 @@
                                                                     <td>{{order.discount}} %</td>
                                                                     <td>{{order.netCost}} SAR</td>
                                                                 </tr>
-                                                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                                                <tr class="blank_row"
+                                                                    style="height: 10px !important; background-color: #FFFFFF;"
                                                                     ng-show="!collectionCustomerOrders || collectionCustomerOrders.length ==0">
                                                                     <td colspan="9">
                                                                         <span ng-if="lang==='AR'">لا توجد زيارات</span>

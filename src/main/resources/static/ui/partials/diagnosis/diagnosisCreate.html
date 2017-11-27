@@ -107,62 +107,38 @@
 
                             <div class="form-group row">
 
-                                <div class="form-group row">
-
-                                    <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                        <label for="drugCode" class="control-label">
-                                            <span ng-if="lang==='AR'">رقم الدواء</span>
-                                            <span ng-if="lang==='EN'">Drug Code</span>
-                                        </label>
-                                        <select id="drugCode"
-                                                data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
-                                                no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                                placeholder-text-single="'{{lang==='AR' ? 'اختر الرقم' : 'Please Select Code...'}}'"
-                                                class="form-control"
-                                                chosen=""
-                                                ng-model="diagnosis.drug"
-                                                ng-change="getRelatedPricesByDrug(diagnosis.drug)"
-                                                disable-validation-message=""
-                                                ng-options="drug.code for drug in drugs | orderBy:'code' track by drug.id">
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                        <label for="tradeName" class="control-label">
-                                            <span ng-if="lang==='AR'">الاسم التجاري</span>
-                                            <span ng-if="lang==='EN'">Trade Name</span>
-                                        </label>
-                                        <select id="tradeName"
-                                                data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم التجاري' : 'Search For Trade Name...'}}"
-                                                no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                                placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم التجاري' : 'Please Select Trade Name...'}}'"
-                                                class="form-control"
-                                                chosen=""
-                                                ng-model="diagnosis.drug"
-                                                ng-change="getRelatedPricesByDrug(diagnosis.drug)"
-                                                disable-validation-message=""
-                                                ng-options="('[ ' + drug.nameArabic + ' ] [' + drug.nameEnglish + ' ]' ) for drug in drugs | orderBy:'nameEnglish' track by drug.id">
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                        <label for="medicalName" class="control-label">
-                                            <span ng-if="lang==='AR'">الاسم العلمي</span>
-                                            <span ng-if="lang==='EN'">Medical Name</span>
-                                        </label>
-                                        <select id="medicalName"
-                                                data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم العلمي' : 'Search For Trade Name...'}}"
-                                                no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                                placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم العلمي' : 'Please Select Trade Name...'}}'"
-                                                class="form-control"
-                                                chosen=""
-                                                ng-model="diagnosis.drug"
-                                                ng-change="getRelatedPricesByDrug(diagnosis.drug)"
-                                                disable-validation-message=""
-                                                ng-options="('[ ' + drug.medicalNameArabic + ' ] [' + drug.medicalNameEnglish + ' ]' ) for drug in drugs | orderBy:'medicalNameEnglish' track by drug.id">
-                                        </select>
-                                    </div>
-
+                                <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="drug" class="control-label">
+                                        <span ng-if="lang==='AR'">الدواء</span>
+                                        <span ng-if="lang==='EN'">Drug</span>
+                                    </label>
+                                    <ui-select id="drug"
+                                               ng-model="diagnosis.drug"
+                                               ng-change="getRelatedPricesByDrug(diagnosis.drug)"
+                                               disable-validation-message=""
+                                               theme="bootstrap">
+                                        <ui-select-match placeholder="اختر الدواء المطلوب">
+                                            <span ng-if="diagnosis.drug.id">
+                                                <span ng-if="lang==='AR'">[{{$select.selected.code}}] {{$select.selected.nameArabic}} / {{$select.selected.medicalNameArabic}}</span>
+                                                <span ng-if="lang==='EN'">[{{$select.selected.code}}] {{$select.selected.nameEnglish}} / {{$select.selected.medicalNameEnglish}}</span>
+                                            </span>
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                                repeat="drug in drugs | filter: $select.search | orderBy:'code' track by drug.id">
+                                            <div ng-if="lang==='AR'" ng-bind-html="drug.nameArabic | highlight: $select.search"></div>
+                                            <div ng-if="lang==='EN'" ng-bind-html="drug.nameEnglish | highlight: $select.search"></div>
+                                            <small>
+                                                <span ng-if="lang==='AR'">رقم الدواء : </span>
+                                                <span ng-if="lang==='EN'">Drug Code: </span>
+                                                <span ng-bind-html="''+drug.code | highlight: $select.search"></span>
+                                                <br/>
+                                                <span ng-if="lang==='AR'">الاسم العلمي : </span>
+                                                <span ng-if="lang==='EN'">Medical Name: </span>
+                                                <span ng-if="lang==='AR'" ng-bind-html="''+drug.medicalNameArabic | highlight: $select.search"></span>
+                                                <span ng-if="lang==='EN'" ng-bind-html="''+drug.medicalNameEnglish | highlight: $select.search"></span>
+                                            </small>
+                                        </ui-select-choices>
+                                    </ui-select>
                                 </div>
 
                                 <div class="form-group row">

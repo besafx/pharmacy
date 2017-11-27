@@ -378,8 +378,13 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             }
         ];
 
-        //////////////////////////File Manager///////////////////////////////////
+        /***********************************
+         *                                 *
+         * START FILE UPLOADER             *
+         *                                 *
+         **********************************/
         $scope.orderForUpload = {};
+
         $scope.uploadFiles = function (order) {
             $scope.orderForUpload = order;
             document.getElementById('uploader-' + $scope.orders.indexOf(order)).click();
@@ -421,9 +426,17 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             });
 
         };
-        //////////////////////////File Manager///////////////////////////////////
+        /***********************************
+         *                                 *
+         * END FILE UPLOADER               *
+         *                                 *
+         **********************************/
 
-        //////////////////////////Scan Manager///////////////////////////////////
+        /***********************************
+         *                                 *
+         * START SCAN MANAGER              *
+         *                                 *
+         **********************************/
         $scope.scanToJpg = function (order) {
             $scope.orderForUpload = order;
             scanner.scan(displayImagesOnPage,
@@ -458,7 +471,6 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             return new Blob([ia], {type: mimeString});
         }
 
-        /** Processes the scan result */
         function displayImagesOnPage(successful, mesg, response) {
             var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
             var files = [];
@@ -469,8 +481,11 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
             }
             $scope.initFiles(files);
         }
-
-        //////////////////////////Scan Manager///////////////////////////////////
+        /***********************************
+         *                                 *
+         * END SCAN MANAGER                *
+         *                                 *
+         **********************************/
 
 
         //////////////////////////Area Chart///////////////////////////////////
