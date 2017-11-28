@@ -579,30 +579,30 @@ WebKit inertia scrolling is being added here for any present/future devices that
 /*                                                                                                  */
 /*                                                                                                  */
 /****************************************************************************************************/
-.card-square.mdl-card {
-    width: auto!important;
-    padding: 10px 0px 10px 0px!important;
-}
+/*.card-square.mdl-card {*/
+    /*width: auto!important;*/
+    /*padding: 10px 0px 10px 0px!important;*/
+/*}*/
 
-.card-square > .mdl-card__title {
-    color: #fff!important;
-}
+/*.card-square > .mdl-card__title {*/
+    /*color: #fff!important;*/
+/*}*/
 
-.card-square > .title-card {
-    background-color: #313534!important;
-}
+/*.card-square > .title-card {*/
+    /*background-color: #313534!important;*/
+/*}*/
 
-.card-square {
-    margin: 10px!important;
-    min-height: inherit!important;
-    background-color: #313534!important;
-}
+/*.card-square {*/
+    /*margin: 10px!important;*/
+    /*min-height: inherit!important;*/
+    /*background-color: #313534!important;*/
+/*}*/
 
-.card-square, .card-square:hover, .card-square:focus {
-    color: white !important;
-    font-weight: 500!important;
-    text-decoration: none !important;
-}
+/*.card-square, .card-square:hover, .card-square:focus {*/
+    /*color: white !important;*/
+    /*font-weight: 500!important;*/
+    /*text-decoration: none !important;*/
+/*}*/
 
 /*******************************/
 
@@ -627,3 +627,29 @@ WebKit inertia scrolling is being added here for any present/future devices that
     text-align: right!important;
 }
 /*********************************/
+.mdl-card{
+    min-height: auto!important;
+    cursor: pointer!important;
+}
+.mdl-card__actions{
+    line-height:inherit!important;
+}
+.parent:hover{
+    box-shadow: 0 0px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12)!important;
+}
+.card-image.mdl-card {
+    margin: 10px auto auto auto!important;
+    width: 128px!important;
+    height: 128px!important;
+    background: transparent;
+    background-position: center!important;
+    background-repeat: no-repeat!important;
+    background-size: 128px 128px!important;
+}
+.card-image__filename {
+    color: #656d78!important;
+    font-size: 14px!important;
+    font-weight: 400!important;
+    text-decoration: none!important;
+    cursor: pointer!important;
+}

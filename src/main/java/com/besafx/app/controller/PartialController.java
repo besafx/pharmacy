@@ -69,24 +69,35 @@ public class PartialController {
             "/menu",
             "/company",
             "/team",
+
             "/customer/list",
             "/customer/details",
+
             "/supplier",
             "/bank",
             "/doctor",
+
             "/employee/list",
             "/employee/vacation",
             "/employee/vacationType",
             "/employee/deduction",
             "/employee/deductionType",
             "/employee/salary",
+
             "/detectionType",
             "/order",
             "/diagnosis",
             "/drug",
+
+            "/receipt/in",
+            "/receipt/out",
+            "/receipt/term",
+
             "/billBuy",
+
             "/billSell/insideSales",
             "/billSell/outsideSales",
+
             "/drugCategory",
             "/falcon",
             "/help",

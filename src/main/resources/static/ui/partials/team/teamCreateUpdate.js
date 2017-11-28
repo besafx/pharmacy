@@ -451,6 +451,60 @@ app.controller('teamCreateUpdateCtrl', ['TeamService', '$scope', '$rootScope', '
                 name: $rootScope.lang === 'AR' ? 'حذف الرواتب' : 'Delete Salary',
                 value: 'ROLE_SALARY_DELETE',
                 selected: false
+            },
+            {
+                id: 79,
+                name: $rootScope.lang === 'AR' ? 'إنشاء سندات القبض' : 'Create Receipt In',
+                value: 'ROLE_RECEIPT_IN_CREATE',
+                selected: false
+            },
+            {
+                id: 80,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات سندات القبض' : 'Update Receipt In Information',
+                value: 'ROLE_RECEIPT_IN_UPDATE',
+                selected: false
+            },
+            {
+                id: 81,
+                name: $rootScope.lang === 'AR' ? 'حذف سندات القبض' : 'Delete Receipt In',
+                value: 'ROLE_RECEIPT_IN_DELETE',
+                selected: false
+            },
+            {
+                id: 82,
+                name: $rootScope.lang === 'AR' ? 'إنشاء سندات الصرف' : 'Create Receipt Out',
+                value: 'ROLE_RECEIPT_OUT_CREATE',
+                selected: false
+            },
+            {
+                id: 83,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات سندات الصرف' : 'Update Receipt Out Information',
+                value: 'ROLE_RECEIPT_OUT_UPDATE',
+                selected: false
+            },
+            {
+                id: 84,
+                name: $rootScope.lang === 'AR' ? 'حذف سندات الصرف' : 'Delete Receipt Out',
+                value: 'ROLE_RECEIPT_OUT_DELETE',
+                selected: false
+            },
+            {
+                id: 85,
+                name: $rootScope.lang === 'AR' ? 'إنشاء بنود الصرف' : 'Create Receipt Terms',
+                value: 'ROLE_RECEIPT_TERM_CREATE',
+                selected: false
+            },
+            {
+                id: 86,
+                name: $rootScope.lang === 'AR' ? 'تعديل بيانات بنود الصرف' : 'Update Receipt Terms Information',
+                value: 'ROLE_RECEIPT_TERM_UPDATE',
+                selected: false
+            },
+            {
+                id: 87,
+                name: $rootScope.lang === 'AR' ? 'حذف بنود الصرف' : 'Delete Receipt Terms',
+                value: 'ROLE_RECEIPT_TERM_DELETE',
+                selected: false
             }
         ];
 

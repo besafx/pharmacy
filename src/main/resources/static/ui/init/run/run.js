@@ -99,6 +99,15 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     $rootScope.applyCssLang();
                     break;
                 }
+                case 'receipt':
+                case 'receipt.in':
+                case 'receipt.out':
+                case 'receipt.terms': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'attach_money';
+                    $rootScope.applyCssLang();
+                    break;
+                }
                 case 'billBuy': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'shopping_cart';
@@ -296,6 +305,16 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'الدواء';
                         } else {
                             $rootScope.pageTitle = 'Drugs';
+                        }
+                        break;
+                    case 'receipt':
+                    case 'receipt.in':
+                    case 'receipt.out':
+                    case 'receipt.terms':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'السندات';
+                        } else {
+                            $rootScope.pageTitle = 'Receipts';
                         }
                         break;
                     case 'billBuy':

@@ -156,21 +156,27 @@ gulp.task('scripts', function () {
         './partials/home/home.js',
         './partials/menu/menu.js',
         './partials/company/company.js',
+
         './partials/team/team.js',
         './partials/team/teamCreateUpdate.js',
+
         './partials/customer/customer.js',
         './partials/customer/customerDetails.js',
         './partials/customer/customerCreateUpdate.js',
         './partials/customer/customerFalconCreateUpdate.js',
+
         './partials/supplier/supplier.js',
         './partials/supplier/supplierCreateUpdate.js',
+
         './partials/bank/bank.js',
         './partials/bank/bankCreateUpdate.js',
         './partials/bank/depositCreate.js',
         './partials/bank/depositFundCreate.js',
         './partials/bank/withdrawCreate.js',
+
         './partials/doctor/doctor.js',
         './partials/doctor/doctorCreateUpdate.js',
+
         './partials/employee/employee.js',
         './partials/employee/employeeCreateUpdate.js',
         './partials/employee/vacationType/vacationTypeCreateUpdate.js',
@@ -178,9 +184,11 @@ gulp.task('scripts', function () {
         './partials/employee/deductionType/deductionTypeCreateUpdate.js',
         './partials/employee/deduction/deductionCreateUpdate.js',
         './partials/employee/salary/salaryCreateUpdate.js',
+
         './partials/detectionType/detectionType.js',
         './partials/detectionType/detectionTypeCreateUpdate.js',
         './partials/detectionType/detectionTypeHeavyWork.js',
+
         './partials/drug/drug.js',
         './partials/drug/drugFilter.js',
         './partials/drug/drugCreateUpdate.js',
@@ -189,6 +197,10 @@ gulp.task('scripts', function () {
         './partials/drug/drugCategoryCreateUpdate.js',
         './partials/drug/drugCategoryHeavyWork.js',
         './partials/drug/drugTransactionBuyCreate.js',
+
+        './partials/receipt/receipt.js',
+        './partials/receipt/receiptCreateUpdate.js',
+
         './partials/billBuy/billBuy.js',
         './partials/billBuy/billBuyFilter.js',
         './partials/billBuy/billBuyCreate.js',

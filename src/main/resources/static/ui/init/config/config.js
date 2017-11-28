@@ -385,6 +385,66 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Receipt State                                              *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("receipt", {
+            url: "/receipt",
+            templateUrl: "/ui/partials/receipt/receipt.html",
+            controller: "receiptCtrl",
+            controllerAs: "receiptCtrl"
+        });
+
+        $stateProvider.state("receipt.in", {
+            url: "/in",
+            css: [
+                '/ui/css/mdl-style-indigo-pink.css',
+                '/ui/css/theme-black.css'
+            ],
+            views:{
+                'body@receipt':{
+                    templateUrl: "/ui/partials/receipt/in/in.html"
+                },
+                'options@receipt':{
+                    templateUrl: "/ui/partials/receipt/in/inOptions.html"
+                }
+            }
+        });
+
+        $stateProvider.state("receipt.out", {
+            url: "/out",
+            css: [
+                '/ui/css/mdl-style-light_green-lime.css',
+                '/ui/css/theme-black.css'
+            ],
+            views:{
+                'body@receipt':{
+                    templateUrl: "/ui/partials/receipt/out/out.html"
+                },
+                'options@receipt':{
+                    templateUrl: "/ui/partials/receipt/out/outOptions.html"
+                }
+            }
+        });
+
+        $stateProvider.state("receipt.terms", {
+            url: "/terms",
+            css: [
+                '/ui/css/mdl-style-lime-orange.css',
+                '/ui/css/theme-black.css'
+            ],
+            views:{
+                'body@receipt':{
+                    templateUrl: "/ui/partials/receipt/terms/terms.html"
+                },
+                'options@receipt':{
+                    templateUrl: "/ui/partials/receipt/terms/termsOptions.html"
+                }
+            }
+        });
+
+        /**************************************************************
+         *                                                            *
          * BillBuy State                                              *
          *                                                            *
          *************************************************************/
