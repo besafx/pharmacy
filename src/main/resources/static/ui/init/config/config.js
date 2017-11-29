@@ -427,18 +427,18 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             }
         });
 
-        $stateProvider.state("receipt.terms", {
-            url: "/terms",
+        $stateProvider.state("receipt.term", {
+            url: "/term",
             css: [
                 '/ui/css/mdl-style-lime-orange.css',
                 '/ui/css/theme-black.css'
             ],
             views:{
                 'body@receipt':{
-                    templateUrl: "/ui/partials/receipt/terms/terms.html"
+                    templateUrl: "/ui/partials/receipt/term/term.html"
                 },
                 'options@receipt':{
-                    templateUrl: "/ui/partials/receipt/terms/termsOptions.html"
+                    templateUrl: "/ui/partials/receipt/term/termOptions.html"
                 }
             }
         });

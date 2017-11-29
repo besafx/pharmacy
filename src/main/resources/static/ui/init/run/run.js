@@ -102,7 +102,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 case 'receipt':
                 case 'receipt.in':
                 case 'receipt.out':
-                case 'receipt.terms': {
+                case 'receipt.term': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'attach_money';
                     $rootScope.applyCssLang();
@@ -310,7 +310,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                     case 'receipt':
                     case 'receipt.in':
                     case 'receipt.out':
-                    case 'receipt.terms':
+                    case 'receipt.term':
                         if ($rootScope.lang === 'AR') {
                             $rootScope.pageTitle = 'السندات';
                         } else {
@@ -383,7 +383,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
 
         $rootScope.ModalProvider = ModalProvider;
 
+        $rootScope.toggleDrawer =function () {
+            $rootScope.drawer = document.querySelector('.mdl-layout');
+            $rootScope.drawer.MaterialLayout.toggleDrawer();
+        };
+
         $rootScope.me = {};
+
         PersonService.findActivePerson().then(function (data) {
             $rootScope.me = data;
             $rootScope.options = JSON.parse($rootScope.me.options);

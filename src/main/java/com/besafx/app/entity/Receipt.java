@@ -42,7 +42,7 @@ public class Receipt implements Serializable {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
-    private Integer checkCode;
+    private Long checkCode;
 
     private String amountString;
 

@@ -1,15 +1,24 @@
-app.controller("receiptCtrl", ['ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
-    function (ModalProvider, $scope, $rootScope, $state, $timeout) {
+app.controller("receiptCtrl", ['ReceiptService', '$scope', '$rootScope', '$state', '$timeout',
+    function (ReceiptService, $scope, $rootScope, $state, $timeout) {
 
-        $scope.selected = {};
+        var vm = this;
 
-        $scope.receipts = [];
+        /**************************************************************
+         *                                                            *
+         * Receipts In                                                *
+         *                                                            *
+         *************************************************************/
+        vm.selected = {};
 
-        $scope.setSelected = function (object) {
+        vm.buffer = {};
+
+        vm.receipts = [];
+
+        vm.setSelected = function (object) {
             if (object) {
-                angular.forEach($scope.receipts, function (receipt) {
+                angular.forEach(vm.receipts, function (receipt) {
                     if (object.id == receipt.id) {
-                        $scope.selected = receipt;
+                        vm.selected = receipt;
                         return receipt.isSelected = true;
                     } else {
                         return receipt.isSelected = false;
@@ -18,32 +27,97 @@ app.controller("receiptCtrl", ['ModalProvider', '$scope', '$rootScope', '$state'
             }
         };
 
-        $scope.delete = function (receipt) {
+        vm.search = function () {
+
+            var search = [];
+
+            if (vm.buffer.code) {
+                search.push('code=');
+                search.push(vm.buffer.code);
+                search.push('&');
+            }
+            //
+            if (vm.buffer.amountFrom) {
+                search.push('amountFrom=');
+                search.push(vm.buffer.amountFrom);
+                search.push('&');
+            }
+            if (vm.buffer.amountTo) {
+                search.push('amountTo=');
+                search.push(vm.buffer.amountTo);
+                search.push('&');
+            }
+            //
+            if (vm.buffer.dateFrom) {
+                search.push('dateFrom=');
+                search.push(vm.buffer.dateFrom.getTime());
+                search.push('&');
+            }
+            if (vm.buffer.dateTo) {
+                search.push('dateTo=');
+                search.push(vm.buffer.dateTo.getTime());
+                search.push('&');
+            }
+            //
+            if (vm.buffer.lastUpdateFrom) {
+                search.push('lastUpdateFrom=');
+                search.push(vm.buffer.lastUpdateFrom.getTime());
+                search.push('&');
+            }
+            if (vm.buffer.lastUpdateTo) {
+                search.push('lastUpdateTo=');
+                search.push(vm.buffer.lastUpdateTo.getTime());
+                search.push('&');
+            }
+            //
+            if (vm.buffer.paymentMethodList) {
+                var paymentMethods = [];
+                for (var i = 0; i < vm.buffer.paymentMethodList.length; i++) {
+                    paymentMethods.push(vm.buffer.paymentMethodList[i]);
+                }
+                search.push('paymentMethods=');
+                search.push(paymentMethods);
+                search.push('&');
+            }
+            //
+            ReceiptService.filter(search.join("")).then(function (data) {
+                vm.receipts = data;
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
+            });
+        };
+
+        vm.clear = function () {
+            vm.buffer = {};
+        };
+
+        vm.delete = function (receipt) {
             if (receipt) {
                 $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف السند فعلاً؟", "error", "fa-trash", function () {
                     ReceiptService.remove(receipt.id).then(function () {
-                        var index = $scope.receipts.indexOf(receipt);
-                        $scope.receipts.splice(index, 1);
-                        $scope.setSelected($scope.receipts[0]);
+                        var index = vm.receipts.indexOf(receipt);
+                        vm.receipts.splice(index, 1);
+                        vm.setSelected(vm.receipts[0]);
                     });
                 });
                 return;
             }
 
             $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف السند فعلاً؟", "error", "fa-trash", function () {
-                ReceiptService.remove($scope.selected.id).then(function () {
-                    var index = $scope.receipts.indexOf($scope.selected);
-                    $scope.receipts.splice(index, 1);
-                    $scope.setSelected($scope.receipts[0]);
+                ReceiptService.remove(vm.selected.id).then(function () {
+                    var index = vm.receipts.indexOf(vm.selected);
+                    vm.receipts.splice(index, 1);
+                    vm.setSelected(vm.receipts[0]);
                 });
             });
         };
 
-        $scope.newReceipt = function () {
+        vm.newReceipt = function () {
 
         };
 
-        $scope.rowMenu = [
+        vm.rowMenu = [
             {
                 html: '<div class="drop-menu">انشاء سند جديد<span class="fa fa-pencil fa-lg"></span></div>',
                 enabled: function () {
@@ -74,7 +148,6 @@ app.controller("receiptCtrl", ['ModalProvider', '$scope', '$rootScope', '$state'
         ];
 
         $timeout(function () {
-            $scope.fetchTableData();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

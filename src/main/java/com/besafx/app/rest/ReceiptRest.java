@@ -1,8 +1,12 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
+import com.besafx.app.entity.Order;
 import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.enums.PaymentMethod;
+import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.search.ReceiptSearch;
 import com.besafx.app.service.ReceiptService;
 import com.besafx.app.service.FalconService;
 import com.besafx.app.service.OrderService;
@@ -15,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
+import org.apache.regexp.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +43,9 @@ public class ReceiptRest {
 
     @Autowired
     private ReceiptService receiptService;
+
+    @Autowired
+    private ReceiptSearch receiptSearch;
 
     @Autowired
     private PersonService personService;
@@ -130,5 +138,28 @@ public class ReceiptRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), receiptService.findOne(id));
+    }
+
+    @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filter(
+            @RequestParam(value = "code", required = false) final Long code,
+            @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
+            @RequestParam(value = "dateTo", required = false) final Long dateTo,
+            @RequestParam(value = "lastUpdateFrom", required = false) final Long lastUpdateFrom,
+            @RequestParam(value = "lastUpdateTo", required = false) final Long lastUpdateTo,
+            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
+            @RequestParam(value = "checkCode", required = false) final Long checkCode,
+            @RequestParam(value = "amountFrom", required = false) final Double amountFrom,
+            @RequestParam(value = "amountTo", required = false) final Double amountTo,
+            @RequestParam(value = "receiptTypes", required = false) final List<ReceiptType> receiptTypes,
+            @RequestParam(value = "personIds", required = false) final List<Long> personIds,
+            Principal principal) {
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا" : "Filtering Data").type("success").build(), principal.getName());
+        List<Receipt> list = receiptSearch.filter(code, dateFrom, dateTo, lastUpdateFrom, lastUpdateTo, paymentMethods, checkCode, amountFrom, amountTo, receiptTypes, personIds);
+        notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done").type("success").build(), principal.getName());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

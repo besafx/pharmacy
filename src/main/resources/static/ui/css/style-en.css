@@ -475,17 +475,13 @@ WebKit inertia scrolling is being added here for any present/future devices that
     display: inherit !important;
 }
 
-.mdl-layout__drawer{
-    /*z-index: 2 !important;*/
-}
-
 .mdl-layout__drawer-button{
     display: none !important;
 }
 
 .mdl-layout__header{
     margin-left: 0px !important;
-    width: auto !important;
+    width: 100% !important;
 }
 
 .mdl-navigation{
@@ -654,16 +650,4 @@ WebKit inertia scrolling is being added here for any present/future devices that
     font-weight: 400!important;
     text-decoration: none!important;
     cursor: pointer!important;
-}
-
-.mdl-layout__content,
-.mdl-layout__header{
-    margin-left: 0px!important;
-    transform: scale(1)!important;
-    transition: all 200ms!important;
-}
-
-.is-header-decreased{
-    margin-left: 240px!important;
-    transform: scale(1)!important;
 }

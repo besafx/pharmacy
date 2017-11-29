@@ -1,0 +1,365 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="openFilter()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
+                        <span class="fa fa-filter"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
+                       ng-click="newOrder()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء طلب فحص' : 'New Order...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">سجلات سندات القبض</h3>
+                <h3 ng-if="lang==='EN'">Receipts In List</h3>
+                <span ng-if="lang==='AR'">سجل تجميعي لإيرادات المستشفي</span>
+                <span ng-if="lang==='EN'">Collector Record For Incomes</span>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-tabs__tab-bar">
+                    <a href="#panel-1-{{$index}}" class="mdl-tabs__tab is-active">
+                        <span ng-if="lang==='AR'">التفاصيل</span>
+                        <span ng-if="lang==='EN'">Details</span>
+                    </a>
+                    <a href="#panel-5-{{$index}}" class="mdl-tabs__tab">
+                        <span ng-if="lang==='AR'">سندات القبض</span>
+                        <span ng-if="lang==='EN'">Receipts</span>
+                        <span ng-if="order.orderReceipts.length > 0" class="mdl-badge"
+                              data-badge="{{order.orderReceipts.length}}"></span>
+                    </a>
+                </div>
+
+                <div class="mdl-tabs__panel is-active" id="panel-1-{{$index}}">
+                    <div class="form-group row">
+
+                    </div>
+                </div>
+                <div class="mdl-tabs__panel" id="panel-5-{{$index}}">
+
+                    <div class="form-group row">
+
+                        <form name="form" ng-submit="receiptCtrl.search()" novalidate="novalidate" focus-group="" focus-stack="" focus-group-head="loop" focus-group-tail="loop">
+
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                    <label for="code" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم السند</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </label>
+                                    <input id="code"
+                                           type="number"
+                                           class="form-control"
+                                           ng-model="receiptCtrl.buffer.code">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                    <label for="amountFrom" class="control-label">
+                                        <span ng-if="lang==='AR'">المبلغ من</span>
+                                        <span ng-if="lang==='EN'">Amount From</span>
+                                    </label>
+                                    <input id="amountFrom"
+                                           type="number"
+                                           class="form-control"
+                                           ng-model="receiptCtrl.buffer.amountFrom">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                    <label for="amountTo" class="control-label">
+                                        <span ng-if="lang==='AR'">المبلغ إلى</span>
+                                        <span ng-if="lang==='EN'">Amount To</span>
+                                    </label>
+                                    <input id="amountTo"
+                                           type="number"
+                                           class="form-control"
+                                           ng-model="receiptCtrl.buffer.amountTo">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                    <label for="paymentMethod" class="control-label">
+                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                                        <span ng-if="lang==='EN'">Payment Method</span>
+                                    </label>
+                                    <select id="paymentMethod"
+                                            class="form-control"
+                                            chosen=""
+                                            multiple=""
+                                            disable-validation-message=""
+                                            ng-model="buffer.paymentMethodList">
+                                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
+                                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
+                                        <option ng-if="lang==='AR'" value="Check">شيك</option>
+                                        <option ng-if="lang==='EN'" value="Check">Check</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='H'">
+                                    <label for="dateFrom" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ السند من</span>
+                                        <span ng-if="lang==='EN'">Receipt Date From</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group">
+                                        <input dir="rtl"
+                                               id="dateFrom"
+                                               type="text"
+                                               class="form-control is-calendarPicker"
+                                               ng-model="receiptCtrl.buffer.dateFrom"
+                                               calendarType="ummalqura"
+                                               language="en"
+                                               dateFormat="yyyy/mm/dd"
+                                               showOnFocus="false"
+                                               readonly="readonly"
+                                               kdatepicker>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='G'">
+                                    <label for="G-dateFrom" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ السند من</span>
+                                        <span ng-if="lang==='EN'">Receipt Date From</span>
+                                    </label>
+                                    <input id="G-dateFrom"
+                                           class="form-control "
+                                           type="date"
+                                           name="input"
+                                           ng-model="receiptCtrl.buffer.dateFrom"
+                                           placeholder="yyyy-MM-dd"
+                                           min="2017-01-01"
+                                           max="2030-12-31"/>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='H'">
+                                    <label for="dateTo" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ السند إلى</span>
+                                        <span ng-if="lang==='EN'">Receipt Date To</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group">
+                                        <input dir="rtl"
+                                               id="dateTo"
+                                               type="text"
+                                               class="form-control is-calendarPicker"
+                                               ng-model="receiptCtrl.buffer.dateTo"
+                                               calendarType="ummalqura"
+                                               language="en"
+                                               dateFormat="yyyy/mm/dd"
+                                               showOnFocus="false"
+                                               readonly="readonly"
+                                               kdatepicker>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='G'">
+                                    <label for="G-dateTo" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ السند إلى</span>
+                                        <span ng-if="lang==='EN'">Receipt Date To</span>
+                                    </label>
+                                    <input id="G-dateTo"
+                                           class="form-control "
+                                           type="date"
+                                           name="input"
+                                           ng-model="receiptCtrl.buffer.dateTo"
+                                           placeholder="yyyy-MM-dd"
+                                           min="2017-01-01"
+                                           max="2030-12-31"/>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='H'">
+                                    <label for="lastUpdateFrom" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ إنشاء السند من</span>
+                                        <span ng-if="lang==='EN'">Receipt Date Create From</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group">
+                                        <input dir="rtl"
+                                               id="lastUpdateFrom"
+                                               type="text"
+                                               class="form-control is-calendarPicker"
+                                               ng-model="receiptCtrl.buffer.lastUpdateFrom"
+                                               calendarType="ummalqura"
+                                               language="en"
+                                               dateFormat="yyyy/mm/dd"
+                                               showOnFocus="false"
+                                               readonly="readonly"
+                                               kdatepicker>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='G'">
+                                    <label for="G-lastUpdateFrom" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ إنشاء السند من</span>
+                                        <span ng-if="lang==='EN'">Receipt Date Create From</span>
+                                    </label>
+                                    <input id="G-lastUpdateFrom"
+                                           class="form-control "
+                                           type="date"
+                                           name="input"
+                                           ng-model="receiptCtrl.buffer.lastUpdateFrom"
+                                           placeholder="yyyy-MM-dd"
+                                           min="2017-01-01"
+                                           max="2030-12-31"/>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='H'">
+                                    <label for="lastUpdateTo" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ إنشاء السند إلى</span>
+                                        <span ng-if="lang==='EN'">Receipt Date Create To</span>
+                                    </label>
+                                    <div dir="ltr" class="input-group">
+                                        <input dir="rtl"
+                                               id="lastUpdateTo"
+                                               type="text"
+                                               class="form-control is-calendarPicker"
+                                               ng-model="receiptCtrl.buffer.lastUpdateTo"
+                                               calendarType="ummalqura"
+                                               language="en"
+                                               dateFormat="yyyy/mm/dd"
+                                               showOnFocus="false"
+                                               readonly="readonly"
+                                               kdatepicker>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-3" ng-if="dateType==='G'">
+                                    <label for="G-lastUpdateTo" class="control-label">
+                                        <span ng-if="lang==='AR'">تاريخ إنشاء السند إلى</span>
+                                        <span ng-if="lang==='EN'">Receipt Date Create To</span>
+                                    </label>
+                                    <input id="G-lastUpdateTo"
+                                           class="form-control "
+                                           type="date"
+                                           name="input"
+                                           ng-model="receiptCtrl.buffer.lastUpdateTo"
+                                           placeholder="yyyy-MM-dd"
+                                           min="2017-01-01"
+                                           max="2030-12-31"/>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                                        tooltip-append-to-body="true"
+                                        type="submit"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                    <i class="material-icons">search</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                                        tooltip-append-to-body="true"
+                                        type="reset"
+                                        ng-click="form.$setPristine();receiptCtrl.buffer={};"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="table-responsive">
+                            <table st-table="collectionReceipts" st-safe-src="receiptCtrl.receipts"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم السند</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="date">
+                                        <span ng-if="lang==='AR'">تاريخ السداد</span>
+                                        <span ng-if="lang==='EN'">Payment Date</span>
+                                    </th>
+
+                                    <th st-sort="amountNumber">
+                                        <span ng-if="lang==='AR'">المبلغ</span>
+                                        <span ng-if="lang==='EN'">Amount</span>
+                                    </th>
+
+                                    <th st-sort="paymentMethodInArabic">
+                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                                        <span ng-if="lang==='EN'">Payment Method</span>
+                                    </th>
+
+                                    <th st-sort="note">
+                                        <span ng-if="lang==='AR'">البيان</span>
+                                        <span ng-if="lang==='EN'">Note</span>
+                                    </th>
+
+                                    <th st-sort="lastUpdate">
+                                        <span ng-if="lang==='AR'">تاريخ الإنشاء</span>
+                                        <span ng-if="lang==='EN'">Date Create</span>
+                                    </th>
+
+                                    <th st-sort="lastPerson">
+                                        <span ng-if="lang==='AR'">بواسطة</span>
+                                        <span ng-if="lang==='EN'">Created By</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="receipt in collectionReceipts">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{receipt.code}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{receipt.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{receipt.date | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{receipt.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{receipt.amountNumber}} SAR</td>
+                                    <td>{{receipt.paymentMethodInArabic}}</td>
+                                    <td>{{receipt.note}}</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{receipt.lastUpdate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{receipt.lastUpdate | date: 'yyyy-MM-dd'}}</span>
+                                        <span class="label label-success">{{receipt.lastUpdate | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{receipt.lastPerson.name}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionReceipts || collectionReceipts.length ==0">
+                                    <td colspan="8">
+                                        <strong>
+                                            <a href=""
+                                               ng-if="contains(me.team.authorities, ['ROLE_ORDER_RECEIPT_CREATE'])"
+                                               ng-click="newOrderReceipt(order)">
+                                                <span ng-if="lang==='AR'">تسديد دفعة...</span>
+                                                <span ng-if="lang==='EN'">New Payment...</span>
+                                            </a>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
