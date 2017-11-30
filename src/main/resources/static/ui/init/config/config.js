@@ -399,6 +399,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             url: "/in",
             css: [
                 '/ui/css/mdl-style-indigo-pink.css',
+                '/ui/css/mdl-ext.css',
                 '/ui/css/theme-black.css'
             ],
             views:{

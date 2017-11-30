@@ -48,6 +48,7 @@ gulp.task('scripts', function () {
     gulp.src([
 
         './js/material.js',
+        './js/mdl-ext.js',
         './js/fontawesome.js',
         './js/jquery.js',
 

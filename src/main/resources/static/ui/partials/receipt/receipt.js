@@ -1,5 +1,5 @@
-app.controller("receiptCtrl", ['ReceiptService', '$scope', '$rootScope', '$state', '$timeout',
-    function (ReceiptService, $scope, $rootScope, $state, $timeout) {
+app.controller("receiptCtrl", ['ReceiptService', 'OrderReceiptService', '$scope', '$rootScope', '$state', '$timeout',
+    function (ReceiptService, OrderReceiptService, $scope, $rootScope, $state, $timeout) {
 
         var vm = this;
 
@@ -8,71 +8,62 @@ app.controller("receiptCtrl", ['ReceiptService', '$scope', '$rootScope', '$state
          * Receipts In                                                *
          *                                                            *
          *************************************************************/
-        vm.selected = {};
-
         vm.buffer = {};
+
+        vm.param1 = {};
+
+        vm.param2 = {};
 
         vm.receipts = [];
 
-        vm.setSelected = function (object) {
-            if (object) {
-                angular.forEach(vm.receipts, function (receipt) {
-                    if (object.id == receipt.id) {
-                        vm.selected = receipt;
-                        return receipt.isSelected = true;
-                    } else {
-                        return receipt.isSelected = false;
-                    }
-                });
-            }
-        };
+        vm.orderReceipts = [];
 
-        vm.search = function () {
+        vm.search1 = function () {
 
             var search = [];
 
-            if (vm.buffer.code) {
+            if (vm.param1.code) {
                 search.push('code=');
-                search.push(vm.buffer.code);
+                search.push(vm.param1.code);
                 search.push('&');
             }
             //
-            if (vm.buffer.amountFrom) {
+            if (vm.param1.amountFrom) {
                 search.push('amountFrom=');
-                search.push(vm.buffer.amountFrom);
+                search.push(vm.param1.amountFrom);
                 search.push('&');
             }
-            if (vm.buffer.amountTo) {
+            if (vm.param1.amountTo) {
                 search.push('amountTo=');
-                search.push(vm.buffer.amountTo);
+                search.push(vm.param1.amountTo);
                 search.push('&');
             }
             //
-            if (vm.buffer.dateFrom) {
+            if (vm.param1.dateFrom) {
                 search.push('dateFrom=');
-                search.push(vm.buffer.dateFrom.getTime());
+                search.push(vm.param1.dateFrom.getTime());
                 search.push('&');
             }
-            if (vm.buffer.dateTo) {
+            if (vm.param1.dateTo) {
                 search.push('dateTo=');
-                search.push(vm.buffer.dateTo.getTime());
+                search.push(vm.param1.dateTo.getTime());
                 search.push('&');
             }
             //
-            if (vm.buffer.lastUpdateFrom) {
+            if (vm.param1.lastUpdateFrom) {
                 search.push('lastUpdateFrom=');
-                search.push(vm.buffer.lastUpdateFrom.getTime());
+                search.push(vm.param1.lastUpdateFrom.getTime());
                 search.push('&');
             }
-            if (vm.buffer.lastUpdateTo) {
+            if (vm.param1.lastUpdateTo) {
                 search.push('lastUpdateTo=');
-                search.push(vm.buffer.lastUpdateTo.getTime());
+                search.push(vm.param1.lastUpdateTo.getTime());
                 search.push('&');
             }
             //
-            if (vm.buffer.paymentMethodList) {
+            if (vm.param1.paymentMethodList) {
                 var paymentMethods = [];
-                for (var i = 0; i < vm.buffer.paymentMethodList.length; i++) {
+                for (var i = 0; i < vm.param1.paymentMethodList.length; i++) {
                     paymentMethods.push(vm.buffer.paymentMethodList[i]);
                 }
                 search.push('paymentMethods=');
@@ -82,70 +73,127 @@ app.controller("receiptCtrl", ['ReceiptService', '$scope', '$rootScope', '$state
             //
             ReceiptService.filter(search.join("")).then(function (data) {
                 vm.receipts = data;
+                vm.totalAmount1 = 0;
+                angular.forEach(data, function (receipt) {
+                    vm.totalAmount1+=receipt.amountNumber;
+                });
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
             });
         };
 
-        vm.clear = function () {
-            vm.buffer = {};
-        };
+        vm.search2 = function () {
 
-        vm.delete = function (receipt) {
-            if (receipt) {
-                $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف السند فعلاً؟", "error", "fa-trash", function () {
-                    ReceiptService.remove(receipt.id).then(function () {
-                        var index = vm.receipts.indexOf(receipt);
-                        vm.receipts.splice(index, 1);
-                        vm.setSelected(vm.receipts[0]);
-                    });
-                });
-                return;
+            var search = [];
+
+            //Order Keys
+            if (vm.param2.orderCodeFrom) {
+                search.push('orderCodeFrom=');
+                search.push(vm.param2.orderCodeFrom);
+                search.push('&');
             }
+            if (vm.param2.orderCodeTo) {
+                search.push('orderCodeTo=');
+                search.push(vm.param2.orderCodeTo);
+                search.push('&');
+            }
+            //
+            if (vm.param2.orderCustomerName) {
+                search.push('orderCustomerName=');
+                search.push(vm.param2.orderCustomerName);
+                search.push('&');
+            }
+            if (vm.param2.orderCustomerMobile) {
+                search.push('orderCustomerMobile=');
+                search.push(vm.param2.orderCustomerMobile);
+                search.push('&');
+            }
+            //
+            if (vm.param2.orderFalconCode) {
+                search.push('orderFalconCode=');
+                search.push(vm.param2.orderFalconCode);
+                search.push('&');
+            }
+            if (vm.param2.orderFalconType) {
+                search.push('orderFalconType=');
+                search.push(vm.param2.orderFalconType);
+                search.push('&');
+            }
+            //
+            if (vm.param2.orderDateFrom) {
+                search.push('orderDateFrom=');
+                search.push(vm.param2.orderDateFrom.getTime());
+                search.push('&');
+            }
+            if (vm.param2.orderDateTo) {
+                search.push('orderDateTo=');
+                search.push(vm.param2.orderDateTo.getTime());
+                search.push('&');
+            }
+            //
 
-            $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف السند فعلاً؟", "error", "fa-trash", function () {
-                ReceiptService.remove(vm.selected.id).then(function () {
-                    var index = vm.receipts.indexOf(vm.selected);
-                    vm.receipts.splice(index, 1);
-                    vm.setSelected(vm.receipts[0]);
+            //Receipt Keys
+            if (vm.param2.code) {
+                search.push('receiptCode=');
+                search.push(vm.param2.code);
+                search.push('&');
+            }
+            //
+            if (vm.param2.amountFrom) {
+                search.push('receiptAmountFrom=');
+                search.push(vm.param2.amountFrom);
+                search.push('&');
+            }
+            if (vm.param2.amountTo) {
+                search.push('receiptAmountTo=');
+                search.push(vm.param2.amountTo);
+                search.push('&');
+            }
+            //
+            if (vm.param2.dateFrom) {
+                search.push('receiptDateFrom=');
+                search.push(vm.param2.dateFrom.getTime());
+                search.push('&');
+            }
+            if (vm.param2.dateTo) {
+                search.push('receiptDateTo=');
+                search.push(vm.param2.dateTo.getTime());
+                search.push('&');
+            }
+            //
+            if (vm.param2.lastUpdateFrom) {
+                search.push('receiptLastUpdateFrom=');
+                search.push(vm.param2.lastUpdateFrom.getTime());
+                search.push('&');
+            }
+            if (vm.param2.lastUpdateTo) {
+                search.push('receiptLastUpdateTo=');
+                search.push(vm.param2.lastUpdateTo.getTime());
+                search.push('&');
+            }
+            //
+            if (vm.param2.paymentMethodList) {
+                var paymentMethods = [];
+                for (var i = 0; i < vm.param2.paymentMethodList.length; i++) {
+                    paymentMethods.push(vm.param2.paymentMethodList[i]);
+                }
+                search.push('receiptPaymentMethods=');
+                search.push(paymentMethods);
+                search.push('&');
+            }
+            //
+            OrderReceiptService.filter(search.join("")).then(function (data) {
+                vm.orderReceipts = data;
+                vm.totalAmount2 = 0;
+                angular.forEach(data, function (orderReceipt) {
+                    vm.totalAmount2+=orderReceipt.receipt.amountNumber;
                 });
+                $timeout(function () {
+                    window.componentHandler.upgradeAllRegistered();
+                }, 500);
             });
         };
-
-        vm.newReceipt = function () {
-
-        };
-
-        vm.rowMenu = [
-            {
-                html: '<div class="drop-menu">انشاء سند جديد<span class="fa fa-pencil fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_RECEIPT_CREATE']);
-                },
-                click: function ($itemScope, $event, value) {
-
-                }
-            },
-            {
-                html: '<div class="drop-menu">تعديل بيانات السند<span class="fa fa-edit fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_RECEIPT_UPDATE']);
-                },
-                click: function ($itemScope, $event, value) {
-
-                }
-            },
-            {
-                html: '<div class="drop-menu">حذف السند<span class="fa fa-trash fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_RECEIPT_DELETE']);
-                },
-                click: function ($itemScope, $event, value) {
-
-                }
-            }
-        ];
 
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();

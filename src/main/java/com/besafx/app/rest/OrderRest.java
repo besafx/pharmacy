@@ -258,27 +258,8 @@ public class OrderRest {
             @RequestParam(value = "falconType", required = false) final String falconType,
             @RequestParam(value = "weightFrom", required = false) final Double weightFrom,
             @RequestParam(value = "weightTo", required = false) final Double weightTo,
-            @RequestParam(value = "doctorName", required = false) final String doctorName,
-            Principal principal) {
-        Person caller = personService.findByEmail(principal.getName());
-        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-        notificationService.notifyOne(Notification
-                .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا..." : "Filtering Data")
-                .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
-                .build(), principal.getName());
+            @RequestParam(value = "doctorName", required = false) final String doctorName) {
         List<Order> list = orderSearch.filter(codeFrom, codeTo, paymentMethods, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
-        notificationService.notifyOne(Notification
-                .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done")
-                .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
-                .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 

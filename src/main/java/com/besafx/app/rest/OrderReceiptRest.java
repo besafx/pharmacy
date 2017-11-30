@@ -4,7 +4,9 @@ import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.OrderReceipt;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
+import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.search.OrderReceiptSearch;
 import com.besafx.app.service.OrderReceiptService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.ReceiptService;
@@ -35,10 +37,13 @@ public class OrderReceiptRest {
 
     private final static Logger log = LoggerFactory.getLogger(OrderReceiptRest.class);
 
-    public static final String FILTER_TABLE = "**,order[id],receipt[**,lastPerson[id,nickname,name]]";
+    public static final String FILTER_TABLE = "**,order[id,code,date,falcon[id,code,type,weight,customer[id,code,name,mobile]]],receipt[**,lastPerson[id,nickname,name]]";
 
     @Autowired
     private OrderReceiptService orderReceiptService;
+
+    @Autowired
+    private OrderReceiptSearch orderReceiptSearch;
 
     @Autowired
     private ReceiptService receiptService;
@@ -107,5 +112,51 @@ public class OrderReceiptRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderReceiptService.findOne(id));
+    }
+
+    @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filter(
+            @RequestParam(value = "orderCodeFrom", required = false) final Long orderCodeFrom,
+            @RequestParam(value = "orderCodeTo", required = false) final Long orderCodeTo,
+            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName,
+            @RequestParam(value = "orderCustomerMobile", required = false) final String orderCustomerMobile,
+            @RequestParam(value = "orderFalconCode", required = false) final Long orderFalconCode,
+            @RequestParam(value = "orderFalconType", required = false) final String orderFalconType,
+            @RequestParam(value = "orderDateFrom", required = false) final Long orderDateFrom,
+            @RequestParam(value = "orderDateTo", required = false) final Long orderDateTo,
+
+            @RequestParam(value = "receiptCode", required = false) final Long receiptCode,
+            @RequestParam(value = "receiptDateFrom", required = false) final Long receiptDateFrom,
+            @RequestParam(value = "receiptDateTo", required = false) final Long receiptDateTo,
+            @RequestParam(value = "receiptLastUpdateFrom", required = false) final Long receiptLastUpdateFrom,
+            @RequestParam(value = "receiptLastUpdateTo", required = false) final Long receiptLastUpdateTo,
+            @RequestParam(value = "receiptPaymentMethods", required = false) final List<PaymentMethod> receiptPaymentMethods,
+            @RequestParam(value = "receiptCheckCode", required = false) final Long receiptCheckCode,
+            @RequestParam(value = "receiptAmountFrom", required = false) final Double receiptAmountFrom,
+            @RequestParam(value = "receiptAmountTo", required = false) final Double receiptAmountTo,
+            @RequestParam(value = "receiptReceiptTypes", required = false) final List<ReceiptType> receiptReceiptTypes,
+            @RequestParam(value = "receiptPersonIds", required = false) final List<Long> receiptPersonIds) {
+        List<OrderReceipt> list = orderReceiptSearch.filter(
+                orderCodeFrom,
+                orderCodeTo,
+                orderCustomerName,
+                orderCustomerMobile,
+                orderFalconCode,
+                orderFalconType,
+                orderDateFrom,
+                orderDateTo,
+                receiptCode,
+                receiptDateFrom,
+                receiptDateTo,
+                receiptLastUpdateFrom,
+                receiptLastUpdateTo,
+                receiptPaymentMethods,
+                receiptCheckCode,
+                receiptAmountFrom,
+                receiptAmountTo,
+                receiptReceiptTypes,
+                receiptPersonIds);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

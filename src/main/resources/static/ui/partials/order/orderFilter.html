@@ -57,31 +57,11 @@
                            ng-model="buffer.customerName">
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="paymentMethod" class="control-label">
-                        <span ng-if="lang==='AR'">طريقة الدفع</span>
-                        <span ng-if="lang==='EN'">Payment Method</span>
-                    </label>
-                    <select id="paymentMethod"
-                            class="form-control"
-                            chosen=""
-                            multiple=""
-                            disable-validation-message=""
-                            ng-model="buffer.paymentMethodList">
-                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
-                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
-                        <option ng-if="lang==='AR'" value="Check">شيك</option>
-                        <option ng-if="lang==='EN'" value="Check">Check</option>
-                        <option ng-if="lang==='AR'" value="Later">آجل</option>
-                        <option ng-if="lang==='EN'" value="Later">Later</option>
-                    </select>
-                </div>
-
             </div>
 
             <div class="form-group row">
 
-                <div class="form-group c  ol-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <label for="customerMobile" class="control-label">
                         <span ng-if="lang==='AR'">رقم جوال العميل يحتوي على</span>
                         <span ng-if="lang==='EN'">Customer Mobile Contains</span>
