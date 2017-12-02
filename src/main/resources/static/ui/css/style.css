@@ -656,14 +656,8 @@ WebKit inertia scrolling is being added here for any present/future devices that
     cursor: pointer!important;
 }
 
-/*.mdl-layout__content,*/
-/*.mdl-layout__header{*/
-    /*margin-left: 0px!important;*/
-    /*transform: scale(1)!important;*/
-    /*transition: all 200ms!important;*/
-/*}*/
-
-/*.is-header-decreased{*/
-    /*margin-left: 240px!important;*/
-    /*transform: scale(1)!important;*/
-/*}*/
+.label-danger{
+    color: white!important;
+    padding: 5px!important;
+    border-right: 5px!important;
+}

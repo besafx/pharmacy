@@ -29,6 +29,16 @@ app.factory("BillSellService",
                     return response.data;
                 });
             },
+            filterInside: function (search) {
+                return $http.get("/api/billSell/filterInside?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
+            filterOutside: function (search) {
+                return $http.get("/api/billSell/filterOutside?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
             findInsideSalesByToday: function () {
                 return $http.get("/api/billSell/findInsideSalesByToday").then(function (response) {
                     return response.data;

@@ -64,6 +64,11 @@ app.factory("OrderService",
                     return response.data;
                 });
             },
+            filterDebt: function (search) {
+                return $http.get("/api/order/filterDebt?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
             findByToday: function () {
                 return $http.get("/api/order/findByToday").then(function (response) {
                     return response.data;

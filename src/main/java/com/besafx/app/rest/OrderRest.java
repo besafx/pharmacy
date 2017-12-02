@@ -32,6 +32,7 @@ public class OrderRest {
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
 
     public static final String FILTER_TABLE = "**,orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,nickname,name],falcon[**,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
+    public static final String FILTER_TABLE_DEBT = "**,-orderReceipts,lastPerson[id,nickname,name],falcon[**,customer[id,code,name]],-doctor,-diagnoses,-orderDetectionTypes,-orderAttaches";
     public static final String FILTER_ORDER_COMBO = "id,code";
 
     @Autowired
@@ -261,6 +262,26 @@ public class OrderRest {
             @RequestParam(value = "doctorName", required = false) final String doctorName) {
         List<Order> list = orderSearch.filter(codeFrom, codeTo, paymentMethods, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+    }
+
+    @RequestMapping(value = "filterDebt", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filterDebt(
+            @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
+            @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
+            @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
+            @RequestParam(value = "dateTo", required = false) final Long dateTo,
+            @RequestParam(value = "customerName", required = false) final String customerName,
+            @RequestParam(value = "customerMobile", required = false) final String customerMobile,
+            @RequestParam(value = "customerIdentityNumber", required = false) final String customerIdentityNumber,
+            @RequestParam(value = "falconCode", required = false) final Long falconCode,
+            @RequestParam(value = "falconType", required = false) final String falconType,
+            @RequestParam(value = "weightFrom", required = false) final Double weightFrom,
+            @RequestParam(value = "weightTo", required = false) final Double weightTo,
+            @RequestParam(value = "doctorName", required = false) final String doctorName) {
+        List<Order> list = orderSearch.filter(codeFrom, codeTo, paymentMethods, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE_DEBT), list);
     }
 
     @RequestMapping(value = "findByToday", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

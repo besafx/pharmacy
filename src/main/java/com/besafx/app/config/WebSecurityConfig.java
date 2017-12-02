@@ -75,12 +75,6 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/billSell/insideSales", "/billSell/outsideSales")
                 .access("hasRole('ROLE_BILL_SELL_READ') or hasRole('ROLE_BILL_SELL_CREATE') or hasRole('ROLE_BILL_SELL_UPDATE') or hasRole('ROLE_BILL_SELL_DELETE')")
 
-                .antMatchers("/receipt/in")
-                .access("hasRole('ROLE_RECEIPT_IN_CREATE') or hasRole('ROLE_RECEIPT_IN_UPDATE') or hasRole('ROLE_RECEIPT_IN_DELETE')")
-
-                .antMatchers("/receipt/out")
-                .access("hasRole('ROLE_RECEIPT_OUT_CREATE') or hasRole('ROLE_RECEIPT_OUT_UPDATE') or hasRole('ROLE_RECEIPT_OUT_DELETE')")
-
                 .antMatchers("/receipt/term")
                 .access("hasRole('ROLE_RECEIPT_TERM_CREATE') or hasRole('ROLE_RECEIPT_TERM_UPDATE') or hasRole('ROLE_RECEIPT_TERM_DELETE')")
 

@@ -1,9 +1,12 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.entity.BillSell;
 import com.besafx.app.entity.BillSellReceipt;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
+import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.search.BillSellReceiptSearch;
 import com.besafx.app.service.BillSellReceiptService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.ReceiptService;
@@ -34,10 +37,13 @@ public class BillSellReceiptRest {
 
     private final static Logger log = LoggerFactory.getLogger(BillSellReceiptRest.class);
 
-    public static final String FILTER_TABLE = "**,billSell[id],receipt[**,lastPerson[id,nickname,name]]";
+    public static final String FILTER_TABLE = "**,billSell[id,code,order[id,code,date,falcon[id,code,type,customer[id,name]]]],receipt[**,lastPerson[id,nickname,name]]";
 
     @Autowired
     private BillSellReceiptService billSellReceiptService;
+
+    @Autowired
+    private BillSellReceiptSearch billSellReceiptSearch;
 
     @Autowired
     private ReceiptService receiptService;
@@ -103,5 +109,37 @@ public class BillSellReceiptRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellReceiptService.findOne(id));
+    }
+
+    @RequestMapping(value = "filterInside", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filterInside(
+            @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
+            @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
+            @RequestParam(value = "checkCode", required = false) final String checkCode,
+            @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
+            @RequestParam(value = "dateTo", required = false) final Long dateTo,
+            @RequestParam(value = "orderCodeFrom", required = false) final Long orderCodeFrom,
+            @RequestParam(value = "orderCodeTo", required = false) final Long orderCodeTo,
+            @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
+            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
+        List<BillSellReceipt> list = billSellReceiptSearch.filterInside(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+    }
+
+    @RequestMapping(value = "filterOutside", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filterOutside(
+            @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
+            @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
+            @RequestParam(value = "checkCode", required = false) final String checkCode,
+            @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
+            @RequestParam(value = "dateTo", required = false) final Long dateTo,
+            @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
+            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
+        List<BillSellReceipt> list = billSellReceiptSearch.filterOutside(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderFalconCode, orderCustomerName);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

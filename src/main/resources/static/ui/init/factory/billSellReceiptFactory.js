@@ -18,6 +18,16 @@ app.factory("BillSellReceiptService",
             },
             remove: function (id) {
                 return $http.delete("/api/billSellReceipt/delete/" + id);
+            },
+            filterInside: function (search) {
+                return $http.get("/api/billSellReceipt/filterInside?" + search).then(function (response) {
+                    return response.data;
+                });
+            },
+            filterOutside: function (search) {
+                return $http.get("/api/billSellReceipt/filterOutside?" + search).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

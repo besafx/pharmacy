@@ -37,6 +37,8 @@ public class BillSellRest {
     private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
 
     public static final String FILTER_TABLE = "**,billSellReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,name],order[id,code,treatedCount,unTreatedCount,falcon[**,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]]";
+    public static final String FILTER_Inside_Debt = "id,code,remain,date,-lastPerson,order[id,code,date,falcon[id,code,customer[id,name]]],-transactionSells,-billSellReceipts";
+    public static final String FILTER_Outside_Debt = "id,code,customerName,falconCode,remain,-lastPerson,-transactionSells,-billSellReceipts";
     public static final String FILTER_BILL_SELL_COMBO = "id,code";
 
     @Autowired
@@ -199,22 +201,41 @@ public class BillSellRest {
             @RequestParam(value = "orderCodeFrom", required = false) final Long orderCodeFrom,
             @RequestParam(value = "orderCodeTo", required = false) final Long orderCodeTo,
             @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
-            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName,
-            Principal principal) {
-        Person caller = personService.findByEmail(principal.getName());
-        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-        notificationService.notifyOne(Notification
-                .builder()
-                .message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا..." : "Filtering Data")
-                .type("success")
-                .build(), principal.getName());
+            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
         List<BillSell> list = billSellSearch.filter(codeFrom, codeTo, viewInsideSalesTable, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
-        notificationService.notifyOne(Notification
-                .builder()
-                .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done")
-                .type("success")
-                .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+    }
+
+    @RequestMapping(value = "filterInside", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filterInside(
+            @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
+            @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
+            @RequestParam(value = "checkCode", required = false) final String checkCode,
+            @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
+            @RequestParam(value = "dateTo", required = false) final Long dateTo,
+            @RequestParam(value = "orderCodeFrom", required = false) final Long orderCodeFrom,
+            @RequestParam(value = "orderCodeTo", required = false) final Long orderCodeTo,
+            @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
+            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
+        List<BillSell> list = billSellSearch.filterInside(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Inside_Debt), list);
+    }
+
+    @RequestMapping(value = "filterOutside", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String filterOutside(
+            @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
+            @RequestParam(value = "codeTo", required = false) final Long codeTo,
+            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
+            @RequestParam(value = "checkCode", required = false) final String checkCode,
+            @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
+            @RequestParam(value = "dateTo", required = false) final Long dateTo,
+            @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
+            @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
+        List<BillSell> list = billSellSearch.filterOutside(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderFalconCode, orderCustomerName);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Outside_Debt), list);
     }
 
     @RequestMapping(value = "findInsideSalesByToday", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
