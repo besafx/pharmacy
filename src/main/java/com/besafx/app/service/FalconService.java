@@ -13,4 +13,5 @@ public interface FalconService extends PagingAndSortingRepository<Falcon, Long>,
     Falcon findByCode(Long code);
     Falcon findByCodeAndIdIsNot(Long code, Long id);
     List<Falcon> findByCustomerId(Long customerId);
+    List<Falcon> findByIdIn(List<Long> ids);
 }

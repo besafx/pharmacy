@@ -25,6 +25,8 @@ public interface OrderService extends PagingAndSortingRepository<Order, Long>, J
 
     List<Order> findByFalconIn(List<Falcon> falcons);
 
+    List<Order> findByFalconIdIn(List<Long> falcons);
+
     List<Order> findByFalcon(Falcon falcon);
 
     List<Order> findByFalconId(Long falconId);

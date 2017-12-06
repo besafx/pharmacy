@@ -1,8 +1,5 @@
 package com.besafx.app.entity;
 
-import com.besafx.app.component.BeanUtil;
-import com.besafx.app.entity.enums.PaymentMethod;
-import com.besafx.app.service.TransactionSellService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -12,16 +9,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Data
@@ -131,18 +125,18 @@ public class Order implements Serializable {
         }
     }
 
-    public Long getTreatedCount(){
-        try{
+    public Long getTreatedCount() {
+        try {
             return this.diagnoses.stream().filter(Diagnosis::isTreated).count();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return new Long(0);
         }
     }
 
-    public Long getUnTreatedCount(){
-        try{
+    public Long getUnTreatedCount() {
+        try {
             return this.diagnoses.size() - getTreatedCount();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return new Long(0);
         }
     }

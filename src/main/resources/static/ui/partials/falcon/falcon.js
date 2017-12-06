@@ -122,6 +122,17 @@ app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', 
                 click: function ($itemScope, $event, value) {
                     ModalProvider.openFalconDetailsModel($itemScope.falcon);
                 }
+            },
+            {
+                html: '<div class="drop-menu">طباعة تقرير مختصر<span class="fa fa-print fa-lg"></span></div>',
+                enabled: function () {
+                    return true;
+                },
+                click: function ($itemScope, $event, value) {
+                    var ids = [];
+                    ids.push($itemScope.falcon.id);
+                    window.open('/report/falcons?ids=' + ids + '&exportType=PDF');
+                }
             }
         ];
 

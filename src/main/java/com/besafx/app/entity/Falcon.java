@@ -9,7 +9,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -46,6 +48,9 @@ public class Falcon implements Serializable {
     @JoinColumn(name = "customer")
     @ManyToOne
     private Customer customer;
+
+    @OneToMany(mappedBy = "falcon", fetch = FetchType.LAZY)
+    private List<Order> orders = new ArrayList<>();
 
     @JsonCreator
     public static Falcon Create(String jsonString) throws IOException {
