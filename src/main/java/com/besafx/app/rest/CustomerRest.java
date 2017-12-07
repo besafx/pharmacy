@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping(value = "/api/customer/")
 public class CustomerRest {
 
-    public static final String FILTER_TABLE = "**,falcons[**,customer[id,code,name,mobile,identityNumber]]";
+    public static final String FILTER_TABLE = "**,falcons[**,-orders,customer[id,code,name,mobile,identityNumber]]";
     public static final String FILTER_CUSTOMER_INFO = "id,code,nickname,name,registerDate,mobile,identityNumber,nationality,job,enabled";
     public static final String FILTER_CUSTOMER_PAGE = "**,content[id,nickname,name,registerDate,mobile,identityNumber,nationality,job]";
     public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name,mobile,identityNumber";
