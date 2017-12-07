@@ -114,14 +114,6 @@
                     <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
                         class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
                         for="falcon-menu-lower-right">
-                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
-                            ng-click="fetchTableData()">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">visibility</i>
-                                <span ng-if="lang==='AR'">عرض البيانات</span>
-                                <span ng-if="lang==='EN'">View</span>
-                            </span>
-                        </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="newFalcon();"
                             ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])">
                             <span class="mdl-list__item-primary-content">
@@ -156,6 +148,16 @@
                                 <i class="material-icons mdl-list__item-icon">info</i>
                                 <span ng-if="lang==='AR'">التفاصيل</span>
                                 <span ng-if="lang==='EN'">Details...</span>
+                            </span>
+                        </li>
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="print();"
+                            ng-if="toggleList===1"
+                            ng-hide="!falcons || falcons.length==0">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">print</i>
+                                <span ng-if="lang==='AR'">طباعة تقرير مفصل</span>
+                                <span ng-if="lang==='EN'">Print Details</span>
                             </span>
                         </li>
                     </ul>
@@ -342,7 +344,7 @@
                             style="margin-top: 2px;">
                             <li>
                                 <a href=""
-                                   ng-click="fetchTableData()"
+                                   ng-click="search()"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
                                     <span class="fa fa-refresh"></span>
@@ -361,221 +363,176 @@
                             <h3 ng-if="lang==='EN'">Falcons List</h3>
                         </div>
                     </div>
-                    <div class="panel-body panel-body-table">
-                        <div class="table-responsive">
-                            <table st-table="collection1" st-safe-src="falcons"
-                                   class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        <span ng-if="lang==='AR'">م</span>
-                                        <span ng-if="lang==='EN'">#</span>
-                                    </th>
+                    <div class="panel-body">
 
-                                    <th st-sort="code">
-                                        <span ng-if="lang==='AR'">رقم الصقر</span>
-                                        <span ng-if="lang==='EN'">Code</span>
-                                    </th>
+                        <div class="form-group row">
 
-                                    <th st-sort="type">
-                                        <span ng-if="lang==='AR'">النوع</span>
-                                        <span ng-if="lang==='EN'">Type</span>
-                                    </th>
+                            <ul id="my-accordion1"
+                                class="mdlext-accordion mdlext-js-accordion mdlext-accordion--vertical mdlext-js-ripple-effect"
+                                role="tablist" aria-multiselectable="true">
 
-                                    <th st-sort="weight">
-                                        <span ng-if="lang==='AR'">الوزن</span>
-                                        <span ng-if="lang==='EN'">Weight</span>
-                                    </th>
-
-                                    <th st-sort="customer.person.name">
-                                        <span ng-if="lang==='AR'">العميل</span>
-                                        <span ng-if="lang==='EN'">Customer</span>
-                                    </th>
-
-                                </tr>
-                                <tr>
-                                    <th colspan="5">
-                                        <input st-search=""
-                                               class="form-control"
-                                               placeholder="{{lang==='AR' ? 'بحث شامل وسريع...' : 'Search...'}}"
-                                               type="text"/>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="falcon in collection1"
-                                    st-select-mode="single"
-                                    context-menu="rowMenu"
-                                    ng-click="setSelected(falcon)"
-                                    ng-right-click="setSelected(falcon)"
-                                    ng-class="{'mdl-color--blue-grey-100':falcon.isSelected}">
-                                    <td st-select-row-custom="falcon">{{$index+1}}</td>
-                                    <td st-select-row-custom="falcon">{{falcon.code}}</td>
-                                    <td st-select-row-custom="falcon">{{falcon.type}}</td>
-                                    <td st-select-row-custom="falcon">
-                                        <span>{{falcon.weight}} جرام</span>
-                                    </td>
-                                    <td st-select-row-custom="falcon">{{falcon.customer.nickname}} {{falcon.customer.name}}</td>
-                                </tr>
-                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collection1 || collection1.length ==0">
-                                    <td colspan="5">
-                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
-                                        <span ng-if="lang==='EN'">No Data Found.</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="5">
-                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="selected.id && falcons.length > 0 && toggleList===1">
-
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
-                            style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshOrdersByFalcon()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
-                                   ng-click="newOrder()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء طلب فحص' : 'New Order...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">قائمة الطلبات</h3>
-                            <h3 ng-if="lang==='EN'">Orders List</h3>
-                            <span ng-if="lang==='AR'"> رقم الصقر / {{selected.code}}</span>
-                            <span ng-if="lang==='EN'">Falcon Code \ {{selected.code}}</span>
-                        </div>
-                    </div>
-                    <div class="panel-body panel-body-table">
-                        <div class="table-responsive">
-                            <table st-table="collection2" st-safe-src="selected.orders"
-                                   class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        <span ng-if="lang==='AR'">م</span>
-                                        <span ng-if="lang==='EN'">#</span>
-                                    </th>
-
-                                    <th st-sort="code">
-                                        <span ng-if="lang==='AR'">رقم الطلب</span>
-                                        <span ng-if="lang==='EN'">Code</span>
-                                    </th>
-
-                                    <th st-sort="date">
-                                        <span ng-if="lang==='AR'">التاريخ</span>
-                                        <span ng-if="lang==='EN'">Date</span>
-                                    </th>
-
-                                    <th st-sort="orderAttaches.length">
-                                        <span ng-if="lang==='AR'">المرفقات والمستندات</span>
-                                        <span ng-if="lang==='EN'">Attachments</span>
-                                    </th>
-
-                                    <th st-sort="doctor.person.name">
-                                        <span ng-if="lang==='AR'">الطبيب المعالج</span>
-                                        <span ng-if="lang==='EN'">Doctor</span>
-                                    </th>
-
-                                    <th st-sort="detectionTypeCostSum">
-                                        <span ng-if="lang==='AR'">التكلفة</span>
-                                        <span ng-if="lang==='EN'">Cost</span>
-                                    </th>
-
-                                    <th st-sort="discount">
-                                        <span ng-if="lang==='AR'">الخصم</span>
-                                        <span ng-if="lang==='EN'">Discount</span>
-                                    </th>
-
-                                    <th st-sort="net">
-                                        <span ng-if="lang==='AR'">الصافي</span>
-                                        <span ng-if="lang==='EN'">Net</span>
-                                    </th>
-
-                                    <th st-sort="paid">
-                                        <span ng-if="lang==='AR'">المدفوع</span>
-                                        <span ng-if="lang==='EN'">paid</span>
-                                    </th>
-
-                                    <th st-sort="remain">
-                                        <span ng-if="lang==='AR'">الباقي</span>
-                                        <span ng-if="lang==='EN'">Remain</span>
-                                    </th>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="order in collection2"
-                                    context-menu="rowMenuOrder"
-                                    st-select-mode="single"
-                                    ng-click="setSelectedOrder(order)"
-                                    ng-right-click="setSelectedOrder(order)"
-                                    ng-class="{'mdl-color--blue-grey-100':order.isSelected}">
-                                    <td st-select-row-custom="order">{{$index+1}}</td>
-                                    <td st-select-row-custom="order">{{order.code}}</td>
-                                    <td st-select-row-custom="order">
-                                        <span ng-show="dateType==='H'">{{order.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{order.date | date:'h:m a'}}</span>
-                                    </td>
-                                    <td st-select-row-custom="order">
-                                        <span ng-repeat="orderAttach in order.orderAttaches">
-                                            <a uib-tooltip="{{orderAttach.attach.name}}" tooltip-append-to-body="true"
-                                               href="" ng-href="{{orderAttach.attach.link}}" target="_blank">
-                                                <i class="fa fa-link fa-lg"></i>
-                                            </a>
+                                <li class="mdlext-accordion__panel" role="presentation">
+                                    <header class="mdlext-accordion__tab" role="tab" aria-expanded="false">
+                                        <i class="material-icons">search</i>
+                                        <span class="mdlext-accordion__tab__caption">
+                                            <span ng-if="lang==='AR'">بحث متعدد</span>
+                                        <span ng-if="lang==='EN'">Multiple Search</span>
                                         </span>
-                                        <span ng-if="order.orderAttaches.length === 0" class="label label-danger">
-                                            <span ng-if="lang==='AR'">لا توجد ملفات حتى الآن</span>
-                                            <span ng-if="lang==='EN'">No Attachments Yet</span>
-                                        </span>
-                                    </td>
-                                    <td st-select-row-custom="order">{{order.doctor.person.name}}</td>
-                                    <td st-select-row-custom="order">{{order.detectionTypeCostSum}} SAR</td>
-                                    <td st-select-row-custom="order">{{order.discount}} %</td>
-                                    <td st-select-row-custom="order">{{order.netCost}} SAR</td>
-                                    <td st-select-row-custom="order">{{order.paid}} SAR</td>
-                                    <td st-select-row-custom="order">{{order.remain}} SAR</td>
-                                </tr>
-                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collection2 || collection2.length ==0">
-                                    <td colspan="10">
-                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
-                                        <span ng-if="lang==='EN'">No Data Found.</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="10">
-                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                            </table>
+                                        <i class="mdlext-aria-toggle-material-icons"></i>
+                                    </header>
+                                    <section class="mdlext-accordion__tabpanel" role="tabpanel" aria-hidden="true">
+
+                                        <div class="form-group row">
+
+                                            <form name="form" ng-submit="search()" novalidate="novalidate" focus-group="" focus-stack="" focus-group-head="loop" focus-group-tail="loop">
+
+                                                <div class="row">
+
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                                        <label for="falconCode" class="control-label">
+                                                            <span ng-if="lang==='AR'">رقم الصقر</span>
+                                                            <span ng-if="lang==='EN'">Code</span>
+                                                        </label>
+                                                        <input id="falconCode"
+                                                               type="number"
+                                                               class="form-control"
+                                                               ng-model="param.falconCode">
+                                                    </div>
+
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                                        <label for="falconType" class="control-label">
+                                                            <span ng-if="lang==='AR'">نوع الصقر</span>
+                                                            <span ng-if="lang==='EN'">Type</span>
+                                                        </label>
+                                                        <input id="falconType"
+                                                               type="text"
+                                                               class="form-control"
+                                                               ng-model="param.falconType">
+                                                    </div>
+
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                                        <label for="customerName" class="control-label">
+                                                            <span ng-if="lang==='AR'">اسم العميل</span>
+                                                            <span ng-if="lang==='EN'">Customer Name</span>
+                                                        </label>
+                                                        <input id="customerName"
+                                                               type="text"
+                                                               class="form-control"
+                                                               ng-model="param.customerName">
+                                                    </div>
+
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                                        <label for="customerMobile" class="control-label">
+                                                            <span ng-if="lang==='AR'">رقم جوال العميل</span>
+                                                            <span ng-if="lang==='EN'">Customer Mobile</span>
+                                                        </label>
+                                                        <input id="customerMobile"
+                                                               type="text"
+                                                               class="form-control"
+                                                               ng-model="param.customerMobile">
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                                                        <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                                                                tooltip-append-to-body="true"
+                                                                type="submit"
+                                                                class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                                                            <i class="material-icons">search</i>
+                                                        </button>
+                                                        <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                                                                tooltip-append-to-body="true"
+                                                                type="reset"
+                                                                ng-click="form.$setPristine();param={};"
+                                                                class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                                                            <i class="material-icons">delete</i>
+                                                        </button>
+                                                    </div>
+                                                    <h3 ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-if="totalAmount1>=0">
+                                                        <span ng-if="lang==='AR'">الإجمالي</span>
+                                                        <span ng-if="lang==='EN'">Total Income: </span>
+                                                        <span>{{totalAmount1}} SAR</span>
+                                                    </h3>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                    </section>
+                                </li>
+
+                            </ul>
+
                         </div>
+
+                        <div class="form-group row">
+
+                            <div class="table-responsive">
+                                <table st-table="collection1" st-safe-src="falcons"
+                                       class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <span ng-if="lang==='AR'">م</span>
+                                            <span ng-if="lang==='EN'">#</span>
+                                        </th>
+
+                                        <th st-sort="code">
+                                            <span ng-if="lang==='AR'">رقم الصقر</span>
+                                            <span ng-if="lang==='EN'">Code</span>
+                                        </th>
+
+                                        <th st-sort="type">
+                                            <span ng-if="lang==='AR'">النوع</span>
+                                            <span ng-if="lang==='EN'">Type</span>
+                                        </th>
+
+                                        <th st-sort="weight">
+                                            <span ng-if="lang==='AR'">الوزن</span>
+                                            <span ng-if="lang==='EN'">Weight</span>
+                                        </th>
+
+                                        <th st-sort="customer.person.name">
+                                            <span ng-if="lang==='AR'">العميل</span>
+                                            <span ng-if="lang==='EN'">Customer</span>
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="falcon in collection1" context-menu="rowMenu">
+                                        <td st-select-row-multi="falcon">{{$index+1}}</td>
+                                        <td st-select-row-multi="falcon">{{falcon.code}}</td>
+                                        <td st-select-row-multi="falcon">{{falcon.type}}</td>
+                                        <td st-select-row-multi="falcon">
+                                            <span>{{falcon.weight}} جرام</span>
+                                        </td>
+                                        <td st-select-row-multi="falcon">{{falcon.customer.nickname}} {{falcon.customer.name}}</td>
+                                    </tr>
+                                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                        ng-show="!collection1 || collection1.length ==0">
+                                        <td colspan="5">
+                                            <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                            <span ng-if="lang==='EN'">No Data Found.</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                       </div>
+
                     </div>
                 </div>
 

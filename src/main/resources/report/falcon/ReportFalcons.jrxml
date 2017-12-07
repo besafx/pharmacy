@@ -3,7 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="6610c978-bf64-41be-98fd-29b2e43aa866">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<import value="com.besafx.app.util.DateConverter"/>
-	<style name="Table_TH" mode="Opaque" backcolor="#7D3F7D">
+	<style name="Table_TH" mode="Transparent" backcolor="#7D3F7D">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -50,6 +50,15 @@
 		<sortField name="SORT_BY_FALCON_CODE" type="Variable"/>
 		<variable name="SORT_BY_FALCON_CODE" class="java.lang.Long">
 			<variableExpression><![CDATA[$F{falcon}.getCode()]]></variableExpression>
+		</variable>
+		<variable name="SUM_NET_COST" class="java.lang.Double" resetType="Group" resetGroup="GROUP_BY_FALCON_CODE" calculation="Sum">
+			<variableExpression><![CDATA[$F{detectionTypeCostSum}]]></variableExpression>
+		</variable>
+		<variable name="SUM_PAID" class="java.lang.Double" resetType="Group" resetGroup="GROUP_BY_FALCON_CODE" calculation="Sum">
+			<variableExpression><![CDATA[$F{paid}]]></variableExpression>
+		</variable>
+		<variable name="SUM_REMAIN" class="java.lang.Double" resetType="Group" resetGroup="GROUP_BY_FALCON_CODE" calculation="Sum">
+			<variableExpression><![CDATA[$F{remain}]]></variableExpression>
 		</variable>
 		<group name="GROUP_BY_FALCON_CODE">
 			<groupExpression><![CDATA[$F{falcon}.getCode()]]></groupExpression>
@@ -117,9 +126,9 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="180">
+		<band height="130">
 			<componentElement>
-				<reportElement x="0" y="0" width="555" height="180" uuid="8e9a44d6-aff8-41b9-b759-c630ef3d0726">
+				<reportElement x="0" y="0" width="555" height="130" uuid="8e9a44d6-aff8-41b9-b759-c630ef3d0726">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -135,90 +144,148 @@
 					<jr:columnGroup width="555" uuid="c632ae81-ec8a-4b84-9b7b-167bcf59eb44">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [8]"/>
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							<frame>
-								<reportElement mode="Opaque" x="0" y="0" width="555" height="90" forecolor="#FFFFFF" backcolor="#33AB5B" uuid="6312c247-431a-4803-9a04-b4f761b75565">
-									<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
-								</reportElement>
+						<jr:groupHeader groupName="GROUP_BY_FALCON_CODE">
+							<jr:cell style="Table_CH" height="50" rowSpan="1">
 								<frame>
-									<reportElement x="34" y="25" width="487" height="40" uuid="84720c8b-13ae-4979-b5c2-d03fd0a95ab6"/>
-									<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-										<reportElement style="Table_TD" mode="Transparent" x="0" y="20" width="115" height="20" forecolor="#FFFFFF" uuid="7363fe73-6528-41b8-b528-4120a2d23156"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<textFieldExpression><![CDATA[$F{falcon}.getWeight()]]></textFieldExpression>
-									</textField>
-									<staticText>
-										<reportElement style="Table_TD" mode="Transparent" x="115" y="20" width="67" height="20" forecolor="#FFFFFF" uuid="fc5fdf9b-d0ed-480b-9b4a-1c791a4a7540"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<text><![CDATA[وزن الصقر]]></text>
-									</staticText>
-									<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-										<reportElement style="Table_TD" mode="Transparent" x="182" y="20" width="101" height="20" forecolor="#FFFFFF" uuid="93987e34-2b1d-4d0e-b2bb-c10426816254"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<textFieldExpression><![CDATA[$F{falcon}.getType()]]></textFieldExpression>
-									</textField>
-									<staticText>
-										<reportElement style="Table_TD" mode="Transparent" x="283" y="20" width="67" height="20" forecolor="#FFFFFF" uuid="20074128-dc80-49c6-9bb5-75ea1bcaf143"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<text><![CDATA[نوع الصقر]]></text>
-									</staticText>
-									<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-										<reportElement style="Table_TD" mode="Transparent" x="350" y="20" width="70" height="20" forecolor="#FFFFFF" uuid="2d91db0a-fc19-44b0-bb8b-38f3d78d39c9"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<textFieldExpression><![CDATA[$F{falcon}.getCode()]]></textFieldExpression>
-									</textField>
-									<staticText>
-										<reportElement style="Table_TD" mode="Transparent" x="420" y="20" width="67" height="20" forecolor="#FFFFFF" uuid="07d6d56d-fabc-41fd-b342-d8a79381785c"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<text><![CDATA[رقم الصقر]]></text>
-									</staticText>
-									<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-										<reportElement style="Table_TD" mode="Transparent" x="0" y="0" width="420" height="20" forecolor="#FFFFFF" uuid="73fd2c75-6e21-48bb-86b1-9ed71b973c49"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<textFieldExpression><![CDATA[$F{falcon}.getCustomer().getName()]]></textFieldExpression>
-									</textField>
-									<staticText>
-										<reportElement style="Table_TD" mode="Transparent" x="420" y="0" width="67" height="20" forecolor="#FFFFFF" uuid="6aabe15b-c28d-4c16-86eb-f0228823235a"/>
-										<textElement textAlignment="Center" verticalAlignment="Middle">
-											<font fontName="Arial"/>
-										</textElement>
-										<text><![CDATA[اسم العميل]]></text>
-									</staticText>
+									<reportElement mode="Opaque" x="0" y="0" width="555" height="50" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="cbdfdd2b-0cf3-4a57-9580-3af237420d03">
+										<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+									</reportElement>
+									<frame>
+										<reportElement mode="Opaque" x="10" y="5" width="530" height="40" backcolor="#33AB5B" uuid="9d3eff40-bfa4-4445-bfe5-571ee8630888"/>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement style="Table_TD" mode="Transparent" x="0" y="20" width="115" height="20" forecolor="#FFFFFF" uuid="2b3882fc-1c2c-488a-86ac-a0a3b550b121"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{falcon}.getWeight()]]></textFieldExpression>
+										</textField>
+										<staticText>
+											<reportElement style="Table_TD" mode="Transparent" x="115" y="20" width="67" height="20" forecolor="#FFFFFF" uuid="4a8182e8-c4f0-4f08-bcb8-09d4378ecc2e"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[وزن الصقر]]></text>
+										</staticText>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement style="Table_TD" mode="Transparent" x="182" y="20" width="101" height="20" forecolor="#FFFFFF" uuid="91f33735-928f-4f70-a704-9b305f823703"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{falcon}.getType()]]></textFieldExpression>
+										</textField>
+										<staticText>
+											<reportElement style="Table_TD" mode="Transparent" x="283" y="20" width="67" height="20" forecolor="#FFFFFF" uuid="e094a792-e626-4d6d-b97d-0bc57e640aad"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[نوع الصقر]]></text>
+										</staticText>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement style="Table_TD" mode="Transparent" x="350" y="20" width="113" height="20" forecolor="#FFFFFF" uuid="950a0477-dd0a-46f6-b46c-92f1a6b8447b"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{falcon}.getCode()]]></textFieldExpression>
+										</textField>
+										<staticText>
+											<reportElement style="Table_TD" mode="Transparent" x="463" y="20" width="67" height="20" forecolor="#FFFFFF" uuid="d134f4ec-8cfc-491e-82cb-e40309e6aa58"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[رقم الصقر]]></text>
+										</staticText>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement style="Table_TD" mode="Transparent" x="0" y="0" width="463" height="20" forecolor="#FFFFFF" uuid="1940af88-694c-448f-a994-add0008af910"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{falcon}.getCustomer().getName()]]></textFieldExpression>
+										</textField>
+										<staticText>
+											<reportElement style="Table_TD" mode="Transparent" x="463" y="0" width="67" height="20" forecolor="#FFFFFF" uuid="12365847-832a-4fa7-8d9b-b32f501fd896"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[اسم العميل]]></text>
+										</staticText>
+									</frame>
 								</frame>
-							</frame>
+							</jr:cell>
+						</jr:groupHeader>
+						<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
+							<jr:cell style="Table_CH" height="40" rowSpan="1">
+								<frame>
+									<reportElement mode="Opaque" x="0" y="0" width="555" height="40" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="647b05ae-c2f3-4bab-b79e-83000ad40561">
+										<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+									</reportElement>
+									<frame>
+										<reportElement mode="Opaque" x="20" y="10" width="515" height="20" backcolor="#33AB5B" uuid="f75b280b-f347-4be1-8b22-c93ad7d384eb">
+											<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+										</reportElement>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement style="Table_TD" mode="Transparent" x="0" y="0" width="90" height="20" forecolor="#FFFFFF" uuid="e4b61f26-2125-4fe9-acca-6cd16220c057"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$V{SUM_REMAIN}]]></textFieldExpression>
+										</textField>
+										<staticText>
+											<reportElement style="Table_TD" mode="Transparent" x="90" y="0" width="85" height="20" forecolor="#FFFFFF" uuid="212d9a38-e835-4bda-b725-5b1bc5372bb8"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[إجمالي الدين]]></text>
+										</staticText>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement style="Table_TD" mode="Transparent" x="175" y="0" width="85" height="20" forecolor="#FFFFFF" uuid="d7c7a989-ee83-465d-ac6d-b0535706b679"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$V{SUM_PAID}]]></textFieldExpression>
+										</textField>
+										<staticText>
+											<reportElement style="Table_TD" mode="Transparent" x="260" y="0" width="85" height="20" forecolor="#FFFFFF" uuid="42e3e521-0c57-4b7c-bda4-2907e0e900d5"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[إجمالي المدفوع]]></text>
+										</staticText>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement style="Table_TD" mode="Transparent" x="345" y="0" width="85" height="20" forecolor="#FFFFFF" uuid="fce8d017-9074-4db5-922b-e413d091cc5f"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$V{SUM_NET_COST}]]></textFieldExpression>
+										</textField>
+										<staticText>
+											<reportElement style="Table_TD" mode="Transparent" x="430" y="0" width="85" height="20" forecolor="#FFFFFF" uuid="c60d3886-600d-4a17-9c92-05200f7fda1d"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[إجمالي الصافي]]></text>
+										</staticText>
+									</frame>
+								</frame>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="Table_CH" height="0" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						</jr:columnHeader>
 						<jr:column width="207" uuid="9fc33ab1-0d1d-4ba3-ab8b-9cdaed8b24e1">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="207" height="30" uuid="85a31863-a78f-45dc-9989-7d4286ee7b98"/>
+									<reportElement style="Table_CH" x="0" y="0" width="207" height="20" uuid="85a31863-a78f-45dc-9989-7d4286ee7b98"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[التشخيص]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-									<reportElement x="0" y="0" width="207" height="30" uuid="a5e37f8f-b7c8-4bbf-87ad-66d40ecdea73"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="207" height="20" uuid="a5e37f8f-b7c8-4bbf-87ad-66d40ecdea73"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
@@ -228,21 +295,19 @@
 						</jr:column>
 						<jr:column width="51" uuid="5fa55091-8937-49d5-84ba-a144eccba72e">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="51" height="30" uuid="86603fb6-6f4e-4ff9-b9b6-dec0215fa27f"/>
+									<reportElement style="Table_CH" x="0" y="0" width="51" height="20" uuid="86603fb6-6f4e-4ff9-b9b6-dec0215fa27f"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[الباقي]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="51" height="30" uuid="b9fbdb43-9d43-478c-9f28-05c43b1ba5ae"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="51" height="20" uuid="b9fbdb43-9d43-478c-9f28-05c43b1ba5ae"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
@@ -252,21 +317,19 @@
 						</jr:column>
 						<jr:column width="54" uuid="5c8343e3-33ad-4804-8c2e-9ef3ef95b40d">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="54" height="30" uuid="1e9ae91b-bfb2-4b65-937f-f22dc8e2d1a3"/>
+									<reportElement style="Table_CH" x="0" y="0" width="54" height="20" uuid="1e9ae91b-bfb2-4b65-937f-f22dc8e2d1a3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[الصافي]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="54" height="30" uuid="2dbbef24-925a-4b12-9280-e1443d71c2f5"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="54" height="20" uuid="2dbbef24-925a-4b12-9280-e1443d71c2f5"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
@@ -276,21 +339,19 @@
 						</jr:column>
 						<jr:column width="51" uuid="e08a4d20-da96-4de3-8160-a32741c711f4">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="51" height="30" uuid="f8a212a4-55f3-40c3-87bc-3dea3f7338be"/>
+									<reportElement style="Table_CH" x="0" y="0" width="51" height="20" uuid="f8a212a4-55f3-40c3-87bc-3dea3f7338be"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[الخصم]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="51" height="30" uuid="da3c92f5-3333-4e8c-bef9-d5c0aad09236"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="51" height="20" uuid="da3c92f5-3333-4e8c-bef9-d5c0aad09236"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
@@ -300,21 +361,19 @@
 						</jr:column>
 						<jr:column width="37" uuid="79169b90-101e-4efc-9518-c97230eac75f">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="37" height="30" uuid="e30f8c6e-a5b3-4713-a322-d37d0b3b06ac"/>
+									<reportElement style="Table_CH" x="0" y="0" width="37" height="20" uuid="e30f8c6e-a5b3-4713-a322-d37d0b3b06ac"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[التكلفة]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="37" height="30" uuid="6302ad4b-3ca6-488e-a54d-7f529e07b640"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="37" height="20" uuid="6302ad4b-3ca6-488e-a54d-7f529e07b640"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
@@ -324,21 +383,19 @@
 						</jr:column>
 						<jr:column width="60" uuid="0c393cd2-e2d6-45a0-bcf9-1f4fc65f26d3">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="60" height="30" uuid="0a59b232-3100-4375-ba0c-3a5b66248a59"/>
+									<reportElement style="Table_CH" x="0" y="0" width="60" height="20" uuid="0a59b232-3100-4375-ba0c-3a5b66248a59"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[تاريخ الطلب]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="60" height="30" uuid="ebf74bb1-8d8e-4ae0-b6e1-f45361133d31"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="60" height="20" uuid="ebf74bb1-8d8e-4ae0-b6e1-f45361133d31"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
@@ -348,21 +405,19 @@
 						</jr:column>
 						<jr:column width="45" uuid="23dec0e2-e31a-4a36-8f8e-1d7a448b09c5">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="45" height="30" uuid="9ef19e43-2244-4af7-aa4c-05a4eb33dfcf"/>
+									<reportElement style="Table_CH" x="0" y="0" width="45" height="20" uuid="9ef19e43-2244-4af7-aa4c-05a4eb33dfcf"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[رقم الطلب]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="45" height="30" uuid="31d5c6d3-4783-431c-9161-12f3a5d2a29a"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="45" height="20" uuid="31d5c6d3-4783-431c-9161-12f3a5d2a29a"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
@@ -372,21 +427,19 @@
 						</jr:column>
 						<jr:column width="50" uuid="9740b86a-771c-43e6-8ce0-d28a1f0acecd">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
-							<jr:groupFooter groupName="GROUP_BY_FALCON_CODE">
-								<jr:cell style="Table_CH" height="30" rowSpan="1"/>
-							</jr:groupFooter>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 								<staticText>
-									<reportElement style="Table_CH" x="0" y="0" width="50" height="30" uuid="9ea8d7e2-662f-4963-84cf-c845461ea9be"/>
+									<reportElement style="Table_CH" x="0" y="0" width="50" height="20" uuid="9ea8d7e2-662f-4963-84cf-c845461ea9be"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>
 									<text><![CDATA[#]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="20">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="50" height="30" uuid="39b86a82-bde1-4ae8-a8e3-b2956b818abc"/>
+									<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="50" height="20" uuid="39b86a82-bde1-4ae8-a8e3-b2956b818abc"/>
+									<box padding="3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial"/>
 									</textElement>

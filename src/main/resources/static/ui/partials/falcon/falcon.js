@@ -1,48 +1,55 @@
 app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$state', '$timeout',
     function (FalconService, OrderService, ModalProvider, $scope, $rootScope, $state, $timeout) {
 
-        $scope.selected = {};
-        $scope.selectedOrder = {};
+        $scope.falcons = [];
+        $scope.param = {};
 
-        $scope.fetchTableData = function () {
-            FalconService.findAll().then(function (data) {
+        $scope.search = function () {
+
+            var search = [];
+
+            //
+            if ($scope.param.customerName) {
+                search.push('customerName=');
+                search.push($scope.param.customerName);
+                search.push('&');
+            }
+            if ($scope.param.customerMobile) {
+                search.push('customerMobile=');
+                search.push($scope.param.customerMobile);
+                search.push('&');
+            }
+            if ($scope.param.customerIdentityNumber) {
+                search.push('customerIdentityNumber=');
+                search.push($scope.param.customerIdentityNumber);
+                search.push('&');
+            }
+            //
+            if ($scope.param.falconCode) {
+                search.push('falconCode=');
+                search.push($scope.param.falconCode);
+                search.push('&');
+            }
+            if ($scope.param.falconType) {
+                search.push('falconType=');
+                search.push($scope.param.falconType);
+                search.push('&');
+            }
+            if ($scope.param.weightTo) {
+                search.push('weightTo=');
+                search.push($scope.param.weightTo);
+                search.push('&');
+            }
+            if ($scope.param.weightFrom) {
+                search.push('weightFrom=');
+                search.push($scope.param.weightFrom);
+                search.push('&');
+            }
+            //
+            FalconService.filter(search.join("")).then(function (data) {
                 $scope.falcons = data;
-                $scope.setSelected(data[0]);
             });
-        };
 
-        $scope.refreshOrdersByFalcon = function () {
-            OrderService.findByFalcon($scope.selected.id).then(function (data) {
-                $scope.selected.orders = data;
-                $scope.setSelectedOrder(data[0]);
-            });
-        };
-
-        $scope.setSelected = function (object) {
-            if (object) {
-                angular.forEach($scope.falcons, function (falcon) {
-                    if (object.id == falcon.id) {
-                        $scope.selected = falcon;
-                        $scope.refreshOrdersByFalcon();
-                        return falcon.isSelected = true;
-                    } else {
-                        return falcon.isSelected = false;
-                    }
-                });
-            }
-        };
-
-        $scope.setSelectedOrder = function (object) {
-            if (object) {
-                angular.forEach($scope.selected.orders, function (order) {
-                    if (object.id == order.id) {
-                        $scope.selectedOrder = order;
-                        return order.isSelected = true;
-                    } else {
-                        return order.isSelected = false;
-                    }
-                });
-            }
         };
 
         $scope.delete = function (falcon) {
@@ -51,7 +58,6 @@ app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', 
                     FalconService.remove(falcon.id).then(function () {
                         var index = $scope.falcons.indexOf(falcon);
                         $scope.falcons.splice(index, 1);
-                        $scope.setSelected($scope.falcons[0]);
                     });
                 });
                 return;
@@ -61,7 +67,6 @@ app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', 
                 FalconService.remove($scope.selected.id).then(function () {
                     var index = $scope.falcons.indexOf($scope.selected);
                     $scope.falcons.splice(index, 1);
-                    $scope.setSelected($scope.falcons[0]);
                 });
             });
         };
@@ -76,14 +81,24 @@ app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', 
 
         $scope.enable = function () {
             FalconService.enable($scope.selected).then(function (data) {
-                $scope.fetchTableData();
+
             });
         };
 
         $scope.disable = function () {
             FalconService.disable($scope.selected).then(function (data) {
-                $scope.fetchTableData();
+
             });
+        };
+
+        $scope.print = function () {
+            var ids = [];
+            angular.forEach($scope.falcons, function (falcon) {
+                if(falcon.isSelected===true){
+                    ids.push(falcon.id);
+                }
+            });
+            window.open('/report/falcons?ids=' + ids + '&exportType=PDF');
         };
 
         $scope.rowMenu = [
@@ -122,117 +137,10 @@ app.controller("falconCtrl", ['FalconService', 'OrderService', 'ModalProvider', 
                 click: function ($itemScope, $event, value) {
                     ModalProvider.openFalconDetailsModel($itemScope.falcon);
                 }
-            },
-            {
-                html: '<div class="drop-menu">طباعة تقرير مختصر<span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true;
-                },
-                click: function ($itemScope, $event, value) {
-                    var ids = [];
-                    ids.push($itemScope.falcon.id);
-                    window.open('/report/falcons?ids=' + ids + '&exportType=PDF');
-                }
-            }
-        ];
-
-        $scope.printPending = function (order) {
-            window.open('/report/order/pending/' + order.id + '/PDF');
-        };
-
-        $scope.printDiagnosed = function (order) {
-            window.open('/report/order/diagnosed/' + order.id + '/PDF');
-        };
-
-        $scope.newOrder = function () {
-            ModalProvider.openOrderCreateModel().result.then(function (data) {
-                $rootScope.showConfirmNotify("طلبات الفحص", "هل تود طباعة الطلب ؟", "notification", "fa-info", function () {
-                    $scope.printPending(data);
-                });
-                $scope.selected.orders.splice(0, 0, data);
-            }, function () {
-                console.info('OrderCreateModel Closed.');
-            });
-        };
-
-        $scope.deleteOrder = function (order) {
-            $rootScope.showConfirmNotify("طلبات الفحص", "هل تود حذف الطلب فعلاً؟", "error", "fa-trash", function () {
-                OrderService.remove(order.id).then(function () {
-                    var index = $scope.selected.orders.indexOf(order);
-                    $scope.selected.orders.splice(index, 1);
-                    $scope.setSelected($scope.selected.orders[0]);
-                });
-            });
-        };
-
-        $scope.payOrder = function (order) {
-            $rootScope.showConfirmNotify("طلبات الفحص", "هل تود تسديد مستحقات طلب الفحص فعلاً؟", "warning", "fa-money", function () {
-                OrderService.pay(order.id).then(function (data) {
-                    var index = $scope.selected.orders.indexOf(order);
-                    $scope.selected.orders[index].paymentMethod = data.paymentMethod;
-                });
-            });
-        };
-
-        $scope.rowMenuOrder = [
-            {
-                html: '<div class="drop-menu">انشاء طلب جديد<span class="fa fa-pencil fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_CREATE']);
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.newOrder();
-                }
-            },
-            {
-                html: '<div class="drop-menu">حذف الطلب<span class="fa fa-trash fa-lg"></span></div>',
-                enabled: function () {
-                    return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_DELETE']);
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.deleteOrder($itemScope.order);
-                }
-            },
-            {
-                html: '<div class="drop-menu">تسديد مستحقات طلب الفحص<span class="fa fa-money fa-lg"></span></div>',
-                enabled: function ($itemScope) {
-                    return $itemScope.order.paymentMethod==='Later';
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.payOrder($itemScope.order);
-                }
-            },
-            {
-                html: '<div class="drop-menu">طباعة طلب الفحص<span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true;
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.printPending($itemScope.order);
-                }
-            },
-            {
-                html: '<div class="drop-menu">طباعة التشخيص<span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true;
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.printDiagnosed($itemScope.order);
-                }
-            },
-            {
-                html: '<div class="drop-menu">طباعة تقرير مختصر<span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true;
-                },
-                click: function ($itemScope, $event, value) {
-                    ModalProvider.openReportOrderByListModel($scope.selected.orders);
-                }
             }
         ];
 
         $timeout(function () {
-            $scope.fetchTableData();
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
 

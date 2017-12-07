@@ -194,6 +194,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             url: "/falcon",
             css: [
                 '/ui/css/mdl-style-green-orange.css',
+                '/ui/css/mdl-ext.css',
                 '/ui/css/theme-black.css'
             ],
             templateUrl: "/ui/partials/falcon/falcon.html",
