@@ -94,6 +94,17 @@ public class Order implements Serializable {
         }
     }
 
+    public String getNote() {
+        try {
+           if(this.note == null){
+               return "لا يوجد تشخيص حتي الآن";
+           }
+           return this.note;
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
     public Double getNetCost() {
         try {
             Double total = getDetectionTypeCostSum();
@@ -140,6 +151,8 @@ public class Order implements Serializable {
             return new Long(0);
         }
     }
+
+
 
     @JsonCreator
     public static Order Create(String jsonString) throws IOException {
