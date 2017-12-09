@@ -1,5 +1,5 @@
-app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetectionTypeService', 'OrderAttachService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
-    function (OrderService, DiagnosisService, OrderDetectionTypeService, OrderAttachService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
+app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetectionTypeService', 'OrderAttachService', 'OrderReceiptService', 'ModalProvider', '$uibModal', '$scope', '$rootScope', '$state', '$timeout',
+    function (OrderService, DiagnosisService, OrderDetectionTypeService, OrderAttachService, OrderReceiptService, ModalProvider, $uibModal, $scope, $rootScope, $state, $timeout) {
 
         $scope.buffer = {};
         $scope.wrappers = [];
@@ -13,7 +13,11 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
 
         $scope.refreshOrder = function (order) {
             OrderService.findOne(order.id).then(function (data) {
-                return order = data;
+                angular.forEach($scope.orders, function (order) {
+                    if(order.id === data.id){
+                        return order = data;
+                    }
+                });
             });
         };
 
@@ -276,6 +280,15 @@ app.controller("orderCtrl", ['OrderService', 'DiagnosisService', 'OrderDetection
                 OrderDetectionTypeService.remove(orderDetectionType.id).then(function () {
                     var index = order.orderDetectionTypes.indexOf(orderDetectionType);
                     return order.orderDetectionTypes.splice(index, 1);
+                });
+            });
+        };
+
+        $scope.deleteOrderReceipt = function (orderReceipt, order) {
+            $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف سند القبض فعلاً؟", "error", "fa-trash", function () {
+                OrderReceiptService.remove(orderReceipt.id).then(function () {
+                    var index = order.orderReceipts.indexOf(orderReceipt);
+                    return order.orderReceipts.splice(index, 1);
                 });
             });
         };

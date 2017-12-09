@@ -87,16 +87,13 @@ public class OrderReceiptRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_DELETE')")
     public void delete(@PathVariable Long id, Principal principal) {
-        OrderReceipt orderOrderReceipt = orderReceiptService.findOne(id);
-        if (orderOrderReceipt != null) {
-            receiptService.delete(orderOrderReceipt.getReceipt());
-            orderReceiptService.delete(orderOrderReceipt);
+        OrderReceipt orderReceipt = orderReceiptService.findOne(id);
+        if (orderReceipt != null) {
+            orderReceiptService.delete(orderReceipt);
+            receiptService.delete(orderReceipt.getReceipt());
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-            notificationService.notifyOne(Notification
-                    .builder()
-                    .message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات بنجاح" : "Delete Receipt With All Related Successfully")
-                    .build(), principal.getName());
+            notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات بنجاح" : "Delete Receipt With All Related Successfully").build(), principal.getName());
         }
     }
 

@@ -978,6 +978,11 @@
                                                                         <span ng-if="lang==='EN'">Note</span>
                                                                     </th>
 
+                                                                    <th>
+                                                                        <span ng-if="lang==='AR'">العمليات</span>
+                                                                        <span ng-if="lang==='EN'">Actions</span>
+                                                                    </th>
+
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -992,10 +997,18 @@
                                                                     <td>{{orderReceipt.receipt.amountNumber}} SAR</td>
                                                                     <td>{{orderReceipt.receipt.paymentMethodInArabic}}</td>
                                                                     <td>{{orderReceipt.receipt.note}}</td>
+                                                                    <td>
+                                                                        <a href=""
+                                                                           ng-if="contains(me.team.authorities, ['ROLE_ORDER_DELETE'])"
+                                                                           ng-click="deleteOrderReceipt(orderReceipt, order)">
+                                                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                                                     ng-show="!collectionOrderReceipts || collectionOrderReceipts.length ==0">
-                                                                    <td colspan="6">
+                                                                    <td colspan="7">
                                                                         <strong>
                                                                             <a href=""
                                                                                ng-if="contains(me.team.authorities, ['ROLE_ORDER_RECEIPT_CREATE'])"
