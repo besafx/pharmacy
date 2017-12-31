@@ -63,12 +63,13 @@
                     <div class="panel-body">
 
                         <div class="row">
-                            <div class="form-group col-ms-12 col-sm-12 col-md-6 col-lg-6" ng-repeat="role in roles">
+                            <div class="form-group col-ms-12 col-sm-12 col-md-6 col-lg-6" ng-repeat="role in roles | orderBy:'value'">
                                 <label class="help-block">
                                     <input style="height: 10px !important;"
                                            type="checkbox"
                                            ng-model="role.selected"/>
-                                    <span>{{role.name}}</span>
+                                    <span ng-if="lang==='AR'">{{role.nameArabic}}</span>
+                                    <span ng-if="lang==='EN'">{{role.nameEnglish}}</span>
                                 </label>
                             </div>
                         </div>

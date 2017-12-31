@@ -2337,7 +2337,7 @@ ul.panel-controls > li > .dropdown-menu:before {
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-    background-color: #F5F5F5;
+    background-color: gray;
     border-color: #DDD;
 }
 

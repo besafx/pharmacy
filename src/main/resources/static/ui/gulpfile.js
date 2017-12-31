@@ -138,6 +138,7 @@ gulp.task('scripts', function () {
         './init/factory/personFactory.js',
         './init/factory/receiptFactory.js',
         './init/factory/teamFactory.js',
+        './init/factory/teamRuleFactory.js',
         './init/factory/billBuyFactory.js',
         './init/factory/transactionBuyFactory.js',
         './init/factory/billSellDetectionFactory.js',
@@ -146,9 +147,7 @@ gulp.task('scripts', function () {
         './init/factory/billSellReceiptFactory.js',
         './init/factory/transactionSellFactory.js',
         './init/factory/bankFactory.js',
-        './init/factory/fundFactory.js',
-        './init/factory/depositFactory.js',
-        './init/factory/withdrawFactory.js',
+        './init/factory/bankReceiptFactory.js',
 
         './init/service/service.js',
         './init/directive/directive.js',
@@ -171,10 +170,8 @@ gulp.task('scripts', function () {
         './partials/supplier/supplierCreateUpdate.js',
 
         './partials/bank/bank.js',
-        './partials/bank/bankCreateUpdate.js',
-        './partials/bank/depositCreate.js',
-        './partials/bank/depositFundCreate.js',
-        './partials/bank/withdrawCreate.js',
+        './partials/bank/bankReceiptFilter.js',
+        './partials/bank/bankReceiptCreate.js',
 
         './partials/doctor/doctor.js',
         './partials/doctor/doctorCreateUpdate.js',

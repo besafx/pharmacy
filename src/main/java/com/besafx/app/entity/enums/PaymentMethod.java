@@ -2,7 +2,7 @@ package com.besafx.app.entity.enums;
 public enum PaymentMethod {
     Cash("نقدي"),
     Check("شيك"),
-    Later("آجل");
+    Visa("مدى");
     private String name;
     PaymentMethod(String name){
         this.name = name;

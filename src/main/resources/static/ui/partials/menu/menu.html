@@ -2,12 +2,14 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
     <header class="mdl-layout__header">
-        <div class="mdl-layout-icon">
-            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
-                <i class="material-icons">{{MDLIcon}}</i>
-            </a>
-        </div>
+
         <div class="mdl-layout__header-row">
+
+            <div class="mdl-layout-icon">
+                <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                    <i class="material-icons">{{MDLIcon}}</i>
+                </a>
+            </div>
 
             <span class="mdl-layout__title">{{pageTitle}}</span>
 
@@ -112,18 +114,6 @@
             <div class="container">
 
                 <div class="form-group row">
-
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center" ui-sref="home">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Groups.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الرئيسية</span>
-                                <span ng-if="lang==='EN'">DASHBOARD</span>
-                            </a>
-                        </div>
-                    </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center" ui-sref="company" ng-if="contains(me.team.authorities, ['ROLE_COMPANY_UPDATE'])">
                         <div class="card-image mdl-card" style="background-image: url('/ui/img/Companies.png')">
@@ -292,19 +282,6 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="receipt.in">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Receipts.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">السندات</span>
-                                <span ng-if="lang==='EN'">Receipts</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
                          ui-sref="bank"
                          ng-if="contains(me.team.authorities, ['ROLE_BANK_CREATE', 'ROLE_BANK_UPDATE', 'ROLE_BANK_DELETE'])">
                         <div class="card-image mdl-card" style="background-image: url('/ui/img/Banks.png')">
@@ -312,12 +289,11 @@
                         </div>
                         <div class="mdl-card__actions">
                             <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الحسابات البنكية</span>
-                                <span ng-if="lang==='EN'">BANKS</span>
+                                <span ng-if="lang==='AR'">البنك</span>
+                                <span ng-if="lang==='EN'">BANK</span>
                             </a>
                         </div>
                     </div>
-
 
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
                          ui-sref="team"

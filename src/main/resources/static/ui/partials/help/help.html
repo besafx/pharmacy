@@ -2,12 +2,19 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
     <header class="mdl-layout__header">
-        <div class="mdl-layout-icon">
-            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
-                <i class="material-icons">{{MDLIcon}}</i>
-            </a>
-        </div>
+
         <div class="mdl-layout__header-row">
+
+            <div class="mdl-layout-icon">
+                <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                    <i class="material-icons">{{MDLIcon}}</i>
+                </a>
+            </div>
+
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+
+            <div class="mdl-layout-spacer"></div>
+
             <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon" style="margin-right: 15px">
                 <i class="material-icons">more_vert</i>
             </button>
@@ -40,8 +47,7 @@
                     </span>
                 </li>
             </ul>
-            <div class="mdl-layout-spacer"></div>
-            <span class="mdl-layout__title">{{pageTitle}}</span>
+
         </div>
     </header>
 

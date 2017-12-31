@@ -1,8 +1,10 @@
 package com.besafx.app.init;
 
+import com.besafx.app.entity.Bank;
 import com.besafx.app.entity.Company;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Team;
+import com.besafx.app.service.BankService;
 import com.besafx.app.service.CompanyService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TeamService;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class Initializer implements CommandLineRunner {
@@ -28,6 +32,9 @@ public class Initializer implements CommandLineRunner {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private BankService bankService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -107,5 +114,14 @@ public class Initializer implements CommandLineRunner {
         company.setEmail("info@ararhni.com");
         company.setWebsite("www.ararhni.com");
         companyService.save(company);
+        //
+        log.info("انشاء الحساب البنكي للشركة");
+        Bank bank = new Bank();
+        bank.setCode(Long.valueOf(1));
+        bank.setName("الحساب البنكي");
+        bank.setBranchName("فرع الحساب البنكي");
+        bank.setStartAmount(0.0);
+        bank.setStartAmountDate(new Date());
+        bankService.save(bank);
     }
 }

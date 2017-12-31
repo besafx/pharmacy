@@ -1,5 +1,6 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.enums.ReceiptType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -43,15 +44,44 @@ public class Bank implements Serializable {
     private Date startAmountDate;
 
     @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY)
-    private List<Deposit> deposits = new ArrayList<>();
-
-    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY)
-    private List<Withdraw> withdraws = new ArrayList<>();
+    private List<BankReceipt> bankReceipts = new ArrayList<>();
 
     @JsonCreator
     public static Bank Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Bank bank = mapper.readValue(jsonString, Bank.class);
         return bank;
+    }
+
+    public Double getCashIn() {
+        try {
+            return this.bankReceipts
+                    .stream()
+                    .filter(bankReceipts -> bankReceipts.getReceipt().getReceiptType().equals(ReceiptType.In))
+                    .mapToDouble(bankReceipt -> bankReceipt.getReceipt().getAmountNumber())
+                    .sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getCashOut() {
+        try {
+            return this.bankReceipts
+                    .stream()
+                    .filter(bankReceipts -> bankReceipts.getReceipt().getReceiptType().equals(ReceiptType.Out))
+                    .mapToDouble(bankReceipt -> bankReceipt.getReceipt().getAmountNumber())
+                    .sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getBalance() {
+        try {
+            return this.getCashIn() - this.getCashOut();
+        } catch (Exception ex) {
+            return 0.0;
+        }
     }
 }

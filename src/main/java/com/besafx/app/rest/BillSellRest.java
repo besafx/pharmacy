@@ -158,9 +158,6 @@ public class BillSellRest {
     @Transactional
     public String pay(@PathVariable Long id) {
         BillSell billSell = billSellService.findOne(id);
-        if(!billSell.getPaymentMethod().equals(PaymentMethod.Later)){
-            throw new CustomException("عفوا، تأكد من أن نوع الدفع آجل!");
-        }
         billSell.setPaymentMethod(PaymentMethod.Cash);
         billSell = billSellService.save(billSell);
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSell);

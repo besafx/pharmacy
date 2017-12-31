@@ -196,7 +196,7 @@ input[type=checkbox] {
 }
 
 .mdl-layout__header-row {
-    padding: 0px 20px 0px 50px !important;
+    padding: 0px 10px 0px 10px !important;
     height: 50px !important;
 }
 
@@ -480,8 +480,8 @@ WebKit inertia scrolling is being added here for any present/future devices that
 }
 
 .mdl-layout__header{
-    margin-left: 0px !important;
-    width: 100% !important;
+    /*margin-left: 0px !important;*/
+    /*width: 100% !important;*/
 }
 
 .mdl-navigation{
@@ -553,53 +553,6 @@ WebKit inertia scrolling is being added here for any present/future devices that
     white-space: nowrap!important;
 }
 
-/** CheckBox **/
-.mdl-checkbox.is-upgraded{
-    padding-right: 24px!important;
-    padding-left: auto!important;
-}
-.mdl-checkbox__box-outline{
-    right: 0!important;
-    left: auto!important;
-}
-.mdl-checkbox__ripple-container{
-    right: -10px!important;
-    left: auto!important;
-}
-/** CheckBox **/
-
-/****************************************************************************************************/
-/*                                                                                                  */
-/*                                                                                                  */
-/*                                      PERSONAL STYLE                                              */
-/*                                                                                                  */
-/*                                                                                                  */
-/****************************************************************************************************/
-/*.card-square.mdl-card {*/
-    /*width: auto!important;*/
-    /*padding: 10px 0px 10px 0px!important;*/
-/*}*/
-
-/*.card-square > .mdl-card__title {*/
-    /*color: #fff!important;*/
-/*}*/
-
-/*.card-square > .title-card {*/
-    /*background-color: #313534!important;*/
-/*}*/
-
-/*.card-square {*/
-    /*margin: 10px!important;*/
-    /*min-height: inherit!important;*/
-    /*background-color: #313534!important;*/
-/*}*/
-
-/*.card-square, .card-square:hover, .card-square:focus {*/
-    /*color: white !important;*/
-    /*font-weight: 500!important;*/
-    /*text-decoration: none !important;*/
-/*}*/
-
 /*******************************/
 
 .mdl-tabs__panel{
@@ -612,15 +565,15 @@ WebKit inertia scrolling is being added here for any present/future devices that
 *                                 *
 **********************************/
 .ui-select-bootstrap>.ui-select-match>.btn{
-    text-align: right!important;
+    text-align: left!important;
     padding: 10px!important;
 }
 .ui-select-bootstrap .ui-select-toggle>.caret{
-    left: 10px!important;
-    right:auto!important;
+    right: 10px!important;
+    left:auto!important;
 }
 .dropdown-menu{
-    text-align: right!important;
+    text-align: left!important;
 }
 /*********************************/
 
@@ -656,9 +609,40 @@ WebKit inertia scrolling is being added here for any present/future devices that
     cursor: pointer!important;
 }
 
-.label-danger{
-    color: white!important;
+.box-danger{
+    background-color: #f2dede!important;
+    color: #656d78!important;
     padding: 5px!important;
-    border-right: 5px!important;
-    margin: 5px!important;
+    font-size: 16px!important;
+}
+
+.box-info{
+    background-color: #c4e3f3!important;
+    color: #656d78!important;
+    padding: 5px!important;
+    font-size: 16px!important;
+}
+
+.box-warning{
+    background-color: #fcf8e3!important;
+    color: #656d78!important;
+    padding: 5px!important;
+    font-size: 16px!important;
+}
+
+.mdl-layout__drawer{
+    border-right: 0px!important;
+}
+
+.mdl-layout__drawer .mdl-navigation{
+    padding-top: 0!important;
+}
+
+.panel-nav{
+    border-top-width: 0!important;
+}
+
+.mdl-checkbox__label span{
+    font-weight: 600!important;
+    font-size: 13px!important;
 }

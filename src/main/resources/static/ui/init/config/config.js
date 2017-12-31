@@ -64,25 +64,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
-         * Home State                                                 *
-         *                                                            *
-         *************************************************************/
-        $stateProvider.state("home", {
-            url: "/home",
-            css: [
-                '/ui/css/mdl-style.css',
-                '/ui/css/theme-black.css'
-            ],
-            views: {
-                '': {
-                    templateUrl: "/ui/partials/home/home.html",
-                    controller: "homeCtrl"
-                }
-            }
-        });
-
-        /**************************************************************
-         *                                                            *
          * Menu State                                                 *
          *                                                            *
          *************************************************************/
@@ -179,6 +160,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
             url: "/bank",
             css: [
                 '/ui/css/mdl-style-grey-deep_orange.css',
+                '/ui/css/mdl-ext.css',
                 '/ui/css/theme-black.css'
             ],
             templateUrl: "/ui/partials/bank/bank.html",

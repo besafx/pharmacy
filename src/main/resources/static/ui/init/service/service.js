@@ -383,106 +383,39 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
      * Bank Model                                                 *
      *                                                            *
      *************************************************************/
-    this.openBankCreateModel = function () {
+    this.openBankReceiptInCreateModel = function () {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/bank/bankCreateUpdate.html',
-            controller: 'bankCreateUpdateCtrl',
+            templateUrl: '/ui/partials/bank/bankReceiptCreate.html',
+            controller: 'bankReceiptCreateCtrl',
             backdrop: 'static',
             keyboard: false,
             resolve: {
-                title: function () {
-                    return $rootScope.lang === 'AR' ? 'انشاء حساب بنك جديد' : 'New Bank';
-                },
-                action: function () {
-                    return 'create';
-                },
-                bank: function () {
-                    return {};
+                receiptType: function () {
+                    return 'In';
                 }
             }
         });
     };
 
-    this.openBankUpdateModel = function (bank) {
+    this.openBankReceiptOutCreateModel = function () {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/bank/bankCreateUpdate.html',
-            controller: 'bankCreateUpdateCtrl',
+            templateUrl: '/ui/partials/bank/bankReceiptCreate.html',
+            controller: 'bankReceiptCreateCtrl',
             backdrop: 'static',
             keyboard: false,
             resolve: {
-                title: function () {
-                    return $rootScope.lang === 'AR' ? 'تعديل حساب بنك' : 'Update Bank Information';
-                },
-                action: function () {
-                    return 'update';
-                },
-                bank: function () {
-                    return bank;
+                receiptType: function () {
+                    return 'Out';
                 }
             }
         });
     };
-
-    this.openDepositCreateModel = function (bank) {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/bank/depositCreate.html',
-            controller: 'depositCreateCtrl',
-            backdrop: 'static',
-            keyboard: false,
-            resolve: {
-                bank: function () {
-                    return bank;
-                }
-            }
-        });
-    };
-
-    this.openDepositFundCreateModel = function (date, totalFund) {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/bank/depositFundCreate.html',
-            controller: 'depositFundCreateCtrl',
-            backdrop: 'static',
-            keyboard: false,
-            resolve: {
-                date:function () {
-                    return date;
-                },
-                totalFund: function () {
-                    return totalFund;
-                }
-            }
-        });
-    };
-
-    this.openWithdrawCreateModel = function (bank) {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/bank/withdrawCreate.html',
-            controller: 'withdrawCreateCtrl',
-            backdrop: 'static',
-            keyboard: false,
-            resolve: {
-                bank: function () {
-                    return bank;
-                }
-            }
-        });
-    };
-
 
     /**************************************************************
      *                                                            *

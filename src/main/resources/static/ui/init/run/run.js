@@ -247,7 +247,7 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                         break;
                     case 'bank':
                         if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الحسابات البنكية';
+                            $rootScope.pageTitle = 'البنك';
                         } else {
                             $rootScope.pageTitle = 'Bank';
                         }
