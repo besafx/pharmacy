@@ -1,5 +1,5 @@
-app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$stateParams', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider', 'Fullscreen', '$anchorScroll',
-    function ($http, $location, $state, $timeout, $window, PersonService, $rootScope, $stateParams, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider, Fullscreen, $anchorScroll) {
+app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', 'PersonService', '$rootScope', '$stateParams', '$log', '$css', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider', 'Fullscreen', '$anchorScroll',
+    function (DrugService, $http, $location, $state, $timeout, $window, PersonService, $rootScope, $stateParams, $log, $css, $stomp, defaultErrorMessageResolver, ModalProvider, Fullscreen, $anchorScroll) {
 
         $rootScope.state = $state;
         $rootScope.stateParams = $stateParams;
@@ -42,6 +42,12 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                 case 'supplier': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'store';
+                    $rootScope.applyCssLang();
+                    break;
+                }
+                case 'fund': {
+                    $rootScope.applyTitleLang();
+                    $rootScope.MDLIcon = 'monetization_on';
                     $rootScope.applyCssLang();
                     break;
                 }
@@ -243,6 +249,13 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
                             $rootScope.pageTitle = 'الموردين';
                         } else {
                             $rootScope.pageTitle = 'Supplier';
+                        }
+                        break;
+                    case 'fund':
+                        if ($rootScope.lang === 'AR') {
+                            $rootScope.pageTitle = 'الصندوق';
+                        } else {
+                            $rootScope.pageTitle = 'Cash';
                         }
                         break;
                     case 'bank':
@@ -560,5 +573,17 @@ app.run(['$http', '$location', '$state', '$timeout', '$window', 'PersonService',
          * Printer Connect                                            *
          *                                                            *
          *************************************************************/
+
+        $rootScope.printDrugsList = function () {
+            $rootScope.showConfirmNotify("التقارير", "هل تود طباعة التقرير ؟", "notification", "fa-info", function () {
+                DrugService.findAll().then(function (data) {
+                    var ids = [];
+                    angular.forEach(data, function (drug) {
+                        ids.push(drug.id);
+                    });
+                    window.open('/report/drugs?ids=' + ids + "&exportType=PDF");
+                });
+            });
+        };
 
     }]);

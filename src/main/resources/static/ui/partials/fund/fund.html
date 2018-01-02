@@ -1,0 +1,337 @@
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"
+     ng-init="stickSideMenu=true;showMenuStates=true;showMenuSettings=false"
+     ng-class="{'mdl-layout--fixed-drawer' : stickSideMenu===true}">
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+
+            <div class="mdl-layout-icon">
+                <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                    <i class="material-icons">{{MDLIcon}}</i>
+                </a>
+            </div>
+
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+
+            <!-- Navigation -->
+            <nav class="mdl-navigation" ng-init="toggleState=1">
+                <a class="mdl-navigation__link"
+                   href=""
+                   ng-show="contains(me.team.authorities, ['ROLE_FUND_UPDATE'])"
+                   ng-class="{'mdl-color-text--black mdl-color--blue-grey-50' : toggleState===1}"
+                   ng-click="toggleState=1">
+                    <span ng-if="lang==='AR'">بيانات الصندوق</span>
+                    <span ng-if="lang==='EN'">Fund Information</span>
+                </a>
+                <a class="mdl-navigation__link"
+                   href=""
+                   ng-show="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_IN_CREATE', 'ROLE_FUND_RECEIPT_IN_DELETE'])"
+                   ng-class="{'mdl-color-text--black mdl-color--blue-grey-50' : toggleState===2}"
+                   ng-click="toggleState=2">
+                    <span ng-if="lang==='AR'">الايرادات</span>
+                    <span ng-if="lang==='EN'">Cash In</span>
+                </a>
+                <a class="mdl-navigation__link"
+                   href=""
+                   ng-show="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_OUT_CREATE', 'ROLE_FUND_RECEIPT_OUT_DELETE'])"
+                   ng-class="{'mdl-color-text--black mdl-color--blue-grey-50' : toggleState===3}"
+                   ng-click="toggleState=3">
+                    <span ng-if="lang==='AR'">المصروفات</span>
+                    <span ng-if="lang==='EN'">Cash Out</span>
+                </a>
+            </nav>
+
+            <div class="mdl-layout-spacer"></div>
+
+            <button ng-show="stickSideMenu===false" class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin"
+                    ng-click="toggleDrawer()">
+                <i class="material-icons">storage</i>
+            </button>
+
+            <button id="options-menu-lower-left"
+                    class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin mdl-layout--large-screen-only">
+                <i class="material-icons">settings_applications</i>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+                for="options-menu-lower-left">
+                <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
+                    <span ng-if="lang==='AR'">خيارات البرنامج</span>
+                    <span ng-if="lang==='EN'">PREFERENCES</span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="goFullscreen()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">aspect_ratio</i>
+                        <span ng-if="lang==='AR'">تطبيق وضع ملء الشاشة</span>
+                        <span ng-if="lang==='EN'">Go To Full Screen</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="switchDateType()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">timer</i>
+                        <span ng-if="dateType==='H' && lang==='AR'">تطبيق التاريخ الميلادي</span>
+                        <span ng-if="dateType==='H' && lang==='EN'">GREGORIAN DATE</span>
+                        <span ng-if="dateType==='G' && lang==='AR'">تطبيق التاريخ الهجري</span>
+                        <span ng-if="dateType==='G' && lang==='EN'">HIJRI DATE</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="switchLang()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">language</i>
+                        <span ng-if="lang==='EN'">ARABIC GUI</span>
+                        <span ng-if="lang==='AR'">تطبيق الواجهة الإنجليزية</span>
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <button href="" ng-click=""
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                        <span ng-if="lang==='AR'">المزيد من الخيارات</span>
+                        <span ng-if="lang==='EN'">MORE...</span>
+                    </button>
+                </li>
+            </ul>
+
+            <button id="menu-lower-left"
+                    class="mdl-button mdl-js-button mdl-button--icon mdl-icon-margin mdl-layout--large-screen-only">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-left' : lang==='AR', 'mdl-menu--bottom-right' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+                for="menu-lower-left">
+                <li class="mdl-list__item mdl-list__item--two-line mdl-menu__item--full-bleed-divider">
+                    <span class="mdl-list__item-primary-content">
+                        <span class="material-icons mdl-list__item-avatar"
+                              ng-style="{'background-image': 'url(' + me.img + ')'}"></span>
+                        <span>{{me.name}}</span>
+                        <span class="mdl-list__item-sub-title">{{me.qualification}}</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item" ui-serf="help">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">help</i>
+                        <span ng-if="lang==='AR'">المساعدة</span>
+                        <span ng-if="lang==='EN'">HELP</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item" ui-serf="about">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">info</i>
+                        <span ng-if="lang==='AR'">عن البرنامج</span>
+                        <span ng-if="lang==='EN'">ABOUT</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider" ui-serf="profile">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">account_box</i>
+                        <span ng-if="lang==='AR'">الملف الشخصي</span>
+                        <span ng-if="lang==='EN'">PROFILE</span>
+                    </span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item" ng-click="logout()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">exit_to_app</i>
+                        <span ng-if="lang==='AR'">تسجيل الخروج</span>
+                        <span ng-if="lang==='EN'">SIGN OUT</span>
+                    </span>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+
+    <div class="mdl-layout__drawer">
+        <nav class="mdl-navigation">
+            <!-- CONTACT ITEM -->
+            <div class="panel panel-default panel-nav">
+                <div class="panel-body profile mdl-color--primary">
+                    <div class="profile-image">
+                        <img width="100" height="100"
+                             ng-src="{{me.photo}}"
+                             src="ui/img/person.png"
+                             alt="{{me.id}}"/>
+                    </div>
+                    <div class="profile-data">
+                        <div class="profile-data-name">
+                            {{me.name}}
+                        </div>
+                    </div>
+                    <div class="profile-controls">
+                        <!--<a href="" ui-sref="about" class="profile-control-left">-->
+                            <!--<i class="material-icons">info</i>-->
+                        <!--</a>-->
+                        <!--<a href="" ui-sref="help" class="profile-control-right">-->
+                            <!--<i class="material-icons">help</i>-->
+                        <!--</a>-->
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="contact-info text-center">
+                        <p>
+                            {{me.qualification}}
+                        </p>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <button uib-tooltip="{{lang==='AR' ? 'الاعدادت' : 'SETTINGS'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="showMenuSettings=true;showMenuStates=false"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <i class="material-icons">settings</i>
+                        </button>
+                        <button uib-tooltip="{{lang==='AR' ? 'الملف الشخصي' : 'PROFILE'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="state.go('profile')"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <i class="material-icons">account_box</i>
+                        </button>
+                        <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'EXIT'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="logout()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <i class="material-icons">exit_to_app</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTACT ITEM -->
+            <div class="form-group row" ng-show="showMenuSettings===true">
+
+                <div class="form-group col-xs-12 col-sm-12 col2-md-12 col-lg-12">
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
+                        <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input" ng-model="isFullScreen"
+                               ng-change="goFullscreen()">
+                        <span class="mdl-checkbox__label text-right">
+                            <span ng-if="lang==='AR'">تفعيل ملء الشاشة</span>
+                            <span ng-if="lang==='EN'">ENABLE FULL SCREEN MODE</span>
+                        </span>
+                    </label>
+                </div>
+
+                <hr/>
+
+                <div class="form-group col-xs-12 col-sm-12 col2-md-12 col-lg-12">
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-2">
+                        <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input" ng-model="isStickyMenu"
+                               ng-change="stickSideMenu===true?stickSideMenu=false:stickSideMenu=true">
+                        <span class="mdl-checkbox__label text-right">
+                            <span ng-if="lang==='AR'">تفعيل القائمة الجانبية</span>
+                            <span ng-if="lang==='EN'">ENABLE STICKY SIDE MENU</span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col2-md-12 col-lg-12">
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-3">
+                        <input type="checkbox" id="checkbox-3" class="mdl-checkbox__input" ng-model="isDateType"
+                               ng-change="switchDateType();">
+                        <span class="mdl-checkbox__label text-right">
+                            <span ng-if="lang==='AR'">تبديل نوع التقويم</span>
+                            <span ng-if="lang==='EN'">SWITCH CALENDAR</span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col2-md-12 col-lg-12">
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-4">
+                        <input type="checkbox" id="checkbox-4" class="mdl-checkbox__input" ng-model="isDateType"
+                               ng-change="switchLang();">
+                        <span class="mdl-checkbox__label text-right">
+                            <span ng-if="lang==='AR'">تبديل اللغة</span>
+                            <span ng-if="lang==='EN'">SWITCH LANGUAGE</span>
+                        </span>
+                    </label>
+                </div>
+
+                <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
+                   href="" ng-click="showMenuStates=true;showMenuSettings=false">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">arrow_back</i>
+                        <span ng-if="lang==='AR'">رجوع</span>
+                        <span ng-if="lang==='EN'">BACK</span>
+                    </span>
+                </a>
+            </div>
+            <div ng-show="showMenuStates===true">
+
+                <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
+                   href=""
+                   ng-show="contains(me.team.authorities, ['ROLE_FUND_UPDATE'])"
+                   ng-class="{'mdl-color-text--white mdl-color--primary mdl-navigation__link-active' : toggleState===1}"
+                   ng-click="toggleState=1">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">layers</i>
+                        <span ng-if="lang==='AR'">بيانات الصندوق</span>
+                        <span ng-if="lang==='EN'">Fund Information</span>
+                    </span>
+                </a>
+
+                <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
+                   href=""
+                   ng-show="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_IN_CREATE', 'ROLE_FUND_RECEIPT_IN_DELETE'])"
+                   ng-class="{'mdl-color-text--white mdl-color--primary mdl-navigation__link-active' : toggleState===2}"
+                   ng-click="toggleState=2">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">layers</i>
+                        <span ng-if="lang==='AR'">الايرادات</span>
+                        <span ng-if="lang==='EN'">Cash In</span>
+                    </span>
+                </a>
+
+                <a class="mdl-navigation__link mdl-menu__item mdl-list__item"
+                   href=""
+                   ng-show="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_OUT_CREATE', 'ROLE_FUND_RECEIPT_OUT_DELETE'])"
+                   ng-class="{'mdl-color-text--white mdl-color--primary mdl-navigation__link-active' : toggleState===3}"
+                   ng-click="toggleState=3">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">layers</i>
+                        <span ng-if="lang==='AR'">المصروفات</span>
+                         <span ng-if="lang==='EN'">Cash Out</span>
+                    </span>
+                </a>
+
+            </div>
+        </nav>
+    </div>
+
+    <main class="mdl-layout__content">
+
+        <div ng-show="toggleState===1" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/fund/state1.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState===2" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/fund/state2.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState===3" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/fund/state3.html'"></div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

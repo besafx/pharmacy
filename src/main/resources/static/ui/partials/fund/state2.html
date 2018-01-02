@@ -1,0 +1,171 @@
+<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
+
+        <div class="row">
+            <ul class="breadcrumb">
+                <li ng-repeat="item in itemsIn | orderBy:'id' track by item.id">
+                    <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
+                    <span ng-if="item.type==='title'">{{item.name}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row">
+
+            <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+                 class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+
+                <button id="state-2-view-menu-lower-right" style="width: 100%;"
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                    <span ng-if="lang==='AR'">عرض البيانات</span>
+                    <span ng-if="lang==='EN'">View</span>
+                </button>
+
+                <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                    class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                    for="state-2-view-menu-lower-right">
+                    <li class="mdl-menu__item mdl-list__item"
+                        ng-click="findFundReceiptsInByToday()">
+                        <span class="mdl-list__item-primary-content">
+                            <i class="material-icons mdl-list__item-icon">filter_list</i>
+                            <span ng-if="lang==='AR'">تحصيل اليوم</span>
+                            <span ng-if="lang==='EN'">Cash From  By Today</span>
+                        </span>
+                    </li>
+                    <li class="mdl-menu__item mdl-list__item"
+                        ng-click="findFundReceiptsInByWeek()">
+                        <span class="mdl-list__item-primary-content">
+                            <i class="material-icons mdl-list__item-icon">filter_list</i>
+                            <span ng-if="lang==='AR'">تحصيل الأسبوع</span>
+                            <span ng-if="lang==='EN'">Cash From  By Week</span>
+                        </span>
+                    </li>
+                    <li class="mdl-menu__item mdl-list__item"
+                        ng-click="findFundReceiptsInByMonth()">
+                        <span class="mdl-list__item-primary-content">
+                            <i class="material-icons mdl-list__item-icon">filter_list</i>
+                            <span ng-if="lang==='AR'">تحصيل الشهر</span>
+                            <span ng-if="lang==='EN'">Cash From  By Month</span>
+                        </span>
+                    </li>
+                    <li class="mdl-menu__item mdl-list__item"
+                        ng-click="findFundReceiptsInByYear()">
+                        <span class="mdl-list__item-primary-content">
+                            <i class="material-icons mdl-list__item-icon">filter_list</i>
+                            <span ng-if="lang==='AR'">تحصيل العام</span>
+                            <span ng-if="lang==='EN'">Cash From  By Year</span>
+                        </span>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_IN_CREATE'])"
+                       ng-click="newFundReceiptIn()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء سند جديد' : 'New Receipt...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                    <a href=""
+                       ng-click="openFilterInModal()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'بحث' : 'Search...'}}">
+                        <span class="fa fa-filter"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة سندات القبض</h3>
+                <h3 ng-if="lang==='EN'">Receipts List</h3>
+                <span ng-if="lang==='AR'">المبالغ المودعة إلى حساب الصندوق</span>
+                <span ng-if="lang==='EN'">Fund Cash In</span>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-group row">
+
+                <div class="table-responsive">
+                    <table st-table="collection" st-safe-src="receiptsIn"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span>#</span>
+                            </th>
+
+                            <th st-sort="receipt.code">
+                                <span ng-if="lang==='AR'">رقم السند</span>
+                                <span ng-if="lang==='EN'">Receipt Code</span>
+                            </th>
+
+                            <th st-sort="receipt.date">
+                                <span ng-if="lang==='AR'">تاريخ السند</span>
+                                <span ng-if="lang==='EN'">Receipt Date</span>
+                            </th>
+
+                            <th st-sort="receipt.amount" class="danger">
+                                <span ng-if="lang==='AR'">قيمة السند</span>
+                                <span ng-if="lang==='EN'">Receipt Amount</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="fundReceipt in collection"
+                            st-select-mode="single"
+                            context-menu="rowMenuIn"
+                            ng-click="setSelectedIn(fundReceipt)"
+                            ng-right-click="setSelectedIn(fundReceipt)">
+                            <td st-select-row-custom="fundReceipt">{{$index+1}}</td>
+                            <td st-select-row-custom="fundReceipt">{{fundReceipt.receipt.code}}</td>
+                            <td st-select-row-custom="fundReceipt">
+                                <span ng-show="dateType==='H'">{{fundReceipt.receipt.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                <span ng-show="dateType==='G'">{{fundReceipt.receipt.date | date: 'yyyy-MM-dd'}}</span>
+                                <span class="label label-success">{{fundReceipt.receipt.date | date:'h:m a'}}</span>
+                            </td>
+                            <td st-select-row-custom="fundReceipt" class="danger">{{fundReceipt.receipt.amountNumber}} SAR</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection || collection.length ==0">
+                            <td colspan="4">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="panel-footer">
+            <div class="panel-footer">
+
+                <div class="row">
+
+                    <h3 class="text-center col-xs-12 col-sm-12 col-md-12 col-lg-12 box-danger" ng-if="totalAmountIn>=0">
+                        <span ng-if="lang==='AR'">إجمالي المبالغ المحصلة</span>
+                        <span ng-if="lang==='EN'">Total Cash From : </span>
+                        <span>{{totalAmountIn}} SAR</span>
+                    </h3>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

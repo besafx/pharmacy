@@ -153,6 +153,22 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Fund State                                                 *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("fund", {
+            url: "/fund",
+            css: [
+                '/ui/css/mdl-style-grey-deep_orange.css',
+                '/ui/css/mdl-ext.css',
+                '/ui/css/theme-black.css'
+            ],
+            templateUrl: "/ui/partials/fund/fund.html",
+            controller: "fundCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Bank State                                                 *
          *                                                            *
          *************************************************************/

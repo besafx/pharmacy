@@ -34,6 +34,10 @@ public class BillSellReceipt implements Serializable {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "fund")
+    private Fund fund;
+
+    @ManyToOne
     @JoinColumn(name = "receipt")
     private Receipt receipt;
 

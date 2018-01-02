@@ -419,6 +419,45 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * Fund Model                                                 *
+     *                                                            *
+     *************************************************************/
+    this.openFundReceiptInCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/fund/fundReceiptCreate.html',
+            controller: 'fundReceiptCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                receiptType: function () {
+                    return 'In';
+                }
+            }
+        });
+    };
+
+    this.openFundReceiptOutCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/fund/fundReceiptCreate.html',
+            controller: 'fundReceiptCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                receiptType: function () {
+                    return 'Out';
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
      * Doctor Model                                               *
      *                                                            *
      *************************************************************/

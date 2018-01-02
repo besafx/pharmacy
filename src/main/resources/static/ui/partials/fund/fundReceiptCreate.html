@@ -30,9 +30,9 @@
 
             <div class="form-group row">
 
-                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="bankReceipt.bank.id">
-                    <h4 ng-if="lang==='AR'">رصيد البنك الفعلي حالياً = {{bankReceipt.bank.balance}}</h4>
-                    <h4 ng-if="lang==='EN'"> Real Balance Now = {{bankReceipt.bank.balance}}</h4>
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="fundReceipt.fund.id">
+                    <h4 ng-if="lang==='AR'">رصيد الصندوق الفعلي حالياً = {{fundReceipt.fund.balance}}</h4>
+                    <h4 ng-if="lang==='EN'"> Real Balance Now = {{fundReceipt.fund.balance}}</h4>
                 </div>
 
                 <div class="form-group row">
@@ -45,11 +45,11 @@
                         <input id="amountNumber"
                                type="number"
                                min="1"
-                               max="{{receiptType==='Out'?bankReceipt.bank.balance:99999999}}"
+                               max="{{receiptType==='Out'?fundReceipt.fund.balance:99999999}}"
                                required=""
                                disable-validation-message=""
                                class="form-control"
-                               ng-model="bankReceipt.receipt.amountNumber">
+                               ng-model="fundReceipt.receipt.amountNumber">
                     </div>
 
                     <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -61,7 +61,7 @@
                                 class="form-control"
                                 required="required"
                                 disable-validation-message=""
-                                ng-model="bankReceipt.receipt.paymentMethod">
+                                ng-model="fundReceipt.receipt.paymentMethod">
                             <option ng-if="lang==='AR'" value="Cash">نقدي</option>
                             <option ng-if="lang==='EN'" value="Cash">Cash</option>
                             <option ng-if="lang==='AR'" value="Check">شيك</option>
@@ -73,22 +73,22 @@
 
                 </div>
 
-                <div class="form-group row" ng-init="bankReceipt.receipt.paymentMethod='Cash'">
+                <div class="form-group row" ng-init="fundReceipt.receipt.paymentMethod='Cash'">
 
-                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="bankReceipt.receipt.paymentMethod!=='Cash'">
+                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="fundReceipt.receipt.paymentMethod!=='Cash'">
                         <label for="paymentMethodCode" class="control-label">
-                            <span ng-if="lang==='AR' && bankReceipt.receipt.paymentMethod==='Check'">شيك رقم</span>
-                            <span ng-if="lang==='EN' && bankReceipt.receipt.paymentMethod==='Check'">Check Code</span>
-                            <span ng-if="lang==='AR' && bankReceipt.receipt.paymentMethod==='Visa'">مدى رقم</span>
-                            <span ng-if="lang==='EN' && bankReceipt.receipt.paymentMethod==='Visa'">Visa Code</span>
+                            <span ng-if="lang==='AR' && fundReceipt.receipt.paymentMethod==='Check'">شيك رقم</span>
+                            <span ng-if="lang==='EN' && fundReceipt.receipt.paymentMethod==='Check'">Check Code</span>
+                            <span ng-if="lang==='AR' && fundReceipt.receipt.paymentMethod==='Visa'">مدى رقم</span>
+                            <span ng-if="lang==='EN' && fundReceipt.receipt.paymentMethod==='Visa'">Visa Code</span>
                         </label>
                         <input id="paymentMethodCode"
                                type="number"
-                               ng-required="bankReceipt.receipt.paymentMethod!=='Check'"
-                               ng-disabled="bankReceipt.receipt.paymentMethod==='Check'"
+                               ng-required="fundReceipt.receipt.paymentMethod!=='Check'"
+                               ng-disabled="fundReceipt.receipt.paymentMethod==='Check'"
                                disable-validation-message=""
                                class="form-control"
-                               ng-model="bankReceipt.receipt.paymentMethodCode">
+                               ng-model="fundReceipt.receipt.paymentMethodCode">
                     </div>
 
                 </div>
@@ -102,7 +102,7 @@
                               type="text"
                               msd-elastic="\n"
                               class="form-control"
-                              ng-model="bankReceipt.receipt.note">
+                              ng-model="fundReceipt.receipt.note">
                                     </textarea>
                 </div>
 

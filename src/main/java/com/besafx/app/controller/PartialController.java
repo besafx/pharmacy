@@ -75,6 +75,7 @@ public class PartialController {
 
             "/supplier",
             "/bank",
+            "/fund",
             "/doctor",
 
             "/employee/list",

@@ -38,8 +38,19 @@ public class MainTests {
     @Autowired
     private BillSellService billSellService;
 
+    @Autowired
+    private FundService fundService;
+
     @Test
     public void contextLoads() throws Exception {
-        scheduleWatchOrders.runMonthly();
+        orderReceiptService.findAll().forEach(orderReceipt -> {
+            orderReceipt.setFund(fundService.findFirstBy());
+            orderReceiptService.save(orderReceipt);
+        });
+
+        billSellReceiptService.findAll().forEach(billSellReceipt -> {
+            billSellReceipt.setFund(fundService.findFirstBy());
+            billSellReceiptService.save(billSellReceipt);
+        });
     }
 }

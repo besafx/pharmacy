@@ -148,6 +148,8 @@ gulp.task('scripts', function () {
         './init/factory/transactionSellFactory.js',
         './init/factory/bankFactory.js',
         './init/factory/bankReceiptFactory.js',
+        './init/factory/fundFactory.js',
+        './init/factory/fundReceiptFactory.js',
 
         './init/service/service.js',
         './init/directive/directive.js',
@@ -168,6 +170,10 @@ gulp.task('scripts', function () {
 
         './partials/supplier/supplier.js',
         './partials/supplier/supplierCreateUpdate.js',
+
+        './partials/fund/fund.js',
+        './partials/fund/fundReceiptFilter.js',
+        './partials/fund/fundReceiptCreate.js',
 
         './partials/bank/bank.js',
         './partials/bank/bankReceiptFilter.js',

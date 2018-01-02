@@ -7,6 +7,7 @@ import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.search.OrderReceiptSearch;
+import com.besafx.app.service.FundService;
 import com.besafx.app.service.OrderReceiptService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.ReceiptService;
@@ -49,6 +50,9 @@ public class OrderReceiptRest {
     private ReceiptService receiptService;
 
     @Autowired
+    private FundService fundService;
+
+    @Autowired
     private PersonService personService;
 
     @Autowired
@@ -74,6 +78,7 @@ public class OrderReceiptRest {
         orderReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
         orderReceipt.getReceipt().setLastPerson(caller);
         orderReceipt.setReceipt(receiptService.save(orderReceipt.getReceipt()));
+        orderReceipt.setFund(fundService.findFirstBy());
         orderReceipt = orderReceiptService.save(orderReceipt);
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification

@@ -8,6 +8,7 @@ import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.search.BillSellReceiptSearch;
 import com.besafx.app.service.BillSellReceiptService;
+import com.besafx.app.service.FundService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.ReceiptService;
 import com.besafx.app.util.ArabicLiteralNumberParser;
@@ -49,6 +50,9 @@ public class BillSellReceiptRest {
     private ReceiptService receiptService;
 
     @Autowired
+    private FundService fundService;
+
+    @Autowired
     private PersonService personService;
 
     @Autowired
@@ -71,6 +75,7 @@ public class BillSellReceiptRest {
         billSellReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
         billSellReceipt.getReceipt().setLastPerson(caller);
         billSellReceipt.setReceipt(receiptService.save(billSellReceipt.getReceipt()));
+        billSellReceipt.setFund(fundService.findFirstBy());
         billSellReceipt = billSellReceiptService.save(billSellReceipt);
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification

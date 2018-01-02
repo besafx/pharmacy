@@ -1,13 +1,21 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.entity.enums.PaymentMethod;
-import com.besafx.app.service.OrderDetectionTypeService;
-import com.besafx.app.service.TransactionSellService;
-import org.joda.time.DateTime;
+import com.besafx.app.entity.Fund;
+import com.besafx.app.entity.Person;
+import com.besafx.app.service.FundService;
+import com.besafx.app.service.PersonService;
+import com.besafx.app.util.JSONConverter;
+import com.besafx.app.util.Options;
+import com.besafx.app.ws.Notification;
+import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.bohnman.squiggly.Squiggly;
+import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,26 +26,36 @@ public class FundRest {
 
     private final static Logger log = LoggerFactory.getLogger(FundRest.class);
 
-    @Autowired
-    private OrderDetectionTypeService orderDetectionTypeService;
+    public static final String FILTER_TABLE = "**,-orderReceipts,-billSellReceipts,-fundReceipts,lastPerson[id,nickname,name]";
 
     @Autowired
-    private TransactionSellService transactionSellService;
+    private FundService fundService;
 
-    @RequestMapping(value = "findDetectionsCostByDate/{date}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Autowired
+    private PersonService personService;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Double findDetectionsCostByDate(@PathVariable(value = "date") Long date, Principal principal) {
-        return 0.0;
+    @PreAuthorize("hasRole('ROLE_FUND_UPDATE')")
+    public String update(@RequestBody Fund fund, Principal principal) {
+        Fund object = fundService.findOne(fund.getId());
+        if (object != null) {
+            fund = fundService.save(fund);
+            Person caller = personService.findByEmail(principal.getName());
+            String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+            notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تم تعديل بيانات الصندوق بنجاح" : "Update Fund Information Successfully").type("warning").build(), principal.getName());
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), fund);
+        } else {
+            return null;
+        }
     }
 
-    @RequestMapping(value = "findSalesCostByDate/{date}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Double findSalesCostByDate(@PathVariable(value = "date") Long date, Principal principal) {
-        return transactionSellService
-                .findByBillSellPaymentMethodAndDateBetween(PaymentMethod.Cash, new DateTime(date).withTimeAtStartOfDay().toDate(),
-                        new DateTime(date).plusDays(1).withTimeAtStartOfDay().toDate())
-                .stream()
-                .mapToDouble(transactionSell -> transactionSell.getUnitSellCost() * transactionSell.getQuantity())
-                .sum();
+    @RequestMapping(value = "get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String get() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), fundService.findFirstBy());
     }
+
 }

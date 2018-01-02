@@ -16,6 +16,8 @@ SELECT setval('drug_category_sequence', (SELECT MAX(id) FROM drug_category) + 1)
 SELECT setval('drug_unit_sequence', (SELECT MAX(id) FROM drug_unit) + 1);
 SELECT setval('employee_sequence', (SELECT MAX(id) FROM employee) + 1);
 SELECT setval('falcon_sequence', (SELECT MAX(id) FROM falcon) + 1);
+SELECT setval('fund_receipt_sequence', (SELECT MAX(id) FROM fund_receipt) + 1);
+SELECT setval('fund_sequence', (SELECT MAX(id) FROM fund) + 1);
 SELECT setval('order_sequence', (SELECT MAX(id) FROM "order") + 1);
 SELECT setval('order_attach_sequence', (SELECT MAX(id) FROM order_attach) + 1);
 SELECT setval('order_detection_type_sequence', (SELECT MAX(id) FROM order_detection_type) + 1);

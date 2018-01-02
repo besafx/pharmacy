@@ -3,55 +3,48 @@ package com.besafx.app.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 import java.io.IOException;
 import java.io.Serializable;
 
 @Data
 @Entity
 @Table
-public class OrderReceipt implements Serializable {
+public class FundReceipt implements Serializable {
 
-    private static final Logger log = LoggerFactory.getLogger(OrderReceipt.class);
+    private static final Logger log = LoggerFactory.getLogger(FundReceipt.class);
 
     private static final long serialVersionUID = 1L;
 
     @GenericGenerator(
-            name = "orderReceiptSequenceGenerator",
+            name = "fundReceiptSequenceGenerator",
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ORDER_RECEIPT_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "FUND_RECEIPT_SEQUENCE"),
                     @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
     @Id
-    @GeneratedValue(generator = "orderReceiptSequenceGenerator")
+    @GeneratedValue(generator = "fundReceiptSequenceGenerator")
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "fund")
-    private Fund fund;
 
     @ManyToOne
     @JoinColumn(name = "receipt")
     private Receipt receipt;
 
     @ManyToOne
-    @JoinColumn(name = "[order]")
-    private Order order;
+    @JoinColumn(name = "fund")
+    private Fund fund;
 
     @JsonCreator
-    public static OrderReceipt Create(String jsonString) throws IOException {
+    public static FundReceipt Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        OrderReceipt orderReceipt = mapper.readValue(jsonString, OrderReceipt.class);
-        return orderReceipt;
+        FundReceipt fundReceipt = mapper.readValue(jsonString, FundReceipt.class);
+        return fundReceipt;
     }
 }
