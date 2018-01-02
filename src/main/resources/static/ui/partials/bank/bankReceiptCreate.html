@@ -1,13 +1,13 @@
 <form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
       focus-group-head="loop" focus-group-tail="loop">
 
-    <div class="modal-header">
+    <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
             <span class="fa fa-close fa-2x"></span>
         </a>
-        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item">
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">add</i>
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
                 <strong ng-if="lang==='AR' && receiptType==='In'">إنشاء سند قبض جديد</strong>
                 <strong ng-if="lang==='AR' && receiptType==='Out'">إنشاء سند صرف جديد</strong>
                 <strong ng-if="lang==='EN' && receiptType==='In'">Create Receipt In</strong>
@@ -37,19 +37,26 @@
 
                 <div class="form-group row">
 
-                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label for="amountNumber" class="control-label">
                             <span ng-if="lang==='AR'">المبلغ</span>
                             <span ng-if="lang==='EN'">Payment</span>
                         </label>
-                        <input id="amountNumber"
-                               type="number"
-                               min="1"
-                               max="{{receiptType==='Out'?bankReceipt.bank.balance:99999999}}"
-                               required=""
-                               disable-validation-message=""
-                               class="form-control"
-                               ng-model="bankReceipt.receipt.amountNumber">
+                        <div dir="ltr" class="input-group" id="amountNumber">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                            <span ng-if="lang==='EN'">SAR</span>
+                        </span>
+                            <input dir="rtl"
+                                   type="number"
+                                   focus-autofocus="1"
+                                   min="1"
+                                   max="{{receiptType==='Out'?bankReceipt.fund.balance:99999999}}"
+                                   required="required"
+                                   disable-validation-message=""
+                                   class="form-control"
+                                   ng-model="bankReceipt.receipt.amountNumber">
+                        </div>
                     </div>
 
                     <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">

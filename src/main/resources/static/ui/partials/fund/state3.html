@@ -121,11 +121,6 @@
                                 <span ng-if="lang==='EN'">Receipt Amount</span>
                             </th>
 
-                            <th st-sort="receipt.paymentMethod">
-                                <span ng-if="lang==='AR'">طريقة الدفع</span>
-                                <span ng-if="lang==='EN'">Payment Method</span>
-                            </th>
-
                         </tr>
                         </thead>
                         <tbody>
@@ -142,11 +137,10 @@
                                 <span class="label label-success">{{fundReceipt.receipt.date | date:'h:m a'}}</span>
                             </td>
                             <td st-select-row-custom="fundReceipt" class="danger">{{fundReceipt.receipt.amountNumber}} SAR</td>
-                            <td st-select-row-custom="fundReceipt">{{fundReceipt.receipt.paymentMethodInArabic}}</td>
                         </tr>
                         <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                             ng-show="!collection || collection.length ==0">
-                            <td colspan="7">
+                            <td colspan="4">
                                 <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                 <span ng-if="lang==='EN'">No Data Found.</span>
                             </td>

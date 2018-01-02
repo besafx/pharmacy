@@ -456,6 +456,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openFundTransferToBankModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/fund/fundTransferToBank.html',
+            controller: 'fundTransferToBankCtrl',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Doctor Model                                               *

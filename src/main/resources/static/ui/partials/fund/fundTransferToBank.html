@@ -7,11 +7,9 @@
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
-                <strong ng-if="lang==='AR' && receiptType==='In'">إنشاء سند قبض جديد</strong>
-                <strong ng-if="lang==='AR' && receiptType==='Out'">إنشاء سند صرف جديد</strong>
-                <strong ng-if="lang==='EN' && receiptType==='In'">Create Receipt In</strong>
-                <strong ng-if="lang==='EN' && receiptType==='Out'">Create Receipt Out</strong>
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">send</i>
+                <strong ng-if="lang==='AR'">تحويل نقدية إلى البنك</strong>
+                <strong ng-if="lang==='EN'">Transfer Money To Bank</strong>
             </span>
         </h3>
     </div>
@@ -49,7 +47,7 @@
                                type="number"
                                focus-autofocus="1"
                                min="1"
-                               max="{{receiptType==='Out'?fundReceipt.fund.balance:99999999}}"
+                               max="{{fundReceipt.fund.balance}}"
                                required="required"
                                disable-validation-message=""
                                class="form-control"

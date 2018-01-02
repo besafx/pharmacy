@@ -174,6 +174,7 @@ gulp.task('scripts', function () {
         './partials/fund/fund.js',
         './partials/fund/fundReceiptFilter.js',
         './partials/fund/fundReceiptCreate.js',
+        './partials/fund/fundTransferToBank.js',
 
         './partials/bank/bank.js',
         './partials/bank/bankReceiptFilter.js',

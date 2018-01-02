@@ -408,6 +408,10 @@ select {
     text-align: right !important;
 }
 
+.modal-header {
+    border-radius: 0px!important;
+}
+
 .help-block, .modal-header {
     direction: rtl !important;
 }

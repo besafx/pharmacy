@@ -1,16 +1,14 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
+import com.besafx.app.entity.BankReceipt;
 import com.besafx.app.entity.FundReceipt;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.search.FundReceiptSearch;
-import com.besafx.app.service.FundReceiptService;
-import com.besafx.app.service.FundService;
-import com.besafx.app.service.PersonService;
-import com.besafx.app.service.ReceiptService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.ArabicLiteralNumberParser;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -50,7 +48,13 @@ public class FundReceiptRest {
     private FundService fundService;
 
     @Autowired
+    private BankService bankService;
+
+    @Autowired
     private ReceiptService receiptService;
+
+    @Autowired
+    private BankReceiptService bankReceiptService;
 
     @Autowired
     private PersonService personService;
@@ -67,6 +71,7 @@ public class FundReceiptRest {
             fundReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
         }
         fundReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(fundReceipt.getReceipt().getAmountNumber()));
+        fundReceipt.getReceipt().setPaymentMethod(PaymentMethod.Cash);
         fundReceipt.getReceipt().setReceiptType(receiptType);
         fundReceipt.getReceipt().setDate(new DateTime().toDate());
         fundReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
@@ -94,6 +99,54 @@ public class FundReceiptRest {
             throw new CustomException("لا يمكن صرف قيمة أكبر من رصيد الصندوق = ".concat(fundBalance.toString()));
         }
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), create(ReceiptType.Out, fundReceipt, principal.getName()));
+    }
+
+    @RequestMapping(value = "transferToBank", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_FUND_RECEIPT_OUT_CREATE') and hasRole('ROLE_BANK_RECEIPT_IN_CREATE')")
+    public void transferToBank(@RequestBody FundReceipt fundReceipt, Principal principal) {
+        Person caller = personService.findByEmail(principal.getName());
+        {
+            log.info("إنشاء سند صرف من الصندوق");
+            Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
+            if (topReceipt == null) {
+                fundReceipt.getReceipt().setCode(new Long(1));
+            } else {
+                fundReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
+            }
+            fundReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(fundReceipt.getReceipt().getAmountNumber()));
+            fundReceipt.getReceipt().setPaymentMethod(PaymentMethod.Cash);
+            fundReceipt.getReceipt().setReceiptType(ReceiptType.Out);
+            fundReceipt.getReceipt().setDate(new DateTime().toDate());
+            fundReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
+            fundReceipt.getReceipt().setLastPerson(caller);
+            fundReceipt.setReceipt(receiptService.save(fundReceipt.getReceipt()));
+            fundReceipt = fundReceiptService.save(fundReceipt);
+        }
+        {
+            log.info("إنشاء سند قبض إلى البنك");
+            BankReceipt bankReceipt = new BankReceipt();
+            bankReceipt.setBank(bankService.findFirstBy());
+            bankReceipt.setReceipt(new Receipt());
+            Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
+            if (topReceipt == null) {
+                bankReceipt.getReceipt().setCode(new Long(1));
+            } else {
+                bankReceipt.getReceipt().setCode(topReceipt.getCode() + 1);
+            }
+            bankReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(fundReceipt.getReceipt().getAmountNumber()));
+            bankReceipt.getReceipt().setAmountNumber(fundReceipt.getReceipt().getAmountNumber());
+            bankReceipt.getReceipt().setPaymentMethod(PaymentMethod.Cash);
+            bankReceipt.getReceipt().setReceiptType(ReceiptType.In);
+            bankReceipt.getReceipt().setDate(new DateTime().toDate());
+            bankReceipt.getReceipt().setLastUpdate(new DateTime().toDate());
+            bankReceipt.getReceipt().setLastPerson(caller);
+            bankReceipt.setReceipt(receiptService.save(bankReceipt.getReceipt()));
+            bankReceipt = bankReceiptService.save(bankReceipt);
+        }
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تم التحويل بنجاح" : "Money Transfered Successfully").type("success").build(), principal.getName());
+
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)

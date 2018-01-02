@@ -21,6 +21,18 @@ app.controller("fundCtrl", ['FundService', 'FundReceiptService', 'ModalProvider'
                 $scope.selectedFund = data;
             });
         };
+        $scope.transferToBank = function () {
+            ModalProvider.openFundReceiptInCreateModel().result.then(function (data) {
+                $scope.receiptsIn.splice(0, 0, data);
+                $scope.selectedFund.balance+=data.receipt.amountNumber;
+                $scope.totalAmountIn = 0;
+                angular.forEach($scope.receiptsIn, function (fundReceipt) {
+                    $scope.totalAmountIn+=fundReceipt.receipt.amountNumber;
+                });
+            }, function () {
+                console.info('FundReceiptCreateModel Closed.');
+            });
+        };
 
         /**************************************************************
          *                                                            *
@@ -106,7 +118,7 @@ app.controller("fundCtrl", ['FundService', 'FundReceiptService', 'ModalProvider'
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
-                templateUrl: '/ui/partials/fundReceipt/fundReceiptFilter.html',
+                templateUrl: '/ui/partials/fund/fundReceiptFilter.html',
                 controller: 'fundReceiptFilterCtrl',
                 scope: $scope,
                 backdrop: 'static',
@@ -347,7 +359,7 @@ app.controller("fundCtrl", ['FundService', 'FundReceiptService', 'ModalProvider'
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
-                templateUrl: '/ui/partials/fundReceipt/fundReceiptFilter.html',
+                templateUrl: '/ui/partials/fund/fundReceiptFilter.html',
                 controller: 'fundReceiptFilterCtrl',
                 scope: $scope,
                 backdrop: 'static',

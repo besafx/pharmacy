@@ -21,6 +21,11 @@ app.factory("FundReceiptService",
                     return response.data;
                 });
             },
+            transferToBank: function (fundReceipt) {
+                return $http.post("/api/fundReceipt/transferToBank", fundReceipt).then(function (response) {
+                    return response.data;
+                });
+            },
             remove: function (id) {
                 return $http.delete("/api/fundReceipt/delete/" + id);
             },
