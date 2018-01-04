@@ -2517,8 +2517,8 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
             // Get parent name
             var parentName = (name.indexOf('.') !== -1) ? name.substring(0, name.lastIndexOf('.'))
                 : (isString(state.parent)) ? state.parent
-                : (isObject(state.parent) && isString(state.parent.name)) ? state.parent.name
-                : '';
+                    : (isObject(state.parent) && isString(state.parent.name)) ? state.parent.name
+                        : '';
 
             // If parent is not registered yet, add state to queue and register later
             if (parentName && !states[parentName]) {

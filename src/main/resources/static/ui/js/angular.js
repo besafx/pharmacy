@@ -223,16 +223,16 @@
         /* jshint bitwise: false */
         return isString(s)
             ? s.replace(/[A-Z]/g, function (ch) {
-            return String.fromCharCode(ch.charCodeAt(0) | 32);
-        })
+                return String.fromCharCode(ch.charCodeAt(0) | 32);
+            })
             : s;
     };
     var manualUppercase = function (s) {
         /* jshint bitwise: false */
         return isString(s)
             ? s.replace(/[a-z]/g, function (ch) {
-            return String.fromCharCode(ch.charCodeAt(0) & ~32);
-        })
+                return String.fromCharCode(ch.charCodeAt(0) & ~32);
+            })
             : s;
     };
 
@@ -1225,15 +1225,15 @@
         if (isFunction(fn) && !(fn instanceof RegExp)) {
             return curryArgs.length
                 ? function () {
-                return arguments.length
-                    ? fn.apply(self, concat(curryArgs, arguments, 0))
-                    : fn.apply(self, curryArgs);
-            }
+                    return arguments.length
+                        ? fn.apply(self, concat(curryArgs, arguments, 0))
+                        : fn.apply(self, curryArgs);
+                }
                 : function () {
-                return arguments.length
-                    ? fn.apply(self, arguments)
-                    : fn.call(self);
-            };
+                    return arguments.length
+                        ? fn.apply(self, arguments)
+                        : fn.call(self);
+                };
         } else {
             // in IE, native methods are not functions so they cannot be bound (note: they don't need to be)
             return fn;
@@ -7539,8 +7539,8 @@
                     denormalizeTemplate = (startSymbol == '{{' || endSymbol == '}}')
                         ? identity
                         : function denormalizeTemplate(template) {
-                        return template.replace(/\{\{/g, startSymbol).replace(/}}/g, endSymbol);
-                    },
+                            return template.replace(/\{\{/g, startSymbol).replace(/}}/g, endSymbol);
+                        },
                     NG_ATTR_BINDING = /^ngAttr[A-Z]/;
                 var MULTI_ELEMENT_DIR_RE = /^(.+)Start$/;
 
@@ -7690,7 +7690,7 @@
 
                         nodeLinkFn = (directives.length)
                             ? applyDirectivesToNode(directives, nodeList[i], attrs, transcludeFn, $rootElement,
-                            null, [], [], previousCompileContext)
+                                null, [], [], previousCompileContext)
                             : null;
 
                         if (nodeLinkFn && nodeLinkFn.scope) {
@@ -7700,9 +7700,9 @@
                         childLinkFn = (nodeLinkFn && nodeLinkFn.terminal || !(childNodes = nodeList[i].childNodes) || !childNodes.length)
                             ? null
                             : compileNodes(childNodes,
-                            nodeLinkFn ? (
-                            (nodeLinkFn.transcludeOnThisElement || !nodeLinkFn.templateOnThisElement)
-                            && nodeLinkFn.transclude) : transcludeFn);
+                                nodeLinkFn ? (
+                                (nodeLinkFn.transcludeOnThisElement || !nodeLinkFn.templateOnThisElement)
+                                && nodeLinkFn.transclude) : transcludeFn);
 
                         if (nodeLinkFn || childLinkFn) {
                             linkFns.push(i, nodeLinkFn, childLinkFn);
@@ -9193,7 +9193,7 @@
                     expression = controllers.hasOwnProperty(constructor)
                         ? controllers[constructor]
                         : getter(locals.$scope, constructor, true) ||
-                    (globals ? getter($window, constructor, true) : undefined);
+                        (globals ? getter($window, constructor, true) : undefined);
 
                     assertArgFn(expression, constructor, true);
                 }
@@ -10561,7 +10561,7 @@
                         (config.method === 'GET' || config.method === 'JSONP')) {
                         cache = isObject(config.cache) ? config.cache
                             : isObject(defaults.cache) ? defaults.cache
-                            : defaultCache;
+                                : defaultCache;
                     }
 
                     if (cache) {
@@ -11281,6 +11281,7 @@
       *               }
       *             }, 100);
       *           };
+
       *
       *           $scope.stopFight = function() {
       *             if (angular.isDefined(stop)) {
@@ -11288,11 +11289,13 @@
       *               stop = undefined;
       *             }
       *           };
+
       *
       *           $scope.resetFight = function() {
       *             $scope.blood_1 = 100;
       *             $scope.blood_2 = 120;
       *           };
+
       *
       *           $scope.$on('$destroy', function() {
       *             // Make sure that the interval is destroyed too
@@ -15150,17 +15153,17 @@
             var rafSupported = !!requestAnimationFrame;
             var raf = rafSupported
                 ? function (fn) {
-                var id = requestAnimationFrame(fn);
-                return function () {
-                    cancelAnimationFrame(id);
-                };
-            }
+                    var id = requestAnimationFrame(fn);
+                    return function () {
+                        cancelAnimationFrame(id);
+                    };
+                }
                 : function (fn) {
-                var timer = $timeout(fn, 16.66, false); // 1000 / 60 = 16.666
-                return function () {
-                    $timeout.cancel(timer);
+                    var timer = $timeout(fn, 16.66, false); // 1000 / 60 = 16.666
+                    return function () {
+                        $timeout.cancel(timer);
+                    };
                 };
-            };
 
             raf.supported = rafSupported;
 
@@ -15962,7 +15965,7 @@
                                                     if ((value = watch.get(current)) !== (last = watch.last) && !(watch.eq
                                                             ? equals(value, last)
                                                             : (typeof value === 'number' && typeof last === 'number'
-                                                        && isNaN(value) && isNaN(last)))) {
+                                                            && isNaN(value) && isNaN(last)))) {
                                                         dirty = true;
                                                         lastDirtyWatch = watch;
                                                         watch.last = watch.eq ? copy(value, null) : value;
@@ -18787,7 +18790,7 @@
             return (number == null)
                 ? number
                 : formatNumber(number, formats.PATTERNS[0], formats.GROUP_SEP, formats.DECIMAL_SEP,
-                fractionSize);
+                    fractionSize);
         };
     }
 
@@ -23379,15 +23382,18 @@
  *     $scope.greet = function() {
  *       alert($scope.name);
  *     };
+
  *
  *     $scope.addContact = function() {
  *       $scope.contacts.push({type:'email', value:'yourname@example.org'});
  *     };
+
  *
  *     $scope.removeContact = function(contactToRemove) {
  *       var index = $scope.contacts.indexOf(contactToRemove);
  *       $scope.contacts.splice(index, 1);
  *     };
+
  *
  *     $scope.clearContact = function(contact) {
  *       contact.type = 'phone';

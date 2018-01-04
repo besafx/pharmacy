@@ -1,4 +1,5 @@
 package com.besafx.app.component;
+
 import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
@@ -10,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -21,13 +21,16 @@ public class LocationFinder {
 
     private DatabaseReader reader;
 
-    @PostConstruct
-    public void init() throws IOException {
+    public void init() {
         ClassPathResource classPathResource = new ClassPathResource("location/GeoLite2-City.mmdb");
-        reader = new DatabaseReader
-                .Builder(classPathResource.getInputStream())
-                .withCache(new CHMCache())
-                .build();
+        try {
+            reader = new DatabaseReader
+                    .Builder(classPathResource.getInputStream())
+                    .withCache(new CHMCache())
+                    .build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Country getCountry(String ip) {

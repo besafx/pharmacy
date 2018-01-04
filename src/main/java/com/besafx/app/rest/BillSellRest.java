@@ -1,6 +1,5 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
@@ -15,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +32,11 @@ import java.util.ListIterator;
 @RequestMapping(value = "/api/billSell/")
 public class BillSellRest {
 
-    private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
-
     public static final String FILTER_TABLE = "**,billSellReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,name],order[id,code,treatedCount,unTreatedCount,falcon[**,-orders,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],-billBuy,-transactionSells]]";
     public static final String FILTER_Inside_Debt = "id,code,remain,date,-lastPerson,order[id,code,date,falcon[id,code,customer[id,name]]],-transactionSells,-billSellReceipts";
     public static final String FILTER_Outside_Debt = "id,code,customerName,falconCode,remain,-lastPerson,-transactionSells,-billSellReceipts";
     public static final String FILTER_BILL_SELL_COMBO = "id,code";
-
+    private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
     @Autowired
     private BillSellService billSellService;
 
@@ -69,7 +65,7 @@ public class BillSellRest {
     public String create(@RequestBody BillSell billSell, Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         BillSell billSellByOrder = billSellService.findByOrderAndOrderNotNull(billSell.getOrder());
-        if(billSellByOrder == null){
+        if (billSellByOrder == null) {
             BillSell topBillSell = billSellService.findTopByOrderByCodeDesc();
             if (topBillSell == null) {
                 billSell.setCode(1);
@@ -83,9 +79,9 @@ public class BillSellRest {
             ListIterator<TransactionSell> listIterator = billSell.getTransactionSells().listIterator();
             while (listIterator.hasNext()) {
                 TransactionSell transactionSell = listIterator.next();
-                if(billSellByOrder == null){
+                if (billSellByOrder == null) {
                     transactionSell.setBillSell(billSell);
-                }else{
+                } else {
                     transactionSell.setBillSell(billSellByOrder);
                 }
                 TransactionSell topTransactionSell = transactionSellService.findTopByOrderByCodeDesc();
@@ -102,7 +98,7 @@ public class BillSellRest {
             ListIterator<BillSellReceipt> listIterator = billSell.getBillSellReceipts().listIterator();
             while (listIterator.hasNext()) {
                 BillSellReceipt billSellReceipt = listIterator.next();
-                if(billSellReceipt.getReceipt().getAmountNumber() == 0){
+                if (billSellReceipt.getReceipt().getAmountNumber() == 0) {
                     log.info("تجاهل إنشاء السند لقيمته الصفرية");
                     break;
                 }

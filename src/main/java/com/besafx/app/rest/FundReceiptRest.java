@@ -34,10 +34,8 @@ import java.util.List;
 @RequestMapping(value = "/api/fundReceipt/")
 public class FundReceiptRest {
 
-    private final static Logger log = LoggerFactory.getLogger(FundReceiptRest.class);
-
     public static final String FILTER_TABLE = "**,fund[id,code],receipt[**,lastPerson[id,nickname,name]]";
-
+    private final static Logger log = LoggerFactory.getLogger(FundReceiptRest.class);
     @Autowired
     private FundReceiptService fundReceiptService;
 
@@ -95,7 +93,7 @@ public class FundReceiptRest {
     @PreAuthorize("hasRole('ROLE_FUND_RECEIPT_OUT_CREATE')")
     public String createOut(@RequestBody FundReceipt fundReceipt, Principal principal) {
         Double fundBalance = fundService.findOne(fundReceipt.getFund().getId()).getBalance();
-        if(fundReceipt.getReceipt().getAmountNumber() > fundBalance){
+        if (fundReceipt.getReceipt().getAmountNumber() > fundBalance) {
             throw new CustomException("لا يمكن صرف قيمة أكبر من رصيد الصندوق = ".concat(fundBalance.toString()));
         }
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), create(ReceiptType.Out, fundReceipt, principal.getName()));

@@ -217,9 +217,9 @@
         function canUpdateChart(newVal, oldVal) {
             if (newVal && oldVal && newVal.length && oldVal.length) {
                 return Array.isArray(newVal[0]) ?
-                newVal.length === oldVal.length && newVal.every(function (element, index) {
-                    return element.length === oldVal[index].length;
-                }) :
+                    newVal.length === oldVal.length && newVal.every(function (element, index) {
+                        return element.length === oldVal[index].length;
+                    }) :
                     oldVal.reduce(sum, 0) > 0 ? newVal.length === oldVal.length : false;
             }
             return false;

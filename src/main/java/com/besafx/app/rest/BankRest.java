@@ -24,10 +24,8 @@ import java.security.Principal;
 @RequestMapping(value = "/api/bank/")
 public class BankRest {
 
-    private final static Logger log = LoggerFactory.getLogger(BankRest.class);
-
     public static final String FILTER_TABLE = "**,bankReceipts[**,receipt[**,lastPerson[id,nickname,name]],-bank]";
-
+    private final static Logger log = LoggerFactory.getLogger(BankRest.class);
     @Autowired
     private BankService bankService;
 

@@ -5,10 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @Entity

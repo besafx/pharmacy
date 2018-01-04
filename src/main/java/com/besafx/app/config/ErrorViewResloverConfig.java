@@ -1,4 +1,5 @@
 package com.besafx.app.config;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorViewResolver;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;

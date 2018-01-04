@@ -1,12 +1,10 @@
 package com.besafx.app.search;
 
 import com.besafx.app.entity.BillSell;
-import com.besafx.app.entity.BillSell;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.service.BillSellService;
 import com.besafx.app.util.DateConverter;
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +49,10 @@ public class BillSellSearch {
         Optional.ofNullable(viewInsideSalesTable).ifPresent(value -> predicates.add(value ? (root, cq, cb) -> cb.isNotNull(root.get("order")) : (root, cq, cb) -> cb.isNull(root.get("order"))));
         Optional.ofNullable(viewInsideSalesTable)
                 .ifPresent(value -> {
-                    if(value){
+                    if (value) {
                         Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("code"), "%" + code + "%")));
                         Optional.ofNullable(orderCustomerName).ifPresent(name -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("customer").get("name"), "%" + name + "%")));
-                    }else{
+                    } else {
                         Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("falconCode"), "%" + code + "%")));
                         Optional.ofNullable(orderCustomerName).ifPresent(name -> predicates.add((root, cq, cb) -> cb.like(root.get("customerName"), "%" + name + "%")));
                     }

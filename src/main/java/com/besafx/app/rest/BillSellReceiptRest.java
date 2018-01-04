@@ -1,6 +1,5 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.entity.BillSell;
 import com.besafx.app.entity.BillSellReceipt;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
@@ -36,10 +35,8 @@ import java.util.List;
 @RequestMapping(value = "/api/billSellReceipt/")
 public class BillSellReceiptRest {
 
-    private final static Logger log = LoggerFactory.getLogger(BillSellReceiptRest.class);
-
     public static final String FILTER_TABLE = "**,billSell[id,code,order[id,code,date,falcon[id,code,type,customer[id,name]]]],receipt[**,lastPerson[id,nickname,name]]";
-
+    private final static Logger log = LoggerFactory.getLogger(BillSellReceiptRest.class);
     @Autowired
     private BillSellReceiptService billSellReceiptService;
 

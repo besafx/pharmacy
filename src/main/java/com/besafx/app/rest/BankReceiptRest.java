@@ -36,10 +36,8 @@ import java.util.List;
 @RequestMapping(value = "/api/bankReceipt/")
 public class BankReceiptRest {
 
-    private final static Logger log = LoggerFactory.getLogger(BankReceiptRest.class);
-
     public static final String FILTER_TABLE = "**,bank[id,code,bankName,bankBranchName],receipt[**,lastPerson[id,nickname,name]]";
-
+    private final static Logger log = LoggerFactory.getLogger(BankReceiptRest.class);
     @Autowired
     private BankReceiptService bankReceiptService;
 
@@ -90,7 +88,7 @@ public class BankReceiptRest {
     @PreAuthorize("hasRole('ROLE_BANK_RECEIPT_OUT_CREATE')")
     public String createOut(@RequestBody BankReceipt bankReceipt, Principal principal) {
         Double bankBalance = bankService.findOne(bankReceipt.getBank().getId()).getBalance();
-        if(bankReceipt.getReceipt().getAmountNumber() > bankBalance){
+        if (bankReceipt.getReceipt().getAmountNumber() > bankBalance) {
             throw new CustomException("لا يمكن صرف قيمة أكبر من رصيد البنك = ".concat(bankBalance.toString()));
         }
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), create(ReceiptType.Out, bankReceipt, principal.getName()));

@@ -1,12 +1,12 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.Salary;
-import com.besafx.app.entity.Person;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.service.PersonService;
 import com.besafx.app.service.ReceiptService;
 import com.besafx.app.service.SalaryService;
-import com.besafx.app.service.PersonService;
 import com.besafx.app.util.ArabicLiteralNumberParser;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -32,10 +32,8 @@ import java.util.List;
 @RequestMapping(value = "/api/salary/")
 public class SalaryRest {
 
-    private final static Logger log = LoggerFactory.getLogger(SalaryRest.class);
-
     public static final String FILTER_TABLE = "**,receipt[id,code,amountNumber],employee[id,-salaries,person[id,nickname,name,mobile]]";
-
+    private final static Logger log = LoggerFactory.getLogger(SalaryRest.class);
     @Autowired
     private ReceiptService receiptService;
 
@@ -64,8 +62,8 @@ public class SalaryRest {
         }
         salary.getReceipt().setReceiptType(ReceiptType.In);
         salary.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(salary.getReceipt().getAmountNumber()));
-        salary.getReceipt().setSender(caller.getNickname() + " / " +  caller.getNickname());
-        salary.getReceipt().setReceiver(salary.getEmployee().getPerson().getNickname() + " / " +  salary.getEmployee().getPerson().getNickname());
+        salary.getReceipt().setSender(caller.getNickname() + " / " + caller.getNickname());
+        salary.getReceipt().setReceiver(salary.getEmployee().getPerson().getNickname() + " / " + salary.getEmployee().getPerson().getNickname());
         salary.getReceipt().setDate(new Date());
         salary.getReceipt().setLastUpdate(new Date());
         salary.getReceipt().setLastPerson(caller);
@@ -102,8 +100,8 @@ public class SalaryRest {
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             log.info("تعديل بيانات سند القبض");
             salary.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(object.getReceipt().getAmountNumber()));
-            salary.getReceipt().setSender(caller.getNickname() + " / " +  caller.getNickname());
-            salary.getReceipt().setReceiver(salary.getEmployee().getPerson().getNickname() + " / " +  salary.getEmployee().getPerson().getNickname());
+            salary.getReceipt().setSender(caller.getNickname() + " / " + caller.getNickname());
+            salary.getReceipt().setReceiver(salary.getEmployee().getPerson().getNickname() + " / " + salary.getEmployee().getPerson().getNickname());
             salary.getReceipt().setLastUpdate(new Date());
             salary.getReceipt().setLastPerson(caller);
             salary.setReceipt(receiptService.save(salary.getReceipt()));

@@ -2,10 +2,8 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Person;
-import com.besafx.app.entity.Vacation;
 import com.besafx.app.entity.VacationType;
 import com.besafx.app.service.PersonService;
-import com.besafx.app.service.VacationService;
 import com.besafx.app.service.VacationTypeService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -30,10 +28,8 @@ import java.util.List;
 @RequestMapping(value = "/api/vacationType/")
 public class VacationTypeRest {
 
-    private final static Logger log = LoggerFactory.getLogger(VacationTypeRest.class);
-
     public static final String FILTER_TABLE = "**";
-
+    private final static Logger log = LoggerFactory.getLogger(VacationTypeRest.class);
     @Autowired
     private VacationTypeService vacationTypeService;
 

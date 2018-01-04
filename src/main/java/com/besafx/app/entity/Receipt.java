@@ -1,4 +1,5 @@
 package com.besafx.app.entity;
+
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -63,18 +64,18 @@ public class Receipt implements Serializable {
     @JoinColumn(name = "lastPerson")
     private Person lastPerson;
 
-    public String getPaymentMethodInArabic(){
-        try{
-            return this.paymentMethod.getName();
-        }catch (Exception ex){
-            return "";
-        }
-    }
-
     @JsonCreator
     public static Receipt Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Receipt receipt = mapper.readValue(jsonString, Receipt.class);
         return receipt;
+    }
+
+    public String getPaymentMethodInArabic() {
+        try {
+            return this.paymentMethod.getName();
+        } catch (Exception ex) {
+            return "";
+        }
     }
 }

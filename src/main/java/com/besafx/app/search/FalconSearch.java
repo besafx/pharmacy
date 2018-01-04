@@ -1,12 +1,7 @@
 package com.besafx.app.search;
 
 import com.besafx.app.entity.Falcon;
-import com.besafx.app.entity.Order;
-import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.service.FalconService;
-import com.besafx.app.service.OrderService;
-import com.google.common.collect.Lists;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

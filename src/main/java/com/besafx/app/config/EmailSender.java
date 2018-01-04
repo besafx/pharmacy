@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -42,7 +41,6 @@ public class EmailSender {
 
     private MimeMessage message;
 
-    @PostConstruct
     public void init() {
         log.info("Preparing email service...");
         Properties props = new Properties();
@@ -54,7 +52,7 @@ public class EmailSender {
         log.info("Preparing email service successfully");
     }
 
-    @Async("threadPoolEmailSender")
+    @Async("threadSinglePool")
     public Future<Boolean> send(String title, String content, List<String> toEmailList) {
         try {
             log.info("Sleeping for 10 seconds");
@@ -85,7 +83,7 @@ public class EmailSender {
         }
     }
 
-    @Async("threadPoolEmailSender")
+    @Async("threadSinglePool")
     public Future<Boolean> send(String title, String content, List<String> toEmailList, List<File> files) {
         try {
             log.info("Sleeping for 10 seconds");
@@ -129,7 +127,7 @@ public class EmailSender {
         }
     }
 
-    @Async("threadPoolEmailSender")
+    @Async("threadSinglePool")
     public Future<Boolean> send(String title, String content, String email) {
         try {
             log.info("Sleeping for 10 seconds");
@@ -153,7 +151,7 @@ public class EmailSender {
         }
     }
 
-    @Async("threadPoolEmailSender")
+    @Async("threadSinglePool")
     public Future<Boolean> send(String title, String content, String email, List<File> files) {
         try {
             log.info("Sleeping for 10 seconds");

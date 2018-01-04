@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class PersonRest {
     @RequestMapping(value = "setGUILang/{lang}", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_PROFILE_UPDATE')")
-    public void setGUILang(@PathVariable(value = "lang") String lang,  Principal principal) {
+    public void setGUILang(@PathVariable(value = "lang") String lang, Principal principal) {
         Person person = personService.findByEmail(principal.getName());
         Options options = JSONConverter.toObject(person.getOptions(), Options.class);
         options.setLang(lang);
@@ -37,7 +36,7 @@ public class PersonRest {
     @RequestMapping(value = "setDateType/{type}", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_PROFILE_UPDATE')")
-    public void setDateType(@PathVariable(value = "type") String type,  Principal principal) {
+    public void setDateType(@PathVariable(value = "type") String type, Principal principal) {
         Person person = personService.findByEmail(principal.getName());
         Options options = JSONConverter.toObject(person.getOptions(), Options.class);
         options.setDateType(type);

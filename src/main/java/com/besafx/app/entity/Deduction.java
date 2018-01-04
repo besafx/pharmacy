@@ -1,6 +1,5 @@
 package com.besafx.app.entity;
 
-import com.besafx.app.entity.enums.CalendarType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 @Data

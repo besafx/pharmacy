@@ -23,6 +23,7 @@
     animation: 0.3s fadeOut ease-in-out;
     /*animation-delay: 0.3s;*/
 }
+
 /**************************************************************
  *                                                            *
  * Body Animation                                             *
@@ -79,16 +80,16 @@
  * General Animation                                          *
  *                                                            *
  *************************************************************/
- /*when hiding the thing */
+/*when hiding the thing */
 /*.ng-hide-add {*/
-    /*-webkit-animation: 0.5s zoomOut ease;*/
-    /*animation: 0.5s zoomOut ease;*/
+/*-webkit-animation: 0.5s zoomOut ease;*/
+/*animation: 0.5s zoomOut ease;*/
 /*}*/
 
- /*when showing the thing */
+/*when showing the thing */
 /*.ng-hide-remove {*/
-    /*-webkit-animation: 0.5s zoomIn ease;*/
-    /*animation: 0.5s zoomIn ease;*/
+/*-webkit-animation: 0.5s zoomIn ease;*/
+/*animation: 0.5s zoomIn ease;*/
 /*}*/
 
 /**************************************************************

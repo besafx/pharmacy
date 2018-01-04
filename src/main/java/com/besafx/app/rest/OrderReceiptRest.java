@@ -36,10 +36,8 @@ import java.util.List;
 @RequestMapping(value = "/api/orderReceipt/")
 public class OrderReceiptRest {
 
-    private final static Logger log = LoggerFactory.getLogger(OrderReceiptRest.class);
-
     public static final String FILTER_TABLE = "**,order[id,code,date,falcon[id,code,type,weight,customer[id,code,name,mobile]]],receipt[**,lastPerson[id,nickname,name]]";
-
+    private final static Logger log = LoggerFactory.getLogger(OrderReceiptRest.class);
     @Autowired
     private OrderReceiptService orderReceiptService;
 
@@ -62,7 +60,7 @@ public class OrderReceiptRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_CREATE')")
     public String create(@RequestBody OrderReceipt orderReceipt, Principal principal) {
-        if(orderReceipt.getReceipt().getAmountNumber() == 0){
+        if (orderReceipt.getReceipt().getAmountNumber() == 0) {
             throw new CustomException("لا يمكن إنشاء سند بقيمة صفر");
         }
         Person caller = personService.findByEmail(principal.getName());

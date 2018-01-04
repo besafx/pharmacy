@@ -1,16 +1,13 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.Order;
-import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.search.ReceiptSearch;
-import com.besafx.app.service.ReceiptService;
-import com.besafx.app.service.FalconService;
-import com.besafx.app.service.OrderService;
 import com.besafx.app.service.PersonService;
+import com.besafx.app.service.ReceiptService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -19,13 +16,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
-import org.apache.regexp.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -37,10 +32,8 @@ import java.util.List;
 @RequestMapping(value = "/api/receipt/")
 public class ReceiptRest {
 
-    private final static Logger log = LoggerFactory.getLogger(ReceiptRest.class);
-
     public static final String FILTER_TABLE = "**,lastPerson[id,nickname,name]";
-
+    private final static Logger log = LoggerFactory.getLogger(ReceiptRest.class);
     @Autowired
     private ReceiptService receiptService;
 

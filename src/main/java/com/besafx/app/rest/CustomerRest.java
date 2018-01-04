@@ -2,10 +2,12 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Customer;
-import com.besafx.app.entity.Falcon;
 import com.besafx.app.entity.Person;
 import com.besafx.app.search.CustomerSearch;
-import com.besafx.app.service.*;
+import com.besafx.app.service.CustomerService;
+import com.besafx.app.service.FalconService;
+import com.besafx.app.service.OrderService;
+import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -17,7 +19,6 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -185,10 +186,10 @@ public class CustomerRest {
 
     @RequestMapping(value = "findPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findPage(@RequestParam( "page" ) int page, @RequestParam( "size" ) int size) {
+    public String findPage(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageable = new PageRequest(page, size);
         Page<Customer> resultPage = customerService.findAll(pageable);
-        if( page > resultPage.getTotalPages() ) {
+        if (page > resultPage.getTotalPages()) {
             throw new CustomException("هناك خطأ ما فى قراءة الصفحات");
         }
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_CUSTOMER_PAGE), resultPage);

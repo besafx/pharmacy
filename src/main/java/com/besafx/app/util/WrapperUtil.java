@@ -1,4 +1,5 @@
 package com.besafx.app.util;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

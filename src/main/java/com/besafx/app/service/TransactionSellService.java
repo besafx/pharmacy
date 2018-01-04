@@ -2,7 +2,6 @@ package com.besafx.app.service;
 
 import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.Order;
-import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.TransactionSell;
 import com.besafx.app.entity.enums.PaymentMethod;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -19,7 +18,10 @@ import java.util.List;
 @Transactional
 public interface TransactionSellService extends PagingAndSortingRepository<TransactionSell, Long>, JpaSpecificationExecutor<TransactionSell> {
     TransactionSell findTopByOrderByCodeDesc();
+
     TransactionSell findByCodeAndIdIsNot(Integer code, Long id);
+
     Long countByBillSellOrderAndTransactionBuyDrug(Order order, Drug drug);
+
     List<TransactionSell> findByBillSellPaymentMethodAndDateBetween(PaymentMethod paymentMethod, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 }

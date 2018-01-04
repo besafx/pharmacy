@@ -1,11 +1,9 @@
 package com.besafx.app.search;
 
 import com.besafx.app.entity.OrderReceipt;
-import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.service.OrderReceiptService;
-import com.besafx.app.service.ReceiptService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Comparator;

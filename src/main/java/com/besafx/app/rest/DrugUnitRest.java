@@ -28,10 +28,8 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/drugUnit/")
 public class DrugUnitRest {
 
-    private final static Logger log = LoggerFactory.getLogger(DrugUnitRest.class);
-
     public static final String FILTER_TABLE = "**";
-
+    private final static Logger log = LoggerFactory.getLogger(DrugUnitRest.class);
     @Autowired
     private DrugUnitService drugUnitService;
 

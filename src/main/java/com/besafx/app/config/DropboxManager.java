@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -25,7 +24,6 @@ public class DropboxManager {
 
     private DbxClientV2 client;
 
-    @PostConstruct
     public void init() {
         // Create Dropbox client
         log.info("Preparing dropbox client...");
@@ -42,7 +40,7 @@ public class DropboxManager {
         }
     }
 
-    @Async("threadPoolFileUploader")
+    @Async("threadMultiplePool")
     public Future<Boolean> uploadFile(MultipartFile file, String path) {
         try {
             log.info("Trying to upload file: " + file.getName());
@@ -56,7 +54,7 @@ public class DropboxManager {
         }
     }
 
-    @Async("threadPoolFileUploader")
+    @Async("threadMultiplePool")
     public Future<Boolean> uploadFile(File file, String path) {
         try {
             log.info("Trying to upload file: " + file.getName());
@@ -70,8 +68,8 @@ public class DropboxManager {
         }
     }
 
-    @Async("threadPoolFileUploader")
-    public Future<Boolean> uploadFile(InputStream inputStream, String fileName, String path){
+    @Async("threadMultiplePool")
+    public Future<Boolean> uploadFile(InputStream inputStream, String fileName, String path) {
         try {
             log.info("Trying to upload file: " + fileName);
             log.info("Sleeping for 5 seconds...");
@@ -84,7 +82,7 @@ public class DropboxManager {
         }
     }
 
-    @Async("threadPoolFileUploader")
+    @Async("threadMultiplePool")
     public Future<Boolean> deleteFile(String path) {
         try {
             log.info("Trying to delete file from path: " + path);
@@ -98,7 +96,7 @@ public class DropboxManager {
         }
     }
 
-    @Async("threadPoolFileSharing")
+    @Async("threadMultiplePool")
     public Future<String> shareFile(String path) {
         SharedLinkMetadata metadata;
         String link = null;

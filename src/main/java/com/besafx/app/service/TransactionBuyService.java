@@ -12,6 +12,8 @@ import java.util.List;
 @Transactional
 public interface TransactionBuyService extends PagingAndSortingRepository<TransactionBuy, Long>, JpaSpecificationExecutor<TransactionBuy> {
     TransactionBuy findTopByOrderByCodeDesc();
+
     TransactionBuy findByCodeAndIdIsNot(Integer code, Long id);
+
     List<TransactionBuy> findByDrugId(Long drugId);
 }

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface CustomerService extends PagingAndSortingRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
     Customer findTopByOrderByCodeDesc();
+
     Customer findByCodeAndIdIsNot(Integer code, Long id);
 }
 

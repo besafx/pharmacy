@@ -1,4 +1,5 @@
 package com.besafx.app.entity;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;

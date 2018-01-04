@@ -1,449 +1,476 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="6610c978-bf64-41be-98fd-29b2e43aa866">
-	<import value="com.besafx.app.util.DateConverter"/>
-	<subDataset name="Dataset" uuid="d6c8af80-e85f-462b-85c1-39de3456cd9b">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="code" class="java.lang.Integer"/>
-		<field name="date" class="java.util.Date"/>
-		<field name="orderCondition" class="com.besafx.app.entity.enums.OrderCondition"/>
-		<field name="paymentMethod" class="com.besafx.app.entity.enums.PaymentMethod"/>
-		<field name="discount" class="java.lang.Double"/>
-		<field name="falcon" class="com.besafx.app.entity.Falcon"/>
-		<field name="doctor" class="com.besafx.app.entity.Doctor"/>
-		<field name="detectionTypeCostSum" class="java.lang.Double"/>
-		<field name="netCost" class="java.lang.Double"/>
-		<variable name="NET_SUM" class="java.lang.Double" calculation="Sum">
-			<variableExpression><![CDATA[$F{netCost}]]></variableExpression>
-			<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
-		</variable>
-	</subDataset>
-	<parameter name="logo" class="java.io.InputStream" isForPrompting="false">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-	</parameter>
-	<parameter name="title" class="java.lang.String"/>
-	<parameter name="subReport" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
-	<queryString>
-		<![CDATA[]]>
-	</queryString>
-	<field name="code" class="java.lang.Integer"/>
-	<field name="date" class="java.util.Date"/>
-	<field name="paymentMethod" class="com.besafx.app.entity.enums.PaymentMethod"/>
-	<field name="discount" class="java.lang.Double"/>
-	<field name="falcon" class="com.besafx.app.entity.Falcon"/>
-	<field name="doctor" class="com.besafx.app.entity.Doctor"/>
-	<field name="detectionTypeCostSum" class="java.lang.Double"/>
-	<field name="netCost" class="java.lang.Double"/>
-	<field name="orderDetectionTypes" class="java.util.List"/>
-	<title>
-		<band height="127" splitType="Stretch">
-			<staticText>
-				<reportElement x="197" y="60" width="160" height="20" uuid="c774c0e1-84d1-4edc-adc8-38ddc0da60a7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="PT Bold Heading" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[مركز السلطان للصقور]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="180" y="80" width="200" height="20" uuid="9ad14ee5-e674-4a4d-b885-ac24f7add9af"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SULTAN CENTER FOR HAWKS]]></text>
-			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="false" isLazy="true" onErrorType="Icon">
-				<reportElement x="252" y="10" width="50" height="50" uuid="3365758c-fd5a-49f8-a2be-4217ce7693e1"/>
-				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
-			</image>
-			<textField>
-				<reportElement x="0" y="100" width="555" height="20" uuid="cba0d277-1f5f-4adb-ae11-429b6f481ee7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
-			</textField>
-		</band>
-	</title>
-	<columnHeader>
-		<band height="33" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="10" width="130" height="20" uuid="8316d65d-ab18-4425-822d-038fc2b8114d"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[Orders List:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="425" y="11" width="130" height="20" uuid="88816f79-dab9-45aa-8e8d-e57709e3664a"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[قائمة طلبات الفحص:]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="80">
-			<subreport>
-				<reportElement x="-1" y="60" width="555" height="20" uuid="275df1b5-9ce3-4969-a9d5-dcffbf26d318"/>
-				<subreportParameter name="orderDetectionTypes">
-					<subreportParameterExpression><![CDATA[$F{orderDetectionTypes}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportExpression><![CDATA[$P{subReport}]]></subreportExpression>
-			</subreport>
-			<frame>
-				<reportElement x="-1" y="0" width="555" height="30" uuid="087e59d1-5171-4449-b06c-9d176fcc1dcc">
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<frame>
-					<reportElement mode="Opaque" x="0" y="0" width="40" height="30" backcolor="#AAF1FA" uuid="a2f3b643-23be-43e7-a6af-cf091424ca1d">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="40" height="15" uuid="c46695e2-d686-4de2-bbc0-4f3ba80f2d26"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[رقم الطلب]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="40" height="15" uuid="c13037a4-b7f7-4f1b-8389-67845c9359e5"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Code]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="40" y="0" width="46" height="30" backcolor="#AAF1FA" uuid="dc925d84-f896-440a-8eff-1b47be76b7b4">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="46" height="15" uuid="f385a4c2-8944-47c9-a3b9-e5b086693aae"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[التاريخ]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="46" height="15" uuid="7ce9763a-28de-4bf9-aba9-f31b953f78e6"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Date]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="86" y="0" width="87" height="30" backcolor="#AAF1FA" uuid="bf3a6736-1c03-4749-946b-3a588a50ccc0">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="87" height="15" uuid="d6ce229b-5347-4c7c-a679-617eb12d6b59"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[رقم الصقر]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="87" height="15" uuid="23f1fb74-5164-4291-a99f-31756a6b3718"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[F. Code]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="173" y="0" width="47" height="30" backcolor="#AAF1FA" uuid="236c6ab3-9e5f-4334-a720-2c91044caaeb">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="47" height="15" uuid="1c735a81-ab6a-429c-98a6-f6324376c820"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[وزن الصقر]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="47" height="15" uuid="877765bf-261c-46bd-91e8-8cca8c6a9ce6"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[F. Weight]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="220" y="0" width="41" height="30" backcolor="#AAF1FA" uuid="3c217c94-c8fe-49ca-a378-727eb1eb9398">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="41" height="15" uuid="c29fe1c3-b3d6-48f3-b76d-770cff6e82e1"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[نوع الصقر]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="41" height="15" uuid="0e9dc2c0-794d-489a-be8b-1f4820580bec"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[F. Type]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="261" y="0" width="62" height="30" backcolor="#AAF1FA" uuid="c2e86662-be33-426c-b2ab-3b10eda41fdc">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="62" height="15" uuid="55e305cf-4648-478c-8024-854832ca341c"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[العميل]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="62" height="15" uuid="d4f5f7ca-3ddf-435b-97f0-0d892055cf0d"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Customer]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="323" y="0" width="67" height="30" backcolor="#AAF1FA" uuid="22628604-0e72-46fd-a341-7c6c767f6c4f">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="67" height="15" uuid="afd734fc-259f-4a53-af2a-1c9a1d141917"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[الطبيب المعالج]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="67" height="15" uuid="5c304f07-652b-4e28-99ae-90a38b55695b"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Doctor]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="390" y="0" width="62" height="30" backcolor="#AAF1FA" uuid="1044a464-9b83-45b1-8ec5-3efda8e7e52f">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="62" height="15" uuid="242b014b-41ae-4dae-a2b2-c4d734028a52"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[التكلفة]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="62" height="15" uuid="801e5a66-7c5c-4341-a453-34e099f058b7"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Cost]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="452" y="0" width="62" height="30" backcolor="#AAF1FA" uuid="da6382cf-4f78-4595-8e9e-7acae2eed766">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="62" height="15" uuid="36b2dbe6-a847-4d56-bc78-86cb7669d39c"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[الخصم]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="62" height="15" uuid="a975420f-57d0-4577-92b6-86db6d00a3d7"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Discount]]></text>
-					</staticText>
-				</frame>
-				<frame>
-					<reportElement mode="Opaque" x="514" y="0" width="41" height="30" backcolor="#AAF1FA" uuid="23beb1c8-30c8-4f25-ba22-3ba366845fde">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.3"/>
-					</box>
-					<staticText>
-						<reportElement x="0" y="0" width="41" height="15" uuid="a80cd19a-774e-4db9-a787-583d084244af"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[الصافي]]></text>
-					</staticText>
-					<staticText>
-						<reportElement x="0" y="15" width="41" height="15" uuid="1c543c2c-d0c4-4683-90ac-c8116a3fea65"/>
-						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font fontName="Arial"/>
-						</textElement>
-						<text><![CDATA[Net]]></text>
-					</staticText>
-				</frame>
-			</frame>
-			<frame>
-				<reportElement x="-1" y="30" width="555" height="30" uuid="1df4b1db-a154-43fe-ad26-2beb5d7bed09">
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="40" height="30" uuid="28b97910-f35e-48fa-b7d0-6d055c44ae55"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement x="40" y="0" width="46" height="30" uuid="cb97991b-d79e-44ae-ac39-2e195e9beb8b"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[DateConverter.getHijriStringFromDateRTLWithTime($F{date})]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement x="86" y="0" width="87" height="30" uuid="2137b3d9-5e7d-4b83-969a-b0ab9d3b37ce"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{falcon}.getCode()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement x="261" y="0" width="62" height="30" uuid="69224724-2e75-4996-b3d4-6da0102f0161"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{falcon}.getCustomer().getName()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement x="323" y="0" width="67" height="30" uuid="c6c21895-3b0c-4caa-b3ec-8d58be5c1209"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{doctor}.getPerson().getName()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.## SAR;#,##0.##-  SAR" isBlankWhenNull="true">
-					<reportElement x="390" y="0" width="62" height="30" uuid="243fd14a-c87d-4e01-b25b-94d1c05e72dd"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{detectionTypeCostSum}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.## %;#,##0.##-  %" isBlankWhenNull="true">
-					<reportElement x="452" y="0" width="62" height="30" uuid="dec0ef54-b215-4643-aa36-57400dd2fd02"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.## SAR;#,##0.##-  SAR" isBlankWhenNull="true">
-					<reportElement x="514" y="0" width="41" height="30" uuid="48e3dcb7-7c2d-4ef4-9823-b4f6f79b82cb"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{netCost}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement x="173" y="0" width="47" height="30" uuid="3e6e76eb-8139-483d-ad9a-4f66d331a038"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{falcon}.getWeight()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement x="220" y="0" width="41" height="30" uuid="38f78a0e-0d02-4873-a723-984f0ad2e5c1"/>
-					<box padding="3">
-						<pen lineWidth="0.3"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{falcon}.getType()]]></textFieldExpression>
-				</textField>
-			</frame>
-		</band>
-	</detail>
-	<pageFooter>
-		<band height="20">
-			<textField evaluationTime="Report">
-				<reportElement x="525" y="0" width="30" height="20" uuid="905c5949-f566-4d1d-9e60-71cb697ff06b"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="0" width="30" height="20" uuid="109256e8-876e-47fb-a482-025efe1b31b1">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageFooter>
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="Report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true"
+              uuid="6610c978-bf64-41be-98fd-29b2e43aa866">
+    <import value="com.besafx.app.util.DateConverter"/>
+    <subDataset name="Dataset" uuid="d6c8af80-e85f-462b-85c1-39de3456cd9b">
+        <queryString>
+            <![CDATA[]]>
+        </queryString>
+        <field name="code" class="java.lang.Integer"/>
+        <field name="date" class="java.util.Date"/>
+        <field name="orderCondition" class="com.besafx.app.entity.enums.OrderCondition"/>
+        <field name="paymentMethod" class="com.besafx.app.entity.enums.PaymentMethod"/>
+        <field name="discount" class="java.lang.Double"/>
+        <field name="falcon" class="com.besafx.app.entity.Falcon"/>
+        <field name="doctor" class="com.besafx.app.entity.Doctor"/>
+        <field name="detectionTypeCostSum" class="java.lang.Double"/>
+        <field name="netCost" class="java.lang.Double"/>
+        <variable name="NET_SUM" class="java.lang.Double" calculation="Sum">
+            <variableExpression><![CDATA[$F{netCost}]]></variableExpression>
+            <initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+        </variable>
+    </subDataset>
+    <parameter name="logo" class="java.io.InputStream" isForPrompting="false">
+        <parameterDescription><![CDATA[]]></parameterDescription>
+    </parameter>
+    <parameter name="title" class="java.lang.String"/>
+    <parameter name="subReport" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="code" class="java.lang.Integer"/>
+    <field name="date" class="java.util.Date"/>
+    <field name="paymentMethod" class="com.besafx.app.entity.enums.PaymentMethod"/>
+    <field name="discount" class="java.lang.Double"/>
+    <field name="falcon" class="com.besafx.app.entity.Falcon"/>
+    <field name="doctor" class="com.besafx.app.entity.Doctor"/>
+    <field name="detectionTypeCostSum" class="java.lang.Double"/>
+    <field name="netCost" class="java.lang.Double"/>
+    <field name="orderDetectionTypes" class="java.util.List"/>
+    <title>
+        <band height="127" splitType="Stretch">
+            <staticText>
+                <reportElement x="197" y="60" width="160" height="20" uuid="c774c0e1-84d1-4edc-adc8-38ddc0da60a7"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="PT Bold Heading" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[مركز السلطان للصقور]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="80" width="200" height="20" uuid="9ad14ee5-e674-4a4d-b885-ac24f7add9af"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="11" isBold="true"/>
+                </textElement>
+                <text><![CDATA[SULTAN CENTER FOR HAWKS]]></text>
+            </staticText>
+            <image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="false" isLazy="true"
+                   onErrorType="Icon">
+                <reportElement x="252" y="10" width="50" height="50" uuid="3365758c-fd5a-49f8-a2be-4217ce7693e1"/>
+                <imageExpression><![CDATA[$P{logo}]]></imageExpression>
+            </image>
+            <textField>
+                <reportElement x="0" y="100" width="555" height="20" uuid="cba0d277-1f5f-4adb-ae11-429b6f481ee7"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="33" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="10" width="130" height="20" uuid="8316d65d-ab18-4425-822d-038fc2b8114d"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+                </textElement>
+                <text><![CDATA[Orders List:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="425" y="11" width="130" height="20" uuid="88816f79-dab9-45aa-8e8d-e57709e3664a"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+                </textElement>
+                <text><![CDATA[قائمة طلبات الفحص:]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="80">
+            <subreport>
+                <reportElement x="-1" y="60" width="555" height="20" uuid="275df1b5-9ce3-4969-a9d5-dcffbf26d318"/>
+                <subreportParameter name="orderDetectionTypes">
+                    <subreportParameterExpression><![CDATA[$F{orderDetectionTypes}]]></subreportParameterExpression>
+                </subreportParameter>
+                <subreportExpression><![CDATA[$P{subReport}]]></subreportExpression>
+            </subreport>
+            <frame>
+                <reportElement x="-1" y="0" width="555" height="30" uuid="087e59d1-5171-4449-b06c-9d176fcc1dcc">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                </reportElement>
+                <frame>
+                    <reportElement mode="Opaque" x="0" y="0" width="40" height="30" backcolor="#AAF1FA"
+                                   uuid="a2f3b643-23be-43e7-a6af-cf091424ca1d">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="40" height="15" uuid="c46695e2-d686-4de2-bbc0-4f3ba80f2d26"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[رقم الطلب]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="40" height="15" uuid="c13037a4-b7f7-4f1b-8389-67845c9359e5"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[Code]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="40" y="0" width="46" height="30" backcolor="#AAF1FA"
+                                   uuid="dc925d84-f896-440a-8eff-1b47be76b7b4">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="46" height="15" uuid="f385a4c2-8944-47c9-a3b9-e5b086693aae"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[التاريخ]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="46" height="15" uuid="7ce9763a-28de-4bf9-aba9-f31b953f78e6"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[Date]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="86" y="0" width="87" height="30" backcolor="#AAF1FA"
+                                   uuid="bf3a6736-1c03-4749-946b-3a588a50ccc0">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="87" height="15" uuid="d6ce229b-5347-4c7c-a679-617eb12d6b59"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[رقم الصقر]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="87" height="15" uuid="23f1fb74-5164-4291-a99f-31756a6b3718"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[F. Code]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="173" y="0" width="47" height="30" backcolor="#AAF1FA"
+                                   uuid="236c6ab3-9e5f-4334-a720-2c91044caaeb">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="47" height="15" uuid="1c735a81-ab6a-429c-98a6-f6324376c820"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[وزن الصقر]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="47" height="15" uuid="877765bf-261c-46bd-91e8-8cca8c6a9ce6"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[F. Weight]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="220" y="0" width="41" height="30" backcolor="#AAF1FA"
+                                   uuid="3c217c94-c8fe-49ca-a378-727eb1eb9398">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="41" height="15" uuid="c29fe1c3-b3d6-48f3-b76d-770cff6e82e1"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[نوع الصقر]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="41" height="15" uuid="0e9dc2c0-794d-489a-be8b-1f4820580bec"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[F. Type]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="261" y="0" width="62" height="30" backcolor="#AAF1FA"
+                                   uuid="c2e86662-be33-426c-b2ab-3b10eda41fdc">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="62" height="15" uuid="55e305cf-4648-478c-8024-854832ca341c"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[العميل]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="62" height="15" uuid="d4f5f7ca-3ddf-435b-97f0-0d892055cf0d"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[Customer]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="323" y="0" width="67" height="30" backcolor="#AAF1FA"
+                                   uuid="22628604-0e72-46fd-a341-7c6c767f6c4f">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="67" height="15" uuid="afd734fc-259f-4a53-af2a-1c9a1d141917"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[الطبيب المعالج]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="67" height="15" uuid="5c304f07-652b-4e28-99ae-90a38b55695b"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[Doctor]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="390" y="0" width="62" height="30" backcolor="#AAF1FA"
+                                   uuid="1044a464-9b83-45b1-8ec5-3efda8e7e52f">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="62" height="15" uuid="242b014b-41ae-4dae-a2b2-c4d734028a52"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[التكلفة]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="62" height="15" uuid="801e5a66-7c5c-4341-a453-34e099f058b7"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[Cost]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="452" y="0" width="62" height="30" backcolor="#AAF1FA"
+                                   uuid="da6382cf-4f78-4595-8e9e-7acae2eed766">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="62" height="15" uuid="36b2dbe6-a847-4d56-bc78-86cb7669d39c"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[الخصم]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="62" height="15" uuid="a975420f-57d0-4577-92b6-86db6d00a3d7"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[Discount]]></text>
+                    </staticText>
+                </frame>
+                <frame>
+                    <reportElement mode="Opaque" x="514" y="0" width="41" height="30" backcolor="#AAF1FA"
+                                   uuid="23beb1c8-30c8-4f25-ba22-3ba366845fde">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    </reportElement>
+                    <box>
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <staticText>
+                        <reportElement x="0" y="0" width="41" height="15" uuid="a80cd19a-774e-4db9-a787-583d084244af"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[الصافي]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="15" width="41" height="15" uuid="1c543c2c-d0c4-4683-90ac-c8116a3fea65"/>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font fontName="Arial"/>
+                        </textElement>
+                        <text><![CDATA[Net]]></text>
+                    </staticText>
+                </frame>
+            </frame>
+            <frame>
+                <reportElement x="-1" y="30" width="555" height="30" uuid="1df4b1db-a154-43fe-ad26-2beb5d7bed09">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                </reportElement>
+                <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                    <reportElement x="0" y="0" width="40" height="30" uuid="28b97910-f35e-48fa-b7d0-6d055c44ae55"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                    <reportElement x="40" y="0" width="46" height="30" uuid="cb97991b-d79e-44ae-ac39-2e195e9beb8b"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA[DateConverter.getHijriStringFromDateRTLWithTime($F{date})]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                    <reportElement x="86" y="0" width="87" height="30" uuid="2137b3d9-5e7d-4b83-969a-b0ab9d3b37ce"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{falcon}.getCode()]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                    <reportElement x="261" y="0" width="62" height="30" uuid="69224724-2e75-4996-b3d4-6da0102f0161"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{falcon}.getCustomer().getName()]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                    <reportElement x="323" y="0" width="67" height="30" uuid="c6c21895-3b0c-4caa-b3ec-8d58be5c1209"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{doctor}.getPerson().getName()]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="#,##0.## SAR;#,##0.##-  SAR" isBlankWhenNull="true">
+                    <reportElement x="390" y="0" width="62" height="30" uuid="243fd14a-c87d-4e01-b25b-94d1c05e72dd"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{detectionTypeCostSum}]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="#,##0.## %;#,##0.##-  %" isBlankWhenNull="true">
+                    <reportElement x="452" y="0" width="62" height="30" uuid="dec0ef54-b215-4643-aa36-57400dd2fd02"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="#,##0.## SAR;#,##0.##-  SAR" isBlankWhenNull="true">
+                    <reportElement x="514" y="0" width="41" height="30" uuid="48e3dcb7-7c2d-4ef4-9823-b4f6f79b82cb"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{netCost}]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                    <reportElement x="173" y="0" width="47" height="30" uuid="3e6e76eb-8139-483d-ad9a-4f66d331a038"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{falcon}.getWeight()]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                    <reportElement x="220" y="0" width="41" height="30" uuid="38f78a0e-0d02-4873-a723-984f0ad2e5c1"/>
+                    <box padding="3">
+                        <pen lineWidth="0.3"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{falcon}.getType()]]></textFieldExpression>
+                </textField>
+            </frame>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="20">
+            <textField evaluationTime="Report">
+                <reportElement x="525" y="0" width="30" height="20" uuid="905c5949-f566-4d1d-9e60-71cb697ff06b"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="0" width="30" height="20" uuid="109256e8-876e-47fb-a482-025efe1b31b1">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
 </jasperReport>

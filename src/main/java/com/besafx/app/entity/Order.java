@@ -82,6 +82,13 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderReceipt> orderReceipts = new ArrayList<>();
 
+    @JsonCreator
+    public static Order Create(String jsonString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Order order = mapper.readValue(jsonString, Order.class);
+        return order;
+    }
+
     public Double getDetectionTypeCostSum() {
         try {
             return this.orderDetectionTypes
@@ -96,10 +103,10 @@ public class Order implements Serializable {
 
     public String getNote() {
         try {
-           if(this.note == null){
-               return "لا يوجد تشخيص حتي الآن";
-           }
-           return this.note;
+            if (this.note == null) {
+                return "لا يوجد تشخيص حتي الآن";
+            }
+            return this.note;
         } catch (Exception ex) {
             return "";
         }
@@ -150,14 +157,5 @@ public class Order implements Serializable {
         } catch (Exception ex) {
             return new Long(0);
         }
-    }
-
-
-
-    @JsonCreator
-    public static Order Create(String jsonString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        Order order = mapper.readValue(jsonString, Order.class);
-        return order;
     }
 }

@@ -1,35 +1,55 @@
 .prompt-dialog {
     display: block;
     position: absolute;
-    top: 50%; margin-top: -160px;
-    left: 50%; margin-left: -300px;
+    top: 50%;
+    margin-top: -160px;
+    left: 50%;
+    margin-left: -300px;
     width: 600px;
-    padding: 24px; border: 0px solid orange;
+    padding: 24px;
+    border: 0px solid orange;
     /*background-color: white;*/
     background-color: #f8fff8;
     border-radius: 6px 6px 6px 6px;
     -moz-border-radius: 6px 6px 6px 6px;
     -webkit-border-radius: 6px 6px 6px 6px;
-    -webkit-box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
-    z-index:9999; overflow: auto;
+    -webkit-box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.75);
+    z-index: 9999;
+    overflow: auto;
 }
 
 .overlay-for-prompt {
     display: block;
-    position: absolute; top: 0%; left: 0%; width: 100%; height: 100%;
-    background-color: black; z-index:9998;
-    -moz-opacity: 0.6; opacity:.60; filter: alpha(opacity=60);
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 9998;
+    -moz-opacity: 0.6;
+    opacity: .60;
+    filter: alpha(opacity=60);
 }
 
 .top-right-closer {
-    display:block; position:absolute; top:4px; right:4px; width:24px; height:24px;
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
     /*background:url("img/close-24.png") no-repeat center center; z-index: 99999; opacity: 0.8;*/
-    background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAB7klEQVR4Xu1V0W6TUBjmnIJgrzTp2jG6pu1QfAEvzOKFT6DRSBldoTQx0ado+iRG3Qh2jW9gfAy90FE2W+yQOu3ioB3neM4uNDHpkrJ4Zb/kJ8D3n+/Lx/8nAIwx8y8BSf3PBkuDRqOhWJbxcB5POdPUbqYyaDabm3lx5W2pUnKePnuy0+l0fvfSe/quUi07K/nVd5bVuDtPh51HRFE0Fvgr17NXs1y5UtY9z4NEeJtyw9Fgd0OuqhBAOJvNrsXxabBwAsdx3gfhuIcJeJ4HsixrR1/9HVL2LeWGKvACPYuDMOzZdu/DwgkopIJk9b0DKG9U64IgAEVRNAggzrAZGMcx3nfdXTEvWamH3G63kZhfM92+aycJOk/CCzxECOGPn/btQk40aQ/tTZHgDzDGmclkwpycTBgAAH1mEErYS68p3Rb/aPBSWpNqLJsh2hCTC+I4DqwXi+qXYPiK9qQyAASD0eA5EdKpIA1yeHiw5/W9N0mCz01K66Utf/T5RSoDo6U9kMTCFoQQkFXEruu+DoNjfRx+18hMetPpFAHAgFwu99g09TsLz2B2BoLTKPpJiOzQ9/e+hT+MbrebUE5VVd1FLhZXxfvE/JhhOOGiAc6tulnfNFvbj0gb+JsjALV67bbRMu5dpLH8oy0NLo9fCFcHnXPSTXMAAAAASUVORK5CYII=") no-repeat center center; z-index: 99999; opacity: 0.8;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAB7klEQVR4Xu1V0W6TUBjmnIJgrzTp2jG6pu1QfAEvzOKFT6DRSBldoTQx0ado+iRG3Qh2jW9gfAy90FE2W+yQOu3ioB3neM4uNDHpkrJ4Zb/kJ8D3n+/Lx/8nAIwx8y8BSf3PBkuDRqOhWJbxcB5POdPUbqYyaDabm3lx5W2pUnKePnuy0+l0fvfSe/quUi07K/nVd5bVuDtPh51HRFE0Fvgr17NXs1y5UtY9z4NEeJtyw9Fgd0OuqhBAOJvNrsXxabBwAsdx3gfhuIcJeJ4HsixrR1/9HVL2LeWGKvACPYuDMOzZdu/DwgkopIJk9b0DKG9U64IgAEVRNAggzrAZGMcx3nfdXTEvWamH3G63kZhfM92+aycJOk/CCzxECOGPn/btQk40aQ/tTZHgDzDGmclkwpycTBgAAH1mEErYS68p3Rb/aPBSWpNqLJsh2hCTC+I4DqwXi+qXYPiK9qQyAASD0eA5EdKpIA1yeHiw5/W9N0mCz01K66Utf/T5RSoDo6U9kMTCFoQQkFXEruu+DoNjfRx+18hMetPpFAHAgFwu99g09TsLz2B2BoLTKPpJiOzQ9/e+hT+MbrebUE5VVd1FLhZXxfvE/JhhOOGiAc6tulnfNFvbj0gb+JsjALV67bbRMu5dpLH8oy0NLo9fCFcHnXPSTXMAAAAASUVORK5CYII=") no-repeat center center;
+    z-index: 99999;
+    opacity: 0.8;
 }
 
-.top-right-closer:hover { opacity: 1; }
+.top-right-closer:hover {
+    opacity: 1;
+}
 
 a.icon-action {
     display: block;
@@ -62,9 +82,11 @@ a.icon-action-install-app {
     .prompt-dialog {
         display: block;
         position: absolute;
-        left: 50%; margin-left: -150px;
+        left: 50%;
+        margin-left: -150px;
         width: 280px;
-        padding: 10px; border: 0px solid orange;
+        padding: 10px;
+        border: 0px solid orange;
     }
 
     .prompt-dialog h3 {
@@ -90,6 +112,7 @@ a.icon-action-install-app {
     a.icon-action-enable-java {
         background-size: contain;
     }
+
     a.icon-action-install-app {
         background-size: contain;
     }

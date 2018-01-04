@@ -1,4 +1,5 @@
 package com.besafx.app.config;
+
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

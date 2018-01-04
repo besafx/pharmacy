@@ -26,10 +26,8 @@ import java.util.List;
 @RequestMapping(value = "/api/deduction/")
 public class DeductionRest {
 
-    private final static Logger log = LoggerFactory.getLogger(DeductionRest.class);
-
     public static final String FILTER_TABLE = "**,employee[id,-salaries,person[id,nickname,name,mobile]]";
-
+    private final static Logger log = LoggerFactory.getLogger(DeductionRest.class);
     @Autowired
     private DeductionService deductionService;
 

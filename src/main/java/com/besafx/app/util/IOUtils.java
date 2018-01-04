@@ -1,4 +1,5 @@
 package com.besafx.app.util;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;

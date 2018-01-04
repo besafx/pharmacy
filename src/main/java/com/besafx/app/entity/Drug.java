@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -52,43 +51,50 @@ public class Drug implements Serializable {
     @OneToMany(mappedBy = "drug", fetch = FetchType.LAZY)
     private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
+    @JsonCreator
+    public static Drug Create(String jsonString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Drug drug = mapper.readValue(jsonString, Drug.class);
+        return drug;
+    }
+
     public double getTransactionBuysSum() {
-        try{
+        try {
             return this.transactionBuys
                     .stream()
                     .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitBuyCost())
                     .sum();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public double getTransactionSellsSum() {
-        try{
+        try {
             return this.transactionBuys
                     .stream()
                     .mapToDouble(TransactionBuy::getSalesTotalCost)
                     .sum();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public double getBillBuyDiscountSum() {
-        try{
+        try {
             return this.transactionBuys
                     .stream()
                     .map(TransactionBuy::getBillBuy)
                     .distinct()
                     .mapToDouble(BillBuy::getDiscount)
                     .sum();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public double getBillSellDiscountSum() {
-        try{
+        try {
             return this.transactionBuys
                     .stream()
                     .flatMap(transactionBuy -> transactionBuy.getTransactionSells().stream())
@@ -96,16 +102,8 @@ public class Drug implements Serializable {
                     .distinct()
                     .mapToDouble(BillSell::getDiscount)
                     .sum();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
-    }
-
-
-    @JsonCreator
-    public static Drug Create(String jsonString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        Drug drug = mapper.readValue(jsonString, Drug.class);
-        return drug;
     }
 }

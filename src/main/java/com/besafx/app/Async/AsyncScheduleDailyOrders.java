@@ -26,7 +26,7 @@ public class AsyncScheduleDailyOrders {
     @Autowired
     private OrderService orderService;
 
-    @Async("ByteGenerate")
+    @Async("threadMultiplePool")
     public Future<byte[]> getFile(String timeType) throws Exception {
         StringBuilder title = new StringBuilder();
         switch (timeType) {

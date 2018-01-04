@@ -24,10 +24,8 @@ import java.security.Principal;
 @RequestMapping(value = "/api/fund/")
 public class FundRest {
 
-    private final static Logger log = LoggerFactory.getLogger(FundRest.class);
-
     public static final String FILTER_TABLE = "**,-orderReceipts,-billSellReceipts,-fundReceipts,lastPerson[id,nickname,name]";
-
+    private final static Logger log = LoggerFactory.getLogger(FundRest.class);
     @Autowired
     private FundService fundService;
 

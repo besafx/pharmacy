@@ -1,9 +1,9 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.entity.Diagnosis;
-import com.besafx.app.entity.wrapper.DiagnosisWrapper;
 import com.besafx.app.entity.Order;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.wrapper.DiagnosisWrapper;
 import com.besafx.app.service.DiagnosisService;
 import com.besafx.app.service.OrderService;
 import com.besafx.app.service.PersonService;

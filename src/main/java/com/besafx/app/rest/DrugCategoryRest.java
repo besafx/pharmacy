@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/drugCategory/")
 public class DrugCategoryRest {
-    
+
     public static final String FILTER_TABLE = "**";
     public static final String FILTER_DRUG_CATEGORY_COMBO = "id,code,nameArabic,nameEnglish";
 

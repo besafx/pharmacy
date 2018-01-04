@@ -1,4 +1,5 @@
 package com.besafx.app.ws;
+
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.PersonService;
 import com.google.common.collect.Lists;

@@ -30,11 +30,9 @@ import java.util.List;
 @RequestMapping(value = "/api/supplier/")
 public class SupplierRest {
 
-    private final static Logger log = LoggerFactory.getLogger(SupplierRest.class);
-
     public static final String FILTER_TABLE = "**";
     public static final String FILTER_SUPPLIER_COMBO = "id,code,name,mobile";
-
+    private final static Logger log = LoggerFactory.getLogger(SupplierRest.class);
     @Autowired
     private SupplierService supplierService;
 

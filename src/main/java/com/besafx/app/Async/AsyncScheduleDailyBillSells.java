@@ -1,7 +1,6 @@
 package com.besafx.app.Async;
 
 import com.besafx.app.service.BillSellService;
-import com.besafx.app.service.OrderService;
 import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.*;
 import org.joda.time.DateTime;
@@ -27,7 +26,7 @@ public class AsyncScheduleDailyBillSells {
     @Autowired
     private BillSellService billSellService;
 
-    @Async("ByteGenerate")
+    @Async("threadMultiplePool")
     public Future<byte[]> getFile(String timeType) throws Exception {
         StringBuilder title = new StringBuilder();
         switch (timeType) {

@@ -14,8 +14,8 @@ public class QuickEmail {
     @Autowired
     private EmailSender emailSender;
 
-    public void send(String subject, List<String> emails, String title, String subTitle, String body, String buttonLink, String buttonText){
-        try{
+    public void send(String subject, List<String> emails, String title, String subTitle, String body, String buttonLink, String buttonText) {
+        try {
             ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/MESSAGE.html");
             String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
             message = message.replaceAll("MESSAGE_TITLE", title);
@@ -24,7 +24,7 @@ public class QuickEmail {
             message = message.replaceAll("MESSAGE_BUTTON_LINK", buttonLink);
             message = message.replaceAll("MESSAGE_BUTTON_TEXT", buttonText);
             emailSender.send(subject, message, emails).get();
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
         }
     }

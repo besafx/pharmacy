@@ -1,10 +1,10 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.Person;
 import com.besafx.app.entity.DeductionType;
-import com.besafx.app.service.PersonService;
+import com.besafx.app.entity.Person;
 import com.besafx.app.service.DeductionTypeService;
+import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -28,10 +28,8 @@ import java.util.List;
 @RequestMapping(value = "/api/deductionType/")
 public class DeductionTypeRest {
 
-    private final static Logger log = LoggerFactory.getLogger(DeductionTypeRest.class);
-
     public static final String FILTER_TABLE = "**";
-
+    private final static Logger log = LoggerFactory.getLogger(DeductionTypeRest.class);
     @Autowired
     private DeductionTypeService deductionTypeService;
 

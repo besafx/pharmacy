@@ -276,7 +276,8 @@ app.factory("progressBarService", function () {
     }
 
     function n(a) {
-        var b = A(a), c = b.year || 0, d = b.quarter || 0, e = b.month || 0, f = b.week || 0, g = b.day || 0, h = b.hour || 0, i = b.minute || 0, j = b.second || 0, k = b.millisecond || 0;
+        var b = A(a), c = b.year || 0, d = b.quarter || 0, e = b.month || 0, f = b.week || 0, g = b.day || 0,
+            h = b.hour || 0, i = b.minute || 0, j = b.second || 0, k = b.millisecond || 0;
         this._milliseconds = +k + 1e3 * j + 6e4 * i + 36e5 * h, this._days = +g + 7 * f, this._months = +e + 3 * d + 12 * c, this._data = {}, this._locale = vb.localeData(), this._bubble()
     }
 
@@ -352,7 +353,7 @@ app.factory("progressBarService", function () {
 
     function B(b) {
         var c, d;
-        if (0 === b.indexOf("week"))c = 7, d = "day"; else {
+        if (0 === b.indexOf("week")) c = 7, d = "day"; else {
             if (0 !== b.indexOf("month"))return;
             c = 12, d = "month"
         }
@@ -536,7 +537,8 @@ app.factory("progressBarService", function () {
 
     function S(a) {
         a = a || "";
-        var b = a.match(Xb) || [], c = b[b.length - 1] || [], d = (c + "").match(jc) || ["-", 0, 0], e = +(60 * d[1]) + C(d[2]);
+        var b = a.match(Xb) || [], c = b[b.length - 1] || [], d = (c + "").match(jc) || ["-", 0, 0],
+            e = +(60 * d[1]) + C(d[2]);
         return "+" === d[0] ? e : -e
     }
 
@@ -735,7 +737,9 @@ app.factory("progressBarService", function () {
     }
 
     function ib(a, b, c) {
-        var d = vb.duration(a).abs(), e = Ab(d.as("s")), f = Ab(d.as("m")), g = Ab(d.as("h")), h = Ab(d.as("d")), i = Ab(d.as("M")), j = Ab(d.as("y")), k = e < oc.s && ["s", e] || 1 === f && ["m"] || f < oc.m && ["mm", f] || 1 === g && ["h"] || g < oc.h && ["hh", g] || 1 === h && ["d"] || h < oc.d && ["dd", h] || 1 === i && ["M"] || i < oc.M && ["MM", i] || 1 === j && ["y"] || ["yy", j];
+        var d = vb.duration(a).abs(), e = Ab(d.as("s")), f = Ab(d.as("m")), g = Ab(d.as("h")), h = Ab(d.as("d")),
+            i = Ab(d.as("M")), j = Ab(d.as("y")),
+            k = e < oc.s && ["s", e] || 1 === f && ["m"] || f < oc.m && ["mm", f] || 1 === g && ["h"] || g < oc.h && ["hh", g] || 1 === h && ["d"] || h < oc.d && ["dd", h] || 1 === i && ["M"] || i < oc.M && ["MM", i] || 1 === j && ["y"] || ["yy", j];
         return k[2] = b, k[3] = +a > 0, k[4] = c, hb.apply({}, k)
     }
 
@@ -804,129 +808,146 @@ app.factory("progressBarService", function () {
         "undefined" == typeof ender && (wb = zb.moment, zb.moment = a ? f("Accessing Moment through the global scope is deprecated, and will be removed in an upcoming release.", vb) : vb)
     }
 
-    for (var vb, wb, xb, yb = "2.9.0", zb = "undefined" == typeof global || "undefined" != typeof window && window !== global.window ? this : global, Ab = Math.round, Bb = Object.prototype.hasOwnProperty, Cb = 0, Db = 1, Eb = 2, Fb = 3, Gb = 4, Hb = 5, Ib = 6, Jb = {}, Kb = [], Lb = "undefined" != typeof module && module && module.exports, Mb = /^\/?Date\((\-?\d+)/i, Nb = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/, Ob = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/, Pb = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Q|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|x|X|zz?|ZZ?|.)/g, Qb = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g, Rb = /\d\d?/, Sb = /\d{1,3}/, Tb = /\d{1,4}/, Ub = /[+\-]?\d{1,6}/, Vb = /\d+/, Wb = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i, Xb = /Z|[\+\-]\d\d:?\d\d/gi, Yb = /T/i, Zb = /[\+\-]?\d+/, $b = /[\+\-]?\d+(\.\d{1,3})?/, _b = /\d/, ac = /\d\d/, bc = /\d{3}/, cc = /\d{4}/, dc = /[+-]?\d{6}/, ec = /[+-]?\d+/, fc = /^\s*(?:[+-]\d{6}|\d{4})-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/, gc = "YYYY-MM-DDTHH:mm:ssZ", hc = [["YYYYYY-MM-DD", /[+-]\d{6}-\d{2}-\d{2}/], ["YYYY-MM-DD", /\d{4}-\d{2}-\d{2}/], ["GGGG-[W]WW-E", /\d{4}-W\d{2}-\d/], ["GGGG-[W]WW", /\d{4}-W\d{2}/], ["YYYY-DDD", /\d{4}-\d{3}/]], ic = [["HH:mm:ss.SSSS", /(T| )\d\d:\d\d:\d\d\.\d+/], ["HH:mm:ss", /(T| )\d\d:\d\d:\d\d/], ["HH:mm", /(T| )\d\d:\d\d/], ["HH", /(T| )\d\d/]], jc = /([\+\-]|\d\d)/gi, kc = ("Date|Hours|Minutes|Seconds|Milliseconds".split("|"), {
-        Milliseconds: 1,
-        Seconds: 1e3,
-        Minutes: 6e4,
-        Hours: 36e5,
-        Days: 864e5,
-        Months: 2592e6,
-        Years: 31536e6
-    }), lc = {
-        ms: "millisecond",
-        s: "second",
-        m: "minute",
-        h: "hour",
-        d: "day",
-        D: "date",
-        w: "week",
-        W: "isoWeek",
-        M: "month",
-        Q: "quarter",
-        y: "year",
-        DDD: "dayOfYear",
-        e: "weekday",
-        E: "isoWeekday",
-        gg: "weekYear",
-        GG: "isoWeekYear"
-    }, mc = {
-        dayofyear: "dayOfYear",
-        isoweekday: "isoWeekday",
-        isoweek: "isoWeek",
-        weekyear: "weekYear",
-        isoweekyear: "isoWeekYear"
-    }, nc = {}, oc = {
-        s: 45,
-        m: 45,
-        h: 22,
-        d: 26,
-        M: 11
-    }, pc = "DDD w W M D d".split(" "), qc = "M D H h m s w W".split(" "), rc = {
-        M: function () {
-            return this.month() + 1
-        }, MMM: function (a) {
-            return this.localeData().monthsShort(this, a)
-        }, MMMM: function (a) {
-            return this.localeData().months(this, a)
-        }, D: function () {
-            return this.date()
-        }, DDD: function () {
-            return this.dayOfYear()
-        }, d: function () {
-            return this.day()
-        }, dd: function (a) {
-            return this.localeData().weekdaysMin(this, a)
-        }, ddd: function (a) {
-            return this.localeData().weekdaysShort(this, a)
-        }, dddd: function (a) {
-            return this.localeData().weekdays(this, a)
-        }, w: function () {
-            return this.week()
-        }, W: function () {
-            return this.isoWeek()
-        }, YY: function () {
-            return r(this.year() % 100, 2)
-        }, YYYY: function () {
-            return r(this.year(), 4)
-        }, YYYYY: function () {
-            return r(this.year(), 5)
-        }, YYYYYY: function () {
-            var a = this.year(), b = a >= 0 ? "+" : "-";
-            return b + r(Math.abs(a), 6)
-        }, gg: function () {
-            return r(this.weekYear() % 100, 2)
-        }, gggg: function () {
-            return r(this.weekYear(), 4)
-        }, ggggg: function () {
-            return r(this.weekYear(), 5)
-        }, GG: function () {
-            return r(this.isoWeekYear() % 100, 2)
-        }, GGGG: function () {
-            return r(this.isoWeekYear(), 4)
-        }, GGGGG: function () {
-            return r(this.isoWeekYear(), 5)
-        }, e: function () {
-            return this.weekday()
-        }, E: function () {
-            return this.isoWeekday()
-        }, a: function () {
-            return this.localeData().meridiem(this.hours(), this.minutes(), !0)
-        }, A: function () {
-            return this.localeData().meridiem(this.hours(), this.minutes(), !1)
-        }, H: function () {
-            return this.hours()
-        }, h: function () {
-            return this.hours() % 12 || 12
-        }, m: function () {
-            return this.minutes()
-        }, s: function () {
-            return this.seconds()
-        }, S: function () {
-            return C(this.milliseconds() / 100)
-        }, SS: function () {
-            return r(C(this.milliseconds() / 10), 2)
-        }, SSS: function () {
-            return r(this.milliseconds(), 3)
-        }, SSSS: function () {
-            return r(this.milliseconds(), 3)
-        }, Z: function () {
-            var a = this.utcOffset(), b = "+";
-            return 0 > a && (a = -a, b = "-"), b + r(C(a / 60), 2) + ":" + r(C(a) % 60, 2)
-        }, ZZ: function () {
-            var a = this.utcOffset(), b = "+";
-            return 0 > a && (a = -a, b = "-"), b + r(C(a / 60), 2) + r(C(a) % 60, 2)
-        }, z: function () {
-            return this.zoneAbbr()
-        }, zz: function () {
-            return this.zoneName()
-        }, x: function () {
-            return this.valueOf()
-        }, X: function () {
-            return this.unix()
-        }, Q: function () {
-            return this.quarter()
-        }
-    }, sc = {}, tc = ["months", "monthsShort", "weekdays", "weekdaysShort", "weekdaysMin"], uc = !1; pc.length;)xb = pc.pop(), rc[xb + "o"] = i(rc[xb], xb);
+    for (var vb, wb, xb, yb = "2.9.0",
+             zb = "undefined" == typeof global || "undefined" != typeof window && window !== global.window ? this : global,
+             Ab = Math.round, Bb = Object.prototype.hasOwnProperty, Cb = 0, Db = 1, Eb = 2, Fb = 3, Gb = 4, Hb = 5,
+             Ib = 6, Jb = {}, Kb = [], Lb = "undefined" != typeof module && module && module.exports,
+             Mb = /^\/?Date\((\-?\d+)/i, Nb = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/,
+             Ob = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/,
+             Pb = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Q|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|x|X|zz?|ZZ?|.)/g,
+             Qb = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g, Rb = /\d\d?/, Sb = /\d{1,3}/, Tb = /\d{1,4}/,
+             Ub = /[+\-]?\d{1,6}/, Vb = /\d+/,
+             Wb = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i,
+             Xb = /Z|[\+\-]\d\d:?\d\d/gi, Yb = /T/i, Zb = /[\+\-]?\d+/, $b = /[\+\-]?\d+(\.\d{1,3})?/, _b = /\d/,
+             ac = /\d\d/, bc = /\d{3}/, cc = /\d{4}/, dc = /[+-]?\d{6}/, ec = /[+-]?\d+/,
+             fc = /^\s*(?:[+-]\d{6}|\d{4})-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+             gc = "YYYY-MM-DDTHH:mm:ssZ",
+             hc = [["YYYYYY-MM-DD", /[+-]\d{6}-\d{2}-\d{2}/], ["YYYY-MM-DD", /\d{4}-\d{2}-\d{2}/], ["GGGG-[W]WW-E", /\d{4}-W\d{2}-\d/], ["GGGG-[W]WW", /\d{4}-W\d{2}/], ["YYYY-DDD", /\d{4}-\d{3}/]],
+             ic = [["HH:mm:ss.SSSS", /(T| )\d\d:\d\d:\d\d\.\d+/], ["HH:mm:ss", /(T| )\d\d:\d\d:\d\d/], ["HH:mm", /(T| )\d\d:\d\d/], ["HH", /(T| )\d\d/]],
+             jc = /([\+\-]|\d\d)/gi, kc = ("Date|Hours|Minutes|Seconds|Milliseconds".split("|"), {
+            Milliseconds: 1,
+            Seconds: 1e3,
+            Minutes: 6e4,
+            Hours: 36e5,
+            Days: 864e5,
+            Months: 2592e6,
+            Years: 31536e6
+        }), lc = {
+            ms: "millisecond",
+            s: "second",
+            m: "minute",
+            h: "hour",
+            d: "day",
+            D: "date",
+            w: "week",
+            W: "isoWeek",
+            M: "month",
+            Q: "quarter",
+            y: "year",
+            DDD: "dayOfYear",
+            e: "weekday",
+            E: "isoWeekday",
+            gg: "weekYear",
+            GG: "isoWeekYear"
+        }, mc = {
+            dayofyear: "dayOfYear",
+            isoweekday: "isoWeekday",
+            isoweek: "isoWeek",
+            weekyear: "weekYear",
+            isoweekyear: "isoWeekYear"
+        }, nc = {}, oc = {
+            s: 45,
+            m: 45,
+            h: 22,
+            d: 26,
+            M: 11
+        }, pc = "DDD w W M D d".split(" "), qc = "M D H h m s w W".split(" "), rc = {
+            M: function () {
+                return this.month() + 1
+            }, MMM: function (a) {
+                return this.localeData().monthsShort(this, a)
+            }, MMMM: function (a) {
+                return this.localeData().months(this, a)
+            }, D: function () {
+                return this.date()
+            }, DDD: function () {
+                return this.dayOfYear()
+            }, d: function () {
+                return this.day()
+            }, dd: function (a) {
+                return this.localeData().weekdaysMin(this, a)
+            }, ddd: function (a) {
+                return this.localeData().weekdaysShort(this, a)
+            }, dddd: function (a) {
+                return this.localeData().weekdays(this, a)
+            }, w: function () {
+                return this.week()
+            }, W: function () {
+                return this.isoWeek()
+            }, YY: function () {
+                return r(this.year() % 100, 2)
+            }, YYYY: function () {
+                return r(this.year(), 4)
+            }, YYYYY: function () {
+                return r(this.year(), 5)
+            }, YYYYYY: function () {
+                var a = this.year(), b = a >= 0 ? "+" : "-";
+                return b + r(Math.abs(a), 6)
+            }, gg: function () {
+                return r(this.weekYear() % 100, 2)
+            }, gggg: function () {
+                return r(this.weekYear(), 4)
+            }, ggggg: function () {
+                return r(this.weekYear(), 5)
+            }, GG: function () {
+                return r(this.isoWeekYear() % 100, 2)
+            }, GGGG: function () {
+                return r(this.isoWeekYear(), 4)
+            }, GGGGG: function () {
+                return r(this.isoWeekYear(), 5)
+            }, e: function () {
+                return this.weekday()
+            }, E: function () {
+                return this.isoWeekday()
+            }, a: function () {
+                return this.localeData().meridiem(this.hours(), this.minutes(), !0)
+            }, A: function () {
+                return this.localeData().meridiem(this.hours(), this.minutes(), !1)
+            }, H: function () {
+                return this.hours()
+            }, h: function () {
+                return this.hours() % 12 || 12
+            }, m: function () {
+                return this.minutes()
+            }, s: function () {
+                return this.seconds()
+            }, S: function () {
+                return C(this.milliseconds() / 100)
+            }, SS: function () {
+                return r(C(this.milliseconds() / 10), 2)
+            }, SSS: function () {
+                return r(this.milliseconds(), 3)
+            }, SSSS: function () {
+                return r(this.milliseconds(), 3)
+            }, Z: function () {
+                var a = this.utcOffset(), b = "+";
+                return 0 > a && (a = -a, b = "-"), b + r(C(a / 60), 2) + ":" + r(C(a) % 60, 2)
+            }, ZZ: function () {
+                var a = this.utcOffset(), b = "+";
+                return 0 > a && (a = -a, b = "-"), b + r(C(a / 60), 2) + r(C(a) % 60, 2)
+            }, z: function () {
+                return this.zoneAbbr()
+            }, zz: function () {
+                return this.zoneName()
+            }, x: function () {
+                return this.valueOf()
+            }, X: function () {
+                return this.unix()
+            }, Q: function () {
+                return this.quarter()
+            }
+        }, sc = {}, tc = ["months", "monthsShort", "weekdays", "weekdaysShort", "weekdaysMin"],
+             uc = !1; pc.length;)xb = pc.pop(), rc[xb + "o"] = i(rc[xb], xb);
     for (; qc.length;)xb = qc.pop(), rc[xb + xb] = h(rc[xb], 2);
     rc.DDDD = h(rc.DDD, 3), o(l.prototype, {
         set: function (a) {
@@ -1183,7 +1204,8 @@ app.factory("progressBarService", function () {
             return this.from(vb(), a)
         },
         calendar: function (a) {
-            var b = a || vb(), c = M(b, this).startOf("day"), d = this.diff(c, "days", !0), e = -6 > d ? "sameElse" : -1 > d ? "lastWeek" : 0 > d ? "lastDay" : 1 > d ? "sameDay" : 2 > d ? "nextDay" : 7 > d ? "nextWeek" : "sameElse";
+            var b = a || vb(), c = M(b, this).startOf("day"), d = this.diff(c, "days", !0),
+                e = -6 > d ? "sameElse" : -1 > d ? "lastWeek" : 0 > d ? "lastDay" : 1 > d ? "sameDay" : 2 > d ? "nextDay" : 7 > d ? "nextWeek" : "sameElse";
             return this.format(this.localeData().calendar(e, this, vb(b)))
         },
         isLeapYear: function () {
@@ -1385,7 +1407,9 @@ app.factory("progressBarService", function () {
             return this.toISOString()
         }),
         toISOString: function () {
-            var a = Math.abs(this.years()), b = Math.abs(this.months()), c = Math.abs(this.days()), d = Math.abs(this.hours()), e = Math.abs(this.minutes()), f = Math.abs(this.seconds() + this.milliseconds() / 1e3);
+            var a = Math.abs(this.years()), b = Math.abs(this.months()), c = Math.abs(this.days()),
+                d = Math.abs(this.hours()), e = Math.abs(this.minutes()),
+                f = Math.abs(this.seconds() + this.milliseconds() / 1e3);
             return this.asSeconds() ? (this.asSeconds() < 0 ? "-" : "") + "P" + (a ? a + "Y" : "") + (b ? b + "M" : "") + (c ? c + "D" : "") + (d || e || f ? "T" : "") + (d ? d + "H" : "") + (e ? e + "M" : "") + (f ? f + "S" : "") : "P0D"
         },
         localeData: function () {
@@ -1629,31 +1653,32 @@ app.factory("progressBarService", function () {
         a(vb)
     }(function (a) {
         var b = {1: "١", 2: "٢", 3: "٣", 4: "٤", 5: "٥", 6: "٦", 7: "٧", 8: "٨", 9: "٩", 0: "٠"}, c = {
-            "١": "1",
-            "٢": "2",
-            "٣": "3",
-            "٤": "4",
-            "٥": "5",
-            "٦": "6",
-            "٧": "7",
-            "٨": "8",
-            "٩": "9",
-            "٠": "0"
-        }, d = function (a) {
-            return 0 === a ? 0 : 1 === a ? 1 : 2 === a ? 2 : a % 100 >= 3 && 10 >= a % 100 ? 3 : a % 100 >= 11 ? 4 : 5
-        }, e = {
-            s: ["أقل من ثانية", "ثانية واحدة", ["ثانيتان", "ثانيتين"], "%d ثوان", "%d ثانية", "%d ثانية"],
-            m: ["أقل من دقيقة", "دقيقة واحدة", ["دقيقتان", "دقيقتين"], "%d دقائق", "%d دقيقة", "%d دقيقة"],
-            h: ["أقل من ساعة", "ساعة واحدة", ["ساعتان", "ساعتين"], "%d ساعات", "%d ساعة", "%d ساعة"],
-            d: ["أقل من يوم", "يوم واحد", ["يومان", "يومين"], "%d أيام", "%d يومًا", "%d يوم"],
-            M: ["أقل من شهر", "شهر واحد", ["شهران", "شهرين"], "%d أشهر", "%d شهرا", "%d شهر"],
-            y: ["أقل من عام", "عام واحد", ["عامان", "عامين"], "%d أعوام", "%d عامًا", "%d عام"]
-        }, f = function (a) {
-            return function (b, c) {
-                var f = d(b), g = e[a][d(b)];
-                return 2 === f && (g = g[c ? 0 : 1]), g.replace(/%d/i, b)
-            }
-        }, g = ["كانون الثاني يناير", "شباط فبراير", "آذار مارس", "نيسان أبريل", "أيار مايو", "حزيران يونيو", "تموز يوليو", "آب أغسطس", "أيلول سبتمبر", "تشرين الأول أكتوبر", "تشرين الثاني نوفمبر", "كانون الأول ديسمبر"];
+                "١": "1",
+                "٢": "2",
+                "٣": "3",
+                "٤": "4",
+                "٥": "5",
+                "٦": "6",
+                "٧": "7",
+                "٨": "8",
+                "٩": "9",
+                "٠": "0"
+            }, d = function (a) {
+                return 0 === a ? 0 : 1 === a ? 1 : 2 === a ? 2 : a % 100 >= 3 && 10 >= a % 100 ? 3 : a % 100 >= 11 ? 4 : 5
+            }, e = {
+                s: ["أقل من ثانية", "ثانية واحدة", ["ثانيتان", "ثانيتين"], "%d ثوان", "%d ثانية", "%d ثانية"],
+                m: ["أقل من دقيقة", "دقيقة واحدة", ["دقيقتان", "دقيقتين"], "%d دقائق", "%d دقيقة", "%d دقيقة"],
+                h: ["أقل من ساعة", "ساعة واحدة", ["ساعتان", "ساعتين"], "%d ساعات", "%d ساعة", "%d ساعة"],
+                d: ["أقل من يوم", "يوم واحد", ["يومان", "يومين"], "%d أيام", "%d يومًا", "%d يوم"],
+                M: ["أقل من شهر", "شهر واحد", ["شهران", "شهرين"], "%d أشهر", "%d شهرا", "%d شهر"],
+                y: ["أقل من عام", "عام واحد", ["عامان", "عامين"], "%d أعوام", "%d عامًا", "%d عام"]
+            }, f = function (a) {
+                return function (b, c) {
+                    var f = d(b), g = e[a][d(b)];
+                    return 2 === f && (g = g[c ? 0 : 1]), g.replace(/%d/i, b)
+                }
+            },
+            g = ["كانون الثاني يناير", "شباط فبراير", "آذار مارس", "نيسان أبريل", "أيار مايو", "حزيران يونيو", "تموز يوليو", "آب أغسطس", "أيلول سبتمبر", "تشرين الأول أكتوبر", "تشرين الثاني نوفمبر", "كانون الأول ديسمبر"];
         return a.defineLocale("ar", {
             months: g,
             monthsShort: g,
@@ -2351,7 +2376,8 @@ app.factory("progressBarService", function () {
             }
         }
 
-        var d = "leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec".split("_"), e = "led_úno_bře_dub_kvě_čvn_čvc_srp_zář_říj_lis_pro".split("_");
+        var d = "leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec".split("_"),
+            e = "led_úno_bře_dub_kvě_čvn_čvc_srp_zář_říj_lis_pro".split("_");
         return a.defineLocale("cs", {
             months: d,
             monthsShort: e,
@@ -2513,7 +2539,8 @@ app.factory("progressBarService", function () {
             },
             ordinalParse: /\d{1,2}(fed|ain|af|il|ydd|ed|eg)/,
             ordinal: function (a) {
-                var b = a, c = "", d = ["", "af", "il", "ydd", "ydd", "ed", "ed", "ed", "fed", "fed", "fed", "eg", "fed", "eg", "eg", "fed", "eg", "eg", "fed", "eg", "fed"];
+                var b = a, c = "",
+                    d = ["", "af", "il", "ydd", "ydd", "ed", "ed", "ed", "fed", "fed", "fed", "eg", "fed", "eg", "eg", "fed", "eg", "eg", "fed", "eg", "fed"];
                 return b > 20 ? c = 40 === b || 50 === b || 60 === b || 80 === b || 100 === b ? "fed" : "ain" : b > 0 && (c = d[b]), a + c
             },
             week: {dow: 1, doy: 4}
@@ -2786,7 +2813,8 @@ app.factory("progressBarService", function () {
             },
             ordinalParse: /\d{1,2}(st|nd|rd|th)/,
             ordinal: function (a) {
-                var b = a % 10, c = 1 === ~~(a % 100 / 10) ? "th" : 1 === b ? "st" : 2 === b ? "nd" : 3 === b ? "rd" : "th";
+                var b = a % 10,
+                    c = 1 === ~~(a % 100 / 10) ? "th" : 1 === b ? "st" : 2 === b ? "nd" : 3 === b ? "rd" : "th";
                 return a + c
             },
             week: {dow: 1, doy: 4}
@@ -2833,7 +2861,8 @@ app.factory("progressBarService", function () {
             },
             ordinalParse: /\d{1,2}(st|nd|rd|th)/,
             ordinal: function (a) {
-                var b = a % 10, c = 1 === ~~(a % 100 / 10) ? "th" : 1 === b ? "st" : 2 === b ? "nd" : 3 === b ? "rd" : "th";
+                var b = a % 10,
+                    c = 1 === ~~(a % 100 / 10) ? "th" : 1 === b ? "st" : 2 === b ? "nd" : 3 === b ? "rd" : "th";
                 return a + c
             }
         })
@@ -2879,7 +2908,8 @@ app.factory("progressBarService", function () {
             },
             ordinalParse: /\d{1,2}(st|nd|rd|th)/,
             ordinal: function (a) {
-                var b = a % 10, c = 1 === ~~(a % 100 / 10) ? "th" : 1 === b ? "st" : 2 === b ? "nd" : 3 === b ? "rd" : "th";
+                var b = a % 10,
+                    c = 1 === ~~(a % 100 / 10) ? "th" : 1 === b ? "st" : 2 === b ? "nd" : 3 === b ? "rd" : "th";
                 return a + c
             },
             week: {dow: 1, doy: 4}
@@ -2938,7 +2968,8 @@ app.factory("progressBarService", function () {
     }), function (a) {
         a(vb)
     }(function (a) {
-        var b = "ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.".split("_"), c = "ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic".split("_");
+        var b = "ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.".split("_"),
+            c = "ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic".split("_");
         return a.defineLocale("es", {
             months: "enero_febrero_marzo_abril_mayo_junio_julio_agosto_septiembre_octubre_noviembre_diciembre".split("_"),
             monthsShort: function (a, d) {
@@ -3208,7 +3239,8 @@ app.factory("progressBarService", function () {
             return 10 > a ? b ? e[a] : d[a] : a
         }
 
-        var d = "nolla yksi kaksi kolme neljä viisi kuusi seitsemän kahdeksan yhdeksän".split(" "), e = ["nolla", "yhden", "kahden", "kolmen", "neljän", "viiden", "kuuden", d[7], d[8], d[9]];
+        var d = "nolla yksi kaksi kolme neljä viisi kuusi seitsemän kahdeksan yhdeksän".split(" "),
+            e = ["nolla", "yhden", "kahden", "kolmen", "neljän", "viiden", "kuuden", d[7], d[8], d[9]];
         return a.defineLocale("fi", {
             months: "tammikuu_helmikuu_maaliskuu_huhtikuu_toukokuu_kesäkuu_heinäkuu_elokuu_syyskuu_lokakuu_marraskuu_joulukuu".split("_"),
             monthsShort: "tammi_helmi_maalis_huhti_touko_kesä_heinä_elo_syys_loka_marras_joulu".split("_"),
@@ -3392,7 +3424,8 @@ app.factory("progressBarService", function () {
     }), function (a) {
         a(vb)
     }(function (a) {
-        var b = "jan._feb._mrt._apr._mai_jun._jul._aug._sep._okt._nov._des.".split("_"), c = "jan_feb_mrt_apr_mai_jun_jul_aug_sep_okt_nov_des".split("_");
+        var b = "jan._feb._mrt._apr._mai_jun._jul._aug._sep._okt._nov._des.".split("_"),
+            c = "jan_feb_mrt_apr_mai_jun_jul_aug_sep_okt_nov_des".split("_");
         return a.defineLocale("fy", {
             months: "jannewaris_febrewaris_maart_april_maaie_juny_july_augustus_septimber_oktober_novimber_desimber".split("_"),
             monthsShort: function (a, d) {
@@ -4889,7 +4922,8 @@ app.factory("progressBarService", function () {
     }), function (a) {
         a(vb)
     }(function (a) {
-        var b = "jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.".split("_"), c = "jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec".split("_");
+        var b = "jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.".split("_"),
+            c = "jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec".split("_");
         return a.defineLocale("nl", {
             months: "januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december".split("_"),
             monthsShort: function (a, d) {
@@ -5004,7 +5038,8 @@ app.factory("progressBarService", function () {
             }
         }
 
-        var d = "styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień".split("_"), e = "stycznia_lutego_marca_kwietnia_maja_czerwca_lipca_sierpnia_września_października_listopada_grudnia".split("_");
+        var d = "styczeń_luty_marzec_kwiecień_maj_czerwiec_lipiec_sierpień_wrzesień_październik_listopad_grudzień".split("_"),
+            e = "stycznia_lutego_marca_kwietnia_maja_czerwca_lipca_sierpnia_września_października_listopada_grudnia".split("_");
         return a.defineLocale("pl", {
             months: function (a, b) {
                 return /D MMMM/.test(b) ? e[a.month()] : d[a.month()]
@@ -5358,7 +5393,8 @@ app.factory("progressBarService", function () {
             }
         }
 
-        var d = "január_február_marec_apríl_máj_jún_júl_august_september_október_november_december".split("_"), e = "jan_feb_mar_apr_máj_jún_júl_aug_sep_okt_nov_dec".split("_");
+        var d = "január_február_marec_apríl_máj_jún_júl_august_september_október_november_december".split("_"),
+            e = "jan_feb_mar_apr_máj_jún_júl_aug_sep_okt_nov_dec".split("_");
         return a.defineLocale("sk", {
             months: d,
             monthsShort: e,
@@ -6086,10 +6122,11 @@ app.factory("progressBarService", function () {
 
         function e(a, b) {
             var c = {
-                nominative: "неділя_понеділок_вівторок_середа_четвер_п’ятниця_субота".split("_"),
-                accusative: "неділю_понеділок_вівторок_середу_четвер_п’ятницю_суботу".split("_"),
-                genitive: "неділі_понеділка_вівторка_середи_четверга_п’ятниці_суботи".split("_")
-            }, d = /(\[[ВвУу]\]) ?dddd/.test(b) ? "accusative" : /\[?(?:минулої|наступної)? ?\] ?dddd/.test(b) ? "genitive" : "nominative";
+                    nominative: "неділя_понеділок_вівторок_середа_четвер_п’ятниця_субота".split("_"),
+                    accusative: "неділю_понеділок_вівторок_середу_четвер_п’ятницю_суботу".split("_"),
+                    genitive: "неділі_понеділка_вівторка_середи_четверга_п’ятниці_суботи".split("_")
+                },
+                d = /(\[[ВвУу]\]) ?dddd/.test(b) ? "accusative" : /\[?(?:минулої|наступної)? ?\] ?dddd/.test(b) ? "genitive" : "nominative";
             return c[d][a.day()]
         }
 

@@ -3,7 +3,6 @@ package com.besafx.app.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
@@ -48,28 +47,28 @@ public class OrderDetectionType implements Serializable {
     @OneToMany(mappedBy = "orderDetectionType", fetch = FetchType.LAZY)
     private List<OrderDetectionTypeAttach> orderDetectionTypeAttaches = new ArrayList<>();
 
-    public String getConditionInArabic(){
-       try{
-           return this.done ? "تم التشخيص" : "غير مُشخص";
-       }catch (Exception ex){
-           this.done = false;
-           return getConditionInArabic();
-       }
-    }
-
-    public String getConditionInEnglish(){
-        try{
-            return this.done ? "Done" : "Pending";
-        }catch (Exception ex){
-            this.done = false;
-            return getConditionInEnglish();
-        }
-    }
-
     @JsonCreator
     public static OrderDetectionType Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         OrderDetectionType orderDetectionType = mapper.readValue(jsonString, OrderDetectionType.class);
         return orderDetectionType;
+    }
+
+    public String getConditionInArabic() {
+        try {
+            return this.done ? "تم التشخيص" : "غير مُشخص";
+        } catch (Exception ex) {
+            this.done = false;
+            return getConditionInArabic();
+        }
+    }
+
+    public String getConditionInEnglish() {
+        try {
+            return this.done ? "Done" : "Pending";
+        } catch (Exception ex) {
+            this.done = false;
+            return getConditionInEnglish();
+        }
     }
 }

@@ -91,7 +91,7 @@ public class OrderAttachRest {
                     .build(), principal.getName());
 
             return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderAttachService.save(orderAttach));
-        }else{
+        } else {
             return null;
         }
     }
@@ -123,7 +123,7 @@ public class OrderAttachRest {
                         .build(), principal.getName());
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
     }

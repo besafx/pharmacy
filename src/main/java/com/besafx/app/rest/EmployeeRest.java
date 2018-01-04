@@ -1,7 +1,6 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.Doctor;
 import com.besafx.app.entity.Employee;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.EmployeeService;
@@ -31,11 +30,9 @@ import java.util.List;
 @RequestMapping(value = "/api/employee/")
 public class EmployeeRest {
 
-    private final static Logger log = LoggerFactory.getLogger(EmployeeRest.class);
-
     public static final String FILTER_TABLE = "**,salaries[id],person[**,-hiddenPassword,team[id]]";
     public static final String FILTER_EMPLOYEE_COMBO = "**,-salaries,person[id,nickname,name,mobile]";
-
+    private final static Logger log = LoggerFactory.getLogger(EmployeeRest.class);
     @Autowired
     private EmployeeService employeeService;
 
@@ -128,7 +125,7 @@ public class EmployeeRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_EMPLOYEE_UPDATE')")
     @Transactional
-    public String setGUILang(@PathVariable(value = "employeeId") Long employeeId, @PathVariable(value = "lang") String lang,  Principal principal) {
+    public String setGUILang(@PathVariable(value = "employeeId") Long employeeId, @PathVariable(value = "lang") String lang, Principal principal) {
         Employee employee = employeeService.findOne(employeeId);
         Options options = JSONConverter.toObject(employee.getPerson().getOptions(), Options.class);
         options.setLang(lang);
@@ -141,7 +138,7 @@ public class EmployeeRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_EMPLOYEE_UPDATE')")
     @Transactional
-    public String setDateType(@PathVariable(value = "employeeId") Long employeeId, @PathVariable(value = "type") String type,  Principal principal) {
+    public String setDateType(@PathVariable(value = "employeeId") Long employeeId, @PathVariable(value = "type") String type, Principal principal) {
         Employee employee = employeeService.findOne(employeeId);
         Options options = JSONConverter.toObject(employee.getPerson().getOptions(), Options.class);
         options.setDateType(type);

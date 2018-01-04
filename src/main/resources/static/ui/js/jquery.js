@@ -322,7 +322,7 @@
                 return obj + "";
             }
             return typeof obj === "object" || typeof obj === "function" ?
-            class2type[toString.call(obj)] || "object" :
+                class2type[toString.call(obj)] || "object" :
                 typeof obj;
         },
 
@@ -1291,7 +1291,7 @@
                         return a === bup || !!( bup && bup.nodeType === 1 && (
                                 adown.contains ?
                                     adown.contains(bup) :
-                                a.compareDocumentPosition && a.compareDocumentPosition(bup) & 16
+                                    a.compareDocumentPosition && a.compareDocumentPosition(bup) & 16
                             ));
                     } :
                     function (a, b) {
@@ -1872,7 +1872,7 @@
                             do {
                                 if ((elemLang = documentIsHTML ?
                                         elem.lang :
-                                    elem.getAttribute("xml:lang") || elem.getAttribute("lang"))) {
+                                        elem.getAttribute("xml:lang") || elem.getAttribute("lang"))) {
 
                                     elemLang = elemLang.toLowerCase();
                                     return elemLang === lang || elemLang.indexOf(lang + "-") === 0;
@@ -2708,7 +2708,7 @@
                 // so $("p:first").is("p:last") won't return true for a doc with two "p".
                 typeof selector === "string" && rneedsContext.test(selector) ?
                     jQuery(selector) :
-                selector || [],
+                    selector || [],
                 false
             ).length;
         }
@@ -2905,11 +2905,11 @@
                 for (cur = this[i]; cur && cur !== context; cur = cur.parentNode) {
                     // Always skip document fragments
                     if (cur.nodeType < 11 && (pos ?
-                        pos.index(cur) > -1 :
+                            pos.index(cur) > -1 :
 
                             // Don't pass non-elements to Sizzle
-                        cur.nodeType === 1 &&
-                        jQuery.find.matchesSelector(cur, selectors))) {
+                            cur.nodeType === 1 &&
+                            jQuery.find.matchesSelector(cur, selectors))) {
 
                         matched.push(cur);
                         break;
@@ -3000,7 +3000,7 @@
         },
         contents: function (elem) {
             return jQuery.nodeName(elem, "iframe") ?
-            elem.contentDocument || elem.contentWindow.document :
+                elem.contentDocument || elem.contentWindow.document :
                 jQuery.merge([], elem.childNodes);
         }
     }, function (name, fn) {
@@ -3608,7 +3608,7 @@
             false :
 
             // Nodes accept data unless otherwise specified; rejection can be conditional
-        !noData || noData !== true && elem.getAttribute("classid") === noData;
+            !noData || noData !== true && elem.getAttribute("classid") === noData;
     };
 
 
@@ -4527,7 +4527,7 @@
 
                 event.type = i > 1 ?
                     bubbleType :
-                special.bindType || type;
+                    special.bindType || type;
 
                 // jQuery handler
                 handle = ( jQuery._data(cur, "events") || {} )[event.type] && jQuery._data(cur, "handle");
@@ -4670,7 +4670,7 @@
 
                             if (matches[sel] === undefined) {
                                 matches[sel] = handleObj.needsContext ?
-                                jQuery(sel, this).index(cur) >= 0 :
+                                    jQuery(sel, this).index(cur) >= 0 :
                                     jQuery.find(sel, this, null, [cur]).length;
                             }
                             if (matches[sel]) {
@@ -4707,7 +4707,7 @@
                 this.fixHooks[type] = fixHook =
                     rmouseEvent.test(type) ? this.mouseHooks :
                         rkeyEvent.test(type) ? this.keyHooks :
-                        {};
+                            {};
             }
             copy = fixHook.props ? this.props.concat(fixHook.props) : this.props;
 
@@ -5333,8 +5333,8 @@
         return jQuery.nodeName(elem, "table") &&
         jQuery.nodeName(content.nodeType !== 11 ? content : content.firstChild, "tr") ?
 
-        elem.getElementsByTagName("tbody")[0] ||
-        elem.appendChild(elem.ownerDocument.createElement("tbody")) :
+            elem.getElementsByTagName("tbody")[0] ||
+            elem.appendChild(elem.ownerDocument.createElement("tbody")) :
             elem;
     }
 
@@ -6154,7 +6154,7 @@
             // IE returns zIndex value as an integer.
             return ret === undefined ?
                 ret :
-            ret + "";
+                ret + "";
         };
     } else if (document.documentElement.currentStyle) {
         getStyles = function (elem) {
@@ -6206,7 +6206,7 @@
             // IE returns zIndex value as an integer.
             return ret === undefined ?
                 ret :
-            ret + "" || "auto";
+                ret + "" || "auto";
         };
     }
 
@@ -6546,7 +6546,7 @@
         var matches = rnumsplit.exec(value);
         return matches ?
             // Guard against undefined "subtract", e.g., when used as in cssHooks
-        Math.max(0, matches[1] - ( subtract || 0 )) + ( matches[2] || "px" ) :
+            Math.max(0, matches[1] - ( subtract || 0 )) + ( matches[2] || "px" ) :
             value;
     }
 
@@ -6807,7 +6807,7 @@
             get: function (elem, computed) {
                 // IE uses filters for opacity
                 return ropacity.test((computed && elem.currentStyle ? elem.currentStyle.filter : elem.style.filter) || "") ?
-                ( 0.01 * parseFloat(RegExp.$1) ) + "" :
+                    ( 0.01 * parseFloat(RegExp.$1) ) + "" :
                     computed ? "1" : "";
             },
 
@@ -6841,7 +6841,7 @@
                 // otherwise, set new filter values
                 style.filter = ralpha.test(filter) ?
                     filter.replace(ralpha, opacity) :
-                filter + " " + opacity;
+                    filter + " " + opacity;
             }
         };
     }
@@ -7089,7 +7089,7 @@
                     tween.unit = unit;
                     // If a +=/-= token was provided, we're doing a relative animation
                     tween.end = parts[1] ?
-                    start + ( parts[1] + 1 ) * parts[2] :
+                        start + ( parts[1] + 1 ) * parts[2] :
                         +parts[2];
                 }
 
@@ -9132,7 +9132,7 @@
                         cacheURL.replace(rts, "$1_=" + nonce++) :
 
                         // Otherwise add one to the end
-                    cacheURL + ( rquery.test(cacheURL) ? "&" : "?" ) + "_=" + nonce++;
+                        cacheURL + ( rquery.test(cacheURL) ? "&" : "?" ) + "_=" + nonce++;
                 }
             }
 
@@ -9155,7 +9155,7 @@
             jqXHR.setRequestHeader(
                 "Accept",
                 s.dataTypes[0] && s.accepts[s.dataTypes[0]] ?
-                s.accepts[s.dataTypes[0]] + ( s.dataTypes[0] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
+                    s.accepts[s.dataTypes[0]] + ( s.dataTypes[0] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
                     s.accepts["*"]
             );
 
@@ -9552,7 +9552,7 @@
                             jQuery.map(val, function (val) {
                                 return {name: elem.name, value: val.replace(rCRLF, "\r\n")};
                             }) :
-                        {name: elem.name, value: val.replace(rCRLF, "\r\n")};
+                            {name: elem.name, value: val.replace(rCRLF, "\r\n")};
                 }).get();
         }
     });
@@ -9857,7 +9857,7 @@
         var callbackName, overwritten, responseContainer,
             jsonProp = s.jsonp !== false && ( rjsonp.test(s.url) ?
                         "url" :
-                    typeof s.data === "string" && !( s.contentType || "" ).indexOf("application/x-www-form-urlencoded") && rjsonp.test(s.data) && "data"
+                        typeof s.data === "string" && !( s.contentType || "" ).indexOf("application/x-www-form-urlencoded") && rjsonp.test(s.data) && "data"
                 );
 
         // Handle iff the expected data type is "jsonp" or we have a parameter to set
@@ -10031,7 +10031,7 @@
         return jQuery.isWindow(elem) ?
             elem :
             elem.nodeType === 9 ?
-            elem.defaultView || elem.parentWindow :
+                elem.defaultView || elem.parentWindow :
                 false;
     }
 
@@ -10207,7 +10207,7 @@
                     computed = curCSS(elem, prop);
                     // if curCSS returns percentage, fallback to offset
                     return rnumnonpx.test(computed) ?
-                    jQuery(elem).position()[prop] + "px" :
+                        jQuery(elem).position()[prop] + "px" :
                         computed;
                 }
             }

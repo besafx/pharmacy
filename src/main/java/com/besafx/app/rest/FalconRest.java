@@ -2,9 +2,7 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Falcon;
-import com.besafx.app.entity.Order;
 import com.besafx.app.entity.Person;
-import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.search.FalconSearch;
 import com.besafx.app.service.FalconService;
 import com.besafx.app.service.OrderService;

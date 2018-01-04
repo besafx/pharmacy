@@ -41,18 +41,18 @@ public class Employee implements Serializable {
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<Salary> salaries = new ArrayList<>();
 
-    public Double getPaid(){
-        try{
-            return this.salaries.stream().mapToDouble(salary -> salary.getReceipt().getAmountNumber()).sum();
-        }catch (Exception ex){
-            return null;
-        }
-    }
-
     @JsonCreator
     public static Employee Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Employee employee = mapper.readValue(jsonString, Employee.class);
         return employee;
+    }
+
+    public Double getPaid() {
+        try {
+            return this.salaries.stream().mapToDouble(salary -> salary.getReceipt().getAmountNumber()).sum();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

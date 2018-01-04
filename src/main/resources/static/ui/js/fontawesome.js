@@ -17,7 +17,8 @@ window.FontAwesomeCdnConfig = {
 };
 !function () {
     function a(a) {
-        var b, c = [], d = document, e = d.documentElement.doScroll, f = "DOMContentLoaded", g = (e ? /^loaded|^c/ : /^loaded|^i|^c/).test(d.readyState);
+        var b, c = [], d = document, e = d.documentElement.doScroll, f = "DOMContentLoaded",
+            g = (e ? /^loaded|^c/ : /^loaded|^i|^c/).test(d.readyState);
         g || d.addEventListener(f, b = function () {
             for (d.removeEventListener(f, b), g = 1; b = c.shift();)b()
         }), g ? setTimeout(a, 0) : c.push(a)
@@ -198,7 +199,7 @@ window.FontAwesomeCdnConfig = {
         }
 
         var f, g = window.document, h = g.createElement("link");
-        if (b)f = b; else {
+        if (b) f = b; else {
             var i = (g.body || g.getElementsByTagName("head")[0]).childNodes;
             f = i[i.length - 1]
         }
@@ -301,13 +302,14 @@ window.FontAwesomeCdnConfig = {
                     }
 
                     function m() {
-                        if ((new Date).getTime() - l >= i)w.parentNode && w.parentNode.removeChild(w), e(f); else {
+                        if ((new Date).getTime() - l >= i) w.parentNode && w.parentNode.removeChild(w), e(f); else {
                             var a = document.hidden;
                             !0 !== a && void 0 !== a || (q = n.a.offsetWidth, r = o.a.offsetWidth, s = p.a.offsetWidth, b()), x = setTimeout(m, 50)
                         }
                     }
 
-                    var n = new c(h), o = new c(h), p = new c(h), q = -1, r = -1, s = -1, t = -1, u = -1, v = -1, w = document.createElement("div"), x = 0;
+                    var n = new c(h), o = new c(h), p = new c(h), q = -1, r = -1, s = -1, t = -1, u = -1, v = -1,
+                        w = document.createElement("div"), x = 0;
                     w.dir = "ltr", d(n, j(f, "sans-serif")), d(o, j(f, "serif")), d(p, j(f, "monospace")), w.appendChild(n.a), w.appendChild(o.a), w.appendChild(p.a), document.body.appendChild(w), t = n.a.offsetWidth, u = o.a.offsetWidth, v = p.a.offsetWidth, m(), g(n, function (a) {
                         q = a, b()
                     }), d(n, j(f, '"' + f.family + '",sans-serif')), g(o, function (a) {
@@ -322,11 +324,13 @@ window.FontAwesomeCdnConfig = {
     var g = {
         observe: function (a, b) {
             for (var c = b.prefix, d = function (a) {
-                var b = a.weight ? "-" + a.weight : "", d = a.style ? "-" + a.style : "", e = a.className ? "-" + a.className : "", g = a.className ? "-" + a.className + b + d : "", h = document.getElementsByTagName("html")[0].classList, i = function (a) {
-                    h.add(c + e + "-" + a), h.add(c + g + "-" + a)
-                }, j = function (a) {
-                    h.remove(c + e + "-" + a), h.remove(c + g + "-" + a)
-                };
+                var b = a.weight ? "-" + a.weight : "", d = a.style ? "-" + a.style : "",
+                    e = a.className ? "-" + a.className : "", g = a.className ? "-" + a.className + b + d : "",
+                    h = document.getElementsByTagName("html")[0].classList, i = function (a) {
+                        h.add(c + e + "-" + a), h.add(c + g + "-" + a)
+                    }, j = function (a) {
+                        h.remove(c + e + "-" + a), h.remove(c + g + "-" + a)
+                    };
                 i("loading"), new f(a.familyName).load(a.testString).then(function () {
                     i("ready"), j("loading")
                 }, function () {
@@ -349,8 +353,9 @@ window.FontAwesomeCdnConfig = {
     };
     try {
         if (window.FontAwesomeCdnConfig) {
-            var j = window.FontAwesomeCdnConfig, k = j.useUrl, l = j.faCdnUrl, m = j.code, n = "FontAwesome", o = "fa", p = "ï‰€", q = d.bind(d, "fa"), r = function () {
-            };
+            var j = window.FontAwesomeCdnConfig, k = j.useUrl, l = j.faCdnUrl, m = j.code, n = "FontAwesome", o = "fa",
+                p = "ï‰€", q = d.bind(d, "fa"), r = function () {
+                };
             j.autoA11y.enabled && (a(q), c(q)), j.reporting.enabled && b(j.reporting.domains, location.host) && i.load(l + "/js/stats.js"), cssUrl = "https://" + k + "/" + m + ".css", new f(n).load(p).then(function () {
                 var a = (window.FontAwesomeHooks || {}).loaded || r;
                 a()

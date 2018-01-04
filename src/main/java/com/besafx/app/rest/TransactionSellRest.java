@@ -26,10 +26,8 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/transactionSell/")
 public class TransactionSellRest {
 
-    private final Logger log = LoggerFactory.getLogger(TransactionSellRest.class);
-
     public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]";
-
+    private final Logger log = LoggerFactory.getLogger(TransactionSellRest.class);
     @Autowired
     private TransactionSellService transactionSellService;
 
@@ -53,7 +51,7 @@ public class TransactionSellRest {
     @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
     @Transactional
     public String create(@RequestBody TransactionSell transactionSell) {
-        if(transactionSell.getBillSell().getOrder() != null){
+        if (transactionSell.getBillSell().getOrder() != null) {
             throw new CustomException("لا يمكنك اضافة حركات بيع الى فاتورة صرف علاج طلب فحص");
         }
         TransactionSell topTransactionSell = transactionSellService.findTopByOrderByCodeDesc();

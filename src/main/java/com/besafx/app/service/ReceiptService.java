@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ReceiptService extends PagingAndSortingRepository<Receipt, Long>, JpaSpecificationExecutor<Receipt> {
     Receipt findTopByOrderByCodeDesc();
+
     Receipt findByCodeAndIdIsNot(Long code, Long id);
 }
 

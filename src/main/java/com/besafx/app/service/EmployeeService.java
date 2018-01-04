@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface EmployeeService extends PagingAndSortingRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
     Employee findTopByOrderByCodeDesc();
+
     Employee findByCodeAndIdIsNot(Integer code, Long id);
+
     Employee findByPerson(Person person);
 }
 

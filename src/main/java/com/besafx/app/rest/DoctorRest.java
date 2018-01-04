@@ -22,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
@@ -31,11 +30,9 @@ import java.util.List;
 @RequestMapping(value = "/api/doctor/")
 public class DoctorRest {
 
-    private final static Logger log = LoggerFactory.getLogger(DoctorRest.class);
-
     public static final String FILTER_TABLE = "**,person[**,-hiddenPassword,team[id]]";
     public static final String FILTER_DOCTOR_COMBO = "**,person[id,nickname,name]";
-
+    private final static Logger log = LoggerFactory.getLogger(DoctorRest.class);
     @Autowired
     private DoctorService doctorService;
 
@@ -128,7 +125,7 @@ public class DoctorRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_DOCTOR_UPDATE')")
     @Transactional
-    public String setGUILang(@PathVariable(value = "doctorId") Long doctorId, @PathVariable(value = "lang") String lang,  Principal principal) {
+    public String setGUILang(@PathVariable(value = "doctorId") Long doctorId, @PathVariable(value = "lang") String lang, Principal principal) {
         Doctor doctor = doctorService.findOne(doctorId);
         Options options = JSONConverter.toObject(doctor.getPerson().getOptions(), Options.class);
         options.setLang(lang);
@@ -141,7 +138,7 @@ public class DoctorRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_DOCTOR_UPDATE')")
     @Transactional
-    public String setDateType(@PathVariable(value = "doctorId") Long doctorId, @PathVariable(value = "type") String type,  Principal principal) {
+    public String setDateType(@PathVariable(value = "doctorId") Long doctorId, @PathVariable(value = "type") String type, Principal principal) {
         Doctor doctor = doctorService.findOne(doctorId);
         Options options = JSONConverter.toObject(doctor.getPerson().getOptions(), Options.class);
         options.setDateType(type);

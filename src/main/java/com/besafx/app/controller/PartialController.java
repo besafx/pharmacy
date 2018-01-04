@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -40,9 +38,9 @@ public class PartialController {
             ModelAndView modelAndView = new ModelAndView("index");
             Person person = personService.findByEmail(principal.getName());
             Options options = JSONConverter.toObject(person.getOptions(), Options.class);
-            if(options.getLang().equals("AR")){
+            if (options.getLang().equals("AR")) {
                 modelAndView.addObject("title", "مركز السلطان للصقور | الصيدلية الذكية");
-            }else{
+            } else {
                 modelAndView.addObject("title", "SULTAN CENTER | SMART PHARMACY");
             }
             return modelAndView;

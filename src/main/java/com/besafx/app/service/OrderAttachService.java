@@ -13,7 +13,10 @@ import java.util.List;
 @Transactional
 public interface OrderAttachService extends PagingAndSortingRepository<OrderAttach, Long>, JpaSpecificationExecutor<OrderAttach> {
     List<OrderAttach> findByOrder(Order id);
+
     List<OrderAttach> findByOrderIn(List<Order> orders);
+
     List<OrderAttach> findByOrderId(Long id);
+
     List<OrderAttach> findByOrderIdIn(List<Long> orderIds);
 }

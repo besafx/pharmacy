@@ -28,10 +28,8 @@ import java.security.Principal;
 @RequestMapping(value = "/api/transactionBuy/")
 public class TransactionBuyRest {
 
-    private final Logger log = LoggerFactory.getLogger(TransactionBuyRest.class);
-
     public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells";
-
+    private final Logger log = LoggerFactory.getLogger(TransactionBuyRest.class);
     @Autowired
     private TransactionBuyService transactionBuyService;
 
@@ -149,16 +147,16 @@ public class TransactionBuyRest {
     @ResponseBody
     @Transactional
     public String updateQuantity(@PathVariable(value = "transactionBuyId") Long transactionBuyId,
-                               @PathVariable(value = "quantity") Double quantity) {
+                                 @PathVariable(value = "quantity") Double quantity) {
         TransactionBuy transactionBuy = transactionBuyService.findOne(transactionBuyId);
-        if(transactionBuy != null){
-            if(!transactionBuy.getTransactionSells().isEmpty()){
-               throw new CustomException("لا يمكنك التعديل فى الكميات بعد عمليات البيع");
+        if (transactionBuy != null) {
+            if (!transactionBuy.getTransactionSells().isEmpty()) {
+                throw new CustomException("لا يمكنك التعديل فى الكميات بعد عمليات البيع");
             }
             transactionBuy.setQuantity(quantity);
             transactionBuy = transactionBuyService.save(transactionBuy);
             return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionBuy);
-        }else{
+        } else {
             return null;
         }
     }

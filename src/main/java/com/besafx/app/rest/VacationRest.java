@@ -1,12 +1,10 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.Vacation;
 import com.besafx.app.entity.Person;
-import com.besafx.app.service.VacationService;
-import com.besafx.app.service.FalconService;
-import com.besafx.app.service.OrderService;
+import com.besafx.app.entity.Vacation;
 import com.besafx.app.service.PersonService;
+import com.besafx.app.service.VacationService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
@@ -20,22 +18,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/vacation/")
 public class VacationRest {
 
-    private final static Logger log = LoggerFactory.getLogger(VacationRest.class);
-
     public static final String FILTER_TABLE = "**,employee[id,-salaries,person[id,nickname,name,mobile]]";
-
+    private final static Logger log = LoggerFactory.getLogger(VacationRest.class);
     @Autowired
     private VacationService vacationService;
 
@@ -49,7 +43,7 @@ public class VacationRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_VACATION_CREATE')")
     public String create(@RequestBody Vacation vacation, Principal principal) {
-        if(vacation.getDays() >= vacation.getVacationType().getLimitInDays()){
+        if (vacation.getDays() >= vacation.getVacationType().getLimitInDays()) {
             throw new CustomException("لا يمكن تعدي الحد الأقصي لعدد الايام");
         }
         vacation = vacationService.save(vacation);
@@ -72,7 +66,7 @@ public class VacationRest {
     public String update(@RequestBody Vacation vacation, Principal principal) {
         Vacation object = vacationService.findOne(vacation.getId());
         if (object != null) {
-            if(vacation.getDays() >= vacation.getVacationType().getLimitInDays()){
+            if (vacation.getDays() >= vacation.getVacationType().getLimitInDays()) {
                 throw new CustomException("لا يمكن تعدي الحد الأقصي لعدد الايام");
             }
             vacation = vacationService.save(vacation);

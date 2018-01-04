@@ -54,7 +54,7 @@ public class ScheduleWatchOrders {
                         "طلبات فحص يوم ".concat(DateConverter.getHijriTodayDateString()),
                         Lists.newArrayList(companyService.findFirstBy().getEmail(), "islamhaker@gmail.com"),
                         "طلبات فحص يوم ".concat(DateConverter.getHijriTodayString()),
-                        "الموافق ".concat(DateConverter.getHijriTodayDateString()) ,
+                        "الموافق ".concat(DateConverter.getHijriTodayDateString()),
                         "اضغط على الزر اداناه لعرض التقرير",
                         uploadFileLinkTask.get(),
                         "تحميل التقرير");

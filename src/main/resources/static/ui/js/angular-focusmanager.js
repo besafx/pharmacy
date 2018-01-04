@@ -1571,7 +1571,7 @@
                 var f = 0, g = !1;
                 for (e = 0; e < c.length; ++e) c[e].seq && (f = Math.max(f, c[e].level));
                 for (e = 0; e < c.length; ++e) c[e].seq ? c[e].level == f && (g = !0, b[c[e].seq] = 1,
-                    x(c[e].callback, d, c[e].combo, c[e].seq)) : g || x(c[e].callback, d, c[e].combo);
+                        x(c[e].callback, d, c[e].combo, c[e].seq)) : g || x(c[e].callback, d, c[e].combo);
                 c = "keypress" == d.type && I;
                 d.type != u || w(a) || c || t(b);
                 I = g && "keydown" == d.type;

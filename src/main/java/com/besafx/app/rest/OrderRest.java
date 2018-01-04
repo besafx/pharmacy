@@ -29,12 +29,10 @@ import java.util.*;
 @RequestMapping(value = "/api/order/")
 public class OrderRest {
 
-    private final Logger log = LoggerFactory.getLogger(OrderRest.class);
-
     public static final String FILTER_TABLE = "**,orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,nickname,name],falcon[**,-orders,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
     public static final String FILTER_TABLE_DEBT = "**,-orderReceipts,lastPerson[id,nickname,name],falcon[**,-orders,customer[id,code,name]],-doctor,-diagnoses,-orderDetectionTypes,-orderAttaches";
     public static final String FILTER_ORDER_COMBO = "id,code";
-
+    private final Logger log = LoggerFactory.getLogger(OrderRest.class);
     @Autowired
     private OrderService orderService;
 
@@ -86,7 +84,7 @@ public class OrderRest {
             while (listIterator.hasNext()) {
                 OrderDetectionType orderDetectionType = listIterator.next();
                 orderDetectionType.setOrder(order);
-                if(orderDetectionType.getDone() == null){
+                if (orderDetectionType.getDone() == null) {
                     orderDetectionType.setDone(true);
                 }
                 listIterator.set(orderDetectionTypeService.save(orderDetectionType));
@@ -96,7 +94,7 @@ public class OrderRest {
             ListIterator<OrderReceipt> listIterator = order.getOrderReceipts().listIterator();
             while (listIterator.hasNext()) {
                 OrderReceipt orderReceipt = listIterator.next();
-                if(orderReceipt.getReceipt().getAmountNumber() == 0){
+                if (orderReceipt.getReceipt().getAmountNumber() == 0) {
                     log.info("تجاهل إنشاء السند لقيمته الصفرية");
                     break;
                 }

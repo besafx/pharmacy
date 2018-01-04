@@ -56,9 +56,9 @@ JSON || (JSON = {}), function () {
     function quote(a) {
         escapable.lastIndex = 0;
         return escapable.test(a) ? '"' + a.replace(escapable, function (a) {
-            var b = meta[a];
-            return typeof b == "string" ? b : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4)
-        }) + '"' : '"' + a + '"'
+                var b = meta[a];
+                return typeof b == "string" ? b : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4)
+            }) + '"' : '"' + a + '"'
     }
 
     function f(a) {
@@ -70,15 +70,17 @@ JSON || (JSON = {}), function () {
     }, String.prototype.toJSON = Number.prototype.toJSON = Boolean.prototype.toJSON = function (a) {
         return this.valueOf()
     });
-    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, gap, indent, meta = {
-        "\b": "\\b",
-        "\t": "\\t",
-        "\n": "\\n",
-        "\f": "\\f",
-        "\r": "\\r",
-        '"': '\\"',
-        "\\": "\\\\"
-    }, rep;
+    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+        escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+        gap, indent, meta = {
+            "\b": "\\b",
+            "\t": "\\t",
+            "\n": "\\n",
+            "\f": "\\f",
+            "\r": "\\r",
+            '"': '\\"',
+            "\\": "\\\\"
+        }, rep;
     typeof JSON.stringify != "function" && (JSON.stringify = function (a, b, c) {
         var d;
         gap = "", indent = "";
@@ -154,7 +156,7 @@ SockJS = (function () {
             } else {
                 delete this._listeners[eventType];
             }
-            return;
+
         }
 
     };

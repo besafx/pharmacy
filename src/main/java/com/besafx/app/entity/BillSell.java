@@ -76,22 +76,29 @@ public class BillSell implements Serializable {
     @OneToMany(mappedBy = "billSell", fetch = FetchType.LAZY)
     private List<BillSellReceipt> billSellReceipts = new ArrayList<>();
 
+    @JsonCreator
+    public static BillSell Create(String jsonString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        BillSell billSell = mapper.readValue(jsonString, BillSell.class);
+        return billSell;
+    }
+
     public Double getUnitSellCostSum() {
-        try{
+        try {
             return this.transactionSells
                     .stream()
                     .mapToDouble(transactionSell -> transactionSell.getQuantity() * transactionSell.getTransactionBuy().getUnitSellCost())
                     .sum();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return null;
         }
     }
 
     public Double getNet() {
-        try{
+        try {
             Double totalCost = this.getUnitSellCostSum();
             return totalCost - ((totalCost * this.discount) / 100);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return null;
         }
     }
@@ -116,12 +123,5 @@ public class BillSell implements Serializable {
         } catch (Exception ex) {
             return 0.0;
         }
-    }
-
-    @JsonCreator
-    public static BillSell Create(String jsonString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        BillSell billSell = mapper.readValue(jsonString, BillSell.class);
-        return billSell;
     }
 }

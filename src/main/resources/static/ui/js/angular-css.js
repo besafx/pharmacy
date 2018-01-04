@@ -55,7 +55,7 @@
             function v(a) {
                 return a ? (A[a.href] = h.matchMedia(a.media), B[a.href] = function (b) {
                     i(function () {
-                        if (b.matches)e.stylesheets.push(a); else {
+                        if (b.matches) e.stylesheets.push(a); else {
                             var c = e.stylesheets.indexOf(l("filter")(e.stylesheets, {href: a.href})[0]);
                             -1 !== c && e.stylesheets.splice(c, 1)
                         }
@@ -71,9 +71,12 @@
                 return a ? !(!a.media || -1 !== C.indexOf(a.media) || !h.matchMedia) : void(d && m.error("No stylesheet provided"))
             }
 
-            var y = {}, z = '<link ng-repeat="stylesheet in stylesheets | orderBy: \'weight\' track by $index " rel="{{ stylesheet.rel }}" type="{{ stylesheet.type }}" ng-href="{{ stylesheet.href }}" ng-attr-media="{{ stylesheet.media }}">';
+            var y = {},
+                z = '<link ng-repeat="stylesheet in stylesheets | orderBy: \'weight\' track by $index " rel="{{ stylesheet.rel }}" type="{{ stylesheet.type }}" ng-href="{{ stylesheet.href }}" ng-attr-media="{{ stylesheet.media }}">';
             z = z.replace(/{{/g, n.startSymbol()).replace(/}}/g, n.endSymbol());
-            var A = {}, B = {}, C = ["print"], D = a.extend({}, b), E = a.element(document.querySelector ? document.querySelector(D.container) : document.getElementsByTagName(D.container)[0]), F = [];
+            var A = {}, B = {}, C = ["print"], D = a.extend({}, b),
+                E = a.element(document.querySelector ? document.querySelector(D.container) : document.getElementsByTagName(D.container)[0]),
+                F = [];
             return a.forEach(c, function (a, b) {
                 a.hasOwnProperty("css") && (c[b] = s(a.css))
             }), e.stylesheets = [], E[D.method](j(z)(e)), e.$on("$directiveAdd", o), e.$on("$routeChangeSuccess", p), e.$on("$stateChangeSuccess", q), y.getFromRoute = function (b) {

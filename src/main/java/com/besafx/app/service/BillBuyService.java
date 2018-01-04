@@ -10,5 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface BillBuyService extends PagingAndSortingRepository<BillBuy, Long>, JpaSpecificationExecutor<BillBuy> {
     BillBuy findTopByOrderByCodeDesc();
+
     BillBuy findByCodeAndIdIsNot(Integer code, Long id);
 }

@@ -57,7 +57,7 @@ public class FundReceiptSearch {
         Optional.ofNullable(receiptType)
                 .ifPresent(value -> predicates.add((root, cq, cb) ->
                         cb.equal(root.get("receipt").get("receiptType"), value)));
-        
+
         Optional.ofNullable(receiptCode)
                 .ifPresent(value -> predicates.add((root, cq, cb) ->
                         cb.like(root.get("receipt").get("code").as(String.class), "%" + value + "%")));

@@ -6586,7 +6586,7 @@
 
                                 helpers.each(me.legendItems, function (legendItem, i) {
                                     var boxWidth = labelOpts.usePointStyle ?
-                                    fontSize * Math.sqrt(2) :
+                                        fontSize * Math.sqrt(2) :
                                         labelOpts.boxWidth;
 
                                     var width = boxWidth + (fontSize / 2) + ctx.measureText(legendItem.text).width;
@@ -6767,8 +6767,8 @@
                             helpers.each(me.legendItems, function (legendItem, i) {
                                 var textWidth = ctx.measureText(legendItem.text).width,
                                     width = labelOpts.usePointStyle ?
-                                    fontSize + (fontSize / 2) + textWidth :
-                                    boxWidth + (fontSize / 2) + textWidth,
+                                        fontSize + (fontSize / 2) + textWidth :
+                                        boxWidth + (fontSize / 2) + textWidth,
                                     x = cursor.x,
                                     y = cursor.y;
 
@@ -7686,7 +7686,8 @@
 
                                 var label = itemToDraw.label;
                                 if (helpers.isArray(label)) {
-                                    for (var i = 0, y = -(label.length - 1) * tickFontSize * 0.75; i < label.length; ++i) {
+                                    for (var i = 0,
+                                             y = -(label.length - 1) * tickFontSize * 0.75; i < label.length; ++i) {
                                         // We just make sure the multiline element is a string here..
                                         context.fillText('' + label[i], 0, y);
                                         // apply same lineSpacing as calculated @ L#320
@@ -9126,8 +9127,8 @@
                         var vm = this._view;
                         return vm ?
                             (vm.y < vm.base ?
-                            (mouseX >= vm.x - vm.width / 2 && mouseX <= vm.x + vm.width / 2) && (mouseY >= vm.y && mouseY <= vm.base) :
-                            (mouseX >= vm.x - vm.width / 2 && mouseX <= vm.x + vm.width / 2) && (mouseY >= vm.base && mouseY <= vm.y)) :
+                                (mouseX >= vm.x - vm.width / 2 && mouseX <= vm.x + vm.width / 2) && (mouseY >= vm.y && mouseY <= vm.base) :
+                                (mouseX >= vm.x - vm.width / 2 && mouseX <= vm.x + vm.width / 2) && (mouseY >= vm.base && mouseY <= vm.y)) :
                             false;
                     },
                     inLabelRange: function (mouseX) {

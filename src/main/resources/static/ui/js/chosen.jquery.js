@@ -346,7 +346,8 @@
         };
 
         AbstractChosen.prototype.winnow_results = function () {
-            var escapedSearchText, option, regex, results, results_group, searchText, startpos, text, zregex, _i, _len, _ref;
+            var escapedSearchText, option, regex, results, results_group, searchText, startpos, text, zregex, _i, _len,
+                _ref;
             this.no_results_clear();
             results = 0;
             searchText = this.get_search_text();

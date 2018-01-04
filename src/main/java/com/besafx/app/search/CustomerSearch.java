@@ -1,9 +1,7 @@
 package com.besafx.app.search;
 
 import com.besafx.app.entity.Customer;
-import com.besafx.app.entity.Falcon;
 import com.besafx.app.service.CustomerService;
-import com.besafx.app.service.FalconService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

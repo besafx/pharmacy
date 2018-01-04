@@ -50,7 +50,7 @@ public class ReportPersonController {
         Lists.newArrayList(companyService.findAll()).stream().findAny().ifPresent(company -> {
             map.put("COMPANY_NAME", company.getName());
             map.put("COMPANY_PHONE", "الهاتف: " + company.getPhone());
-            map.put("COMPANY_MOBILE","الجوال: " +  company.getMobile());
+            map.put("COMPANY_MOBILE", "الجوال: " + company.getMobile());
             map.put("COMPANY_FAX", "الفاكس: " + company.getFax());
             map.put("COMPANY_COMMERCIAL_REGISTER", "السجل التجاري: " + company.getCommericalRegisteration());
         });

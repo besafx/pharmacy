@@ -120,7 +120,7 @@ var saveAs = saveAs || (function (view) {
                         dispatch_all();
                         revoke(object_url);
                     }
-                    ;
+                ;
                 filesaver.readyState = filesaver.INIT;
 
                 if (can_use_save_link) {
@@ -142,7 +142,7 @@ var saveAs = saveAs || (function (view) {
             , saveAs = function (blob, name, no_auto_bom) {
                 return new FileSaver(blob, name || blob.name || "download", no_auto_bom);
             }
-            ;
+        ;
         // IE 10+ (native saveAs)
         if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
             return function (blob, name, no_auto_bom) {

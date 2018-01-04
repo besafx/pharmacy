@@ -16,8 +16,12 @@ import java.util.List;
 @Transactional
 public interface BillSellService extends PagingAndSortingRepository<BillSell, Long>, JpaSpecificationExecutor<BillSell> {
     BillSell findTopByOrderByCodeDesc();
+
     BillSell findByCodeAndIdIsNot(Integer code, Long id);
+
     List<BillSell> findByIdIn(List<Long> ids);
+
     List<BillSell> findByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+
     BillSell findByOrderAndOrderNotNull(Order order);
 }

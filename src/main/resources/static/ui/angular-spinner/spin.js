@@ -15,7 +15,9 @@
     }
 
     function c(a, b, c, d) {
-        var e = ["opacity", b, ~~(100 * a), c, d].join("-"), f = .01 + c / d * 100, g = Math.max(1 - (1 - a) / b * (100 - f), a), h = j.substring(0, j.indexOf("Animation")).toLowerCase(), i = h && "-" + h + "-" || "";
+        var e = ["opacity", b, ~~(100 * a), c, d].join("-"), f = .01 + c / d * 100,
+            g = Math.max(1 - (1 - a) / b * (100 - f), a), h = j.substring(0, j.indexOf("Animation")).toLowerCase(),
+            i = h && "-" + h + "-" || "";
         return m[e] || (k.insertRule("@" + i + "keyframes " + e + "{0%{opacity:" + g + "}" + f + "%{opacity:" + a + "}" + (f + .01) + "%{opacity:1}" + (f + b) % 100 + "%{opacity:" + a + "}100%{opacity:" + g + "}}", k.cssRules.length), m[e] = 1), e
     }
 
@@ -69,11 +71,12 @@
                 }), c("fill", {color: g(d.color, a), opacity: d.opacity}), c("stroke", {opacity: 0}))))
             }
 
-            var i, j = d.scale * (d.length + d.width), k = 2 * d.scale * j, l = -(d.width + d.length) * d.scale * 2 + "px", m = e(f(), {
-                position: "absolute",
-                top: l,
-                left: l
-            });
+            var i, j = d.scale * (d.length + d.width), k = 2 * d.scale * j,
+                l = -(d.width + d.length) * d.scale * 2 + "px", m = e(f(), {
+                    position: "absolute",
+                    top: l,
+                    left: l
+                });
             if (d.shadow)for (i = 1; i <= d.lines; i++)h(i, -2, "progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)");
             for (i = 1; i <= d.lines; i++)h(i);
             return b(a, m)
@@ -116,7 +119,8 @@
                         left: d.left,
                         top: d.top
                     }), b && b.insertBefore(f, b.firstChild || null), f.setAttribute("role", "progressbar"), c.lines(f, c.opts), !j) {
-                    var g, h = 0, i = (d.lines - 1) * (1 - d.direction) / 2, k = d.fps, l = k / d.speed, m = (1 - d.opacity) / (l * d.trail / 100), n = l / d.lines;
+                    var g, h = 0, i = (d.lines - 1) * (1 - d.direction) / 2, k = d.fps, l = k / d.speed,
+                        m = (1 - d.opacity) / (l * d.trail / 100), n = l / d.lines;
                     !function o() {
                         h++;
                         for (var a = 0; a < d.lines; a++)g = Math.max(1 - (h + (d.lines - a) * n) % l * m, d.opacity), c.opacity(f, a * d.direction + i, g, d);
