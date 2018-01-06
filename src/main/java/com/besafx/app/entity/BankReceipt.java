@@ -20,17 +20,8 @@ public class BankReceipt implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @GenericGenerator(
-            name = "bankReceiptSequenceGenerator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "BANK_RECEIPT_SEQUENCE"),
-                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
-            }
-    )
     @Id
-    @GeneratedValue(generator = "bankReceiptSequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
