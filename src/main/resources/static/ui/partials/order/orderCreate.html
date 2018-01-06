@@ -5,7 +5,8 @@
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
             <span class="fa fa-close fa-2x"></span>
         </a>
-        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+            class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
                 <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
                 <strong>{{title}}</strong>
@@ -29,7 +30,8 @@
 
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
                             <li>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
@@ -47,33 +49,52 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="form-group row">
+                            <div class="form-group row">
 
-                            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <label for="falconCode" class="control-label">
-                                    <span ng-if="lang==='AR'">رقم الصقر يحتوي على</span>
-                                    <span ng-if="lang==='EN'">Falcon Code Contains</span>
-                                </label>
-                                <input id="falconCode"
-                                       type="number"
-                                       class="form-control"
-                                       ng-change="search()"
-                                       ng-model="param.falconCode">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="falconCode" class="control-label">
+                                        <span ng-if="lang==='AR'">رقم الصقر يحتوي على</span>
+                                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
+                                    </label>
+                                    <input id="falconCode"
+                                           type="number"
+                                           class="form-control"
+                                           ng-model="param.falconCode">
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="customerName" class="control-label">
+                                        <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
+                                        <span ng-if="lang==='EN'">Customer Name Contains</span>
+                                    </label>
+                                    <input id="customerName"
+                                           type="text"
+                                           class="form-control"
+                                           ng-model="param.customerName">
+                                </div>
+
                             </div>
 
-                            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <label for="customerName" class="control-label">
-                                    <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
-                                    <span ng-if="lang==='EN'">Customer Name Contains</span>
-                                </label>
-                                <input id="customerName"
-                                       type="text"
-                                       class="form-control"
-                                       ng-change="search()"
-                                       ng-model="param.customerName">
-                            </div>
+                            <div class="form-group row">
 
-                        </div>
+                                <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                                    <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                                            tooltip-append-to-body="true"
+                                            type="button"
+                                            ng-click="search()"
+                                            class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                                        <i class="material-icons">search</i>
+                                    </button>
+                                    <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                                            tooltip-append-to-body="true"
+                                            type="reset"
+                                            ng-click="param={};"
+                                            class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+
+                            </div>
 
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="table-responsive">
@@ -121,7 +142,9 @@
                                         <td st-select-row-custom="falcon">
                                             <span>{{falcon.weight}} جرام</span>
                                         </td>
-                                        <td st-select-row-custom="falcon">{{falcon.customer.nickname}} {{falcon.customer.name}}</td>
+                                        <td st-select-row-custom="falcon">{{falcon.customer.nickname}}
+                                            {{falcon.customer.name}}
+                                        </td>
                                     </tr>
                                     <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                         ng-show="!collection1 || collection1.length ==0">
@@ -145,15 +168,17 @@
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="falcons.length > 0" >
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="falcons.length > 0">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
                             <li>
                                 <a href=""
                                    ng-click="refreshDetectionTypes()"
@@ -172,7 +197,8 @@
                         </ul>
                         <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
                             <h3 ng-if="lang==='AR'">الفحوصات المطلوبة (العميل / {{selectedFalcon.customer.name}})</h3>
-                            <h3 ng-if="lang==='EN'">Required Detections (Customer / {{selectedFalcons.customer.name}})</h3>
+                            <h3 ng-if="lang==='EN'">Required Detections (Customer /
+                                {{selectedFalcons.customer.name}})</h3>
                             <fieldset ng-if="selectedFalcon">
                                 <strong ng-if="lang==='AR'">رقم الصقر / {{selectedFalcon.code}}</strong>
                                 <strong ng-if="lang==='EN'">Falcon Code / {{selectedFalcon.code}}</strong>
@@ -289,7 +315,8 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                        <tr class="blank_row"
+                                            style="height: 10px !important; background-color: #FFFFFF;"
                                             ng-show="!collection2 || collection2.length ==0">
                                             <td colspan="5">
                                                 <span ng-if="lang==='AR'">فضلاً اختر الفحوصات المطلوبة</span>
@@ -370,7 +397,8 @@
 
                             </div>
 
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-hide="receipt.paymentMethod==='Later'">
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                 ng-hide="receipt.paymentMethod==='Later'">
                                 <label for="description" class="control-label">
                                     <span ng-if="lang==='AR'">ملاحظات الدفع</span>
                                     <span ng-if="lang==='EN'">Payment Notes</span>
@@ -391,7 +419,8 @@
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="falcons.length > 0">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
                             <li>
                                 <a href=""
                                    ng-click="refreshDoctors()"
@@ -486,10 +515,12 @@
             </div>
 
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="falcons.length > 0">
-                <input id="uploader" style="display: none" type="file" onchange="angular.element(this).scope().initFiles(this.files);" multiple/>
+                <input id="uploader" style="display: none" type="file"
+                       onchange="angular.element(this).scope().initFiles(this.files);" multiple/>
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
                             <li>
                                 <a href=""
                                    ng-if="contains(me.team.authorities, ['ROLE_ORDER_ATTACH_CREATE'])"
