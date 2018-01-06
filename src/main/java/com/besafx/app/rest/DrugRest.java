@@ -30,9 +30,11 @@ import java.util.List;
 @RequestMapping(value = "/api/drug/")
 public class DrugRest {
 
-    public static final String FILTER_TABLE = "**,drugCategory[id,code,nameArabic,nameEnglish],transactionBuys[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells]";
-    public static final String FILTER_DRUG_COMBO = "**,drugCategory[id],-transactionBuys";
     private final static Logger log = LoggerFactory.getLogger(DrugRest.class);
+
+    public static final String FILTER_TABLE = "**,drugCategory[id,code,nameArabic,nameEnglish],transactionBuys[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells]";
+    public static final String FILTER_DRUG_COMBO = "id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish";
+
     @Autowired
     private DrugService drugService;
 
