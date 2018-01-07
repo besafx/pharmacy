@@ -23,8 +23,17 @@ public class BillSell implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @GenericGenerator(
+            name = "billSellSequenceGenerator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "BILL_SELL_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "billSellSequenceGenerator")
     private Long id;
 
     private Integer code;

@@ -28,32 +28,32 @@ public class Diagnosis implements Serializable {
 
     @Transient
     private static TransactionSellService transactionSellService;
-
+    @GenericGenerator(
+            name = "diagnosisSequenceGenerator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "DIAGNOSIS_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "diagnosisSequenceGenerator")
     private Long id;
-
     private Integer code;
-
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "[usage]")
     private String usage;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-
     private Double quantity;
-
     @JoinColumn(name = "drug")
     @ManyToOne
     @OrderBy(value = "code")
     private Drug drug;
-
     @JoinColumn(name = "drugUnit")
     @ManyToOne
     private DrugUnit drugUnit;
-
     @JoinColumn(name = "[order]")
     @ManyToOne
     private Order order;

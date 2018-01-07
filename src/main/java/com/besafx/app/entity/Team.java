@@ -18,8 +18,17 @@ public class Team implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @GenericGenerator(
+            name = "teamSequenceGenerator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "TEAM_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "teamSequenceGenerator")
     private Long id;
 
     private Integer code;

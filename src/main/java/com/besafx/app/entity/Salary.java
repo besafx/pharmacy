@@ -16,8 +16,17 @@ public class Salary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @GenericGenerator(
+            name = "salarySequenceGenerator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "SALARY_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "salarySequenceGenerator")
     private Long id;
 
     @Column(length = 2)
