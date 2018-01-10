@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/order/")
@@ -136,6 +137,8 @@ public class OrderRest {
     public void delete(@PathVariable Long id, Principal principal) throws Exception {
         Order order = orderService.findOne(id);
         if (order != null) {
+            orderReceiptService.delete(order.getOrderReceipts());
+            receiptService.delete(order.getOrderReceipts().stream().map(OrderReceipt::getReceipt).collect(Collectors.toList()));
             diagnosisService.delete(order.getDiagnoses());
             orderDetectionTypeService.delete(order.getOrderDetectionTypes());
             ListIterator<OrderAttach> listIterator = order.getOrderAttaches().listIterator();
