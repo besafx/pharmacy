@@ -81,7 +81,7 @@
 			<staticText>
 				<reportElement x="180" y="80" width="200" height="20" uuid="9ad14ee5-e674-4a4d-b885-ac24f7add9af"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="Ubuntu" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SULTAN CENTER FOR HAWKS]]></text>
 			</staticText>
@@ -103,7 +103,7 @@
 			<staticText>
 				<reportElement x="0" y="10" width="130" height="20" uuid="8316d65d-ab18-4425-822d-038fc2b8114d"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+					<font fontName="Ubuntu" size="11" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Orders List:]]></text>
 			</staticText>

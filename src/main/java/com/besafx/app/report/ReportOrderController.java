@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class ReportOrderController {
@@ -100,6 +101,38 @@ public class ReportOrderController {
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         reportExporter.export("ORDERS_SUMMARY_LIST" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/orders/debt", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printOrdersDebt(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("orders", orderService
+                .findByDateBetween(
+                        new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
+                        new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+                .stream()
+                .filter(order -> order.getRemain() > 0)
+                .collect(Collectors.toList())
+        );
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("المطالبات المالية لطلبات الفحص حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
+        title.append(" ");
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/OrdersDebt.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export("ORDERS_DEBT" ,exportType, response, jasperPrint);
     }
 
     @RequestMapping(value = "/report/orders/details/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)

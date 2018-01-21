@@ -824,6 +824,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportOrdersDebtByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/order/ordersDebtByDate.html",
+            controller: "ordersDebtByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     this.openReportOrderDetailsByDateModel = function () {
         return $uibModal.open({
             animation: true,
