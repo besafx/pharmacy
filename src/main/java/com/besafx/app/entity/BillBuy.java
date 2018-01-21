@@ -1,9 +1,10 @@
 package com.besafx.app.entity;
 
-import com.besafx.app.entity.enums.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.apache.regexp.RE;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -13,9 +14,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BillBuy implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,11 +44,6 @@ public class BillBuy implements Serializable {
 
     private Double discount;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
-
-    private Integer checkCode;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
@@ -56,11 +54,36 @@ public class BillBuy implements Serializable {
     @OneToMany(mappedBy = "billBuy", fetch = FetchType.LAZY)
     private List<TransactionBuy> transactionBuys = new ArrayList<>();
 
+    @OneToMany(mappedBy = "billBuy", fetch = FetchType.LAZY)
+    private List<BillBuyReceipt> billBuyReceipts = new ArrayList<>();
+
     @JsonCreator
     public static BillBuy Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         BillBuy billBuy = mapper.readValue(jsonString, BillBuy.class);
         return billBuy;
+    }
+
+    public List<TransactionSell> findTransactionSells() {
+        try {
+            return this.transactionBuys
+                    .stream()
+                    .flatMap(transactionBuy -> transactionBuy.getTransactionSells().stream())
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Receipt> findReceipts() {
+        try {
+            return this.billBuyReceipts
+                    .stream()
+                    .map(billBuyReceipt -> billBuyReceipt.getReceipt())
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Double getUnitBuyCostSum() {
@@ -89,6 +112,22 @@ public class BillBuy implements Serializable {
         try {
             Double totalCost = this.getUnitBuyCostSum();
             return totalCost - ((totalCost * this.discount) / 100);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Double getPaid() {
+        try {
+            return this.billBuyReceipts.stream().mapToDouble(billBuyReceipt -> billBuyReceipt.getReceipt().getAmountNumber()).sum();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Double getRemain() {
+        try {
+            return this.getNet() - this.getPaid();
         } catch (Exception ex) {
             return null;
         }

@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class Options {
     private String lang;
     private String dateType;
+    private String style;
 }

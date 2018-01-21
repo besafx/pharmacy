@@ -2,18 +2,31 @@ app.controller('diagnosisCreateCtrl', ['DiagnosisService', 'DrugService', 'DrugU
     function (DiagnosisService, DrugService, DrugUnitService, OrderService, ModalProvider, $uibModal, $scope, $rootScope, $timeout, $log, $uibModalInstance, order) {
 
         $scope.buffer = {};
-
         $scope.diagnosis = {};
-
         $scope.diagnoses = [];
+        $scope.orders = [];
+        $scope.order = order;
 
         $timeout(function () {
             $scope.refreshDrugs();
-        }, 2000);
+            $scope.refreshOrders();
+        }, 800);
 
         $scope.refreshDrugs = function () {
             DrugService.findAllCombo().then(function (data) {
                 $scope.drugs = data;
+            });
+        };
+
+        $scope.refreshOrders = function () {
+            OrderService.findAllCombo().then(function (data) {
+                $scope.orders = data;
+            });
+        };
+
+        $scope.refreshOrder = function (order) {
+            OrderService.findOne(order.id).then(function (data) {
+                return $scope.order = data;
             });
         };
 
@@ -22,10 +35,6 @@ app.controller('diagnosisCreateCtrl', ['DiagnosisService', 'DrugService', 'DrugU
                 $scope.relatedPrices = data;
             });
         };
-
-        OrderService.findOne(order.id).then(function (data) {
-            $scope.order = data;
-        });
 
         $scope.addDiagnosisToList = function () {
             //Add To Table

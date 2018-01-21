@@ -1,0 +1,272 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="panel panel-body">
+
+        <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button id="doctor-menu-lower-right" style="width: 100%;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                <span ng-if="lang==='AR'">العمليات</span>
+                <span ng-if="lang==='EN'">Actions</span>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                for="doctor-menu-lower-right">
+
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="findAllDoctors()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">visibility</i>
+                        <span ng-if="lang==='AR'">عرض كل الاطباء</span>
+                        <span ng-if="lang==='EN'">Read All Doctors</span>
+                    </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item" ng-click="newDoctor();"
+                    ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE'])">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">add</i>
+                        <span ng-if="lang==='AR'">انشاء حساب طبيب جديد</span>
+                        <span ng-if="lang==='EN'">New...</span>
+                    </span>
+                </li>
+
+            </ul>
+        </div>
+        <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="toggleList=1">
+            <div class="btn-toolbar">
+                <div class="btn-group" data-toggle="buttons">
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=1"
+                            ng-class="{'active':toggleList===1}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">reorder</i>
+                    </button>
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=2"
+                            ng-class="{'active':toggleList===2}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">view_column</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="findAllDoctors()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
+                        <span class="fa fa-filter"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE'])"
+                       ng-click="newDoctor()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء حساب طبيب جديد' : 'New Doctor...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة الاطباء</h3>
+                <h3 ng-if="lang==='EN'">Doctors List</h3>
+            </div>
+        </div>
+        <div class="panel-body panel-body-table">
+
+            <div class="table-responsive">
+                <table st-table="collection" st-safe-src="doctors"
+                       class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <span>#</span>
+                        </th>
+
+                        <th st-sort="code">
+                            <span ng-if="lang==='AR'">اسم الطبيب</span>
+                            <span ng-if="lang==='EN'">Code</span>
+                        </th>
+
+                        <th st-sort="person.name">
+                            <span ng-if="lang==='AR'">اسم الطبيب</span>
+                            <span ng-if="lang==='EN'">Name</span>
+                        </th>
+
+                        <th st-sort="person.email">
+                            <span ng-if="lang==='AR'">البريد الإلكتروني</span>
+                            <span ng-if="lang==='EN'">Email</span>
+                        </th>
+
+                        <th st-sort="person.mobile">
+                            <span ng-if="lang==='AR'">الجوال</span>
+                            <span ng-if="lang==='EN'">Mobile</span>
+                        </th>
+
+                        <th st-sort="person.qualification">
+                            <span ng-if="lang==='AR'">المهنة</span>
+                            <span ng-if="lang==='EN'">Qualification</span>
+                        </th>
+
+                        <th st-sort="person.lastLoginDate">
+                            <span ng-if="lang==='AR'">تاريخ آخر دخول</span>
+                            <span ng-if="lang==='EN'">Last Login Date</span>
+                        </th>
+
+                        <th st-sort="person.ipAddress">
+                            <span ng-if="lang==='AR'">أخر عنوان دخول</span>
+                            <span ng-if="lang==='EN'">IP Address</span>
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="doctor in collection"
+                        st-select-mode="multiple"
+                        context-menu="rowMenuDoctor"
+                        ng-class="{'danger':!doctor.person.enabled}">
+                        <td st-select-row-multi="doctor">{{$index+1}}</td>
+                        <td st-select-row-multi="doctor">{{doctor.code}}</td>
+                        <td st-select-row-multi="doctor">
+                            {{doctor.person.nickname}} /  {{doctor.person.name}}
+                        </td>
+                        <td st-select-row-multi="doctor">{{doctor.person.email}}</td>
+                        <td st-select-row-multi="doctor">{{doctor.person.mobile}}</td>
+                        <td st-select-row-multi="doctor">{{doctor.person.qualification}}</td>
+                        <td st-select-row-multi="doctor">
+                            <span ng-show="dateType==='H'">{{doctor.person.lastLoginDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                            <span ng-show="dateType==='G'">{{doctor.person.lastLoginDate | date: 'yyyy-MM-dd'}}</span>
+                            {{doctor.person.lastLoginDate | date:'h:m a'}}
+                        </td>
+                        <td st-select-row-multi="doctor">{{doctor.person.ipAddress}}</td>
+                    </tr>
+                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                        ng-show="!collection || collection.length ==0">
+                        <td colspan="9">
+                            <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                            <span ng-if="lang==='EN'">No Data Found.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="findAllDoctors()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
+                        <span class="fa fa-filter"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE'])"
+                       ng-click="newDoctor()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء حساب طبيب جديد' : 'New Doctor...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة الاطباء</h3>
+                <h3 ng-if="lang==='EN'">Doctors List</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div st-table="collection2" st-safe-src="doctors">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="doctor in collection2">
+                    <!-- CONTACT ITEM -->
+                    <div class="panel panel-default">
+                        <div class="panel-body profile">
+                            <div class="profile-image">
+                                <img width="100" height="100"
+                                     src="/ui/img/no-image.jpg"
+                                     alt="{{doctor.person.name}}"/>
+                            </div>
+                            <div class="profile-data">
+                                <div class="profile-data-name">
+                                    {{doctor.person.nickname}} / {{doctor.person.name}}
+                                </div>
+                            </div>
+                            <div class="profile-controls">
+                                <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                                <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="contact-info">
+                                <p>
+                                    <strong ng-if="lang==='AR'">رقم الطبيب</strong>
+                                    <strong ng-if="lang==='EN'">Code</strong>
+                                    {{doctor.code}}
+                                </p>
+                                <hr>
+                                <p>
+                                    <strong ng-if="lang==='AR'">البريد الإلكتروني</strong>
+                                    <strong ng-if="lang==='EN'">Email</strong>
+                                    {{doctor.person.email}}
+                                </p>
+                                <hr>
+                                <p>
+                                    <strong ng-if="lang==='AR'">رقم الجوال</strong>
+                                    <strong ng-if="lang==='EN'">Phone</strong>
+                                    {{doctor.person.mobile}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <button uib-tooltip="{{lang==='AR' ? 'انشاء حساب طبيب جديد' : 'New...'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE'])"
+                                        ng-click="newDoctor();"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">add</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_UPDATE'])"
+                                        ng-click="ModalProvider.openDoctorUpdateModel(doctor)"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_DELETE'])"
+                                        ng-click="deleteDoctor(doctor)"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END CONTACT ITEM -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,381 @@
+<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
+                <h3 ng-if="lang==='EN'">The General Information</h3>
+                <span ng-if="lang==='AR'">حساب الصندوق</span>
+                <span ng-if="lang==='EN'">Fund Information</span>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-group row" ng-init="selectedFund.balance=0">
+
+                <h3>
+                    <span ng-if="lang==='AR'">الرصيد الحالي = </span>
+                    <span ng-if="lang==='EN'">Current Balance = </span>
+                    {{selectedFund.balance | currency:'SAR':2}}
+                </h3>
+
+            </div>
+
+            <div class="form-group row">
+
+                <button uib-tooltip="{{lang==='AR' ? 'حساب الصندوق' : 'Refresh Fund'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="refreshFund()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">cached</i>
+                </button>
+
+                <button uib-tooltip="{{lang==='AR' ? 'توريد للصندوق / سند قبض' : 'Cash In'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="newFundReceiptIn()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">archive</i>
+                </button>
+
+                <button uib-tooltip="{{lang==='AR' ? 'صرف من الصندوق / سند صرف' : 'Cash Out'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="newFundReceiptOut()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">unarchive</i>
+                </button>
+
+                <button uib-tooltip="{{lang==='AR' ? 'تحويل إلى البنك' : 'Send Cash To Bank'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="transferToBank()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">send</i>
+                </button>
+
+            </div>
+
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+
+                <div class="mdl-tabs__tab-bar">
+
+                    <a href="#panel-fund-receipt-in" class="mdl-tabs__tab col-xs-6 col-sm-6 col-md-6 col-lg-6 is-active">
+                        <span ng-if="lang==='AR'">الايرادات</span>
+                        <span ng-if="lang==='EN'">Cash In</span>
+                    </a>
+
+                    <a href="#panel-fund-receipt-out" class="mdl-tabs__tab col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span ng-if="lang==='AR'">المصروفات</span>
+                        <span ng-if="lang==='EN'">Cash Out</span>
+                    </a>
+
+                </div>
+
+                <div class="mdl-tabs__panel is-active" id="panel-fund-receipt-in">
+
+                    <div class="form-group row">
+
+                        <button uib-tooltip="{{lang==='AR' ? 'بحث' : 'Filter'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="openFilterInModal()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">search</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات اليوم' : 'Today Cash In'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsInByToday()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات الاسبوع' : 'Week Cash In'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsInByWeek()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات الشهر' : 'Month Cash In'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsInByMonth()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات العام' : 'Year Cash In'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsInByYear()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <ul class="breadcrumb">
+                            <li ng-repeat="item in fundReceiptItemsIn | orderBy:'id' track by item.id">
+                                <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
+                                <span ng-if="item.type==='title'">{{item.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="table-responsive">
+                            <table st-table="collectionIn" st-safe-src="receiptsIn"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span>#</span>
+                                    </th>
+
+                                    <th st-sort="receipt.code">
+                                        <span ng-if="lang==='AR'">رقم السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Code</span>
+                                    </th>
+
+                                    <th st-sort="receipt.date">
+                                        <span ng-if="lang==='AR'">تاريخ السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Date</span>
+                                    </th>
+
+                                    <th st-sort="receipt.amount" class="danger">
+                                        <span ng-if="lang==='AR'">قيمة السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Amount</span>
+                                    </th>
+
+                                    <th st-sort="receipt.sender">
+                                        <span ng-if="lang==='AR'">محرر السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Writer</span>
+                                    </th>
+
+                                    <th st-sort="receipt.receiver">
+                                        <span ng-if="lang==='AR'">مُستلم السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Receiver</span>
+                                    </th>
+
+                                    <th st-sort="receipt.note">
+                                        <span ng-if="lang==='AR'">البيان</span>
+                                        <span ng-if="lang==='EN'">Note</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Action</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="fundReceipt in collectionIn" st-select-mode="multiple">
+                                    <td st-select-row-multi="fundReceipt">{{$index+1}}</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.code}}</td>
+                                    <td st-select-row-multi="fundReceipt">
+                                        <span ng-show="dateType==='H'">{{fundReceipt.receipt.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{fundReceipt.receipt.date | date: 'yyyy-MM-dd'}}</span>
+                                        {{fundReceipt.receipt.date | date:'h:m a'}}
+                                    </td>
+                                    <td st-select-row-multi="fundReceipt" class="danger">{{fundReceipt.receipt.amountNumber}} SAR</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.sender}}</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.receiver}}</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.note}}</td>
+                                    <td>
+                                        <a href=""
+                                           ng-if="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_IN_DELETE'])"
+                                           ng-click="deleteFundReceiptIn(fundReceipt)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionIn || collectionIn.length ==0">
+                                    <td colspan="8">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <h3 class="text-center col-xs-12 col-sm-12 col-md-12 col-lg-12 box-danger" ng-if="totalAmountIn>=0">
+                            <span ng-if="lang==='AR'">إجمالي المبالغ المحصلة</span>
+                            <span ng-if="lang==='EN'">Total Cash From : </span>
+                            <span>{{totalAmountIn}} SAR</span>
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="mdl-tabs__panel" id="panel-fund-receipt-out">
+
+                    <div class="form-group row">
+
+                        <button uib-tooltip="{{lang==='AR' ? 'بحث' : 'Filter'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="openFilterOutModal()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">search</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات اليوم' : 'Today Cash Out'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsOutByToday()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات الاسبوع' : 'Week Cash Out'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsOutByWeek()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات الشهر' : 'Month Cash Out'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsOutByMonth()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات العام' : 'Year Cash Out'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="findFundReceiptsOutByYear()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">filter_list</i>
+                        </button>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <ul class="breadcrumb">
+                            <li ng-repeat="item in fundReceiptItemsOut | orderBy:'id' track by item.id">
+                                <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
+                                <span ng-if="item.type==='title'">{{item.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="table-responsive">
+                            <table st-table="collectionOut" st-safe-src="receiptsOut"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span>#</span>
+                                    </th>
+
+                                    <th st-sort="receipt.code">
+                                        <span ng-if="lang==='AR'">رقم السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Code</span>
+                                    </th>
+
+                                    <th st-sort="receipt.date">
+                                        <span ng-if="lang==='AR'">تاريخ السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Date</span>
+                                    </th>
+
+                                    <th st-sort="receipt.amount" class="danger">
+                                        <span ng-if="lang==='AR'">قيمة السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Amount</span>
+                                    </th>
+
+                                    <th st-sort="receipt.sender">
+                                        <span ng-if="lang==='AR'">محرر السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Writer</span>
+                                    </th>
+
+                                    <th st-sort="receipt.receiver">
+                                        <span ng-if="lang==='AR'">مُستلم السند</span>
+                                        <span ng-if="lang==='EN'">Receipt Receiver</span>
+                                    </th>
+
+                                    <th st-sort="receipt.note">
+                                        <span ng-if="lang==='AR'">البيان</span>
+                                        <span ng-if="lang==='EN'">Note</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Action</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="fundReceipt in collectionOut" st-select-mode="multiple">
+                                    <td st-select-row-multi="fundReceipt">{{$index+1}}</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.code}}</td>
+                                    <td st-select-row-multi="fundReceipt">
+                                        <span ng-show="dateType==='H'">{{fundReceipt.receipt.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{fundReceipt.receipt.date | date: 'yyyy-MM-dd'}}</span>
+                                        {{fundReceipt.receipt.date | date:'h:m a'}}
+                                    </td>
+                                    <td st-select-row-multi="fundReceipt" class="danger">{{fundReceipt.receipt.amountNumber | currency:'SAR':2}}</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.sender}}</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.receiver}}</td>
+                                    <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.note}}</td>
+                                    <td>
+                                        <a href=""
+                                           ng-if="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_OUT_DELETE'])"
+                                           ng-click="deleteFundReceiptOut(fundReceipt)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionOut || collectionOut.length ==0">
+                                    <td colspan="8">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <h3 class="text-center col-xs-12 col-sm-12 col-md-12 col-lg-12 box-danger" ng-if="totalAmountOut>=0">
+                            <span ng-if="lang==='AR'">إجمالي المصروفات</span>
+                            <span ng-if="lang==='EN'">Total Outcomes: </span>
+                            <span>{{totalAmountOut}} SAR</span>
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

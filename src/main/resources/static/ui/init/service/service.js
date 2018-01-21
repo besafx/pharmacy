@@ -71,6 +71,43 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openFalconCreateByCustomerModel = function (customer) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/customer/customerFalconCreateUpdate.html',
+            controller: 'customerFalconCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء حساب صقر جديد للعميل' : 'New Falcon Account By Account';
+                },
+                action: function () {
+                    return 'create';
+                },
+                falcon: function () {
+                    var falcon = {};
+                    falcon.customer = customer;
+                    return falcon;
+                }
+            }
+        });
+    };
+
+    this.openReportCustomerDetailsModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/customer/customerDetailsReport.html",
+            controller: "customerDetailsReportCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * VacationType Model                                         *
@@ -378,6 +415,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportSupplierDetailsModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/supplier/supplierDetailsReport.html",
+            controller: "supplierDetailsReportCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Bank Model                                                 *
@@ -639,6 +688,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportDetectionTypeDetailsModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/detectionType/detectionTypeDetailsReport.html",
+            controller: "detectionTypeDetailsReportCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Order Model                                                *
@@ -691,6 +752,7 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: 'orderDetailsCtrl',
             backdrop: 'static',
             keyboard: false,
+            size: 'lg',
             resolve: {
                 order: function () {
                     return order;
@@ -959,6 +1021,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportDrugDetailsModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/drug/drugDetailsReport.html",
+            controller: "drugDetailsReportCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * BillBuy Model                                              *
@@ -985,16 +1059,20 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
-    this.openBillBuyHeadCreateModel = function () {
+    this.openBillBuyReceiptCreateModel = function (billBuy) {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/billBuy/billBuyHeadCreate.html',
-            controller: 'billBuyHeadCreateCtrl',
+            templateUrl: '/ui/partials/billBuy/billBuyReceiptCreate.html',
+            controller: 'billBuyReceiptCreateCtrl',
             backdrop: 'static',
             keyboard: false,
-            size: 'lg'
+            resolve: {
+                billBuy: function () {
+                    return billBuy;
+                }
+            }
         });
     };
 
@@ -1009,9 +1087,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             keyboard: false,
             size: 'lg',
             resolve: {
-                title: function () {
-                    return $rootScope.lang === 'AR' ? 'حركة شراء جديدة' : 'New Transaction Buy';
-                },
                 billBuy: function () {
                     return billBuy;
                 }
@@ -1053,18 +1128,124 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
-    /**************************************************************
-     *                                                            *
-     * BillSell Model                                             *
-     *                                                            *
-     *************************************************************/
-    this.openBillSellCreateModel = function () {
+    this.openBillBuyDetailsModel = function (billBuy) {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/billSell/billSellCreate.html',
-            controller: 'billSellCreateCtrl',
+            templateUrl: '/ui/partials/billBuy/billBuyDetails.html',
+            controller: 'billBuyDetailsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                billBuy: function () {
+                    return billBuy;
+                }
+            }
+        });
+    };
+
+    this.openReportBillBuysByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billBuy/billBuysByDate.html",
+            controller: "billBuysByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    this.openReportBillBuysDetailsByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billBuy/billBuysDetailsByDate.html",
+            controller: "billBuysDetailsByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * InsideSales Models                                         *
+     *                                                            *
+     *************************************************************/
+    this.openInsideSalesCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/insideSalesCreate.html',
+            controller: 'insideSalesCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'صرف علاج طلب فحص' : 'New Bill Sell For Order';
+                }
+            }
+        });
+    };
+
+    this.openInsideSalesDetailsModel = function (billSell) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/insideSalesDetails.html',
+            controller: 'insideSalesDetailsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                billSell: function () {
+                    return billSell;
+                }
+            }
+        });
+    };
+
+    this.openReportInsideSalesByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/insideSalesByDate.html",
+            controller: "insideSalesByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    this.openReportInsideSalesDetailsByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/insideSalesDetailsByDate.html",
+            controller: "insideSalesDetailsByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * OutsideSales Models                                        *
+     *                                                            *
+     *************************************************************/
+    this.openOutsideSalesCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/billSell/outsideSalesCreate.html',
+            controller: 'outsideSalesCreateCtrl',
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
@@ -1079,37 +1260,53 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
-    this.openBillSellForOrderCreateModel = function () {
+    this.openOutsideSalesDetailsModel = function (billSell) {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/billSell/billSellForOrderCreate.html',
-            controller: 'billSellForOrderCreateCtrl',
+            templateUrl: '/ui/partials/billSell/outsideSalesDetails.html',
+            controller: 'outsideSalesDetailsCtrl',
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
             resolve: {
-                title: function () {
-                    return $rootScope.lang === 'AR' ? 'صرف علاج طلب فحص' : 'New Bill Sell For Order';
+                billSell: function () {
+                    return billSell;
                 }
             }
         });
     };
 
-    this.openBillSellHeadCreateModel = function () {
+    this.openReportOutsideSalesByDateModel = function () {
         return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: '/ui/partials/billSell/billSellHeadCreate.html',
-            controller: 'billSellHeadCreateCtrl',
+            templateUrl: "/ui/partials/report/billSell/outsideSalesByDate.html",
+            controller: "outsideSalesByDateCtrl",
             backdrop: 'static',
-            keyboard: false,
-            size: 'lg'
+            keyboard: false
         });
     };
 
+    this.openReportOutsideSalesDetailsByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/outsideSalesDetailsByDate.html",
+            controller: "outsideSalesDetailsByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * BillSell Model                                             *
+     *                                                            *
+     *************************************************************/
     this.openBillSellReceiptCreateModel = function (billSell) {
         return $uibModal.open({
             animation: true,
@@ -1145,64 +1342,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
                     return billSell;
                 }
             }
-        });
-    };
-
-    this.openReportBillSellByListModel = function (billSells) {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: "/ui/partials/report/billSell/billSellByList.html",
-            controller: "billSellByListCtrl",
-            backdrop: 'static',
-            keyboard: false,
-            resolve: {
-                billSells: function () {
-                    return billSells;
-                }
-            }
-        });
-    };
-
-    this.openReportBillSellDetailsByListModel = function (billSells) {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: "/ui/partials/report/billSell/billSellDetailsByList.html",
-            controller: "billSellDetailsByListCtrl",
-            backdrop: 'static',
-            keyboard: false,
-            resolve: {
-                billSells: function () {
-                    return billSells;
-                }
-            }
-        });
-    };
-
-    this.openReportBillSellByDateModel = function () {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: "/ui/partials/report/billSell/billSellByDate.html",
-            controller: "billSellByDateCtrl",
-            backdrop: 'static',
-            keyboard: false
-        });
-    };
-
-    this.openReportBillSellDetailsByDateModel = function () {
-        return $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: "/ui/partials/report/billSell/billSellDetailsByDate.html",
-            controller: "billSellDetailsByDateCtrl",
-            backdrop: 'static',
-            keyboard: false
         });
     };
 
@@ -1272,6 +1411,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
                     return falcon;
                 }
             }
+        });
+    };
+
+    this.openReportFalconDetailsModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/falcon/falconDetailsReport.html",
+            controller: "falconDetailsReportCtrl",
+            backdrop: 'static',
+            keyboard: false
         });
     };
 

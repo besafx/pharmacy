@@ -13,62 +13,6 @@ app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', '
             $.noty.clearQueue(); // Clears the notification queue
             $.noty.closeAll(); // Close all notifications
             switch (toState.name) {
-                case 'home': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'dashboard';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'menu': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'widgets';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'company': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'business';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'customer':
-                case 'customer.list':
-                case 'customer.details': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'account_circle';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'supplier': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'store';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'fund': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'monetization_on';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'bank': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'account_balance';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'falcon': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'adb';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'doctor': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'local_hospital';
-                    $rootScope.applyCssLang();
-                    break;
-                }
                 case 'employee':
                 case 'employee.list':
                 case 'employee.vacationType':
@@ -78,77 +22,6 @@ app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', '
                 case 'employee.salary': {
                     $rootScope.applyTitleLang();
                     $rootScope.MDLIcon = 'person_pin_circle';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'detectionType': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'spa';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'order': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'burst_mode';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'diagnosis': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'assignment';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'drug': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'favorite';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'receipt':
-                case 'receipt.in':
-                case 'receipt.out':
-                case 'receipt.term': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'attach_money';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'billBuy': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'shopping_cart';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'billSell':
-                case 'billSell.insideSales':
-                case 'billSell.outsideSales': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'shopping_cart';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'team': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'security';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'profile': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'book';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'help': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'help';
-                    $rootScope.applyCssLang();
-                    break;
-                }
-                case 'about': {
-                    $rootScope.applyTitleLang();
-                    $rootScope.MDLIcon = 'info';
                     $rootScope.applyCssLang();
                     break;
                 }
@@ -207,78 +80,6 @@ app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', '
         $rootScope.applyTitleLang = function () {
             $timeout(function () {
                 switch ($rootScope.state.current.name) {
-                    case 'home':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الرئيسية';
-                        } else {
-                            $rootScope.pageTitle = 'Dashboard';
-                        }
-                        break;
-                    case 'menu':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'البرامج';
-                        } else {
-                            $rootScope.pageTitle = 'Application';
-                        }
-                        break;
-                    case 'company':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الشركة';
-                        } else {
-                            $rootScope.pageTitle = 'Company';
-                        }
-                        break;
-                    case 'team':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الصلاحيات';
-                        } else {
-                            $rootScope.pageTitle = 'Privileges';
-                        }
-                        break;
-                    case 'customer':
-                    case 'customer.list':
-                    case 'customer.details':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'العملاء';
-                        } else {
-                            $rootScope.pageTitle = 'Customers';
-                        }
-                        break;
-                    case 'supplier':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الموردين';
-                        } else {
-                            $rootScope.pageTitle = 'Supplier';
-                        }
-                        break;
-                    case 'fund':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الصندوق';
-                        } else {
-                            $rootScope.pageTitle = 'Cash';
-                        }
-                        break;
-                    case 'bank':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'البنك';
-                        } else {
-                            $rootScope.pageTitle = 'Bank';
-                        }
-                        break;
-                    case 'falcon':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'حسابات الصقور';
-                        } else {
-                            $rootScope.pageTitle = 'Falcons';
-                        }
-                        break;
-                    case 'doctor':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الاطباء';
-                        } else {
-                            $rootScope.pageTitle = 'Doctors';
-                        }
-                        break;
                     case 'employee':
                     case 'employee.list':
                     case 'employee.vacationType':
@@ -290,81 +91,6 @@ app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', '
                             $rootScope.pageTitle = 'الموظفون';
                         } else {
                             $rootScope.pageTitle = 'Employees';
-                        }
-                        break;
-                    case 'detectionType':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'انواع الفحوصات';
-                        } else {
-                            $rootScope.pageTitle = 'Detection Types';
-                        }
-                        break;
-                    case 'order':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'طلبات الفحص';
-                        } else {
-                            $rootScope.pageTitle = 'Detection Orders';
-                        }
-                        break;
-                    case 'diagnosis':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'نتائج الفحص';
-                        } else {
-                            $rootScope.pageTitle = 'Detection Results';
-                        }
-                        break;
-                    case 'drug':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الدواء';
-                        } else {
-                            $rootScope.pageTitle = 'Drugs';
-                        }
-                        break;
-                    case 'receipt':
-                    case 'receipt.in':
-                    case 'receipt.out':
-                    case 'receipt.term':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'السندات';
-                        } else {
-                            $rootScope.pageTitle = 'Receipts';
-                        }
-                        break;
-                    case 'billBuy':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'فواتير الشراء';
-                        } else {
-                            $rootScope.pageTitle = 'Bill Buys';
-                        }
-                        break;
-                    case 'billSell':
-                    case 'billSell.insideSales':
-                    case 'billSell.outsideSales':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'فواتير البيع';
-                        } else {
-                            $rootScope.pageTitle = 'Bill Sells';
-                        }
-                        break;
-                    case 'profile':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'الملف الشخصي';
-                        } else {
-                            $rootScope.pageTitle = 'Profile';
-                        }
-                        break;
-                    case 'help':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'المساعدة';
-                        } else {
-                            $rootScope.pageTitle = 'Help';
-                        }
-                        break;
-                    case 'about':
-                        if ($rootScope.lang === 'AR') {
-                            $rootScope.pageTitle = 'عن البرنامج';
-                        } else {
-                            $rootScope.pageTitle = 'About';
                         }
                         break;
                     case 'report':
@@ -394,6 +120,18 @@ app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', '
             }, 1500);
         };
 
+        $rootScope.style = 'mdl-style';
+        $rootScope.setStyle = function (style) {
+            $rootScope.style = style ? style : 'mdl-style';
+            $css.removeAll();
+            $css.add([
+                '/ui/css/'+ $rootScope.style +'.css',
+                '/ui/css/theme-black.css'
+            ], $rootScope);
+            $rootScope.applyCssLang();
+            PersonService.setStyle($rootScope.style);
+        };
+
         $rootScope.ModalProvider = ModalProvider;
 
         $rootScope.toggleDrawer =function () {
@@ -408,6 +146,12 @@ app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', '
             $rootScope.options = JSON.parse($rootScope.me.options);
             $rootScope.lang = $rootScope.options.lang;
             $rootScope.dateType = $rootScope.options.dateType;
+            $rootScope.style = $rootScope.options.style ? $rootScope.options.style : 'mdl-style';
+            $css.removeAll();
+            $css.add([
+                '/ui/css/'+ $rootScope.style +'.css',
+                '/ui/css/theme-black.css'
+            ], $rootScope);
             $rootScope.applyTitleLang();
             $rootScope.applyCssLang();
         });
@@ -573,17 +317,5 @@ app.run(['DrugService', '$http', '$location', '$state', '$timeout', '$window', '
          * Printer Connect                                            *
          *                                                            *
          *************************************************************/
-
-        $rootScope.printDrugsList = function () {
-            $rootScope.showConfirmNotify("التقارير", "هل تود طباعة التقرير ؟", "notification", "fa-info", function () {
-                DrugService.findAll().then(function (data) {
-                    var ids = [];
-                    angular.forEach(data, function (drug) {
-                        ids.push(drug.id);
-                    });
-                    window.open('/report/drugs?ids=' + ids + "&exportType=PDF");
-                });
-            });
-        };
 
     }]);

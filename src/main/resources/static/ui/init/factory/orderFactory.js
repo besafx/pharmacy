@@ -69,23 +69,23 @@ app.factory("OrderService",
                     return response.data;
                 });
             },
-            findByToday: function () {
-                return $http.get("/api/order/findByToday").then(function (response) {
+            findByToday: function (filter) {
+                return $http.get(filter ? "/api/order/findByToday?filter=" + filter : "/api/order/findByToday").then(function (response) {
                     return response.data;
                 });
             },
-            findByWeek: function () {
-                return $http.get("/api/order/findByWeek").then(function (response) {
+            findByWeek: function (filter) {
+                return $http.get(filter ? "/api/order/findByWeek?filter=" + filter : "/api/order/findByWeek").then(function (response) {
                     return response.data;
                 });
             },
-            findByMonth: function () {
-                return $http.get("/api/order/findByMonth").then(function (response) {
+            findByMonth: function (filter) {
+                return $http.get(filter ? "/api/order/findByMonth?filter=" + filter : "/api/order/findByMonth").then(function (response) {
                     return response.data;
                 });
             },
-            findByYear: function () {
-                return $http.get("/api/order/findByYear").then(function (response) {
+            findByYear: function (filter) {
+                return $http.get(filter ? "/api/order/findByYear?filter=" + filter : "/api/order/findByYear").then(function (response) {
                     return response.data;
                 });
             }

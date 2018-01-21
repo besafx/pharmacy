@@ -23,5 +23,5 @@ public interface TransactionSellService extends PagingAndSortingRepository<Trans
 
     Long countByBillSellOrderAndTransactionBuyDrug(Order order, Drug drug);
 
-    List<TransactionSell> findByBillSellPaymentMethodAndDateBetween(PaymentMethod paymentMethod, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    List<TransactionSell> findByTransactionBuyDrug(Drug drug);
 }

@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -42,10 +43,21 @@ public class DetectionType implements Serializable {
 
     private Double cost;
 
+    @OneToMany(mappedBy = "detectionType", fetch = FetchType.LAZY)
+    private List<OrderDetectionType> orderDetectionTypes = new ArrayList<>();
+
     @JsonCreator
     public static DetectionType Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         DetectionType detectionType = mapper.readValue(jsonString, DetectionType.class);
         return detectionType;
+    }
+
+    public List<Order> getOrders() {
+        try {
+            return this.orderDetectionTypes.stream().map(orderDetectionType -> orderDetectionType.getOrder()).collect(Collectors.toList());
+        } catch (Exception ex) {
+            return new ArrayList<>();
+        }
     }
 }

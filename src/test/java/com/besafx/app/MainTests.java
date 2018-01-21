@@ -43,14 +43,7 @@ public class MainTests {
 
     @Test
     public void contextLoads() throws Exception {
-        orderReceiptService.findAll().forEach(orderReceipt -> {
-            orderReceipt.setFund(fundService.findFirstBy());
-            orderReceiptService.save(orderReceipt);
-        });
-
-        billSellReceiptService.findAll().forEach(billSellReceipt -> {
-            billSellReceipt.setFund(fundService.findFirstBy());
-            billSellReceiptService.save(billSellReceipt);
-        });
+        scheduleWatchBillSells.runMonthly();
+        Thread.sleep(333333333);
     }
 }

@@ -23,62 +23,9 @@ public class BillSellSearch {
     @Autowired
     private BillSellService billSellService;
 
-    public List<BillSell> filter(
-            final Long codeFrom,
-            final Long codeTo,
-            final Boolean viewInsideSalesTable,
-            final List<PaymentMethod> paymentMethods,
-            final String checkCode,
-            final Long dateFrom,
-            final Long dateTo,
-            final Long orderCodeFrom,
-            final Long orderCodeTo,
-            final String orderFalconCode,
-            final String orderCustomerName
-    ) {
-        List<Specification> predicates = new ArrayList<>();
-        Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
-        Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
-        Optional.ofNullable(paymentMethods).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("paymentMethod").in(value)));
-        Optional.ofNullable(checkCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("checkCode"), "%" + value + "%")));
-        Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
-        Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
-        Optional.ofNullable(orderCodeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("order").get("code"), value)));
-        Optional.ofNullable(orderCodeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("order").get("code"), value)));
-
-        Optional.ofNullable(viewInsideSalesTable).ifPresent(value -> predicates.add(value ? (root, cq, cb) -> cb.isNotNull(root.get("order")) : (root, cq, cb) -> cb.isNull(root.get("order"))));
-        Optional.ofNullable(viewInsideSalesTable)
-                .ifPresent(value -> {
-                    if (value) {
-                        Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("code"), "%" + code + "%")));
-                        Optional.ofNullable(orderCustomerName).ifPresent(name -> predicates.add((root, cq, cb) -> cb.like(root.get("order").get("falcon").get("customer").get("name"), "%" + name + "%")));
-                    } else {
-                        Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("falconCode"), "%" + code + "%")));
-                        Optional.ofNullable(orderCustomerName).ifPresent(name -> predicates.add((root, cq, cb) -> cb.like(root.get("customerName"), "%" + name + "%")));
-                    }
-                });
-
-        if (!predicates.isEmpty()) {
-            Specification result = predicates.get(0);
-            for (int i = 1; i < predicates.size(); i++) {
-                result = Specifications.where(result).and(predicates.get(i));
-            }
-            List list = billSellService.findAll(result);
-            list.sort(Comparator.comparing(BillSell::getCode).reversed());
-            return list;
-        } else {
-            List<BillSell> list = Lists.newArrayList(billSellService.findAll());
-            list.sort(Comparator.comparing(BillSell::getCode).reversed());
-            return list;
-        }
-
-    }
-
     public List<BillSell> filterInside(
             final Long codeFrom,
             final Long codeTo,
-            final List<PaymentMethod> paymentMethods,
-            final String checkCode,
             final Long dateFrom,
             final Long dateTo,
             final Long orderCodeFrom,
@@ -89,8 +36,6 @@ public class BillSellSearch {
         List<Specification> predicates = new ArrayList<>();
         Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
         Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
-        Optional.ofNullable(paymentMethods).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("paymentMethod").in(value)));
-        Optional.ofNullable(checkCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("checkCode"), "%" + value + "%")));
         Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(orderCodeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("order").get("code"), value)));
@@ -104,7 +49,7 @@ public class BillSellSearch {
             for (int i = 1; i < predicates.size(); i++) {
                 result = Specifications.where(result).and(predicates.get(i));
             }
-            List list = billSellService.findAll(result);
+            List<BillSell> list = billSellService.findAll(result);
             list.sort(Comparator.comparing(BillSell::getCode).reversed());
             return list;
         } else {
@@ -116,8 +61,6 @@ public class BillSellSearch {
     public List<BillSell> filterOutside(
             final Long codeFrom,
             final Long codeTo,
-            final List<PaymentMethod> paymentMethods,
-            final String checkCode,
             final Long dateFrom,
             final Long dateTo,
             final String orderFalconCode,
@@ -126,8 +69,6 @@ public class BillSellSearch {
         List<Specification> predicates = new ArrayList<>();
         Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
         Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
-        Optional.ofNullable(paymentMethods).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("paymentMethod").in(value)));
-        Optional.ofNullable(checkCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("checkCode"), "%" + value + "%")));
         Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("falconCode"), "%" + code + "%")));
@@ -139,7 +80,7 @@ public class BillSellSearch {
             for (int i = 1; i < predicates.size(); i++) {
                 result = Specifications.where(result).and(predicates.get(i));
             }
-            List list = billSellService.findAll(result);
+            List<BillSell> list = billSellService.findAll(result);
             list.sort(Comparator.comparing(BillSell::getCode).reversed());
             return list;
         } else {
@@ -159,7 +100,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }
@@ -175,7 +116,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }
@@ -191,7 +132,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }
@@ -207,7 +148,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }
@@ -223,7 +164,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }
@@ -239,7 +180,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }
@@ -255,7 +196,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }
@@ -271,7 +212,7 @@ public class BillSellSearch {
         for (int i = 1; i < predicates.size(); i++) {
             result = Specifications.where(result).and(predicates.get(i));
         }
-        List list = billSellService.findAll(result);
+        List<BillSell> list = billSellService.findAll(result);
         list.sort(Comparator.comparing(BillSell::getCode).reversed());
         return list;
     }

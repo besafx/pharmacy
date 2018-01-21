@@ -27,8 +27,6 @@ public class BillSellReceiptSearch {
     public List<BillSellReceipt> filterInside(
             final Long codeFrom,
             final Long codeTo,
-            final List<PaymentMethod> paymentMethods,
-            final String checkCode,
             final Long dateFrom,
             final Long dateTo,
             final Long orderCodeFrom,
@@ -39,8 +37,6 @@ public class BillSellReceiptSearch {
         List<Specification> predicates = new ArrayList<>();
         Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("billSell").get("code"), value)));
         Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("billSell").get("code"), value)));
-        Optional.ofNullable(paymentMethods).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("billSell").get("paymentMethod").in(value)));
-        Optional.ofNullable(checkCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("billSell").get("checkCode"), "%" + value + "%")));
         Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("billSell").get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("billSell").get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(orderCodeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("billSell").get("order").get("code"), value)));
@@ -66,8 +62,6 @@ public class BillSellReceiptSearch {
     public List<BillSellReceipt> filterOutside(
             final Long codeFrom,
             final Long codeTo,
-            final List<PaymentMethod> paymentMethods,
-            final String checkCode,
             final Long dateFrom,
             final Long dateTo,
             final String orderFalconCode,
@@ -76,8 +70,6 @@ public class BillSellReceiptSearch {
         List<Specification> predicates = new ArrayList<>();
         Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("billSell").get("code"), value)));
         Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("billSell").get("code"), value)));
-        Optional.ofNullable(paymentMethods).ifPresent(value -> predicates.add((root, cq, cb) -> root.get("billSell").get("paymentMethod").in(value)));
-        Optional.ofNullable(checkCode).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("billSell").get("checkCode"), "%" + value + "%")));
         Optional.ofNullable(dateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("billSell").get("date"), new DateTime(value).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(dateTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("billSell").get("date"), new DateTime(value).plusDays(1).withTimeAtStartOfDay().toDate())));
         Optional.ofNullable(orderFalconCode).ifPresent(code -> predicates.add((root, cq, cb) -> cb.like(root.get("billSell").get("falconCode"), "%" + code + "%")));

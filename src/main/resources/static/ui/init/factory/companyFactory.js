@@ -1,13 +1,8 @@
 app.factory("CompanyService",
     ['$http', '$log', function ($http, $log) {
         return {
-            findAll: function () {
-                return $http.get("/api/company/findAll").then(function (response) {
-                    return response.data;
-                });
-            },
-            findOne: function (id) {
-                return $http.get("/api/company/findOne/" + id).then(function (response) {
+            get: function () {
+                return $http.get("/api/company/get").then(function (response) {
                     return response.data;
                 });
             },

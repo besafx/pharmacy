@@ -1,10 +1,14 @@
 package com.besafx.app.report;
 
+import com.besafx.app.entity.BillBuy;
+import com.besafx.app.entity.Drug;
 import com.besafx.app.service.DrugService;
+import com.google.common.collect.Lists;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +47,22 @@ public class ReportDrugController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/ReportDrugs.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("Report" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/drug/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printDrugDetails(
+            @PathVariable("id") Long id,
+            @PathVariable(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        Drug drug = drugService.findOne(id);
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/DrugDetails.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(Lists.newArrayList(drug)));
+        reportExporter.export("DRUG_" + drug.getCode(), exportType, response, jasperPrint);
     }
 
 }

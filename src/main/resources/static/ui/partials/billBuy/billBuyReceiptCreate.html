@@ -1,0 +1,136 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header mdl-color--primary mdl-navigation__link-active">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
+                <strong ng-if="lang==='AR'">تسديد دفعة جديدة للفاتورة رقم :  </strong>
+                <strong ng-if="lang==='EN'">New Payment For Bill Number :  </strong>
+                <strong>{{billBuyReceipt.billBuy.code}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <h3>
+                    <strong>المبلغ الباقي من سعر فاتورة الشراء = </strong>
+                    {{billBuyReceipt.billBuy.remain | currency:'SAR':2}}
+                </h3>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="paymentMethod" class="control-label">
+                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                        <span ng-if="lang==='EN'">Payment Method</span>
+                    </label>
+                    <select id="paymentMethod"
+                            class="form-control"
+                            required="required"
+                            disable-validation-message=""
+                            ng-model="billBuyReceipt.receipt.paymentMethod">
+                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
+                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
+                        <option ng-if="lang==='AR'" value="Check">شيك</option>
+                        <option ng-if="lang==='EN'" value="Check">Check</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="amountNumber" class="control-label">
+                        <span ng-if="lang==='AR'">المبلغ المدفوع</span>
+                        <span ng-if="lang==='EN'">Payment</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="amountNumber">
+                    <span class="input-group-addon">
+                        <span ng-if="lang==='AR'">ريال سعودي</span>
+                        <span ng-if="lang==='EN'">SAR</span>
+                    </span>
+                        <input dir="rtl"
+                               type="number"
+                               ng-min="1"
+                               ng-max="billBuyReceipt.billBuy.remain"
+                               required=""
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="billBuyReceipt.receipt.amountNumber">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="billBuyReceipt.receipt.paymentMethod==='Check'">
+                <label for="checkCode" class="control-label">
+                    <span ng-if="lang==='AR'">رقم الشيك</span>
+                    <span ng-if="lang==='EN'">Check Code</span>
+                </label>
+                <input id="checkCode"
+                       type="number"
+                       ng-required="billBuyReceipt.receipt.paymentMethod==='Check'"
+                       disable-validation-message=""
+                       class="form-control"
+                       ng-model="billBuyReceipt.receipt.checkCode">
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="description" class="control-label">
+                    <span ng-if="lang==='AR'">ملاحظات الدفع</span>
+                    <span ng-if="lang==='EN'">Payment Notes</span>
+                </label>
+                <textarea id="description"
+                          type="text"
+                          msd-elastic="\n"
+                          class="form-control"
+                          ng-model="billBuyReceipt.receipt.note">
+                </textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'حفظ' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">save</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

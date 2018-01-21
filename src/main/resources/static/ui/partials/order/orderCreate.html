@@ -3,7 +3,7 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
             class="panel-title mdl-list__item mdl-color-text--white">
@@ -360,8 +360,6 @@
                                         <option ng-if="lang==='EN'" value="Cash">Cash</option>
                                         <option ng-if="lang==='AR'" value="Check">شيك</option>
                                         <option ng-if="lang==='EN'" value="Check">Check</option>
-                                        <option ng-if="lang==='AR'" value="Later">آجل</option>
-                                        <option ng-if="lang==='EN'" value="Later">Later</option>
                                     </select>
                                 </div>
 

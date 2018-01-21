@@ -3,7 +3,7 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
@@ -37,7 +37,7 @@
 
                 <div class="form-group row">
 
-                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
                         <label for="amountNumber" class="control-label">
                             <span ng-if="lang==='AR'">المبلغ</span>
                             <span ng-if="lang==='EN'">Payment</span>
@@ -59,25 +59,64 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <label for="paymentMethod" class="control-label">
-                            <span ng-if="lang==='AR'">طريقة الدفع</span>
-                            <span ng-if="lang==='EN'">Payment Method</span>
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                        <label for="receiptDate" class="control-label">
+                            <span ng-if="lang==='AR'">تاريخ السند</span>
+                            <span ng-if="lang==='EN'">Contract Date</span>
                         </label>
-                        <select id="paymentMethod"
-                                class="form-control"
-                                required="required"
-                                disable-validation-message=""
-                                ng-model="bankReceipt.receipt.paymentMethod">
-                            <option ng-if="lang==='AR'" value="Cash">نقدي</option>
-                            <option ng-if="lang==='EN'" value="Cash">Cash</option>
-                            <option ng-if="lang==='AR'" value="Check">شيك</option>
-                            <option ng-if="lang==='EN'" value="Check">Check</option>
-                            <option ng-if="lang==='AR'" value="Visa">مدى</option>
-                            <option ng-if="lang==='EN'" value="Visa">Visa</option>
-                        </select>
+                        <div dir="ltr" class="input-group">
+                            <input dir="rtl"
+                                   id="receiptDate"
+                                   type="text"
+                                   class="form-control is-calendarPicker"
+                                   ng-model="bankReceipt.receipt.date"
+                                   calendarType="ummalqura"
+                                   language="en"
+                                   dateFormat="yyyy/mm/dd"
+                                   showOnFocus="false"
+                                   readonly="readonly"
+                                   required="required"
+                                   disable-validation-message=""
+                                   kdatepicker>
+                        </div>
                     </div>
 
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                        <label for="G-receiptDate" class="control-label">
+                            <span ng-if="lang==='AR'">تاريخ السند</span>
+                            <span ng-if="lang==='EN'">Contract Date</span>
+                        </label>
+                        <input id="G-receiptDate"
+                               class="form-control "
+                               type="date"
+                               name="input"
+                               ng-model="bankReceipt.receipt.date"
+                               placeholder="yyyy-MM-dd"
+                               required="required"
+                               disable-validation-message=""
+                               min="2017-01-01"
+                               max="2030-12-31"/>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="paymentMethod" class="control-label">
+                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                        <span ng-if="lang==='EN'">Payment Method</span>
+                    </label>
+                    <select id="paymentMethod"
+                            class="form-control"
+                            required="required"
+                            disable-validation-message=""
+                            ng-model="bankReceipt.receipt.paymentMethod">
+                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
+                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
+                        <option ng-if="lang==='AR'" value="Check">شيك</option>
+                        <option ng-if="lang==='EN'" value="Check">Check</option>
+                        <option ng-if="lang==='AR'" value="Visa">مدى</option>
+                        <option ng-if="lang==='EN'" value="Visa">Visa</option>
+                    </select>
                 </div>
 
                 <div class="form-group row" ng-init="bankReceipt.receipt.paymentMethod='Cash'">
@@ -96,6 +135,36 @@
                                disable-validation-message=""
                                class="form-control"
                                ng-model="bankReceipt.receipt.paymentMethodCode">
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <label for="sender" class="control-label">
+                            <span ng-if="lang==='AR'">محرر السند</span>
+                            <span ng-if="lang==='EN'">Receipt Writer</span>
+                        </label>
+                        <input id="sender"
+                               type="text"
+                               class="form-control"
+                               required="required"
+                               disable-validation-message=""
+                               ng-model="bankReceipt.receipt.sender">
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <label for="receiver" class="control-label">
+                            <span ng-if="lang==='AR'">مُستلم السند</span>
+                            <span ng-if="lang==='EN'">Receipt Receiver</span>
+                        </label>
+                        <input id="receiver"
+                               type="text"
+                               class="form-control"
+                               required="required"
+                               disable-validation-message=""
+                               ng-model="bankReceipt.receipt.receiver">
                     </div>
 
                 </div>

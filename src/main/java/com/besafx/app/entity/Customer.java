@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -69,4 +70,38 @@ public class Customer implements Serializable {
         Customer customer = mapper.readValue(jsonString, Customer.class);
         return customer;
     }
+
+    public List<Order> getOrders() {
+        try {
+            return this.falcons.stream().flatMap(falcon -> falcon.getOrders().stream()).collect(Collectors.toList());
+        } catch (Exception ex) {
+            return new ArrayList<>();
+        }
+    }
+
+    public Double getNetSum() {
+        try {
+            return this.falcons.stream().mapToDouble(falcon -> falcon.getNetSum()).sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getPaidSum() {
+        try {
+            return this.falcons.stream().mapToDouble(falcon -> falcon.getPaidSum()).sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getRemainSum() {
+        try {
+            return this.falcons.stream().mapToDouble(falcon -> falcon.getRemainSum()).sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+
 }

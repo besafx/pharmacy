@@ -49,11 +49,6 @@ public class BillSell implements Serializable {
 
     private Double discount;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
-
-    private Integer checkCode;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
@@ -81,6 +76,17 @@ public class BillSell implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         BillSell billSell = mapper.readValue(jsonString, BillSell.class);
         return billSell;
+    }
+
+    public List<Receipt> findReceipts() {
+        try {
+            return this.billSellReceipts
+                    .stream()
+                    .map(billBuyReceipt -> billBuyReceipt.getReceipt())
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Double getUnitSellCostSum() {

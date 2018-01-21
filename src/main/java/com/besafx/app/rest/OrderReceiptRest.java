@@ -36,7 +36,7 @@ import java.util.List;
 @RequestMapping(value = "/api/orderReceipt/")
 public class OrderReceiptRest {
 
-    public static final String FILTER_TABLE = "**,order[id,code,date,falcon[id,code,type,weight,customer[id,code,name,mobile]]],receipt[**,lastPerson[id,nickname,name]]";
+    public static final String FILTER_TABLE = "**,-fund,order[id,code],receipt[**,lastPerson[id,nickname,name]]";
     private final static Logger log = LoggerFactory.getLogger(OrderReceiptRest.class);
     @Autowired
     private OrderReceiptService orderReceiptService;
@@ -58,7 +58,7 @@ public class OrderReceiptRest {
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_ORDER_CREATE')")
+    @PreAuthorize("hasRole('ROLE_ORDER_RECEIPT_CREATE')")
     public String create(@RequestBody OrderReceipt orderReceipt, Principal principal) {
         if (orderReceipt.getReceipt().getAmountNumber() == 0) {
             throw new CustomException("لا يمكن إنشاء سند بقيمة صفر");
@@ -88,7 +88,7 @@ public class OrderReceiptRest {
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_ORDER_DELETE')")
+    @PreAuthorize("hasRole('ROLE_ORDER_RECEIPT_DELETE')")
     public void delete(@PathVariable Long id, Principal principal) {
         OrderReceipt orderReceipt = orderReceiptService.findOne(id);
         if (orderReceipt != null) {

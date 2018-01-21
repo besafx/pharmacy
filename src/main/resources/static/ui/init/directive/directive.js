@@ -220,9 +220,11 @@ app.directive('stSelectRowMulti', ['$timeout',
 
                 scope.$watch('row.isSelected', function (newValue) {
                     if (newValue === true) {
-                        element.parent().addClass('success');
+                        element.parent().addClass('mdl-color--primary-dark');
+                        element.parent().addClass('mdl-color-text--white');
                     } else {
-                        element.parent().removeClass('success');
+                        element.parent().removeClass('mdl-color--primary-dark');
+                        element.parent().removeClass('mdl-color-text--white');
                     }
                     $timeout(function () {
                         window.componentHandler.upgradeAllRegistered();

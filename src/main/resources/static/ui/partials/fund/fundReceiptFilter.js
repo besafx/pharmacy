@@ -2,7 +2,7 @@ app.controller('fundReceiptFilterCtrl', ['$scope', '$rootScope', '$timeout', '$l
     function ($scope, $rootScope, $timeout, $log, $uibModalInstance) {
 
         $scope.submit = function () {
-            $uibModalInstance.close($scope.buffer);
+            $uibModalInstance.close($scope.paramFundReceipt);
         };
 
         $scope.cancel = function () {

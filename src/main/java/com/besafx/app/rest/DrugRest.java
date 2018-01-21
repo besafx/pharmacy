@@ -32,7 +32,7 @@ public class DrugRest {
 
     private final static Logger log = LoggerFactory.getLogger(DrugRest.class);
 
-    public static final String FILTER_TABLE = "**,drugCategory[id,code,nameArabic,nameEnglish],transactionBuys[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells]";
+    public static final String FILTER_TABLE = "**,-transactionSells,transactionBuys[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionSells,-transactionBuys],-billBuy,-transactionSells],drugCategory[id,code,nameArabic,nameEnglish]";
     public static final String FILTER_DRUG_COMBO = "id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish";
 
     @Autowired
@@ -163,27 +163,8 @@ public class DrugRest {
             @RequestParam(value = "nameEnglish", required = false) final String nameEnglish,
             @RequestParam(value = "medicalNameArabic", required = false) final String medicalNameArabic,
             @RequestParam(value = "medicalNameEnglish", required = false) final String medicalNameEnglish,
-            @RequestParam(value = "drugCategories", required = false) final List<Long> drugCategories,
-            Principal principal) {
-        Person caller = personService.findByEmail(principal.getName());
-        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-        notificationService.notifyOne(Notification
-                .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا..." : "Filtering Data")
-                .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
-                .build(), principal.getName());
-        List<Drug> list = drugSearch.filter(codeFrom, codeTo, nameArabic, nameEnglish, medicalNameArabic, medicalNameEnglish, drugCategories);
-        notificationService.notifyOne(Notification
-                .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done")
-                .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
-                .build(), principal.getName());
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+            @RequestParam(value = "drugCategories", required = false) final List<Long> drugCategories) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
+                drugSearch.filter(codeFrom, codeTo, nameArabic, nameEnglish, medicalNameArabic, medicalNameEnglish, drugCategories));
     }
 }

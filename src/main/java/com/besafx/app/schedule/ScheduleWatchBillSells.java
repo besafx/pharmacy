@@ -1,21 +1,30 @@
 package com.besafx.app.schedule;
 
-import com.besafx.app.Async.AsyncScheduleDailyBillSells;
+import com.besafx.app.Async.AsyncScheduleDailyInsideSales;
 import com.besafx.app.component.QuickEmail;
 import com.besafx.app.config.DropboxManager;
 import com.besafx.app.service.CompanyService;
 import com.besafx.app.util.DateConverter;
 import com.google.common.collect.Lists;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.concurrent.Future;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Component
+@Service
 public class ScheduleWatchBillSells {
 
     private final Logger log = LoggerFactory.getLogger(ScheduleWatchBillSells.class);
@@ -24,7 +33,10 @@ public class ScheduleWatchBillSells {
     private CompanyService companyService;
 
     @Autowired
-    private AsyncScheduleDailyBillSells asyncScheduleDailyBillSells;
+    private AsyncScheduleDailyInsideSales asyncScheduleDailyInsideSales;
+
+    @Autowired
+    private AsyncScheduleDailyInsideSales asyncScheduleDailyOutsideSales;
 
     @Autowired
     private QuickEmail quickEmail;
@@ -33,20 +45,22 @@ public class ScheduleWatchBillSells {
     private DropboxManager dropboxManager;
 
     private void run(String timeType) throws Exception {
-        log.info("بداية عملية إرسال تقرير مبيعات اليوم");
-        Future<byte[]> work = asyncScheduleDailyBillSells.getFile(timeType);
-        byte[] fileBytes = work.get();
-        if (work.isDone()) {
-            log.info("STARTING UPLOADING FILE");
+
+        Future<byte[]> task = getZipFile(timeType);
+        byte[] bytes = task.get();
+
+        if(task.isDone()){
+
+            log.info("Starting uploading zip file");
             StringBuffer fileName = new StringBuffer();
             fileName.append(DateConverter.getNowFileName());
-            fileName.append(".pdf");
+            fileName.append(".zip");
 
-            Future<Boolean> uploadTask = dropboxManager.uploadFile(new ByteArrayInputStream(fileBytes), fileName.toString(), "/Pharmacy4Falcon/WatchSales/" + fileName.toString());
+            Future<Boolean> uploadTask = dropboxManager.uploadFile(new ByteArrayInputStream(bytes), fileName.toString(), "/Pharmacy4Falcon/WatchSales/" + fileName.toString());
 
             if (uploadTask.get()) {
-                log.info("ENDING UPLOADING FILE");
-                log.info("STARTING SENDING MESSAGE");
+                log.info("Ending uploading file");
+                log.info("Starting sending message");
                 Future<String> uploadFileLinkTask = dropboxManager.shareFile("/Pharmacy4Falcon/WatchSales/" + fileName.toString());
                 uploadFileLinkTask.get();
 
@@ -61,7 +75,42 @@ public class ScheduleWatchBillSells {
 
                 log.info("ENDING SENDING MESSAGE");
             }
+
         }
+    }
+
+    @Async("threadMultiplePool")
+    private Future<byte[]> getZipFile(String timeType) throws Exception{
+        log.info("Generate inside sales report");
+        Future<byte[]> work1 = asyncScheduleDailyInsideSales.getFile(timeType);
+        byte[] fileBytes1 = work1.get();
+
+        log.info("Generate outside sales report");
+        Future<byte[]> work2 = asyncScheduleDailyOutsideSales.getFile(timeType);
+        byte[] fileBytes2 = work2.get();
+
+        log.info("Generate zip file");
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedOutputStream);
+
+        ZipEntry entry1 = new ZipEntry("مبيعات داخلية.pdf");
+        zipOutputStream.putNextEntry(entry1);
+        zipOutputStream.write(fileBytes1);
+        zipOutputStream.closeEntry();
+
+        ZipEntry entry2 = new ZipEntry("مبيعات خارجية.pdf");
+        zipOutputStream.putNextEntry(entry2);
+        zipOutputStream.write(fileBytes2);
+        zipOutputStream.closeEntry();
+
+        zipOutputStream.finish();
+        zipOutputStream.flush();
+        IOUtils.closeQuietly(zipOutputStream);
+        IOUtils.closeQuietly(bufferedOutputStream);
+        IOUtils.closeQuietly(byteArrayOutputStream);
+
+        return new AsyncResult<>(byteArrayOutputStream.toByteArray());
     }
 
     @Scheduled(cron = "0 0 23 * * *")

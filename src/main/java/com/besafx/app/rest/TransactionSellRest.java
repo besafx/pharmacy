@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/transactionSell/")
 public class TransactionSellRest {
 
-    public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]";
+    public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionSells,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]";
     private final Logger log = LoggerFactory.getLogger(TransactionSellRest.class);
     @Autowired
     private TransactionSellService transactionSellService;
@@ -130,11 +130,7 @@ public class TransactionSellRest {
     public String findByDrug(@PathVariable Long id) {
         Drug drug = drugService.findOne(id);
         if (drug != null) {
-            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE),
-                    drug.getTransactionBuys()
-                            .stream()
-                            .flatMap(transactionBuy -> transactionBuy.getTransactionSells().stream())
-                            .collect(Collectors.toList()));
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionSellService.findByTransactionBuyDrug(drug));
         } else {
             return null;
         }

@@ -44,6 +44,17 @@ public class PersonRest {
         personService.save(person);
     }
 
+    @RequestMapping(value = "setStyle/{style}", method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_PROFILE_UPDATE')")
+    public void setStyle(@PathVariable(value = "style") String style, Principal principal) {
+        Person person = personService.findByEmail(principal.getName());
+        Options options = JSONConverter.toObject(person.getOptions(), Options.class);
+        options.setStyle(style);
+        person.setOptions(JSONConverter.toString(options));
+        personService.save(person);
+    }
+
     @RequestMapping("findActivePerson")
     @ResponseBody
     public String findActivePerson(Principal principal) {

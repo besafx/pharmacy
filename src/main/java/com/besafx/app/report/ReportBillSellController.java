@@ -1,11 +1,9 @@
 package com.besafx.app.report;
 
+import com.besafx.app.entity.BillSell;
 import com.besafx.app.service.BillSellService;
 import com.besafx.app.util.DateConverter;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,97 +30,121 @@ public class ReportBillSellController {
     @Autowired
     private ReportExporter reportExporter;
 
-    @RequestMapping(value = "/report/billSell/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/insideBillPurchase/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportBillSell(
+    public void printInsideBillPurchase(
             @PathVariable("id") Long id,
             @PathVariable(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        map.put("billSell", billSellService.findOne(id));
-
+        BillSell billSell = billSellService.findOne(id);
+        map.put("billSell", billSell);
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/Report.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/InsideBillPurchase.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("INSIDE_BILL_PURCHASE_" + billSell.getCode() ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/outsideBillPurchase/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printOutsideBillPurchase(
+            @PathVariable("id") Long id,
+            @PathVariable(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        BillSell billSell = billSellService.findOne(id);
+        map.put("billSell", billSell);
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideBillPurchase.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export("OUTSIDE_BILL_PURCHASE_" + billSell.getCode() ,exportType, response, jasperPrint);
     }
 
 
-    @RequestMapping(value = "/report/billSells", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/insideSales/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportBillSells(
+    public void printInsideSalesSummaryByList(
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) throws Exception{
         Map<String, Object> map = new HashMap<>();
-        map.put("billSells", billSellService.findByIdIn(ids));
+        map.put("insideBills", billSellService.findByIdIn(ids));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
-        title.append("تقرير مختصر للمبيعات حسب القائمة");
+        title.append("تقرير مختصر للمبيعات الداخلية حسب القائمة");
         map.put("title", title.toString());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/ReportBillSells.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/InsideSalesSummary.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("INSIDE_SALES_SUMMARY_LIST" ,exportType, response, jasperPrint);
     }
 
-    @RequestMapping(value = "/report/billSellsDetails", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/insideSales/details/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportBillSellsDetails(
+    public void printInsideSalesDetailsByList(
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) throws Exception{
         Map<String, Object> map = new HashMap<>();
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
-        title.append("تقرير مفصل للمبيعات حسب القائمة");
+        title.append("تقرير مفصل للمبيعات الداخلية حسب القائمة");
         map.put("title", title.toString());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/ReportBillSellsDetails.jrxml");
-        ClassPathResource jrxmlFileSub = new ClassPathResource("/report/billSell/ReportBillSellsDetailsSub.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/InsideSalesDetails.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
-        JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
-        map.put("subReport", jasperReportSub);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(billSellService.findByIdIn(ids)));
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("INSIDE_SALES_DETAILS_LIST" ,exportType, response, jasperPrint);
     }
 
-    @RequestMapping(value = "/report/billSellsByDate", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/outsideSales/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportBillSellsByDate(
-            @RequestParam(value = "dateFrom") Long dateFrom,
-            @RequestParam(value = "dateTo") Long dateTo,
+    public void printOutsideSalesSummaryByList(
+            @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        map.put("billSells", billSellService.findByDateBetween(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate()));
+        map.put("outsideBills", billSellService.findByIdIn(ids));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
-        title.append("تقرير مختصر للمبيعات حسب الفترة من");
-        title.append(" ");
-        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
-        title.append(" ");
-        title.append("إلى الفترة");
-        title.append(" ");
-        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        title.append("تقرير مختصر للمبيعات الخارجية حسب القائمة");
         map.put("title", title.toString());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/ReportBillSells.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideSalesSummary.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("OUTSIDE_SALES_SUMMARY_LIST" ,exportType, response, jasperPrint);
     }
 
-    @RequestMapping(value = "/report/billSellsDetailsByDate", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/outsideSales/details/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportBillSellsDetailsByDate(
+    public void printOutsideSalesDetailsByList(
+            @RequestParam("ids") List<Long> ids,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مفصل للمبيعات الخارجية حسب القائمة");
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideSalesDetails.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(billSellService.findByIdIn(ids)));
+        reportExporter.export("OUTSIDE_SALES_DETAILS_LIST" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/insideSales/date", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printInsideSalesSummaryByDate(
             @RequestParam(value = "dateFrom") Long dateFrom,
             @RequestParam(value = "dateTo") Long dateTo,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
+        map.put("insideBills", billSellService.findByDateBetweenAndOrderIsNotNull(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
-        title.append("تقرير مفصل للمبيعات حسب الفترة من");
+        title.append("تقرير مختصر للمبيعات الداخلية حسب الفترة من");
         title.append(" ");
         title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
         title.append(" ");
@@ -129,15 +152,83 @@ public class ReportBillSellController {
         title.append(" ");
         title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
         map.put("title", title.toString());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/ReportBillSellsDetails.jrxml");
-        ClassPathResource jrxmlFileSub = new ClassPathResource("/report/billSell/ReportBillSellsDetailsSub.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/InsideSalesSummary.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
-        JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
-        map.put("subReport", jasperReportSub);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map,
-                new JRBeanCollectionDataSource(billSellService.findByDateBetween(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
-                        new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())));
-        reportExporter.export(exportType, response, jasperPrint);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export("INSIDE_SALES_SUMMARY_DATE" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/insideSales/details/date", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printInsideSalesDetailsByDate(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مفصل للمبيعات الداخلية حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
+        title.append(" ");
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/InsideSalesDetails.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(billSellService.findByDateBetweenAndOrderIsNotNull(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())));
+        reportExporter.export("INSIDE_SALES_DETAILS_DATE" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/outsideSales/date", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printOutsideSalesSummaryByDate(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("outsideBills", billSellService.findByDateBetweenAndOrderIsNull(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate()));
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مختصر للمبيعات الخارجية حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
+        title.append(" ");
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideSalesSummary.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export("OUTSIDE_SALES_SUMMARY_DATE" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/outsideSales/details/date", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printOutsideSalesDetailsByDate(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("تقرير مفصل للمبيعات الخارجية حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
+        title.append(" ");
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideSalesDetails.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(billSellService.findByDateBetweenAndOrderIsNull(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())));
+        reportExporter.export("OUTSIDE_SALES_DETAILS_DATE" ,exportType, response, jasperPrint);
     }
 
 }

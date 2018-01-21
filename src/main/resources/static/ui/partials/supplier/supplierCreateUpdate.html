@@ -3,7 +3,7 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
@@ -17,83 +17,73 @@
 
         <div class="row">
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <span ng-if="lang==='AR'">البيانات الاساسية</span>
-                        <span ng-if="lang==='EN'">Basic Information</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                                 ng-show="form.$invalid && form.$submitted">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
-                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="name" class="control-label">
-                                    <span ng-if="lang==='AR'">الاسم كاملاً</span>
-                                    <span ng-if="lang==='EN'">Name</span>
-                                </label>
-                                <input id="name"
-                                       type="text"
-                                       focus-autofocus="1"
-                                       required="required"
-                                       disable-validation-message=""
-                                       class="form-control"
-                                       placeholder="{{lang==='AR' ? 'اذكر الاسم رباعي...' : 'Type Person Name...'}}"
-                                       ng-model="supplier.name">
-                            </div>
-
-                            <div class="row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="mobile" class="control-label">
-                                        <span ng-if="lang==='AR'">الجوال</span>
-                                        <span ng-if="lang==='EN'">Mobile</span>
-                                    </label>
-                                    <input id="mobile"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر رقم الجوال...' : 'Type Person Mobile...'}}"
-                                           ng-model="supplier.mobile">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-
-                                    <label for="email" class="control-label">
-                                        <span ng-if="lang==='AR'">البريد الإلكتروني</span>
-                                        <span ng-if="lang==='EN'">Email</span>
-                                    </label>
-                                    <input id="email"
-                                           type="text"
-                                           class="form-control"
-                                           ng-model="supplier.email">
-                                </div>
-
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="address" class="control-label">
-                                    <span ng-if="lang==='AR'">العنوان الحالي</span>
-                                    <span ng-if="lang==='EN'">Address</span>
-                                </label>
-                                <input id="address"
-                                       type="text"
-                                       class="form-control"
-                                       placeholder="{{lang==='AR' ? 'اذكر العنوان الحالي...' : 'Type Person Address...'}}"
-                                       ng-model="supplier.address">
-                            </div>
-
-                        </div>
-                    </div>
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
                 </div>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="name" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم كاملاً</span>
+                        <span ng-if="lang==='EN'">Name</span>
+                    </label>
+                    <input id="name"
+                           type="text"
+                           focus-autofocus="1"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر الاسم رباعي...' : 'Type Person Name...'}}"
+                           ng-model="supplier.name">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="address" class="control-label">
+                        <span ng-if="lang==='AR'">العنوان الحالي</span>
+                        <span ng-if="lang==='EN'">Address</span>
+                    </label>
+                    <input id="address"
+                           type="text"
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر العنوان الحالي...' : 'Type Person Address...'}}"
+                           ng-model="supplier.address">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="mobile" class="control-label">
+                        <span ng-if="lang==='AR'">الجوال</span>
+                        <span ng-if="lang==='EN'">Mobile</span>
+                    </label>
+                    <input id="mobile"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر رقم الجوال...' : 'Type Person Mobile...'}}"
+                           ng-model="supplier.mobile">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                    <label for="email" class="control-label">
+                        <span ng-if="lang==='AR'">البريد الإلكتروني</span>
+                        <span ng-if="lang==='EN'">Email</span>
+                    </label>
+                    <input id="email"
+                           type="text"
+                           class="form-control"
+                           ng-model="supplier.email">
+                </div>
+
             </div>
 
         </div>

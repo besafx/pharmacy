@@ -52,53 +52,11 @@ public class PartialController {
         return "login";
     }
 
-    @RequestMapping(value = "/getAllLoggedUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<String> getLoggedUsers() {
-        return sessionRegistry.getAllPrincipals().stream()
-                .filter(u -> !sessionRegistry.getAllSessions(u, false).isEmpty())
-                .map(Object::toString)
-                .collect(Collectors.toList());
-    }
 
     @RequestMapping(value = {
             "/login",
             "/home",
             "/menu",
-            "/company",
-            "/team",
-
-            "/customer/list",
-            "/customer/details",
-
-            "/supplier",
-            "/bank",
-            "/fund",
-            "/doctor",
-
-            "/employee/list",
-            "/employee/vacation",
-            "/employee/vacationType",
-            "/employee/deduction",
-            "/employee/deductionType",
-            "/employee/salary",
-
-            "/detectionType",
-            "/order",
-            "/diagnosis",
-            "/drug",
-
-            "/receipt/in",
-            "/receipt/out",
-            "/receipt/term",
-
-            "/billBuy",
-
-            "/billSell/insideSales",
-            "/billSell/outsideSales",
-
-            "/drugCategory",
-            "/falcon",
             "/help",
             "/profile",
             "/about",

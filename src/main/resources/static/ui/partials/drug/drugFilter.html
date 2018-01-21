@@ -3,7 +3,7 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
@@ -30,7 +30,7 @@
                         class="form-control"
                         chosen=""
                         multiple="multiple"
-                        ng-model="buffer.drugCategoryList"
+                        ng-model="paramDrug.drugCategoryList"
                         ng-options="('[ ' + drugCategory.code + ' ]' + drugCategory.nameArabic + ' / ' + drugCategory.nameEnglish) for drugCategory in drugCategories track by drugCategory.id">
                 </select>
             </div>
@@ -45,7 +45,7 @@
                     <input id="codeFrom"
                            type="text"
                            class="form-control"
-                           ng-model="buffer.codeFrom">
+                           ng-model="paramDrug.codeFrom">
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -56,7 +56,7 @@
                     <input id="codeTo"
                            type="text"
                            class="form-control"
-                           ng-model="buffer.codeTo">
+                           ng-model="paramDrug.codeTo">
                 </div>
 
             </div>
@@ -71,7 +71,7 @@
                     <input id="nameArabic"
                            type="text"
                            class="form-control arabic-control"
-                           ng-model="buffer.nameArabic">
+                           ng-model="paramDrug.nameArabic">
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -82,7 +82,7 @@
                     <input id="nameEnglish"
                            type="text"
                            class="form-control english-control"
-                           ng-model="buffer.nameEnglish">
+                           ng-model="paramDrug.nameEnglish">
                 </div>
 
             </div>
@@ -97,7 +97,7 @@
                     <input id="medicalNameArabic"
                            type="text"
                            class="form-control arabic-control"
-                           ng-model="buffer.medicalNameArabic">
+                           ng-model="paramDrug.medicalNameArabic">
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -108,7 +108,7 @@
                     <input id="medicalNameEnglish"
                            type="text"
                            class="form-control english-control"
-                           ng-model="buffer.medicalNameEnglish">
+                           ng-model="paramDrug.medicalNameEnglish">
                 </div>
 
             </div>
@@ -129,7 +129,7 @@
             <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
                     tooltip-append-to-body="true"
                     type="reset"
-                    ng-click="form.$setPristine()"
+                    ng-click="clearParamDrug();form.$setPristine();"
                     class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">delete</i>
             </button>

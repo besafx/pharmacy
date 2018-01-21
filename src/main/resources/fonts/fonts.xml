@@ -24,6 +24,18 @@
             </export>
         </exportFonts>
     </fontFamily>
+    <fontFamily name="Ubuntu">
+        <normal>fonts/Ubuntu.ttf</normal>
+        <italic>fonts/Ubuntu.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Ubuntu', 'Times New Roman', Times, serif
+            </export>
+            <export key="net.sf.jasperreports.xhtml">'Ubuntu', 'Times New Roman', Times, serif
+            </export>
+        </exportFonts>
+    </fontFamily>
     <fontFamily name="ae_AlArabiya">
         <normal>fonts/ae_AlArabiya.ttf</normal>
         <italic>fonts/ae_AlArabiya.ttf</italic>

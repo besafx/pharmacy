@@ -3,12 +3,12 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
                 <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
-                <strong>{{title}}</strong>
+                <strong>اضافة صنف لفواتير الشراء</strong>
             </span>
         </h3>
     </div>
@@ -17,68 +17,6 @@
 
         <div class="row">
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
-                            style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshBillBuy()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
-                            <h3 ng-if="lang==='EN'">Basic Information</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">رقم الفاتورة</span>
-                                        <span ng-if="lang==='EN'">Code</span>
-                                    </td>
-                                    <td>{{transactionBuy.billBuy.code}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">المورد</span>
-                                        <span ng-if="lang==='EN'">Supplier</span>
-                                    </td>
-                                    <td>{{transactionBuy.billBuy.supplier.name}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
-                                        <span ng-if="lang==='EN'">Payment Method</span>
-                                    </td>
-                                    <td>{{transactionBuy.billBuy.paymentMethod}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">تاريخ الفاتورة</span>
-                                        <span ng-if="lang==='EN'">Date</span>
-                                    </td>
-                                    <td>
-                                        <span ng-show="dateType==='H'">{{transactionBuy.billBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span ng-show="dateType==='G'">{{transactionBuy.billBuy.date | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{transactionBuy.billBuy.date | date:'h:m a'}}</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
                 <div class="alert alert-danger" role="alert">
                     <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
@@ -86,259 +24,135 @@
                 </div>
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
-                            style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshDrugs()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])"
-                                   ng-click="newDrug()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء صنف دواء جديد' : 'New Drug...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">قائمة الأدوية المطلوبة</h3>
-                            <h3 ng-if="lang==='EN'">Required Drugs</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="drug" class="control-label">
+                    <span ng-if="lang==='AR'">الدواء</span>
+                    <span ng-if="lang==='EN'">Drug</span>
+                </label>
+                <ui-select id="drug"
+                           ng-model="transactionBuy.drug"
+                           required=""
+                           disable-validation-message=""
+                           theme="bootstrap">
+                    <ui-select-match placeholder="اختر الدواء المطلوب">
+                            <span ng-if="transactionBuy.drug.id">
+                                <span ng-if="lang==='AR'">[{{$select.selected.code}}] {{$select.selected.nameArabic}} / {{$select.selected.medicalNameArabic}}</span>
+                                <span ng-if="lang==='EN'">[{{$select.selected.code}}] {{$select.selected.nameEnglish}} / {{$select.selected.medicalNameEnglish}}</span>
+                            </span>
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="drug in drugs | filter: $select.search | orderBy:'code' track by drug.id">
+                        <div ng-if="lang==='AR'" ng-bind-html="drug.nameArabic | highlight: $select.search"></div>
+                        <div ng-if="lang==='EN'" ng-bind-html="drug.nameEnglish | highlight: $select.search"></div>
+                        <small>
+                            <span ng-if="lang==='AR'">رقم الدواء : </span>
+                            <span ng-if="lang==='EN'">Drug Code: </span>
+                            <span ng-bind-html="''+drug.code | highlight: $select.search"></span>
+                            <br/>
+                            <span ng-if="lang==='AR'">الاسم العلمي : </span>
+                            <span ng-if="lang==='EN'">Medical Name: </span>
+                            <span ng-if="lang==='AR'"
+                                  ng-bind-html="''+drug.medicalNameArabic | highlight: $select.search"></span>
+                            <span ng-if="lang==='EN'"
+                                  ng-bind-html="''+drug.medicalNameEnglish | highlight: $select.search"></span>
+                        </small>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
 
-                            <div class="form-group row">
+            <div class="form-group row">
 
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="drugCode" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم الدواء</span>
-                                        <span ng-if="lang==='EN'">Drug Code</span>
-                                    </label>
-                                    <select id="drugCode"
-                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الرقم' : 'Search For Code...'}}"
-                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الرقم' : 'Please Select Code...'}}'"
-                                            class="form-control"
-                                            chosen=""
-                                            ng-model="transactionBuy.drug"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-options="drug.code for drug in drugs | orderBy:'code' track by drug.id">
-                                    </select>
-                                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="drugUnit" class="control-label">
+                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                        <span ng-if="lang==='EN'">Drug Unit</span>
+                    </label>
+                    <select id="drugUnit"
+                            class="form-control"
+                            ng-model="transactionBuy.drugUnit"
+                            required=""
+                            disable-validation-message=""
+                            ng-options="unit.name for unit in drugUnits | orderBy:'code' track by unit.id">
+                    </select>
+                </div>
 
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="tradeName" class="control-label">
-                                        <span ng-if="lang==='AR'">الاسم التجاري</span>
-                                        <span ng-if="lang==='EN'">Trade Name</span>
-                                    </label>
-                                    <select id="tradeName"
-                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم التجاري' : 'Search For Trade Name...'}}"
-                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم التجاري' : 'Please Select Trade Name...'}}'"
-                                            class="form-control"
-                                            chosen=""
-                                            ng-model="transactionBuy.drug"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-options="('[ ' + drug.nameArabic + ' ] [' + drug.nameEnglish + ' ]' ) for drug in drugs | orderBy:'nameEnglish' track by drug.id">
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="medicalName" class="control-label">
-                                        <span ng-if="lang==='AR'">الاسم العلمي</span>
-                                        <span ng-if="lang==='EN'">Medical Name</span>
-                                    </label>
-                                    <select id="medicalName"
-                                            data-placeholder="{{lang==='AR' ? 'ابحث عن الاسم العلمي' : 'Search For Trade Name...'}}"
-                                            no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                            placeholder-text-single="'{{lang==='AR' ? 'اختر الاسم العلمي' : 'Please Select Trade Name...'}}'"
-                                            class="form-control"
-                                            chosen=""
-                                            ng-model="transactionBuy.drug"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-options="('[ ' + drug.medicalNameArabic + ' ] [' + drug.medicalNameEnglish + ' ]' ) for drug in drugs | orderBy:'medicalNameEnglish' track by drug.id">
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
-                                    <label for="productionDate" class="control-label">
-                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                        <span ng-if="lang==='EN'">Production Date</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group">
-                                        <input dir="rtl"
-                                               id="productionDate"
-                                               type="text"
-                                               class="form-control is-calendarPicker"
-                                               ng-model="transactionBuy.productionDate"
-                                               ng-required="dateType==='H'"
-                                               disable-validation-message=""
-                                               calendarType="ummalqura"
-                                               language="en"
-                                               dateFormat="yyyy/mm/dd"
-                                               showOnFocus="false"
-                                               readonly="readonly"
-                                               kdatepicker>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
-                                    <label for="G-productionDate" class="control-label">
-                                        <span ng-if="lang==='AR'">تاريخ الإنتاج</span>
-                                        <span ng-if="lang==='EN'">Production Date</span>
-                                    </label>
-                                    <input id="G-productionDate"
-                                           class="form-control "
-                                           type="date"
-                                           name="input"
-                                           ng-model="transactionBuy.productionDate"
-                                           placeholder="yyyy-MM-dd"
-                                           min="2017-01-01"
-                                           max="2030-12-31"
-                                           ng-required="dateType==='G'"
-                                           disable-validation-message=""/>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="warrantInMonth" class="control-label">
-                                        <span ng-if="lang==='AR'">مدة الصلاحية</span>
-                                        <span ng-if="lang==='EN'">Shelf Life</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="warrantInMonth">
-                                        <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">شهر</span>
-                                            <span ng-if="lang==='EN'">Month</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               min="1"
-                                               required="required"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="transactionBuy.warrantInMonth">
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                    <label for="drugUnit" class="control-label">
-                                        <span ng-if="lang==='AR'">وحدة القياس</span>
-                                        <span ng-if="lang==='EN'">Drug Unit</span>
-                                    </label>
-                                    <select id="drugUnit"
-                                            class="form-control"
-                                            ng-model="transactionBuy.drugUnit"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-options="unit.name for unit in drugUnits | orderBy:'code' track by unit.id">
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                    <label for="unitBuyCost" class="control-label">
-                                        <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
-                                        <span ng-if="lang==='EN'">Unit Purchace Cost</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="unitBuyCost">
-                                        <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">ريال سعودي</span>
-                                            <span ng-if="lang==='EN'">SAR</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               min="0"
-                                               required="required"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="transactionBuy.unitBuyCost">
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                    <label for="unitSellCost" class="control-label">
-                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
-                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="unitSellCost">
-                                        <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">ريال سعودي</span>
-                                            <span ng-if="lang==='EN'">SAR</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               ng-min="transactionBuy.unitBuyCost"
-                                               required="required"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="transactionBuy.unitSellCost">
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                    <label for="cost" class="control-label">
-                                        <span ng-if="lang==='AR'">الكمية</span>
-                                        <span ng-if="lang==='EN'">Quantity</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="cost">
-                                        <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">{{transactionBuy.drugUnit.name}}</span>
-                                            <span ng-if="lang==='EN'">{{transactionBuy.drugUnit.name}}</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               min="0"
-                                               required="required"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="transactionBuy.quantity">
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="description" class="control-label">
-                                    <span ng-if="lang==='AR'">ملاحظات الطلبية</span>
-                                    <span ng-if="lang==='EN'">Order Notes</span>
-                                </label>
-                                <textarea id="description"
-                                          type="text"
-                                          msd-elastic="\n"
-                                          class="form-control"
-                                          ng-model="transactionBuy.note">
-                                </textarea>
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                                 ng-if="(transactionBuy.unitBuyCost * transactionBuy.quantity) > 0">
-                                <div class="alert alert-info" role="alert" style="font-size: 20px">
-                                    <strong ng-if="lang==='AR'">الأجمالي</strong>
-                                    <strong ng-if="lang==='EN'">Total</strong>
-                                    <span>{{transactionBuy.unitBuyCost * transactionBuy.quantity | currency:'SAR'}}</span>
-                                </div>
-                            </div>
-
-                        </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="cost" class="control-label">
+                        <span ng-if="lang==='AR'">الكمية</span>
+                        <span ng-if="lang==='EN'">Quantity</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="cost">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">{{transactionBuy.drugUnit.name}}</span>
+                            <span ng-if="lang==='EN'">{{transactionBuy.drugUnit.name}}</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               min="0"
+                               required=""
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="transactionBuy.quantity">
                     </div>
                 </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="unitBuyCost" class="control-label">
+                        <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
+                        <span ng-if="lang==='EN'">Unit Purchase Cost</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="unitBuyCost">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                            <span ng-if="lang==='EN'">SAR</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               min="0"
+                               required=""
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="transactionBuy.unitBuyCost">
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="unitSellCost" class="control-label">
+                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="unitSellCost">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                            <span ng-if="lang==='EN'">SAR</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               ng-min="transactionBuy.unitBuyCost"
+                               required=""
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="transactionBuy.unitSellCost">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="description" class="control-label">
+                    <span ng-if="lang==='AR'">ملاحظات الطلبية</span>
+                    <span ng-if="lang==='EN'">Order Notes</span>
+                </label>
+                <textarea id="description"
+                          type="text"
+                          msd-elastic="\n"
+                          class="form-control"
+                          ng-model="transactionBuy.note">
+                </textarea>
             </div>
 
         </div>

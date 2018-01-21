@@ -24,11 +24,6 @@ app.factory("BillSellService",
             remove: function (id) {
                 return $http.delete("/api/billSell/delete/" + id);
             },
-            filter: function (search) {
-                return $http.get("/api/billSell/filter?" + search).then(function (response) {
-                    return response.data;
-                });
-            },
             filterInside: function (search) {
                 return $http.get("/api/billSell/filterInside?" + search).then(function (response) {
                     return response.data;

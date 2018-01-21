@@ -1,0 +1,341 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header mdl-color--primary mdl-navigation__link-active">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
+                <strong>{{title}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                            style="margin-top: 2px;">
+                            <li>
+                                <a href=""
+                                   ng-click="openDrugChooser()"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="{{lang==='AR' ? 'اضافة صنف جديد' : 'Add Item...'}}">
+                                    <span class="fa fa-plus-square"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                            <h3 ng-if="lang==='AR'">قائمة الاصناف</h3>
+                            <h3 ng-if="lang==='EN'">Required Drugs</h3>
+                            <span ng-if="lang==='AR'">الأدوية المراد بيعها</span>
+                            <span ng-if="lang==='EN'">Select Drugs From Other Windows</span>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+
+                        <div class="table-responsive">
+                            <table st-table="collection" st-safe-src="transactionSellList"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span ng-if="lang==='AR'">م</span>
+                                        <span ng-if="lang==='EN'">#</span>
+                                    </th>
+
+                                    <th st-sort="drug.code" class="info">
+                                        <span ng-if="lang==='AR'">رقم الصنف</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="drug.nameArabic">
+                                        <span ng-if="lang==='AR'">الاسم التجاري</span>
+                                        <span ng-if="lang==='EN'">Trade Name</span>
+                                    </th>
+
+                                    <th st-sort="drug.medicalNameArabic">
+                                        <span ng-if="lang==='AR'">الاسم العلمي</span>
+                                        <span ng-if="lang==='EN'">Medical Name</span>
+                                    </th>
+
+                                    <th st-sort="drugUnit">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Unit</span>
+                                    </th>
+
+                                    <th st-sort="unitSellCost">
+                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
+                                    </th>
+
+                                    <th st-sort="quantity" class="success">
+                                        <span ng-if="lang==='AR'">الكمية</span>
+                                        <span ng-if="lang==='EN'">Quantity</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Action</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="transactionSell in collection">
+                                    <td>{{$index+1}}</td>
+                                    <td class="info">
+                                        <a href="" ng-click="ModalProvider.openDrugDetailsModel(transactionSell.drug)">
+                                            <strong>{{transactionSell.drug.code}}</strong>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <table class="table table-bordered table-hover">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span>{{transactionSell.drug.nameArabic}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span>{{transactionSell.drug.nameEnglish}}</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table class="table table-bordered table-hover">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span>{{transactionSell.drug.medicalNameArabic}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span>{{transactionSell.drug.medicalNameEnglish}}</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>{{transactionSell.drugUnit.name}}</td>
+                                    <td>{{transactionSell.unitSellCost | currency:'SAR':2}}</td>
+                                    <td class="success">{{transactionSell.quantity}}</td>
+                                    <td>
+                                        <a href="" ng-click="removeTransactionSellFromList($index)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row"
+                                    style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection || collection.length ==0">
+                                    <td colspan="7">
+                                        <a href="" ng-click="openDrugChooser()">
+                                            <strong ng-if="lang==='AR'">اضافة صنف...</strong>
+                                            <strong ng-if="lang==='EN'">Add Item...</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+
+                        <div class="row">
+
+                            <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-info">
+                                <span ng-if="lang==='AR'">الاجمالي قبل الخصم: </span>
+                                <span ng-if="lang==='EN'">Price Without Discount: </span>
+                                <span>{{totalCost | currency:'SAR':0}}</span>
+                            </h3>
+
+                            <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-warning">
+                                <span ng-if="lang==='AR'">قيمة الخصم: </span>
+                                <span ng-if="lang==='EN'">Discount: </span>
+                                <span>{{(totalCost * billSell.discount) / 100 | currency:'SAR':0}}</span>
+                            </h3>
+
+                            <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-danger">
+                                <span ng-if="lang==='AR'">الاجمالي بعد الخصم: </span>
+                                <span ng-if="lang==='EN'">Price After Discount: </span>
+                                <span>{{totalCost - ((totalCost * billSell.discount) / 100) | currency:'SAR':0}}</span>
+                            </h3>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label for="customerName" class="control-label">
+                        <span ng-if="lang==='AR'">اسم العميل</span>
+                        <span ng-if="lang==='EN'">Customer Name</span>
+                    </label>
+                    <input id="customerName"
+                           type="text"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر اسم العميل...' : 'Type Customer Name...'}}"
+                           ng-model="billSell.customerName">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label for="code" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                        <span ng-if="lang==='EN'">Falcon Code</span>
+                    </label>
+                    <input id="code"
+                           type="text"
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر رقم الصقر...' : 'Type Falcon Code...'}}"
+                           ng-model="billSell.falconCode">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-init="billSell.discount=0">
+                    <label for="discount" class="control-label">
+                        <span ng-if="lang==='AR'">الخصم</span>
+                        <span ng-if="lang==='EN'">Discount</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="discount">
+                        <span class="input-group-addon">
+                            <span>%</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               min="0"
+                               max="100"
+                               required="required"
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="billSell.discount">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row" ng-init="billSell.receipt={};billSell.receipt.paymentMethod='Cash'">
+
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label for="paymentMethod" class="control-label">
+                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                        <span ng-if="lang==='EN'">Payment Method</span>
+                    </label>
+                    <select id="paymentMethod"
+                            class="form-control"
+                            required="required"
+                            disable-validation-message=""
+                            ng-model="billSell.receipt.paymentMethod">
+                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
+                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
+                        <option ng-if="lang==='AR'" value="Check">شيك</option>
+                        <option ng-if="lang==='EN'" value="Check">Check</option>
+                        <option ng-if="lang==='AR'" value="Later">آجل</option>
+                        <option ng-if="lang==='EN'" value="Later">Later</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-if="billSell.receipt.paymentMethod!=='Later'">
+                    <label for="amountNumber" class="control-label">
+                        <span ng-if="lang==='AR'">المبلغ المسدد</span>
+                        <span ng-if="lang==='EN'">Payment Amount</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="amountNumber">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                            <span ng-if="lang==='EN'">SAR</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               min="1"
+                               max="{{totalCost - ((totalCost * billSell.discount) / 100)}}"
+                               ng-required="billSell.receipt.paymentMethod==='Cash'"
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="billSell.receipt.amountNumber">
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-if="billSell.receipt.paymentMethod!=='Later'">
+                    <label for="checkCode" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الشيك</span>
+                        <span ng-if="lang==='EN'">Check Code</span>
+                    </label>
+                    <input id="checkCode"
+                           type="number"
+                           ng-required="billSell.receipt.paymentMethod==='Check'"
+                           ng-disabled="billSell.receipt.paymentMethod!=='Check'"
+                           disable-validation-message=""
+                           class="form-control"
+                           ng-model="billSell.receipt.checkCode">
+                </div>
+
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="note" class="control-label">
+                    <span ng-if="lang==='AR'">ملاحظات الفاتورة</span>
+                    <span ng-if="lang==='EN'">Bill Purchase Notes</span>
+                </label>
+                <textarea id="note"
+                          type="text"
+                          msd-elastic="\n"
+                          class="form-control"
+                          ng-model="billSell.note">
+                </textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

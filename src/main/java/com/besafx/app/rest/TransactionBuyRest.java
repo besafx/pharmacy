@@ -28,7 +28,7 @@ import java.security.Principal;
 @RequestMapping(value = "/api/transactionBuy/")
 public class TransactionBuyRest {
 
-    public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionBuys],billBuy[id,code],-transactionSells";
+    public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionSells,-transactionBuys],billBuy[id,code],-transactionSells";
     private final Logger log = LoggerFactory.getLogger(TransactionBuyRest.class);
     @Autowired
     private TransactionBuyService transactionBuyService;

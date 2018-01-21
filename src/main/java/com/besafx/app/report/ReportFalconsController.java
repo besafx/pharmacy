@@ -1,10 +1,12 @@
 package com.besafx.app.report;
 
+import com.besafx.app.service.FalconService;
 import com.besafx.app.service.OrderService;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class ReportFalconsController {
     private final static Logger log = LoggerFactory.getLogger(ReportFalconsController.class);
 
     @Autowired
-    private OrderService orderService;
+    private FalconService falconService;
 
     @Autowired
     private ReportExporter reportExporter;
@@ -35,15 +37,14 @@ public class ReportFalconsController {
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        map.put("orders", orderService.findByFalconIdIn(ids));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
         title.append("تقرير مفصل للصقور");
         map.put("title", title.toString());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/falcon/ReportFalcons.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/falcon/FalconsDetails.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(falconService.findByIdIn(ids)));
+        reportExporter.export("FALCONS_DETAILS" ,exportType, response, jasperPrint);
     }
 
 }

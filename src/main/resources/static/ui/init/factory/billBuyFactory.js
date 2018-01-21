@@ -28,6 +28,26 @@ app.factory("BillBuyService",
                 return $http.get("/api/billBuy/filter?" + search).then(function (response) {
                     return response.data;
                 });
+            },
+            findByToday: function () {
+                return $http.get("/api/billBuy/findByToday").then(function (response) {
+                    return response.data;
+                });
+            },
+            findByWeek: function () {
+                return $http.get("/api/billBuy/findByWeek").then(function (response) {
+                    return response.data;
+                });
+            },
+            findByMonth: function () {
+                return $http.get("/api/billBuy/findByMonth").then(function (response) {
+                    return response.data;
+                });
+            },
+            findByYear: function () {
+                return $http.get("/api/billBuy/findByYear").then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

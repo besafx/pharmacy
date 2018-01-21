@@ -77,7 +77,9 @@ public class FundReceiptRest {
         fundReceipt.setReceipt(receiptService.save(fundReceipt.getReceipt()));
         fundReceipt = fundReceiptService.save(fundReceipt);
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-        notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تم انشاء السند للصندوق بنجاح" : "Create Cash Receipt Successfully").type("success").build(), byEmail);
+        notificationService.notifyOne(Notification.builder()
+                .message(lang.equals("AR") ? "تم انشاء السند للصندوق بنجاح" : "Create Cash Receipt Successfully")
+                .type("success").build(), byEmail);
         return fundReceipt;
     }
 
@@ -143,13 +145,15 @@ public class FundReceiptRest {
             bankReceipt = bankReceiptService.save(bankReceipt);
         }
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-        notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تم التحويل بنجاح" : "Money Transfered Successfully").type("success").build(), principal.getName());
+        notificationService.notifyOne(Notification.builder()
+                .message(lang.equals("AR") ? "تم التحويل بنجاح" : "Money Transefered Successfully")
+                .type("warning").build(), principal.getName());
 
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_FUND_RECEIPT_DELETE')")
+    @PreAuthorize("hasRole('ROLE_FUND_RECEIPT_IN_DELETE') or hasRole('ROLE_FUND_RECEIPT_OUT_DELETE')")
     public void delete(@PathVariable Long id, Principal principal) {
         FundReceipt fundReceipt = fundReceiptService.findOne(id);
         if (fundReceipt != null) {
@@ -157,7 +161,9 @@ public class FundReceiptRest {
             receiptService.delete(fundReceipt.getReceipt());
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-            notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات الصندوق بنجاح" : "Delete Receipt With All Related Successfully").build(), principal.getName());
+            notificationService.notifyOne(Notification.builder()
+                    .message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات الصندوق بنجاح" : "Delete Receipt With All Related Successfully")
+                    .type("error").build(), principal.getName());
         }
     }
 

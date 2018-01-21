@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -104,6 +105,17 @@ public class Drug implements Serializable {
                     .sum();
         } catch (Exception ex) {
             return 0.0;
+        }
+    }
+
+    public List<TransactionSell> getTransactionSells() {
+        try {
+            return this.transactionBuys
+                    .stream()
+                    .flatMap(transactionBuy -> transactionBuy.getTransactionSells().stream())
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            return new ArrayList<>();
         }
     }
 }

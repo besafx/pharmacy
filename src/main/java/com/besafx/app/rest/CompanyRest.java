@@ -8,6 +8,9 @@ import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.bohnman.squiggly.Squiggly;
+import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +28,8 @@ public class CompanyRest {
 
     private final static Logger log = LoggerFactory.getLogger(CompanyRest.class);
 
+    private final String FILTER_TABLE = "**";
+
     @Autowired
     private CompanyService companyService;
 
@@ -37,34 +42,25 @@ public class CompanyRest {
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_COMPANY_UPDATE')")
-    public Company update(@RequestBody Company company, Principal principal) {
+    public String update(@RequestBody Company company, Principal principal) {
         Person person = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(person.getOptions(), Options.class).getLang();
         Company object = companyService.findOne(company.getId());
         if (object != null) {
             company = companyService.save(company);
-            notificationService.notifyOne(Notification
-                    .builder()
-                    .title(lang.equals("AR") ? "العمليات على قواعد البيانات" : "Data Processing")
+            notificationService.notifyOne(Notification.builder()
                     .message(lang.equals("AR") ? "تم تعديل بيانات الشركة بنجاح" : "Update company information successfully")
                     .type("warning")
-                    .icon("fa-edit")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
-            return company;
+            return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), company);
         } else {
             return null;
         }
     }
 
-    @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Company> findAll() {
-        return Lists.newArrayList(companyService.findAll());
-    }
-
-    @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company findOne(@PathVariable Long id) {
-        return companyService.findOne(id);
+    public String get() {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), Lists.newArrayList(companyService.findAll()).get(0));
     }
 }

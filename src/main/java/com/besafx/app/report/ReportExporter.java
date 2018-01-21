@@ -24,7 +24,7 @@ public class ReportExporter {
 
     private final Logger log = LoggerFactory.getLogger(ReportExporter.class);
 
-    public void export(final ExportType exportType, final HttpServletResponse response, final JasperPrint jasperPrint) {
+    public void export(final String fileName, final ExportType exportType, final HttpServletResponse response, final JasperPrint jasperPrint) {
         ServletOutputStream servletOutputStream = null;
         ByteArrayOutputStream baos = null;
         try {
@@ -34,7 +34,7 @@ public class ReportExporter {
             switch (exportType) {
                 case PDF:
                     response.setContentType("application/pdf");
-                    response.setHeader("Content-Disposition", "inline; filename=\"report.pdf\"");
+                    response.setHeader("Content-Disposition", "inline; filename=" + fileName + ".pdf");
                     exporter = new JRPdfExporter();
                     exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
                     exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(servletOutputStream));

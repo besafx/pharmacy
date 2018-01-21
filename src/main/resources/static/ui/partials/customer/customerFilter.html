@@ -1,0 +1,104 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header mdl-color--primary mdl-navigation__link-active">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">print</i>
+                <strong ng-if="lang==='AR'">البحث في بيانات العملاء</strong>
+                <strong ng-if="lang==='EN'">Search For Customers</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="form-group row">
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="customerCode" class="control-label">
+                        <span ng-if="lang==='AR'">رقم العميل</span>
+                        <span ng-if="lang==='EN'">Customer Code</span>
+                    </label>
+                    <input id="customerCode"
+                           type="text"
+                           class="form-control"
+                           ng-model="paramCustomer.code">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="customerName" class="control-label">
+                        <span ng-if="lang==='AR'">اسم العميل</span>
+                        <span ng-if="lang==='EN'">Customer Name</span>
+                    </label>
+                    <input id="customerName"
+                           type="text"
+                           class="form-control"
+                           ng-model="paramCustomer.name">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="customerMobile" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الجوال</span>
+                        <span ng-if="lang==='EN'">Mobile Number</span>
+                    </label>
+                    <input id="customerMobile"
+                           type="text"
+                           class="form-control"
+                           ng-model="paramCustomer.mobile">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="customerIdentityNumber" class="control-label">
+                        <span ng-if="lang==='AR'">رقم البطاقة</span>
+                        <span ng-if="lang==='EN'">Identity Number</span>
+                    </label>
+                    <input id="customerIdentityNumber"
+                           type="text"
+                           class="form-control"
+                           ng-model="paramCustomer.identityNumber">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR'? 'بحث' : 'Search'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">search</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

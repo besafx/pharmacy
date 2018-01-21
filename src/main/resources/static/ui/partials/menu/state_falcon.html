@@ -1,0 +1,266 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="panel panel-body">
+        <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+             class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button id="falcon-menu-lower-right" style="width: 100%;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                <span ng-if="lang==='AR'">العمليات</span>
+                <span ng-if="lang==='EN'">Actions</span>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                for="falcon-menu-lower-right">
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findAllFalcons()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">visibility</i>
+                        <span ng-if="lang==='AR'">عرض كل الصقور</span>
+                        <span ng-if="lang==='EN'">Read All Falcons</span>
+                    </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="openFilterFalcon()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">search</i>
+                        <span ng-if="lang==='AR'">بحث</span>
+                        <span ng-if="lang==='EN'">Search</span>
+                    </span>
+                </li>
+
+                <div class="mdl-menu__item--full-bleed-divider"></div>
+
+                <li class="mdl-menu__item mdl-list__item" ng-click="newFalcon();"
+                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">add</i>
+                        <span ng-if="lang==='AR'">انشاء حساب جديد</span>
+                        <span ng-if="lang==='EN'">New...</span>
+                    </span>
+                </li>
+
+            </ul>
+        </div>
+
+        <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+             ng-init="toggleList=1">
+            <div class="btn-toolbar">
+                <div class="btn-group" data-toggle="buttons">
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=1"
+                            ng-class="{'active':toggleList===1}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">reorder</i>
+                    </button>
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=2"
+                            ng-class="{'active':toggleList===2}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">view_column</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="search()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                        <span class="fa fa-refresh"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
+                       ng-click="newFalcon()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء حساب جديد' : 'New Falcon...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة الصقور</h3>
+                <h3 ng-if="lang==='EN'">Falcons List</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-group row" ng-show="falcons.length > 0">
+
+                <button uib-tooltip="{{lang==='AR' ? 'تقرير مختصر بصقور القائمة' : 'Falcons List Summary Report'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="printFalcons()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">picture_as_pdf</i>
+                </button>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="falcons"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span>#</span>
+                            </th>
+
+                            <th st-sort="code" class="info">
+                                <span ng-if="lang==='AR'">رقم الصقر</span>
+                                <span ng-if="lang==='EN'">Code</span>
+                            </th>
+
+                            <th st-sort="type">
+                                <span ng-if="lang==='AR'">النوع</span>
+                                <span ng-if="lang==='EN'">Type</span>
+                            </th>
+
+                            <th st-sort="weight">
+                                <span ng-if="lang==='AR'">الوزن</span>
+                                <span ng-if="lang==='EN'">Weight</span>
+                            </th>
+
+                            <th st-sort="customer.person.name">
+                                <span ng-if="lang==='AR'">العميل</span>
+                                <span ng-if="lang==='EN'">Customer</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr st-select-mode="multiple"
+                            ng-repeat="falcon in collection1"
+                            context-menu="rowMenuFalcon"
+                            ng-class="{'danger': !falcon.enabled}"
+                            ng-dblclick="ModalProvider.openFalconDetailsModel(falcon)" ng-init="falcon.isSelected=false">
+                            <td st-select-row-multi="falcon">{{$index+1}}</td>
+                            <td st-select-row-multi="falcon" ng-class="{'info' : falcon.isSelected===false}">{{falcon.code}}</td>
+                            <td st-select-row-multi="falcon">{{falcon.type}}</td>
+                            <td st-select-row-multi="falcon">
+                                <span>{{falcon.weight}} جرام</span>
+                            </td>
+                            <td st-select-row-multi="falcon">{{falcon.customer.nickname}} {{falcon.customer.name}}</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="5">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
+    <div st-table="collection2" st-safe-src="falcons">
+
+        <div class="form-group row">
+
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" ng-repeat="falcon in collection2">
+                <!-- CONTACT ITEM -->
+                <div class="panel panel-default">
+                    <div class="panel-body profile">
+                        <div class="profile-image">
+                            <img width="100" height="100"
+                                 src="/ui/img/no-image.jpg"
+                                 alt="{{falcon.code}}"/>
+                        </div>
+                        <div class="profile-data">
+                            <div class="profile-data-name">
+                                {{falcon.code}}
+                            </div>
+                        </div>
+                        <div class="profile-controls">
+                            <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                            <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="contact-info">
+                            <p>
+                                <strong ng-if="lang==='AR'">النوع</strong>
+                                <strong ng-if="lang==='EN'">Type</strong>
+                                {{falcon.type}}
+                            </p>
+                            <hr>
+                            <p>
+                                <strong ng-if="lang==='AR'">الوزن</strong>
+                                <strong ng-if="lang==='EN'">Weight</strong>
+                                <span class="label label-danger">{{falcon.weight | currency:'KG':0.0}}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <button uib-tooltip="{{lang==='AR' ? 'انشاء حساب جديد' : 'New...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
+                                    ng-click="newFalcon();"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">add</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_UPDATE'])"
+                                    ng-click="ModalProvider.openFalconUpdateModel(falcon)"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                    tooltip-append-to-body="true"
+                                    type="button"
+                                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_DELETE'])"
+                                    ng-click="deleteFalcon(falcon)"
+                                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CONTACT ITEM -->
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+
+            <tfoot>
+            <tr>
+                <td>
+                    <div st-pagination="" st-items-by-page="3" st-displayed-pages="10"></div>
+                </td>
+            </tr>
+            </tfoot>
+
+        </div>
+
+    </div>
+</div>

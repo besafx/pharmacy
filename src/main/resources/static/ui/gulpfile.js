@@ -23,7 +23,7 @@ gulp.task('css', function () {
 
     gulp.src([
         './css/animate.css',
-        './css/animation.css',
+        // './css/animation.css',
         './css/bootstrap.css',
         './css/fonts.css',
         './css/md-icons.css',
@@ -66,7 +66,7 @@ gulp.task('scripts', function () {
 
         './js/jquery-ui.js',
         './js/angular.js',
-        './js/angular-locale_ar.js',
+        // './js/angular-locale_ar.js',
         './js/angular-sanitize.js',
         './js/angular-ui-router.js',
         './js/angular-animate.js',
@@ -140,6 +140,7 @@ gulp.task('scripts', function () {
         './init/factory/teamFactory.js',
         './init/factory/teamRuleFactory.js',
         './init/factory/billBuyFactory.js',
+        './init/factory/billBuyReceiptFactory.js',
         './init/factory/transactionBuyFactory.js',
         './init/factory/billSellDetectionFactory.js',
         './init/factory/transactionSellDetectionFactory.js',
@@ -163,8 +164,8 @@ gulp.task('scripts', function () {
         './partials/team/team.js',
         './partials/team/teamCreateUpdate.js',
 
-        './partials/customer/customer.js',
         './partials/customer/customerDetails.js',
+        './partials/customer/customerFilter.js',
         './partials/customer/customerCreateUpdate.js',
         './partials/customer/customerFalconCreateUpdate.js',
 
@@ -195,7 +196,6 @@ gulp.task('scripts', function () {
         './partials/detectionType/detectionTypeCreateUpdate.js',
         './partials/detectionType/detectionTypeHeavyWork.js',
 
-        './partials/drug/drug.js',
         './partials/drug/drugFilter.js',
         './partials/drug/drugCreateUpdate.js',
         './partials/drug/drugDetails.js',
@@ -209,24 +209,30 @@ gulp.task('scripts', function () {
 
         './partials/billBuy/billBuy.js',
         './partials/billBuy/billBuyFilter.js',
+        './partials/billBuy/billBuyDetails.js',
         './partials/billBuy/billBuyCreate.js',
-        './partials/billBuy/billBuyHeadCreate.js',
+        './partials/billBuy/billBuyCreateAddItem.js',
         './partials/billBuy/transactionBuyCreate.js',
+        './partials/billBuy/billBuyReceiptCreate.js',
         './partials/billBuy/updatePrices.js',
         './partials/billBuy/updateQuantity.js',
 
-        './partials/billSell/billSell.js',
-        './partials/billSell/billSellFilter.js',
-        './partials/billSell/billSellCreate.js',
+        './partials/billSell/insideSalesCreate.js',
+        './partials/billSell/insideSalesFilter.js',
+        './partials/billSell/insideSalesDetails.js',
+
+        './partials/billSell/outsideSalesCreate.js',
+        './partials/billSell/outsideSalesCreateAddItem.js',
+        './partials/billSell/outsideSalesFilter.js',
+        './partials/billSell/outsideSalesDetails.js',
+
         './partials/billSell/billSellReceiptCreate.js',
-        './partials/billSell/billSellForOrderCreate.js',
-        './partials/billSell/billSellHeadCreate.js',
         './partials/billSell/transactionSellCreate.js',
 
-        './partials/falcon/falcon.js',
         './partials/falcon/falconCreateUpdate.js',
+        './partials/falcon/falconFilter.js',
         './partials/falcon/falconDetails.js',
-        './partials/order/order.js',
+
         './partials/order/orderCreate.js',
         './partials/order/orderDetectionTypeCreate.js',
         './partials/order/orderReceiptCreate.js',
@@ -237,8 +243,15 @@ gulp.task('scripts', function () {
         './partials/diagnosis/diagnosis.js',
         './partials/diagnosis/diagnosisCreate.js',
 
-        './partials/report/report.js',
         './partials/report/person/personsIn.js',
+
+        './partials/report/detectionType/detectionTypeDetailsReport.js',
+
+        './partials/report/customer/customerDetailsReport.js',
+
+        './partials/report/falcon/falconDetailsReport.js',
+
+        './partials/report/supplier/supplierDetailsReport.js',
 
         './partials/report/order/orderByDate.js',
         './partials/report/order/orderByList.js',
@@ -247,10 +260,16 @@ gulp.task('scripts', function () {
         './partials/report/order/orderDetection.js',
         './partials/report/order/orderResult.js',
 
-        './partials/report/billSell/billSellByDate.js',
-        './partials/report/billSell/billSellByList.js',
-        './partials/report/billSell/billSellDetailsByList.js',
-        './partials/report/billSell/billSellDetailsByDate.js',
+        './partials/report/drug/drugDetailsReport.js',
+
+        './partials/report/billBuy/billBuysByDate.js',
+        './partials/report/billBuy/billBuysDetailsByDate.js',
+
+        './partials/report/billSell/insideSalesByDate.js',
+        './partials/report/billSell/outsideSalesByDate.js',
+
+        './partials/report/billSell/insideSalesDetailsByDate.js',
+        './partials/report/billSell/outsideSalesDetailsByDate.js',
 
         './partials/help/help.js',
         './partials/profile/profile.js',

@@ -1,11 +1,16 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.component.BeanUtil;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.service.BankService;
+import com.besafx.app.service.FundService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,9 +20,22 @@ import java.util.List;
 
 @Data
 @Entity
+@Component
 public class Bank implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Transient
+    private static BankService bankService;
+
+    @PostConstruct
+    public void init() {
+        try {
+            bankService = BeanUtil.getBean(BankService.class);
+        } catch (Exception ex) {
+
+        }
+    }
 
     @GenericGenerator(
             name = "bankSequenceGenerator",
@@ -33,6 +51,8 @@ public class Bank implements Serializable {
     private Long id;
 
     private Long code;
+
+    private Double tempBalance;
 
     private String name;
 
@@ -79,7 +99,9 @@ public class Bank implements Serializable {
 
     public Double getBalance() {
         try {
-            return this.getCashIn() - this.getCashOut();
+            this.tempBalance = this.getCashIn() - this.getCashOut();
+            bankService.save(this);
+            return this.tempBalance;
         } catch (Exception ex) {
             return 0.0;
         }

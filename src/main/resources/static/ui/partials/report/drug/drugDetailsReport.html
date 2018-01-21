@@ -1,0 +1,98 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop"
+      focus-group-tail="loop">
+
+    <div class="modal-header mdl-color--primary mdl-navigation__link-active">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">print</i>
+                <strong ng-if="lang==='AR'">تفاصيل الدواء بالمبيعات والمشتريات</strong>
+                <strong ng-if="lang==='EN'">Drug Details With Sales And Purchases</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة.</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields.</strong>
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="drug" class="control-label">
+                        <span ng-if="lang==='AR'">الدواء</span>
+                        <span ng-if="lang==='EN'">Drug</span>
+                    </label>
+                    <ui-select id="drug"
+                               ng-model="buffer.drug"
+                               required=""
+                               disable-validation-message=""
+                               theme="bootstrap">
+                        <ui-select-match placeholder="اختر الدواء المطلوب">
+                            <span ng-if="buffer.drug.id">
+                                <span ng-if="lang==='AR'">[{{$select.selected.code}}] {{$select.selected.nameArabic}} / {{$select.selected.medicalNameArabic}}</span>
+                                <span ng-if="lang==='EN'">[{{$select.selected.code}}] {{$select.selected.nameEnglish}} / {{$select.selected.medicalNameEnglish}}</span>
+                            </span>
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="drug in drugs | filter: $select.search | orderBy:'code' track by drug.id">
+                            <div ng-if="lang==='AR'" ng-bind-html="drug.nameArabic | highlight: $select.search"></div>
+                            <div ng-if="lang==='EN'" ng-bind-html="drug.nameEnglish | highlight: $select.search"></div>
+                            <small>
+                                <span ng-if="lang==='AR'">رقم الدواء : </span>
+                                <span ng-if="lang==='EN'">Drug Code: </span>
+                                <span ng-bind-html="''+drug.code | highlight: $select.search"></span>
+                                <br/>
+                                <span ng-if="lang==='AR'">الاسم العلمي : </span>
+                                <span ng-if="lang==='EN'">Medical Name: </span>
+                                <span ng-if="lang==='AR'" ng-bind-html="''+drug.medicalNameArabic | highlight: $select.search"></span>
+                                <span ng-if="lang==='EN'" ng-bind-html="''+drug.medicalNameEnglish | highlight: $select.search"></span>
+                            </small>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'طباعة' : 'Print'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">print</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine();buffer={}"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

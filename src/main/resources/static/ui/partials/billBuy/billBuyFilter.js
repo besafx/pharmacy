@@ -10,7 +10,7 @@ app.controller('billBuyFilterCtrl', ['SupplierService', '$scope', '$rootScope', 
         }, 2000);
 
         $scope.submit = function () {
-            $uibModalInstance.close($scope.buffer);
+            $uibModalInstance.close($scope.paramBillBuy);
         };
 
         $scope.cancel = function () {

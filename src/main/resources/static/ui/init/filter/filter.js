@@ -36,17 +36,35 @@ app.filter('propsFilter', function () {
     };
 });
 
-app.filter('sumByKey', function () {
-    return function (data, key) {
-        if (typeof(data) === 'undefined' || typeof(key) === 'undefined') {
-            return 0;
+app.filter('sumByKey', function() {
+    return function(input) {
+        var i = input instanceof Array ? input.length : 0;
+        var a = arguments.length;
+        if (a === 1 || i === 0)
+            return i;
+
+        var keys = [];
+        while (a-- > 1) {
+            var key = arguments[a].split('.');
+            var property = getNestedPropertyByKey(input[0], key);
+            if (isNaN(property))
+                throw 'filter sumProduct can count only numeric values';
+            keys.push(key);
         }
 
-        var sum = 0;
-        for (var i = data.length - 1; i >= 0; i--) {
-            sum += parseInt(data[i][key]);
+        var total = 0;
+        while (i--) {
+            var product = 1;
+            for (var k = 0; k < keys.length; k++)
+                product *= getNestedPropertyByKey(input[i], keys[k]);
+            total += product;
         }
+        return total;
 
-        return sum;
-    };
+        function getNestedPropertyByKey(data, key) {
+            for (var j = 0; j < key.length; j++)
+                data = data[key[j]];
+            return data;
+        }
+    }
 });

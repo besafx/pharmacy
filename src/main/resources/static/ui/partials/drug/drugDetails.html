@@ -2,199 +2,337 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon mdl-color-text--white">{{action==='create' ? 'add' : 'edit'}}</i>
-                <strong ng-if="lang==='AR'">تفاصيل الدواء</strong>
-                <strong ng-if="lang==='EN'">Drug Details</strong>
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">info</i>
+               <strong ng-if="lang==='AR'">تفاصيل الدواء رقم: {{drug.code}}</strong>
+                <strong ng-if="lang==='EN'">Drug Details Number: {{drug.code}}</strong>
             </span>
         </h3>
     </div>
 
     <div class="modal-body" id="modal-body">
 
-        <div class="row">
+        <div class="form-group row">
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshDrug()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
-                            <h3 ng-if="lang==='EN'">Basic Information</h3>
-                        </div>
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+
+                <div class="mdl-tabs__tab-bar">
+
+                    <a href="#panel-1-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4 is-active">
+                        <span ng-if="lang==='AR'">التفاصيل</span>
+                        <span ng-if="lang==='EN'">Details</span>
+                    </a>
+
+                    <a href="#panel-2-order"
+                       class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        <span ng-if="lang==='AR'">المشتريات</span>
+                        <span ng-if="lang==='EN'">Purchases</span>
+                        <span ng-if="drug.transactionBuys.length > 0"
+                              class="mdl-badge"
+                              data-badge="{{drug.transactionBuys.length}}"></span>
+                    </a>
+
+                    <a href="#panel-3-order"
+                       class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        <span ng-if="lang==='AR'">المبيعات</span>
+                        <span ng-if="lang==='EN'">Sales</span>
+                        <span ng-if="drug.transactionSells.length > 0"
+                              class="mdl-badge"
+                              data-badge="{{drug.transactionSells.length}}"></span>
+                    </a>
+
+                </div>
+
+                <div class="mdl-tabs__panel is-active" id="panel-1-order">
+
+                    <div class="form-group row">
+                        <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="refreshDrug()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">cached</i>
+                        </button>
                     </div>
-                    <div class="panel-body">
+
+                    <div class="form-group row">
+
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <span ng-if="lang==='AR'">رقم الدواء</span>
-                                            <span ng-if="lang==='EN'">Code</span>
-                                        </td>
-                                        <td>{{drug.code}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span ng-if="lang==='AR'">الاسم التجاري عربي</span>
-                                            <span ng-if="lang==='EN'">Trade Name - Arabic</span>
-                                        </td>
-                                        <td>{{drug.nameArabic}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span ng-if="lang==='AR'">الاسم التجاري إنجليزي</span>
-                                            <span ng-if="lang==='EN'">Trade Name - English</span>
-                                        </td>
-                                        <td>{{drug.nameEnglish}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span ng-if="lang==='AR'">الاسم العلمي عربي</span>
-                                            <span ng-if="lang==='EN'">Medical Name - Arabic</span>
-                                        </td>
-                                        <td>{{drug.medicalNameArabic}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span ng-if="lang==='AR'">الاسم العلمي إنجليزي</span>
-                                            <span ng-if="lang==='EN'">Medical Name - English</span>
-                                        </td>
-                                        <td>{{drug.medicalNameEnglish}}</td>
-                                    </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">رقم الدواء</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </td>
+                                    <td>{{drug.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الاسم التجاري عربي</span>
+                                        <span ng-if="lang==='EN'">Trade Name - Arabic</span>
+                                    </td>
+                                    <td>{{drug.nameArabic}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الاسم التجاري إنجليزي</span>
+                                        <span ng-if="lang==='EN'">Trade Name - English</span>
+                                    </td>
+                                    <td>{{drug.nameEnglish}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span ng-if="lang==='AR'">الاسم العلمي عربي</span>
+                                        <span ng-if="lang==='EN'">Medical Name - Arabic</span>
+                                    </td>
+                                    <td>{{drug.medicalNameArabic}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fit">
+                                        <span ng-if="lang==='AR'">الاسم العلمي إنجليزي</span>
+                                        <span ng-if="lang==='EN'">Medical Name - English</span>
+                                    </td>
+                                    <td>{{drug.medicalNameEnglish}}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
-                            <li>
-                                <a href="" ng-click="refreshFalcons()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">المخزون</h3>
-                            <h3 ng-if="lang==='EN'">Inventory</h3>
-                        </div>
                     </div>
-                    <div class="panel-body panel-body-table">
+
+                </div>
+
+                <div class="mdl-tabs__panel" id="panel-2-order">
+
+                    <div class="form-group row">
+                        <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="refreshTransactionBuyByDrug()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">cached</i>
+                        </button>
+                        <button uib-tooltip="{{lang==='AR' ? 'انشاء طلبية شراء' : 'New Purchace Order...'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="newTransactionBuy()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </div>
+
+                    <div class="form-group row">
+
                         <div class="table-responsive">
-                            <table st-table="collectionFalcons" st-safe-src="drug.falcons" class="table table-bordered">
+                            <table st-table="collection2" st-safe-src="drug.transactionBuys"
+                                   class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th st-sort="code" class="text-center">
-                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                    <th>
+                                        <span>#</span>
+                                    </th>
+
+                                    <th st-sort="code" class="info">
+                                        <span ng-if="lang==='AR'">رقم الحركة</span>
                                         <span ng-if="lang==='EN'">Code</span>
                                     </th>
-                                    <th st-sort="registerDate" class="text-center">
-                                        <span ng-if="lang==='AR'">تاريخ التسجيل</span>
-                                        <span ng-if="lang==='EN'">Register Date</span>
+
+                                    <th st-sort="productionDate">
+                                        <span ng-if="lang==='AR'">تاريخ الحركة</span>
+                                        <span ng-if="lang==='EN'">Transaction Date</span>
                                     </th>
-                                    <th st-sort="weight" class="text-center">
-                                        <span ng-if="lang==='AR'">الوزن</span>
-                                        <span ng-if="lang==='EN'">Weight</span>
+
+                                    <th st-sort="drugUnit">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Unit</span>
                                     </th>
+
+                                    <th st-sort="unitBuyCost">
+                                        <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Purchace Cost</span>
+                                    </th>
+
+                                    <th st-sort="unitSellCost">
+                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
+                                    </th>
+
+                                    <th st-sort="quantity" class="warning">
+                                        <span ng-if="lang==='AR'">كمية المشتريات</span>
+                                        <span ng-if="lang==='EN'">Purchace Quantity</span>
+                                    </th>
+
+                                    <th st-sort="salesQuantity" class="success">
+                                        <span ng-if="lang==='AR'">كمية المبيعات</span>
+                                        <span ng-if="lang==='EN'">Sales Quantity</span>
+                                    </th>
+
+                                    <th st-sort="realQuantity" class="danger">
+                                        <span ng-if="lang==='AR'">الرصيد الحالي</span>
+                                        <span ng-if="lang==='EN'">Real Quantity</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Action</span>
+                                    </th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="offer in collectionFalcons">
-                                    <td>{{offer.code}}</td>
+                                <tr ng-repeat="transactionBuy in collection2">
+                                    <td>{{$index+1}}</td>
+                                    <td class="info">{{transactionBuy.code}}</td>
                                     <td>
-                                        <span>{{offer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span class="label label-success">{{offer.registerDate | date:'h:m a'}}</span>
+                                        <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
+                                        {{transactionBuy.date | date:'h:m a'}}
                                     </td>
-                                    <td>{{offer.weight | currency:'KG':0.0}}</td>
+                                    <td>{{transactionBuy.drugUnit.name}}</td>
+                                    <td>{{transactionBuy.unitBuyCost | currency:'SAR':0}}</td>
+                                    <td>{{transactionBuy.unitSellCost | currency:'SAR':0}}</td>
+                                    <td class="warning">{{transactionBuy.quantity}}</td>
+                                    <td class="success">{{transactionBuy.salesQuantity}}</td>
+                                    <td class="danger">{{transactionBuy.realQuantity}}</td>
+                                    <td>
+                                        <a href=""
+                                           ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
+                                           ng-click="deleteTransactionBuy(transactionBuy)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
                                 </tr>
-                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;" ng-show="!collectionFalcons || collectionFalcons.length ==0">
-                                    <td colspan="3">
-                                        <span ng-if="lang==='AR'">لا توجد صقور مسجلة لهذا العميل</span>
-                                        <span ng-if="lang==='EN'">No Falcons Registered For This Drug</span>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection2 || collection2.length ==0">
+                                    <td colspan="10">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
                                 </tr>
                                 </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="10">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
-                            <li>
-                                <a href="" ng-click="refreshFalcons()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">المبيعات</h3>
-                            <h3 ng-if="lang==='EN'">Sales</h3>
-                        </div>
                     </div>
-                    <div class="panel-body panel-body-table">
+
+                </div>
+
+                <div class="mdl-tabs__panel" id="panel-3-order">
+
+                    <div class="form-group row">
+                        <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="refreshTransactionSellByDrug()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">cached</i>
+                        </button>
+                    </div>
+
+                    <div class="form-group row">
+
                         <div class="table-responsive">
-                            <table st-table="collectionFalcons" st-safe-src="drug.falcons" class="table table-bordered">
+                            <table st-table="collection3" st-safe-src="drug.transactionSells"
+                                   class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th st-sort="code" class="text-center">
-                                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                                    <th>
+                                        <span>#</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">رقم فاتورة البيع</span>
+                                        <span ng-if="lang==='EN'">Bill Sell Code</span>
+                                    </th>
+
+                                    <th st-sort="code" class="info">
+                                        <span ng-if="lang==='AR'">رقم الحركة</span>
                                         <span ng-if="lang==='EN'">Code</span>
                                     </th>
-                                    <th st-sort="registerDate" class="text-center">
-                                        <span ng-if="lang==='AR'">تاريخ التسجيل</span>
-                                        <span ng-if="lang==='EN'">Register Date</span>
+
+                                    <th st-sort="productionDate">
+                                        <span ng-if="lang==='AR'">تاريخ الحركة</span>
+                                        <span ng-if="lang==='EN'">Transaction Date</span>
                                     </th>
-                                    <th st-sort="weight" class="text-center">
-                                        <span ng-if="lang==='AR'">الوزن</span>
-                                        <span ng-if="lang==='EN'">Weight</span>
+
+                                    <th st-sort="drugUnit">
+                                        <span ng-if="lang==='AR'">وحدة القياس</span>
+                                        <span ng-if="lang==='EN'">Unit</span>
                                     </th>
+
+                                    <th st-sort="unitSellCost" class="danger">
+                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
+                                    </th>
+
+                                    <th st-sort="quantity">
+                                        <span ng-if="lang==='AR'">الكمية</span>
+                                        <span ng-if="lang==='EN'">Quantity</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Action</span>
+                                    </th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="offer in collectionFalcons">
-                                    <td>{{offer.code}}</td>
+                                <tr ng-repeat="transactionSell in collection3">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{transactionSell.billSell.code}}</td>
+                                    <td class="info">{{transactionSell.code}}</td>
                                     <td>
-                                        <span>{{offer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                        <span class="label label-success">{{offer.registerDate | date:'h:m a'}}</span>
+                                        <span ng-show="dateType==='H'">{{transactionSell.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{transactionSell.date | date: 'yyyy-MM-dd'}}</span>
+                                        {{transactionSell.date | date:'h:m a'}}
                                     </td>
-                                    <td>{{offer.weight | currency:'KG':0.0}}</td>
+                                    <td>{{transactionSell.drugUnit.name}}</td>
+                                    <td class="danger">{{transactionSell.unitSellCost | currency:'SAR':0}} </td>
+                                    <td>{{transactionSell.quantity}}</td>
+                                    <td>
+                                        <a href=""
+                                           ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_DELETE'])"
+                                           ng-click="deleteTransactionSell(transactionSell)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
                                 </tr>
-                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;" ng-show="!collectionFalcons || collectionFalcons.length ==0">
-                                    <td colspan="3">
-                                        <span ng-if="lang==='AR'">لا توجد صقور مسجلة لهذا العميل</span>
-                                        <span ng-if="lang==='EN'">No Falcons Registered For This Drug</span>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection3 || collection3.length ==0">
+                                    <td colspan="8">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
                                 </tr>
                                 </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
 
         </div>
@@ -204,27 +342,11 @@
     <div class="modal-footer">
 
         <div class="row">
-            <button uib-tooltip="{{lang==='AR' ? 'تعديل...' : 'Edit...'}}"
-                    tooltip-append-to-body="true"
-                    type="button"
-                    ng-if="contains(me.team.authorities, ['ROLE_DRUG_UPDATE'])"
-                    ng-click="ModalProvider.openDrugUpdateModel(drug)"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <i class="material-icons">account_circle</i>
-            </button>
-            <button uib-tooltip="{{lang==='AR' ? 'تسجيل حساب صقر جديد...' : 'New Falcon...'}}"
-                    tooltip-append-to-body="true"
-                    type="button"
-                    ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
-                    ng-click="newFalcon(drug)"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <i class="material-icons">adb</i>
-            </button>
             <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
                     tooltip-append-to-body="true"
                     type="button"
                     ng-click="cancel()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect pull-left">
                 <i class="material-icons">power_settings_new</i>
             </button>
         </div>

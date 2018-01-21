@@ -2,7 +2,9 @@ package com.besafx.app.config;
 
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.WriteMode;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -10,6 +12,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -74,10 +77,10 @@ public class DropboxManager {
             log.info("Trying to upload file: " + fileName);
             log.info("Sleeping for 5 seconds...");
             Thread.sleep(5000);
-            client.files().uploadBuilder(path).uploadAndFinish(inputStream);
+            client.files().uploadBuilder(path).withMode(WriteMode.OVERWRITE).uploadAndFinish(inputStream);
             return new AsyncResult<>(true);
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
+            ex.printStackTrace();
             return new AsyncResult<>(false);
         }
     }

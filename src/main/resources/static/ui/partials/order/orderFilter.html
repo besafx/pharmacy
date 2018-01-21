@@ -3,7 +3,7 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
@@ -20,7 +20,7 @@
 
             <div class="form-group row">
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
                     <label for="codeFrom" class="control-label">
                         <span ng-if="lang==='AR'">رقم الطلب من</span>
                         <span ng-if="lang==='EN'">Code From</span>
@@ -31,7 +31,7 @@
                            ng-model="buffer.codeFrom">
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
                     <label for="codeTo" class="control-label">
                         <span ng-if="lang==='AR'">رقم الطلب إلى</span>
                         <span ng-if="lang==='EN'">Code To</span>
@@ -42,104 +42,7 @@
                            ng-model="buffer.codeTo">
                 </div>
 
-            </div>
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="customerName" class="control-label">
-                        <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
-                        <span ng-if="lang==='EN'">Customer Name Contains</span>
-                    </label>
-                    <input id="customerName"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.customerName">
-                </div>
-
-            </div>
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="customerMobile" class="control-label">
-                        <span ng-if="lang==='AR'">رقم جوال العميل يحتوي على</span>
-                        <span ng-if="lang==='EN'">Customer Mobile Contains</span>
-                    </label>
-                    <input id="customerMobile"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.customerMobile">
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="customerIdentityNumber" class="control-label">
-                        <span ng-if="lang==='AR'">رقم بطاقة العميل تحتوي على</span>
-                        <span ng-if="lang==='EN'">Customer ID Contains</span>
-                    </label>
-                    <input id="customerIdentityNumber"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.customerIdentityNumber">
-                </div>
-
-            </div>
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="falconCode" class="control-label">
-                        <span ng-if="lang==='AR'">رقم الصقر يحتوي على</span>
-                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
-                    </label>
-                    <input id="falconCode"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.falconCode">
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="falconType" class="control-label">
-                        <span ng-if="lang==='AR'">نوع الصقر يحتوي على</span>
-                        <span ng-if="lang==='EN'">Falcon Type Contains</span>
-                    </label>
-                    <input id="falconType"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.falconType">
-                </div>
-
-            </div>
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="weightFrom" class="control-label">
-                        <span ng-if="lang==='AR'">وزن الصقر من</span>
-                        <span ng-if="lang==='EN'">Falcon Weight From</span>
-                    </label>
-                    <input id="weightFrom"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.weightFrom">
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label for="weightTo" class="control-label">
-                        <span ng-if="lang==='AR'">وزن الصقر إلى</span>
-                        <span ng-if="lang==='EN'">Falcon Weight To</span>
-                    </label>
-                    <input id="weightTo"
-                           type="text"
-                           class="form-control"
-                           ng-model="buffer.weightTo">
-                </div>
-
-            </div>
-
-            <div class="form-group row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3" ng-if="dateType==='H'">
                     <label for="dateFrom" class="control-label">
                         <span ng-if="lang==='AR'">تاريخ الطلب من</span>
                         <span ng-if="lang==='EN'">Order Date From</span>
@@ -159,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3" ng-if="dateType==='G'">
                     <label for="G-dateFrom" class="control-label">
                         <span ng-if="lang==='AR'">تاريخ الطلب من</span>
                         <span ng-if="lang==='EN'">Order Date From</span>
@@ -174,7 +77,7 @@
                            max="2030-12-31"/>
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3" ng-if="dateType==='H'">
                     <label for="dateTo" class="control-label">
                         <span ng-if="lang==='AR'">تاريخ الطلب إلى</span>
                         <span ng-if="lang==='EN'">Order Date To</span>
@@ -194,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3" ng-if="dateType==='G'">
                     <label for="G-dateTo" class="control-label">
                         <span ng-if="lang==='AR'">تاريخ الطلب إلى</span>
                         <span ng-if="lang==='EN'">Order Date To</span>
@@ -207,6 +110,92 @@
                            placeholder="yyyy-MM-dd"
                            min="2017-01-01"
                            max="2030-12-31"/>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <label for="customerName" class="control-label">
+                        <span ng-if="lang==='AR'">اسم العميل يحتوي على</span>
+                        <span ng-if="lang==='EN'">Customer Name Contains</span>
+                    </label>
+                    <input id="customerName"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.customerName">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <label for="customerMobile" class="control-label">
+                        <span ng-if="lang==='AR'">رقم جوال العميل يحتوي على</span>
+                        <span ng-if="lang==='EN'">Customer Mobile Contains</span>
+                    </label>
+                    <input id="customerMobile"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.customerMobile">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <label for="customerIdentityNumber" class="control-label">
+                        <span ng-if="lang==='AR'">رقم بطاقة العميل تحتوي على</span>
+                        <span ng-if="lang==='EN'">Customer ID Contains</span>
+                    </label>
+                    <input id="customerIdentityNumber"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.customerIdentityNumber">
+                </div>
+
+            </div>
+
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <label for="falconCode" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الصقر يحتوي على</span>
+                        <span ng-if="lang==='EN'">Falcon Code Contains</span>
+                    </label>
+                    <input id="falconCode"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.falconCode">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <label for="falconType" class="control-label">
+                        <span ng-if="lang==='AR'">نوع الصقر يحتوي على</span>
+                        <span ng-if="lang==='EN'">Falcon Type Contains</span>
+                    </label>
+                    <input id="falconType"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.falconType">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <label for="weightFrom" class="control-label">
+                        <span ng-if="lang==='AR'">وزن الصقر من</span>
+                        <span ng-if="lang==='EN'">Falcon Weight From</span>
+                    </label>
+                    <input id="weightFrom"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.weightFrom">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <label for="weightTo" class="control-label">
+                        <span ng-if="lang==='AR'">وزن الصقر إلى</span>
+                        <span ng-if="lang==='EN'">Falcon Weight To</span>
+                    </label>
+                    <input id="weightTo"
+                           type="text"
+                           class="form-control"
+                           ng-model="buffer.weightTo">
                 </div>
 
             </div>

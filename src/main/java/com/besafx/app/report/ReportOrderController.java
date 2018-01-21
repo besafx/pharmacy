@@ -48,7 +48,7 @@ public class ReportOrderController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrderPending.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("Report" ,exportType, response, jasperPrint);
     }
 
     @RequestMapping(value = "/report/order/diagnosed/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
@@ -64,7 +64,7 @@ public class ReportOrderController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrderDiagnosed.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("Report" ,exportType, response, jasperPrint);
     }
 
     @RequestMapping(value = "/report/order/done/{orderId}/{billSellId}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
@@ -81,12 +81,12 @@ public class ReportOrderController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrderDone.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("Report" ,exportType, response, jasperPrint);
     }
 
-    @RequestMapping(value = "/report/orders", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/orders/summary/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportOrders(
+    public void printOrdersSummary(
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
@@ -99,12 +99,12 @@ public class ReportOrderController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrders.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("ORDERS_SUMMARY_LIST" ,exportType, response, jasperPrint);
     }
 
-    @RequestMapping(value = "/report/ordersDetails", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/orders/details/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportOrdersDetails(
+    public void printOrdersDetails(
             @RequestParam("ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
@@ -119,12 +119,12 @@ public class ReportOrderController {
         JasperReport jasperReportSub = JasperCompileManager.compileReport(jrxmlFileSub.getInputStream());
         map.put("subReport", jasperReportSub);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(orderService.findByIdIn(ids)));
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("ORDERS_DETAILS_LIST" ,exportType, response, jasperPrint);
     }
 
     @RequestMapping(value = "/report/ordersByDate", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportOrdersByDate(
+    public void printOrdersSummaryByDate(
             @RequestParam(value = "dateFrom") Long dateFrom,
             @RequestParam(value = "dateTo") Long dateTo,
             @RequestParam(value = "exportType") ExportType exportType,
@@ -144,12 +144,12 @@ public class ReportOrderController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/order/ReportOrders.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("Report" ,exportType, response, jasperPrint);
     }
 
     @RequestMapping(value = "/report/ordersDetailsByDate", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
-    public void ReportOrdersDetailsByDate(
+    public void printOrdersDetailsByDate(
             @RequestParam(value = "dateFrom") Long dateFrom,
             @RequestParam(value = "dateTo") Long dateTo,
             @RequestParam(value = "exportType") ExportType exportType,
@@ -173,7 +173,7 @@ public class ReportOrderController {
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map,
                 new JRBeanCollectionDataSource(orderService.findByDateBetween(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
                         new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())));
-        reportExporter.export(exportType, response, jasperPrint);
+        reportExporter.export("Report" ,exportType, response, jasperPrint);
     }
 
 }

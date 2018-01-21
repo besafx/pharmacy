@@ -16,6 +16,11 @@ app.factory("TransactionSellService",
                     return response.data;
                 });
             },
+            findByDrug: function (id) {
+                return $http.get("/api/transactionSell/findByDrug/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (transactionSell) {
                 return $http.post("/api/transactionSell/create", transactionSell).then(function (response) {
                     return response.data;

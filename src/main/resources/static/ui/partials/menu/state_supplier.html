@@ -1,0 +1,262 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="panel panel-body">
+        <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+             class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button id="supplier-menu-lower-right" style="width: 100%;"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                <span ng-if="lang==='AR'">العمليات</span>
+                <span ng-if="lang==='EN'">Actions</span>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                for="supplier-menu-lower-right">
+
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="fetchSupplierTableData()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">visibility</i>
+                        <span ng-if="lang==='AR'">عرض البيانات</span>
+                        <span ng-if="lang==='EN'">View</span>
+                    </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item" ng-click="newSupplier();"
+                    ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE'])">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">add</i>
+                        <span ng-if="lang==='AR'">انشاء مورد جديد</span>
+                        <span ng-if="lang==='EN'">New...</span>
+                    </span>
+                </li>
+
+            </ul>
+        </div>
+
+        <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="toggleList=1">
+            <div class="btn-toolbar">
+                <div class="btn-group" data-toggle="buttons">
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=1"
+                            ng-class="{'active':toggleList===1}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">reorder</i>
+                    </button>
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=2"
+                            ng-class="{'active':toggleList===2}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">view_column</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="fetchSupplierTableData()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تحميل البيانات' : 'Read Data'}}">
+                        <span class="fa fa-refresh"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE'])"
+                       ng-click="newSupplier()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء حساب مورد جديد' : 'New Customer...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة الموردين</h3>
+                <h3 ng-if="lang==='EN'">Suppliers List</h3>
+            </div>
+        </div>
+        <div class="panel-body panel-body-table">
+
+            <div class="table-responsive">
+                <table st-table="collection1" st-safe-src="suppliers"
+                       class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <span>#</span>
+                        </th>
+
+                        <th st-sort="code" class="info">
+                            <span ng-if="lang==='AR'">رقم المورد</span>
+                            <span ng-if="lang==='EN'">Code</span>
+                        </th>
+
+                        <th st-sort="name">
+                            <span ng-if="lang==='AR'">اسم المورد</span>
+                            <span ng-if="lang==='EN'">Name</span>
+                        </th>
+
+                        <th st-sort="registerDate" class="success">
+                            <span ng-if="lang==='AR'">تاريخ التسجيل</span>
+                            <span ng-if="lang==='EN'">Register Date</span>
+                        </th>
+
+                        <th st-sort="mobile">
+                            <span ng-if="lang==='AR'">الجوال</span>
+                            <span ng-if="lang==='EN'">Mobile</span>
+                        </th>
+
+                        <th st-sort="email">
+                            <span ng-if="lang==='AR'">البريد الإلكتروني</span>
+                            <span ng-if="lang==='EN'">Email</span>
+                        </th>
+
+                        <th st-sort="billBuys.length">
+                            <span ng-if="lang==='AR'">عدد فواتير الشراء</span>
+                            <span ng-if="lang==='EN'">Bill Buy Count</span>
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="supplier in collection1"
+                        st-select-mode="multiple"
+                        context-menu="rowMenuSupplier"
+                        ng-class="{'danger': !supplier.enabled}">
+                        <td st-select-row-multi="supplier">{{$index+1}}</td>
+                        <td st-select-row-multi="supplier" class="info">{{supplier.code}}</td>
+                        <td st-select-row-multi="supplier">
+                            {{supplier.name}}
+                        </td>
+                        <td st-select-row-multi="supplier" class="success">
+                            <span ng-show="dateType==='H'">{{supplier.registerDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                            <span ng-show="dateType==='G'">{{supplier.registerDate | date: 'yyyy-MM-dd'}}</span>
+                            {{supplier.registerDate | date:'h:m a'}}
+                        </td>
+                        <td st-select-row-multi="supplier">{{supplier.mobile}}</td>
+                        <td st-select-row-multi="supplier">{{supplier.email}}</td>
+                        <td st-select-row-multi="supplier">{{supplier.billBuys.length}}</td>
+                    </tr>
+                    <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                        ng-show="!collection1 || collection1.length == 0">
+                        <td colspan="6">
+                            <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                            <span ng-if="lang==='EN'">No Data Found.</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="fetchSupplierTableData()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تحميل البيانات' : 'Read Data'}}">
+                        <span class="fa fa-refresh"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE'])"
+                       ng-click="newSupplier()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء حساب مورد جديد' : 'New Customer...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة الموردين</h3>
+                <h3 ng-if="lang==='EN'">Suppliers List</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div st-table="collection2" st-safe-src="suppliers">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="supplier in collection2">
+                    <!-- CONTACT ITEM -->
+                    <div class="panel panel-default">
+                        <div class="panel-body profile">
+                            <div class="profile-image">
+                                <img width="100" height="100"
+                                     src="/ui/img/no-image.jpg"
+                                     alt="{{supplier.code}}"/>
+                            </div>
+                            <div class="profile-data">
+                                <div class="profile-data-name">
+                                    {{supplier.name}}
+                                </div>
+                            </div>
+                            <div class="profile-controls">
+                                <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                                <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="contact-info">
+                                <p>
+                                    <strong ng-if="lang==='AR'">رقم الجوال</strong>
+                                    <strong ng-if="lang==='EN'">Phone</strong>
+                                    {{supplier.mobile}}
+                                </p>
+                                <hr>
+                                <p>
+                                    <strong ng-if="lang==='AR'">الحالة</strong>
+                                    <strong ng-if="lang==='EN'">Condition</strong>
+                                    <span ng-show="supplier.enabled" class="label label-success">مفعل</span>
+                                    <span ng-show="!supplier.enabled" class="label label-danger">معطل</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <button uib-tooltip="{{lang==='AR' ? 'انشاء مورد جديد' : 'New...'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE'])"
+                                        ng-click="newSupplier();"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">add</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit...'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_UPDATE'])"
+                                        ng-click="ModalProvider.openSupplierUpdateModel(supplier)"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                        tooltip-append-to-body="true"
+                                        type="button"
+                                        ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_DELETE'])"
+                                        ng-click="deleteSupplier(supplier)"
+                                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END CONTACT ITEM -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

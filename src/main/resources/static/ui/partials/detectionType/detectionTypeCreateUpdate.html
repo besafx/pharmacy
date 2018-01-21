@@ -3,7 +3,7 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
@@ -17,130 +17,115 @@
 
         <div class="row">
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <span ng-if="lang==='AR'">البيانات الاساسية</span>
-                        <span ng-if="lang==='EN'">Basic Information</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
 
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                                 ng-show="form.$invalid && form.$submitted">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
-                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
-                                </div>
-                            </div>
+            <div class="form-group row">
 
-                            <div class="form-group row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="code" class="control-label">
+                        <span ng-if="lang==='AR'">رقم النوع</span>
+                        <span ng-if="lang==='EN'">Type Code</span>
+                    </label>
+                    <input id="code"
+                           type="text"
+                           focus-autofocus="1"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control arabic-control"
+                           placeholder="{{lang==='AR' ? 'ادخل رقم غير مكرر' : 'Type Unique Code'}}"
+                           ng-model="detectionType.code">
+                </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="code" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم النوع</span>
-                                        <span ng-if="lang==='EN'">Type Code</span>
-                                    </label>
-                                    <input id="code"
-                                           type="text"
-                                           focus-autofocus="1"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control arabic-control"
-                                           placeholder="{{lang==='AR' ? 'ادخل رقم غير مكرر' : 'Type Unique Code'}}"
-                                           ng-model="detectionType.code">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="cost" class="control-label">
-                                        <span ng-if="lang==='AR'">التكلفة</span>
-                                        <span ng-if="lang==='EN'">Cost</span>
-                                    </label>
-                                    <div dir="ltr" class="input-group" id="cost">
-                                        <span class="input-group-addon">
-                                            <span ng-if="lang==='AR'">ريال سعودي</span>
-                                            <span ng-if="lang==='EN'">SAR</span>
-                                        </span>
-                                        <input dir="rtl"
-                                               type="number"
-                                               min="0"
-                                               required="required"
-                                               disable-validation-message=""
-                                               class="form-control"
-                                               ng-model="detectionType.cost">
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="name_ar" class="control-label">
-                                        <span ng-if="lang==='AR'">الاسم عربي</span>
-                                        <span ng-if="lang==='EN'">Arabic Name</span>
-                                    </label>
-                                    <input id="name_ar"
-                                           type="text"
-                                           focus-autofocus="1"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control arabic-control"
-                                           placeholder="اذكر الاسم..."
-                                           ng-model="detectionType.nameArabic">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="name_en" class="control-label">
-                                        <span ng-if="lang==='AR'">الاسم إنجليزي</span>
-                                        <span ng-if="lang==='EN'">English Name</span>
-                                    </label>
-                                    <input id="name_en"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control english-control"
-                                           placeholder="Type Name..."
-                                           ng-model="detectionType.nameEnglish">
-                                </div>
-
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="description_ar" class="control-label">
-                                        <span ng-if="lang==='AR'">الوصف عربي</span>
-                                        <span ng-if="lang==='EN'">Arabic Description</span>
-                                    </label>
-                                    <input id="description_ar"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control arabic-control"
-                                           placeholder="اذكر وصفاً مختصراً..."
-                                           ng-model="detectionType.descriptionArabic">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="description_en" class="control-label">
-                                        <span ng-if="lang==='AR'">الوصف إنجليزي</span>
-                                        <span ng-if="lang==='EN'">English Description</span>
-                                    </label>
-                                    <input id="description_en"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control english-control"
-                                           placeholder="Type Description..."
-                                           ng-model="detectionType.descriptionEnglish">
-                                </div>
-
-                            </div>
-
-                        </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="cost" class="control-label">
+                        <span ng-if="lang==='AR'">التكلفة</span>
+                        <span ng-if="lang==='EN'">Cost</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="cost">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                            <span ng-if="lang==='EN'">SAR</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               min="0"
+                               required="required"
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="detectionType.cost">
                     </div>
                 </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="name_ar" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم عربي</span>
+                        <span ng-if="lang==='EN'">Arabic Name</span>
+                    </label>
+                    <input id="name_ar"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control arabic-control"
+                           placeholder="اذكر الاسم..."
+                           ng-model="detectionType.nameArabic">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="name_en" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم إنجليزي</span>
+                        <span ng-if="lang==='EN'">English Name</span>
+                    </label>
+                    <input id="name_en"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control english-control"
+                           placeholder="Type Name..."
+                           ng-model="detectionType.nameEnglish">
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="description_ar" class="control-label">
+                        <span ng-if="lang==='AR'">الوصف عربي</span>
+                        <span ng-if="lang==='EN'">Arabic Description</span>
+                    </label>
+                    <input id="description_ar"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control arabic-control"
+                           placeholder="اذكر وصفاً مختصراً..."
+                           ng-model="detectionType.descriptionArabic">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="description_en" class="control-label">
+                        <span ng-if="lang==='AR'">الوصف إنجليزي</span>
+                        <span ng-if="lang==='EN'">English Description</span>
+                    </label>
+                    <input id="description_en"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control english-control"
+                           placeholder="Type Description..."
+                           ng-model="detectionType.descriptionEnglish">
+                </div>
+
             </div>
 
         </div>

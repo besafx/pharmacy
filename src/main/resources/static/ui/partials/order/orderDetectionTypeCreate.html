@@ -3,13 +3,13 @@
 
     <div class="modal-header mdl-color--primary mdl-navigation__link-active">
         <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
-            <span class="fa fa-close fa-2x"></span>
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
         </a>
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
                 <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
                 <strong ng-if="lang==='AR'">اضافة فحص جديد للطلب رقم /  </strong>
-                <strong ng-if="lang==='EN'">Add Detection Type To Order Number \  </strong>
+                <strong ng-if="lang==='EN'">Add Detection Type To Order Number /  </strong>
                 <strong>{{orderDetectionType.order.code}}</strong>
             </span>
         </h3>
@@ -19,63 +19,6 @@
 
         <div class="row">
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">بيانات طلب الفحص</h3>
-                            <h3 ng-if="lang==='EN'">Order Information</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">رقم الطلب</span>
-                                        <span ng-if="lang==='EN'">Code</span>
-                                    </td>
-                                    <td>{{orderDetectionType.order.code}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">تاريخ الطلب</span>
-                                        <span ng-if="lang==='EN'">Order Date</span>
-                                    </td>
-                                    <td>
-                                        {{orderDetectionType.order.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
-                                        <span class="label label-success">{{orderDetectionType.order.date | date:'h:m a'}}</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">رقم الصقر</span>
-                                        <span ng-if="lang==='EN'">Falcon Code</span>
-                                    </td>
-                                    <td>{{orderDetectionType.order.falcon.code}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">العميل</span>
-                                        <span ng-if="lang==='EN'">Customer</span>
-                                    </td>
-                                    <td>{{orderDetectionType.order.falcon.customer.name}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الطبيب المعالج</span>
-                                        <span ng-if="lang==='EN'">Doctor</span>
-                                    </td>
-                                    <td>{{orderDetectionType.order.doctor.person.name}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
                  ng-show="form.$invalid && form.$submitted">
                 <div class="alert alert-danger" role="alert">
@@ -84,55 +27,44 @@
                 </div>
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
-                            style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-click="refreshDetectionTypes()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
-                                   ng-click="newDetectionType()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'انشاء نوع جديد' : 'New Detection Type...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">البيانات المطلوبة</h3>
-                            <h3 ng-if="lang==='EN'">Required Information</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="detectionType" class="control-label">
-                                    <span ng-if="lang==='AR'">نوع الفحص</span>
-                                    <span ng-if="lang==='EN'">Detection Type</span>
-                                </label>
-                                <select id="detectionType"
-                                        data-placeholder="{{lang==='AR' ? 'ابحث عن النوع' : 'Search For Type...'}}"
-                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                        placeholder-text-single="'{{lang==='AR' ? 'اختر النوع' : 'Please Select Type...'}}'"
-                                        class="form-control"
-                                        chosen=""
-                                        ng-model="orderDetectionType.detectionType"
-                                        disable-validation-message=""
-                                        ng-options="('[ ' + detectionType.code + ' ] ' + (lang==='AR' ? detectionType.nameArabic : detectionType.nameEnglish) + ' [ ' + detectionType.cost + ' SAR ' + ' ] ') for detectionType in detectionTypes | orderBy:'code' track by detectionType.id">
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="detectionType" class="control-label">
+                    <span ng-if="lang==='AR'">نوع الفحص</span>
+                    <span ng-if="lang==='EN'">Detection Type</span>
+                    <a href="" ng-click="newDetectionType()" ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])">
+                        <strong ng-if="lang==='AR'">نوع جديد...</strong>
+                        <strong ng-if="lang==='EN'">New Type...</strong>
+                    </a>
+                </label>
+                <ui-select id="detectionType"
+                           focus-autofocus="1"
+                           ng-model="orderDetectionType.detectionType"
+                           required=""
+                           disable-validation-message=""
+                           theme="bootstrap">
+                    <ui-select-match placeholder="{{lang==='AR' ? 'اختر النوع...' : 'Select Detection Service...'}}">
+                            <span ng-if="orderDetectionType.detectionType.id">
+                                <span>[{{$select.selected.code}}] {{$select.selected.nameArabic}} - {{$select.selected.nameEnglish}}</span>
+                            </span>
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="detectionType in detectionTypes | filter: $select.search | orderBy:'code' track by detectionType.id">
+                        <div ng-if="lang==='AR'" ng-bind-html="detectionType.name | highlight: $select.search"></div>
+                        <small>
+                            <span ng-if="lang==='AR'">اسم الفحص عربي : </span>
+                            <span ng-if="lang==='EN'">Arabic Name: </span>
+                            <span ng-bind-html="''+detectionType.nameArabic | highlight: $select.search"></span>
+                            <br/>
+                            <span ng-if="lang==='AR'">اسم الفحص إنجليزي : </span>
+                            <span ng-if="lang==='EN'">English Name: </span>
+                            <span ng-if="lang==='AR'" ng-bind-html="''+detectionType.nameEnglish | highlight: $select.search"></span>
+                            <br/>
+                            <span ng-if="lang==='AR'">تكلفة الفحص : </span>
+                            <span ng-if="lang==='EN'">Cost: </span>
+                            <span ng-if="lang==='AR'" ng-bind-html="''+detectionType.cost | highlight: $select.search"></span>
+                        </small>
+                    </ui-select-choices>
+                </ui-select>
             </div>
 
         </div>

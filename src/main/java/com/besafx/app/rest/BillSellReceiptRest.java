@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping(value = "/api/billSellReceipt/")
 public class BillSellReceiptRest {
 
-    public static final String FILTER_TABLE = "**,billSell[id,code,order[id,code,date,falcon[id,code,type,customer[id,name]]]],receipt[**,lastPerson[id,nickname,name]]";
+    public static final String FILTER_TABLE = "**,-fund,billSell[id,code],receipt[**,lastPerson[id,nickname,name]]";
     private final static Logger log = LoggerFactory.getLogger(BillSellReceiptRest.class);
     @Autowired
     private BillSellReceiptService billSellReceiptService;
@@ -118,15 +118,13 @@ public class BillSellReceiptRest {
     public String filterInside(
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
-            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
-            @RequestParam(value = "checkCode", required = false) final String checkCode,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
             @RequestParam(value = "orderCodeFrom", required = false) final Long orderCodeFrom,
             @RequestParam(value = "orderCodeTo", required = false) final Long orderCodeTo,
             @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
             @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
-        List<BillSellReceipt> list = billSellReceiptSearch.filterInside(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
+        List<BillSellReceipt> list = billSellReceiptSearch.filterInside(codeFrom, codeTo, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
@@ -135,13 +133,11 @@ public class BillSellReceiptRest {
     public String filterOutside(
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
-            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
-            @RequestParam(value = "checkCode", required = false) final String checkCode,
             @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
             @RequestParam(value = "dateTo", required = false) final Long dateTo,
             @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
             @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
-        List<BillSellReceipt> list = billSellReceiptSearch.filterOutside(codeFrom, codeTo, paymentMethods, checkCode, dateFrom, dateTo, orderFalconCode, orderCustomerName);
+        List<BillSellReceipt> list = billSellReceiptSearch.filterOutside(codeFrom, codeTo, dateFrom, dateTo, orderFalconCode, orderCustomerName);
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

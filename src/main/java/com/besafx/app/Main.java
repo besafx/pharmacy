@@ -1,6 +1,5 @@
 package com.besafx.app;
 
-import com.besafx.app.component.LocationFinder;
 import com.besafx.app.config.DropboxManager;
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.util.JSONConverter;
@@ -25,7 +24,6 @@ public class Main {
         ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
         log.info("Start Initializing From Main...");
         context.getBean(EmailSender.class).init();
-        context.getBean(LocationFinder.class).init();
         context.getBean(DropboxManager.class).init();
         context.getBean(JSONConverter.class).init();
     }

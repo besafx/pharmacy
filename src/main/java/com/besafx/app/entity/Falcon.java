@@ -45,6 +45,9 @@ public class Falcon implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date registerDate;
 
+    @Column(columnDefinition = "boolean default true")
+    private Boolean enabled;
+
     @JoinColumn(name = "customer")
     @ManyToOne
     private Customer customer;
@@ -57,5 +60,29 @@ public class Falcon implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         Falcon falcon = mapper.readValue(jsonString, Falcon.class);
         return falcon;
+    }
+
+    public Double getNetSum() {
+        try {
+            return this.orders.stream().mapToDouble(order -> order.getNetCost()).sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getPaidSum() {
+        try {
+            return this.orders.stream().mapToDouble(order -> order.getPaid()).sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getRemainSum() {
+        try {
+            return this.orders.stream().mapToDouble(order -> order.getRemain()).sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
     }
 }

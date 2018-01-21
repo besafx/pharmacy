@@ -1,0 +1,363 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="panel panel-body">
+        <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+             class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button id="billBuy-menu-lower-right" style="width: 100%;"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                <span ng-if="lang==='AR'">العمليات</span>
+                <span ng-if="lang==='EN'">Actions</span>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                for="billBuy-menu-lower-right">
+
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="findAllBillBuy()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">visibility</i>
+                        <span ng-if="lang==='AR'">عرض كل الفواتير</span>
+                        <span ng-if="lang==='EN'">Read All Bills</span>
+                    </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="openFilterBillBuy()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">search</i>
+                        <span ng-if="lang==='AR'">بحث</span>
+                        <span ng-if="lang==='EN'">Search</span>
+                    </span>
+                </li>
+
+                <div class="mdl-menu__item--full-bleed-divider"></div>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findBillBuyByToday()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير اليوم</span>
+                    <span ng-if="lang==='EN'">Bills For Today</span>
+                </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findBillBuyByWeek()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير الاسبوع</span>
+                    <span ng-if="lang==='EN'">Bills For Week</span>
+                </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findBillBuyByMonth()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير الشهر</span>
+                    <span ng-if="lang==='EN'">Bills For Month</span>
+                </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findBillBuyByYear()">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">filter_list</i>
+                    <span ng-if="lang==='AR'">فواتير العام</span>
+                    <span ng-if="lang==='EN'">Bills For Year</span>
+                </span>
+                </li>
+
+                <div class="mdl-menu__item--full-bleed-divider"></div>
+
+                <li class="mdl-menu__item mdl-list__item" ng-click="newBillBuy();"
+                    ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">add</i>
+                        <span ng-if="lang==='AR'">انشاء فاتورة شراء جديدة</span>
+                        <span ng-if="lang==='EN'">New...</span>
+                    </span>
+                </li>
+
+            </ul>
+        </div>
+
+        <div ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" ng-init="toggleList=1">
+            <div class="btn-toolbar">
+                <div class="btn-group" data-toggle="buttons">
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=1"
+                            ng-class="{'active':toggleList===1}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">reorder</i>
+                    </button>
+                    <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                            type="button" ng-click="toggleList=2"
+                            ng-class="{'active':toggleList===2}">
+                        <input type="radio" name="options"/>
+                        <i class="material-icons">view_column</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="openFilterBillBuy()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
+                        <span class="fa fa-filter"></span>
+                    </a>
+                    <a href=""
+                       ng-click="filterBillBuy()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تحديث البيانات' : 'Refresh'}}">
+                        <span class="fa fa-refresh"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
+                       ng-click="newBillBuy()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء فاتورة شراء' : 'New Bill...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة الفواتير</h3>
+                <h3 ng-if="lang==='EN'">Bills List</h3>
+                <span>{{subTitle}}</span>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-group row" ng-show="billBuys.length > 0">
+
+                <button uib-tooltip="{{lang==='AR' ? 'تقرير مختصر بفواتير القائمة' : 'Bills List Summary Report'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="printBillBuysByList()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">picture_as_pdf</i>
+                </button>
+
+                <button uib-tooltip="{{lang==='AR' ? 'تقرير مفصل بفواتير القائمة' : 'Bills List Details Report'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="printBillBuysDetailsByList()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">picture_as_pdf</i>
+                </button>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="table-responsive">
+                    <table st-table="collection1" st-safe-src="billBuys"
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span>#</span>
+                            </th>
+
+                            <th st-sort="code" class="info">
+                                <span ng-if="lang==='AR'">رقم الفاتورة</span>
+                                <span ng-if="lang==='EN'">Bill Code</span>
+                            </th>
+
+                            <th st-sort="date">
+                                <span ng-if="lang==='AR'">التاريخ</span>
+                                <span ng-if="lang==='EN'">Date</span>
+                            </th>
+
+                            <th st-sort="supplier.name">
+                                <span ng-if="lang==='AR'">المورد</span>
+                                <span ng-if="lang==='EN'">Supplier</span>
+                            </th>
+
+                            <th st-sort="transactionBuys.length">
+                                <span ng-if="lang==='AR'">عدد الاصناف</span>
+                                <span ng-if="lang==='EN'">Items Count</span>
+                            </th>
+
+                            <th st-sort="unitBuyCostSum" class="info">
+                                <span ng-if="lang==='AR'">السعر المطلوب</span>
+                                <span ng-if="lang==='EN'">Total Cost</span>
+                            </th>
+
+                            <th st-sort="discount">
+                                <span ng-if="lang==='AR'">الخصم</span>
+                                <span ng-if="lang==='EN'">Discount</span>
+                            </th>
+
+                            <th st-sort="net" class="warning">
+                                <span ng-if="lang==='AR'">الصافي</span>
+                                <span ng-if="lang==='EN'">Net</span>
+                            </th>
+
+                            <th st-sort="paid" class="success">
+                                <span ng-if="lang==='AR'">المدفوع</span>
+                                <span ng-if="lang==='EN'">Paid</span>
+                            </th>
+
+                            <th st-sort="remain" class="danger">
+                                <span ng-if="lang==='AR'">الباقي</span>
+                                <span ng-if="lang==='EN'">Remain</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="billBuy in collection1"
+                            st-select-mode="multiple"
+                            context-menu="rowMenuBillBuy"
+                            ng-dblclick="ModalProvider.openBillBuyDetailsModel(billBuy)" ng-init="billBuy.isSelected=false">
+                            <td st-select-row-multi="billBuy">{{$index+1}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'info' : billBuy.isSelected===false}">{{billBuy.code}}</td>
+                            <td st-select-row-multi="billBuy">
+                                <span ng-show="dateType==='H'">{{billBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                <span ng-show="dateType==='G'">{{billBuy.date | date: 'yyyy-MM-dd'}}</span>
+                                {{billBuy.date | date:'h:m a'}}
+                            </td>
+                            <td st-select-row-multi="billBuy">{{billBuy.supplier.name}}</td>
+                            <td st-select-row-multi="billBuy">{{billBuy.transactionBuys.length}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'info' : billBuy.isSelected===false}">{{billBuy.unitBuyCostSum | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billBuy">{{billBuy.discount | currency:'%':2}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'warning' : billBuy.isSelected===false}">{{billBuy.net | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'success' : billBuy.isSelected===false}">{{billBuy.paid | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'danger' : billBuy.isSelected===false}">{{billBuy.remain | currency:'SAR':2}}</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection1 || collection1.length ==0">
+                            <td colspan="10">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="10">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="panel-footer">
+
+            <div class="row">
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-warning">
+                    <span ng-if="lang==='AR'">إجمالي الصافي: </span>
+                    <span ng-if="lang==='EN'">Total Net Prices: </span>
+                    <span>{{billBuys | sumByKey:'net' | currency:'SAR':0}}</span>
+                </h3>
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-success">
+                    <span ng-if="lang==='AR'">إجمالي المسدد: </span>
+                    <span ng-if="lang==='EN'">Total Orders Payments: </span>
+                    <span>{{billBuys | sumByKey:'paid' | currency:'SAR':0}}</span>
+                </h3>
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-danger">
+                    <span ng-if="lang==='AR'">إجمالي الباقي: </span>
+                    <span ng-if="lang==='EN'">Total Orders Remain: </span>
+                    <span>{{billBuys | sumByKey:'remain' | currency:'SAR':0}}</span>
+                </h3>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
+    <div st-table="collection4" st-safe-src="billBuys">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="billBuy in collection4">
+            <!-- CONTACT ITEM -->
+            <div class="panel panel-default">
+                <div class="panel-body profile">
+                    <div class="profile-image">
+                        <img width="100" height="100"
+                             src="/ui/img/no-image.jpg"
+                             alt="{{billBuy.code}}"/>
+                    </div>
+                    <div class="profile-data">
+                        <div class="profile-data-name">
+                            {{billBuy.code}}
+                        </div>
+                    </div>
+                    <div class="profile-controls">
+                        <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                        <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="contact-info">
+                        <p>
+                            <strong ng-if="lang==='AR'">رقم الفاتورة</strong>
+                            <strong ng-if="lang==='EN'">Code</strong>
+                            {{billBuy.code}}
+                        </p>
+                        <hr>
+                        <p>
+                            <strong ng-if="lang==='AR'">المورد</strong>
+                            <strong ng-if="lang==='EN'">Supplier</strong>
+                            {{billBuy.supplier.name}}
+                        </p>
+                        <hr>
+                        <p>
+                            <strong ng-if="lang==='AR'">طريقة الدفع</strong>
+                            <strong ng-if="lang==='EN'">Payment Method</strong>
+                            {{billBuy.paymentMethod}}
+                        </p>
+                        <hr>
+                        <p>
+                            <strong ng-if="lang==='AR'">التاريخ</strong>
+                            <strong ng-if="lang==='EN'">Date</strong>
+                            <span ng-show="dateType==='H'">{{billBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                            <span ng-show="dateType==='G'">{{billBuy.date | date: 'yyyy-MM-dd'}}</span>
+                            <span class="label label-success">{{billBuy.date | date:'h:m a'}}</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <button uib-tooltip="{{lang==='AR' ? 'انشاء فاتورة شراء' : 'New...'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
+                                ng-click="newBillBuy();"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <i class="material-icons">add</i>
+                        </button>
+                        <button uib-tooltip="{{lang==='AR' ? 'حذف' : 'Delete'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
+                                ng-click="deleteBillBuy(billBuy)"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTACT ITEM -->
+        </div>
+    </div>
+</div>

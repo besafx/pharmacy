@@ -30,10 +30,13 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/order/")
 public class OrderRest {
 
-    public static final String FILTER_TABLE = "**,orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,nickname,name],falcon[**,-orders,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[**,-drugCategory,-transactionBuys],drugUnit[id,name]],orderDetectionTypes[**,-order,orderDetectionTypeAttaches[id]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
-    public static final String FILTER_TABLE_DEBT = "**,-orderReceipts,lastPerson[id,nickname,name],falcon[**,-orders,customer[id,code,name]],-doctor,-diagnoses,-orderDetectionTypes,-orderAttaches";
+    public static final String FILTER_TABLE = "**,orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,nickname,name],falcon[id,code,type,weight,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish],drugUnit[id,name]],orderDetectionTypes[id,done,detectionType[id,code,nameArabic,nameEnglish,cost]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
+    public static final String FILTER_TABLE_DEBT = "**,-orderReceipts,lastPerson[id,nickname,name],falcon[id,code,type,weight,customer[id,code,name]],-doctor,-diagnoses,-orderDetectionTypes,-orderAttaches";
     public static final String FILTER_ORDER_COMBO = "id,code";
+    public static final String FILTER_ORDER_COMBO_DIAGNOSIS = "id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,code,name]]";
+
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
+
     @Autowired
     private OrderService orderService;
 
@@ -48,6 +51,9 @@ public class OrderRest {
 
     @Autowired
     private OrderReceiptService orderReceiptService;
+
+    @Autowired
+    private FundService fundService;
 
     @Autowired
     private DiagnosisService diagnosisService;
@@ -114,6 +120,7 @@ public class OrderRest {
                 orderReceipt.setReceipt(receiptService.save(orderReceipt.getReceipt()));
                 //
                 orderReceipt.setOrder(order);
+                orderReceipt.setFund(fundService.findFirstBy());
                 listIterator.set(orderReceiptService.save(orderReceipt));
             }
         }
@@ -287,25 +294,25 @@ public class OrderRest {
 
     @RequestMapping(value = "findByToday", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByToday() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByToday());
+    public String findByToday(@RequestParam(value = "filter", required = false) final String filter) throws Exception {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByToday());
     }
 
     @RequestMapping(value = "findByWeek", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByWeek() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByWeek());
+    public String findByWeek(@RequestParam(value = "filter", required = false) final String filter) throws Exception{
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByWeek());
     }
 
     @RequestMapping(value = "findByMonth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByMonth() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByMonth());
+    public String findByMonth(@RequestParam(value = "filter", required = false) final String filter) throws Exception{
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByMonth());
     }
 
     @RequestMapping(value = "findByYear", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByYear() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderSearch.findByYear());
+    public String findByYear(@RequestParam(value = "filter", required = false) final String filter) throws Exception{
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByYear());
     }
 }

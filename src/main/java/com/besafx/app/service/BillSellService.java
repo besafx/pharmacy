@@ -23,5 +23,9 @@ public interface BillSellService extends PagingAndSortingRepository<BillSell, Lo
 
     List<BillSell> findByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
+    List<BillSell> findByDateBetweenAndOrderIsNull(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    
+    List<BillSell> findByDateBetweenAndOrderIsNotNull(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+
     BillSell findByOrderAndOrderNotNull(Order order);
 }

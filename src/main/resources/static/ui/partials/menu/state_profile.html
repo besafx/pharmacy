@@ -1,0 +1,228 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <form name="from"
+          ng-submit="submitProfile()"
+          novalidate="novalidate"
+          focus-group="" focus-stack=""
+          focus-group-head="loop"
+          focus-group-tail="loop">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                         ng-show="form.$invalid && form.$submitted">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <span ng-if="lang==='AR'">البيانات الاساسية</span>
+                                <span ng-if="lang==='EN'">Basic Information</span>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileNickname" class="control-label">
+                                            <span ng-if="lang==='AR'">اللقب</span>
+                                            <span ng-if="lang==='EN'">Nickname</span>
+                                        </label>
+                                        <input id="profileNickname"
+                                               type="text"
+                                               focus-autofocus="1"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="me.nickname">
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileName" class="control-label">
+                                            <span ng-if="lang==='AR'">الاسم كاملاً</span>
+                                            <span ng-if="lang==='EN'">Name</span>
+                                        </label>
+                                        <input id="profileName"
+                                               type="text"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="me.name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileNationality" class="control-label">
+                                            <span ng-if="lang==='AR'">الجنسية</span>
+                                            <span ng-if="lang==='EN'">Nationality</span>
+                                        </label>
+                                        <input id="profileNationality"
+                                               type="text"
+                                               class="form-control"
+                                               required="required"
+                                               disable-validation-message=""
+                                               ng-model="me.nationality">
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileIdentityNumber" class="control-label">
+                                            <span ng-if="lang==='AR'">رقم الهوية / رخصة الإقامة</span>
+                                            <span ng-if="lang==='EN'">Identity Card Number</span>
+                                        </label>
+                                        <input id="profileIdentityNumber"
+                                               type="text"
+                                               class="form-control"
+                                               ng-model="me.identityNumber">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileMobile" class="control-label">
+                                            <span ng-if="lang==='AR'">الجوال</span>
+                                            <span ng-if="lang==='EN'">Mobile</span>
+                                        </label>
+                                        <input id="profileMobile"
+                                               type="text"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="me.mobile">
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileAddress" class="control-label">
+                                            <span ng-if="lang==='AR'">العنوان الحالي</span>
+                                            <span ng-if="lang==='EN'">Address</span>
+                                        </label>
+                                        <input id="profileAddress"
+                                               type="text"
+                                               class="form-control"
+                                               ng-model="me.address">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileQualification" class="control-label">
+                                            <span ng-if="lang==='AR'">المؤهل</span>
+                                            <span ng-if="lang==='EN'">Qualification</span>
+                                        </label>
+                                        <input id="profileQualification"
+                                               type="text"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control"
+                                               ng-model="me.qualification">
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileTeam" class="control-label">
+                                            <span ng-if="lang==='AR'">مجموعة الصلاحيات</span>
+                                            <span ng-if="lang==='EN'">Team</span>
+                                        </label>
+                                        <input id="profileTeam"
+                                               type="text"
+                                               readonly
+                                               class="form-control"
+                                               ng-model="me.team.name">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profileEmail" class="control-label">
+                                            <span ng-if="lang==='AR'">البريد الإلكتروني</span>
+                                            <span ng-if="lang==='EN'">Email</span>
+                                        </label>
+                                        <input id="profileEmail"
+                                               dir="ltr"
+                                               type="text"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control text-left"
+                                               ng-model="me.email">
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <label for="profilePassword" class="control-label">
+                                            <span ng-if="lang==='AR'">الرقم السري</span>
+                                            <span ng-if="lang==='EN'">Password</span>
+                                        </label>
+                                        <input id="profilePassword"
+                                               dir="ltr"
+                                               type="password"
+                                               required="required"
+                                               disable-validation-message=""
+                                               class="form-control text-left"
+                                               ng-model="me.password">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
+                                    <li>
+                                        <a href=""
+                                           ng-click="browseProfilePhoto()"
+                                           tooltip-append-to-body="true"
+                                           uib-tooltip="تحميل">
+                                            <span class="fa fa-paperclip"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                                    <h3 ng-if="lang==='AR'">الصورة الشخصية</h3>
+                                    <h3 ng-if="lang==='EN'">Account Photo</h3>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <input id="uploader-company" style="display: none" type="file" accept="image/*" onchange="angular.element(this).scope().uploadPersonPhoto(this.files)"/>
+                                <img ng-src="{{me.photo}}" style="width: 100%; height: 100%"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <button tooltip-append-to-body="true"
+                            type="submit"
+                            ng-class="{'pull-left': lang==='AR', 'pull-right' : lang==='EN'}"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">save</i>
+                                <span ng-if="lang==='AR'">حفظ البيانات</span>
+                                <span ng-if="lang==='EN'">Save</span>
+                            </span>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>

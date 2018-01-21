@@ -1,5 +1,5 @@
-app.controller('transactionBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'BillBuyService', 'TransactionBuyService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'billBuy',
-    function (DrugService, DrugUnitService, BillBuyService, TransactionBuyService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, billBuy) {
+app.controller('transactionBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'BillBuyService', 'TransactionBuyService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'billBuy',
+    function (DrugService, DrugUnitService, BillBuyService, TransactionBuyService, $scope, $rootScope, $timeout, $log, $uibModalInstance, billBuy) {
 
         $timeout(function () {
             $scope.refreshDrugs();
@@ -13,8 +13,6 @@ app.controller('transactionBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'B
         $scope.transactionBuy.billBuy = billBuy;
 
         $scope.buffer = {};
-
-        $scope.title = title;
 
         $scope.refreshBillBuy = function () {
             BillBuyService.findOne(billBuy.id).then(function (data) {

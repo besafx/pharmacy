@@ -1,0 +1,264 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <div class="panel panel-body">
+
+        <div ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+             class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button id="outside-sales-menu-lower-right" style="width: 100%;"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                <span ng-if="lang==='AR'">العمليات</span>
+                <span ng-if="lang==='EN'">Actions</span>
+            </button>
+            <ul ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                for="outside-sales-menu-lower-right">
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="openOutsideSalesFilter()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">search</i>
+                        <span ng-if="lang==='AR'">بحث</span>
+                        <span ng-if="lang==='EN'">Search</span>
+                    </span>
+                </li>
+
+                <div class="mdl-menu__item--full-bleed-divider"></div>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findOutsideSalesByToday()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">filter_list</i>
+                        <span ng-if="lang==='AR'">فواتير اليوم</span>
+                        <span ng-if="lang==='EN'">Bills For Today</span>
+                    </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findOutsideSalesByWeek()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">filter_list</i>
+                        <span ng-if="lang==='AR'">فواتير الاسبوع</span>
+                        <span ng-if="lang==='EN'">Bills For Week</span>
+                    </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findOutsideSalesByMonth()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">filter_list</i>
+                        <span ng-if="lang==='AR'">فواتير الشهر</span>
+                        <span ng-if="lang==='EN'">Bills For Month</span>
+                    </span>
+                </li>
+
+                <li class="mdl-menu__item mdl-list__item"
+                    ng-click="findOutsideSalesByYear()">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">filter_list</i>
+                        <span ng-if="lang==='AR'">فواتير العام</span>
+                        <span ng-if="lang==='EN'">Bills For Year</span>
+                    </span>
+                </li>
+
+                <div class="mdl-menu__item--full-bleed-divider"></div>
+
+                <li class="mdl-menu__item mdl-list__item" ng-click="newOutsideSales();"
+                    ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">add</i>
+                        <span ng-if="lang==='AR'">انشاء فاتورة بيع جديدة</span>
+                        <span ng-if="lang==='EN'">New...</span>
+                    </span>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}"
+                style="margin-top: 2px;">
+                <li>
+                    <a href=""
+                       ng-click="openOutsideSalesFilter()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
+                        <span class="fa fa-filter"></span>
+                    </a>
+                    <a href=""
+                       ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
+                       ng-click="newOutsideSales()"
+                       tooltip-append-to-body="true"
+                       uib-tooltip="{{lang==='AR' ? 'انشاء فاتورة بيع' : 'New Bill...'}}">
+                        <span class="fa fa-plus-square"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
+                <h3 ng-if="lang==='AR'">قائمة الفواتير</h3>
+                <h3 ng-if="lang==='EN'">Bills List</h3>
+                <span>{{subTitle_outsideSales}}</span>
+            </div>
+        </div>
+        <div class="panel-body panel-body-table">
+
+            <div class="form-group row" ng-show="outsideBillSells.length > 0">
+
+                <button uib-tooltip="{{lang==='AR' ? 'تقرير مختصر بفواتير القائمة' : 'Bills List Summary Report'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="printOutsideSalesByList()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">picture_as_pdf</i>
+                </button>
+
+                <button uib-tooltip="{{lang==='AR' ? 'تقرير مفصل بفواتير القائمة' : 'Bills List Details Report'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="printOutsideSalesDetailsByList()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">picture_as_pdf</i>
+                </button>
+
+            </div>
+
+            <div class="form-group row">
+
+                <div class="table-responsive">
+
+                    <table st-table="collection" st-safe-src="outsideBillSells" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <span>#</span>
+                            </th>
+
+                            <th st-sort="code">
+                                <span ng-if="lang==='AR'" class="info">رقم الفاتورة</span>
+                                <span ng-if="lang==='EN'">Code</span>
+                            </th>
+
+                            <th st-sort="date">
+                                <span ng-if="lang==='AR'">التاريخ</span>
+                                <span ng-if="lang==='EN'">Date</span>
+                            </th>
+
+                            <th st-sort="customerName">
+                                <span ng-if="lang==='AR'">اسم العميل</span>
+                                <span ng-if="lang==='EN'">Customer Name</span>
+                            </th>
+
+                            <th st-sort="falconCode">
+                                <span ng-if="lang==='AR'">رقم الصقر</span>
+                                <span ng-if="lang==='EN'">Falcon Code</span>
+                            </th>
+
+                            <th st-sort="unitSellCostSum" class="info">
+                                <span ng-if="lang==='AR'">السعر المطلوب</span>
+                                <span ng-if="lang==='EN'">Total Cost</span>
+                            </th>
+
+                            <th st-sort="discount">
+                                <span ng-if="lang==='AR'">خصم المبيعات</span>
+                                <span ng-if="lang==='EN'">Sales Discount</span>
+                            </th>
+
+                            <th st-sort="net" class="warning">
+                                <span ng-if="lang==='AR'">الصافي</span>
+                                <span ng-if="lang==='EN'">Net</span>
+                            </th>
+
+                            <th st-sort="paid" class="success">
+                                <span ng-if="lang==='AR'">المدفوع</span>
+                                <span ng-if="lang==='EN'">Paid</span>
+                            </th>
+
+                            <th st-sort="remain" class="danger">
+                                <span ng-if="lang==='AR'">الباقي</span>
+                                <span ng-if="lang==='EN'">Remain</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="billSell in collection"
+                            st-select-mode="multiple"
+                            context-menu="rowMenuOutsideSales"
+                            ng-dblclick="ModalProvider.openOutsideSalesDetailsModel(billSell)" ng-init="billSell.isSelected=false">
+                            <td st-select-row-multi="billSell">{{$index+1}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'info' : billSell.isSelected===false}">{{billSell.code}}</td>
+                            <td st-select-row-multi="billSell">
+                                <span ng-show="dateType==='H'">{{billSell.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                <span ng-show="dateType==='G'">{{billSell.date | date: 'yyyy-MM-dd'}}</span>
+                                {{billSell.date | date:'h:m a'}}
+                            </td>
+                            <td st-select-row-multi="billSell">{{billSell.customerName}}</td>
+                            <td st-select-row-multi="billSell">{{billSell.falconCode}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'info' : billSell.isSelected===false}">{{billSell.unitSellCostSum | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billSell">{{billSell.discount | currency:'%':2}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'warning' : billSell.isSelected===false}">{{billSell.net | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'success' : billSell.isSelected===false}">{{billSell.paid | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'danger' : billSell.isSelected===false}">{{billSell.remain | currency:'SAR':2}}</td>
+                        </tr>
+                        <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                            ng-show="!collection || collection.length ==0">
+                            <td colspan="10">
+                                <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                <span ng-if="lang==='EN'">No Data Found.</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="10">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="panel-footer">
+
+            <div class="row">
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-3 col-lg-3 box-info">
+                    <span ng-if="lang==='AR'">عدد الفواتير: </span>
+                    <span ng-if="lang==='EN'">Bills Count: </span>
+                    <span>{{outsideBillSells.length}}</span>
+                </h3>
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-3 col-lg-3 box-warning">
+                    <span ng-if="lang==='AR'">إجمالي الصافي: </span>
+                    <span ng-if="lang==='EN'">Total Net Prices: </span>
+                    <span>{{outsideBillSells | sumByKey:'net' | currency:'SAR':0}}</span>
+                </h3>
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-3 col-lg-3 box-success">
+                    <span ng-if="lang==='AR'">إجمالي المدفوع: </span>
+                    <span ng-if="lang==='EN'">Total Orders Payments: </span>
+                    <span>{{outsideBillSells | sumByKey:'paid' | currency:'SAR':0}}</span>
+                </h3>
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-3 col-lg-3 box-danger">
+                    <span ng-if="lang==='AR'">إجمالي الباقي: </span>
+                    <span ng-if="lang==='EN'">Total Orders Remain: </span>
+                    <span>{{outsideBillSells | sumByKey:'remain' | currency:'SAR':0}}</span>
+                </h3>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

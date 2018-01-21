@@ -1,16 +1,14 @@
 app.controller('drugFilterCtrl', ['DrugCategoryService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance',
     function (DrugCategoryService, $scope, $rootScope, $timeout, $log, $uibModalInstance) {
 
-        $scope.buffer = {};
-
         $timeout(function () {
             DrugCategoryService.findAllCombo().then(function (data) {
                 $scope.drugCategories = data;
             });
-        }, 2000);
+        }, 600);
 
         $scope.submit = function () {
-            $uibModalInstance.close($scope.buffer);
+            $uibModalInstance.close($scope.paramDrug);
         };
 
         $scope.cancel = function () {

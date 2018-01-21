@@ -1,5 +1,31 @@
-app.controller('billBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'SupplierService', 'ModalProvider', 'BillBuyService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'billBuy',
-    function (DrugService, DrugUnitService, SupplierService, ModalProvider, BillBuyService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, billBuy) {
+app.controller('billBuyCreateCtrl', [
+    'DrugService',
+    'DrugUnitService',
+    'SupplierService',
+    'ModalProvider',
+    'BillBuyService',
+    '$scope',
+    '$rootScope',
+    '$timeout',
+    '$log',
+    '$uibModalInstance',
+    '$uibModal',
+    'title',
+    'billBuy',
+    function (
+        DrugService,
+        DrugUnitService,
+        SupplierService,
+        ModalProvider,
+        BillBuyService,
+        $scope,
+        $rootScope,
+        $timeout,
+        $log,
+        $uibModalInstance,
+        $uibModal,
+        title,
+        billBuy) {
 
         $timeout(function () {
             $scope.refreshDrugs();
@@ -17,22 +43,7 @@ app.controller('billBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'Supplier
 
         $scope.title = title;
 
-        $scope.newSupplier = function () {
-            ModalProvider.openSupplierCreateModel().result.then(function (data) {
-                $scope.suppliers.splice(0, 0, data);
-            }, function () {
-                console.info('SupplierCreateModel Closed.');
-            });
-        };
-
-        $scope.newDrug = function () {
-            ModalProvider.openDrugCreateModel().result.then(function (data) {
-                $scope.drugs.splice(0, 0, data);
-            }, function () {
-                console.info('DrugCreateModel Closed.');
-            });
-        };
-
+        $scope.totalCost = 0;
 
         $scope.refreshDrugs = function () {
             DrugService.findAllCombo().then(function (data) {
@@ -56,20 +67,23 @@ app.controller('billBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'Supplier
             }
         };
 
-        $scope.addTransactionBuyToList = function () {
-            //Add To Table
-            var transactionBuy = {};
-            transactionBuy.drug = $scope.buffer.drug;
-            transactionBuy.drugUnit = $scope.buffer.drugUnit;
-            transactionBuy.unitBuyCost = $scope.buffer.unitBuyCost;
-            transactionBuy.unitSellCost = $scope.buffer.unitSellCost;
-            transactionBuy.quantity = $scope.buffer.quantity;
-            transactionBuy.productionDate = $scope.buffer.productionDate;
-            transactionBuy.warrantInMonth = $scope.buffer.warrantInMonth;
-            transactionBuy.note = $scope.buffer.note;
-            $scope.transactionBuyList.push(transactionBuy);
-            $scope.buffer = {};
-            $scope.calculateCostSum();
+        $scope.openDrugChooser = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/billBuy/billBuyCreateAddItem.html',
+                controller: 'billBuyCreateAddItemCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            modalInstance.result.then(function (transactionBuy) {
+                $scope.transactionBuyList.push(transactionBuy);
+                $scope.calculateCostSum();
+            }, function () {
+            });
         };
 
         $scope.removeTransactionBuyFromList = function (index) {
@@ -79,6 +93,14 @@ app.controller('billBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'Supplier
 
         $scope.submit = function () {
             $scope.billBuy.transactionBuys = $scope.transactionBuyList;
+            //Ignore Creating Receipt In case Of Selecting Later Options For Payment Method
+            if($scope.billBuy.receipt.paymentMethod!=='Later'){
+                var billBuyReceipts = [];
+                var billBuyReceipt = {};
+                billBuyReceipt.receipt = $scope.billBuy.receipt;
+                billBuyReceipts.push(billBuyReceipt);
+                $scope.billBuy.billBuyReceipts = billBuyReceipts;
+            }
             BillBuyService.create($scope.billBuy).then(function (data) {
                 $uibModalInstance.close(data);
             });
@@ -87,5 +109,7 @@ app.controller('billBuyCreateCtrl', ['DrugService', 'DrugUnitService', 'Supplier
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+
 
     }]);

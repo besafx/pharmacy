@@ -6,6 +6,7 @@ app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'Orde
         $scope.refreshCustomer = function () {
             CustomerService.findOne($scope.customer.id).then(function (data) {
                 $scope.customer = data;
+                $scope.refreshOrders();
             })
         };
 
@@ -23,33 +24,9 @@ app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'Orde
 
         $scope.newFalcon = function (customer) {
             $rootScope.showConfirmNotify("العمليات على قواعد البيانات", "هل تود ربط حساب صقر جديد بالعميل؟", "information", "fa-database", function () {
-                $uibModal.open({
-                    animation: true,
-                    ariaLabelledBy: 'modal-title',
-                    ariaDescribedBy: 'modal-body',
-                    templateUrl: '/ui/partials/customer/customerFalconCreateUpdate.html',
-                    controller: 'customerFalconCreateUpdateCtrl',
-                    backdrop: 'static',
-                    keyboard: false,
-                    resolve: {
-                        title: function () {
-                            return $rootScope.lang === 'AR' ? 'انشاء حساب صقر جديد' : 'New Falcon Account';
-                        },
-                        action: function () {
-                            return 'create';
-                        },
-                        falcon: function () {
-                            var falcon = {};
-                            falcon.customer = customer;
-                            return falcon;
-                        }
-                    }
-                }).result.then(function (data) {
-                    ///////////////////////// TO DO ///////////////////////////////
-                    console.info(data);
-                }, function () {
-                    console.info('CustomerFalconCreateModel Closed.');
-                });
+                ModalProvider.openFalconCreateByCustomerModel(customer).result.then(function (data) {
+                    return customer.falcons.push(data);
+                }, function () {});
             });
         };
 
@@ -58,11 +35,8 @@ app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'Orde
         };
 
         $timeout(function () {
+            $scope.refreshCustomer();
             window.componentHandler.upgradeAllRegistered();
-            CustomerService.findOne($scope.customer.id).then(function (data) {
-                $scope.customer = data;
-                $scope.refreshOrders();
-            });
-        }, 1500);
+        }, 600);
 
     }]);

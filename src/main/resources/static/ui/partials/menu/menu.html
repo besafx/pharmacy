@@ -6,12 +6,482 @@
         <div class="mdl-layout__header-row">
 
             <div class="mdl-layout-icon">
-                <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                <a class="mdl-button mdl-js-button mdl-button--icon" ng-click="openStateMenu()">
                     <i class="material-icons">{{MDLIcon}}</i>
                 </a>
             </div>
 
             <span class="mdl-layout__title">{{pageTitle}}</span>
+
+            <div class="btn-toolbar">
+                <div class="btn-group" data-toggle="buttons">
+
+                    <button id="toggle-reception-action-menu-lower"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                        <i class="material-icons">room_service</i>
+                        <span ng-if="lang==='AR'">الاستقبال</span>
+                        <span ng-if="lang==='EN'">Receptionist</span>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                        ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                        for="toggle-reception-action-menu-lower">
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE', 'ROLE_CUSTOMER_UPDATE', 'ROLE_CUSTOMER_DELETE'])"
+                            ng-click="openStateCustomer()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">account_circle</i>
+                                <span ng-if="lang==='AR'">سجل العملاء</span>
+                                <span ng-if="lang==='EN'">Customers List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
+                            ng-click="newCustomer()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                                <span ng-if="lang==='AR'">عميل جديد...</span>
+                                <span ng-if="lang==='EN'">New Customer...</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_FALCON_CREATE', 'ROLE_FALCON_UPDATE', 'ROLE_FALCON_DELETE'])"
+                            ng-click="openStateFalcon()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">adb</i>
+                                <span ng-if="lang==='AR'">سجل الصقور</span>
+                                <span ng-if="lang==='EN'">Falcons List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
+                            ng-click="newFalcon()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                                <span ng-if="lang==='AR'">حساب صقر جديد...</span>
+                                <span ng-if="lang==='EN'">New Falcon...</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_ORDER_CREATE', 'ROLE_ORDER_UPDATE', 'ROLE_ORDER_DELETE'])"
+                            ng-click="openStateOrder()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">burst_mode</i>
+                               <span ng-if="lang==='AR'">سجل الطلبات</span>
+                               <span ng-if="lang==='EN'">Orders List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
+                            ng-click="newOrder()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                               <span ng-if="lang==='AR'">طلب فحص جديد...</span>
+                               <span ng-if="lang==='EN'">New Order...</span>
+                            </span>
+                        </li>
+
+                    </ul>
+
+                    <button id="toggle-clinic-action-menu-lower"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                        <i class="material-icons">local_hospital</i>
+                        <span ng-if="lang==='AR'">العيادة</span>
+                        <span ng-if="lang==='EN'">Clinic</span>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                        ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                        for="toggle-clinic-action-menu-lower">
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE', 'ROLE_DIAGNOSIS_UPDATE', 'ROLE_DIAGNOSIS_DELETE'])"
+                            ng-click="openStateDiagnosis()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">assignment</i>
+                                <span ng-if="lang==='AR'">نتائج الفحص</span>
+                                <span ng-if="lang==='EN'">Diagnoses List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
+                            ng-click="newDiagnosis()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                               <span ng-if="lang==='AR'">وصفة طبية جديدة</span>
+                               <span ng-if="lang==='EN'">New Prescription...</span>
+                            </span>
+                        </li>
+
+                    </ul>
+
+                    <button id="toggle-pharmacy-action-menu-lower"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                        <i class="material-icons">add_shopping_cart</i>
+                        <span ng-if="lang==='AR'">الصيدلية</span>
+                        <span ng-if="lang==='EN'">Pharmacy</span>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                        ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                        for="toggle-pharmacy-action-menu-lower">
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE', 'ROLE_SUPPLIER_UPDATE', 'ROLE_SUPPLIER_DELETE'])"
+                            ng-click="openStateSupplier()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">store</i>
+                               <span ng-if="lang==='AR'">سجل الموردين</span>
+                               <span ng-if="lang==='EN'">Suppliers List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE'])"
+                            ng-click="newSupplier()">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">note_add</i>
+                                   <span ng-if="lang==='AR'">مورد جديد...</span>
+                                   <span ng-if="lang==='EN'">New Supplier...</span>
+                                </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE', 'ROLE_BILL_BUY_UPDATE', 'ROLE_BILL_BUY_DELETE'])"
+                            ng-click="openStateBillBuy()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">shopping_cart</i>
+                               <span ng-if="lang==='AR'">سجل فواتير الشراء</span>
+                               <span ng-if="lang==='EN'">Purchases List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
+                            ng-click="ModalProvider.openBillBuyCreateModel()">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">note_add</i>
+                                   <span ng-if="lang==='AR'">فاتورة شراء جديدة...</span>
+                                   <span ng-if="lang==='EN'">New Bill Buy...</span>
+                                </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE', 'ROLE_BILL_SELL_UPDATE', 'ROLE_BILL_SELL_DELETE'])"
+                            ng-click="openStateInsideSales()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">shopping_cart</i>
+                               <span ng-if="lang==='AR'">سجل المبيعات الداخلية</span>
+                               <span ng-if="lang==='EN'">Inside Sales List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
+                            ng-click="newInsideSales()">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">note_add</i>
+                                   <span ng-if="lang==='AR'">صرف علاج طلب فحص...</span>
+                                   <span ng-if="lang==='EN'">New Bill Sell For Order...</span>
+                                </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE', 'ROLE_DRUG_UPDATE', 'ROLE_DRUG_DELETE'])"
+                            ng-click="openStateOutsideSales()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">shopping_cart</i>
+                               <span ng-if="lang==='AR'">سجل المبيعات الخارجية</span>
+                               <span ng-if="lang==='EN'">Outside Sales List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
+                            ng-click="newOutsideSales()">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons mdl-list__item-icon">note_add</i>
+                                   <span ng-if="lang==='AR'">فاتورة بيع جديدة...</span>
+                                   <span ng-if="lang==='EN'">New Bill Sell...</span>
+                                </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_DRUG_CREATE', 'ROLE_DRUG_UPDATE', 'ROLE_DRUG_DELETE'])"
+                            ng-click="openStateDrug()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">favorite</i>
+                                <span ng-if="lang==='AR'">سجل الدواء</span>
+                                <span ng-if="lang==='EN'">Drugs List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])"
+                            ng-click="newDrug()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                               <span ng-if="lang==='AR'">صنف دواء جديد...</span>
+                               <span ng-if="lang==='EN'">New Drug...</span>
+                            </span>
+                        </li>
+
+                    </ul>
+
+                    <button id="toggle-admin-action-menu-lower"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                        <i class="material-icons">settings_applications</i>
+                        <span ng-if="lang==='AR'">الإدارة</span>
+                        <span ng-if="lang==='EN'">Administration</span>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                        ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
+                        for="toggle-admin-action-menu-lower">
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_COMPANY_UPDATE'])"
+                            ng-click="openStateCompany()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">store</i>
+                                <span ng-if="lang==='AR'">بيانات الشركة</span>
+                                <span ng-if="lang==='EN'">Company Info.</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE'])"
+                            ng-click="openStateTeam()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">security</i>
+                               <span ng-if="lang==='AR'">سجل الصلاحيات</span>
+                               <span ng-if="lang==='EN'">Privileges List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE'])"
+                            ng-click="newTeam()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                               <span ng-if="lang==='AR'">صلاحيات جديدة...</span>
+                               <span ng-if="lang==='EN'">New Privilege...</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE', 'ROLE_DOCTOR_UPDATE', 'ROLE_DOCTOR_DELETE'])"
+                            ng-click="openStateDoctor()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">local_hospital</i>
+                               <span ng-if="lang==='AR'">سجل الأطباء</span>
+                               <span ng-if="lang==='EN'">Doctors List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE'])"
+                            ng-click="newDoctor()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                               <span ng-if="lang==='AR'">حساب طبيب جديد...</span>
+                               <span ng-if="lang==='EN'">New Doctor...</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE', 'ROLE_DETECTION_TYPE_UPDATE', 'ROLE_DETECTION_TYPE_DELETE'])"
+                            ng-click="openStateDetectionType()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">spa</i>
+                               <span ng-if="lang==='AR'">سجل أنواع الفحوصات</span>
+                               <span ng-if="lang==='EN'">Detection Types List</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
+                            ng-click="newOrderDetectionType()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">note_add</i>
+                               <span ng-if="lang==='AR'">نوع فحص جديد...</span>
+                               <span ng-if="lang==='EN'">New Detection Type...</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE', 'ROLE_DETECTION_TYPE_UPDATE', 'ROLE_DETECTION_TYPE_DELETE'])"
+                            ng-click="openStateFund()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">monetization_on</i>
+                                <span ng-if="lang==='AR'">الصندوق</span>
+                                <span ng-if="lang==='EN'">Fund</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE', 'ROLE_DETECTION_TYPE_UPDATE', 'ROLE_DETECTION_TYPE_DELETE'])"
+                            ng-click="openStateBank()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">account_balance</i>
+                                <span ng-if="lang==='AR'">البنك</span>
+                                <span ng-if="lang==='EN'">Bank</span>
+                            </span>
+                        </li>
+
+                    </ul>
+
+                    <button id="toggle-options-menu-lower-right"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                        <i class="material-icons">settings</i>
+                        <span>خيارات</span>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                        for="toggle-options-menu-lower-right">
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="goFullscreen()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">fullscreen</i>
+                                <span>تفعيل ملء الشاشة</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="switchDateType();">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">date_range</i>
+                                <span>تبديل نوع التقويم</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item--full-bleed-divider"></li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle();">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: #313534">format_color_fill</i>
+                                <span>تطبيق المظهر الافتراضي</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-1');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(121, 85, 72)">format_color_fill</i>
+                                <span>تطبيق المظهر الأول</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-2');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(76, 175, 80)">format_color_fill</i>
+                                <span>تطبيق المظهر الثاني</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-3');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(158, 158, 158)">format_color_fill</i>
+                                <span>تطبيق المظهر الثالث</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-4');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(63, 81, 181)">format_color_fill</i>
+                                <span>تطبيق المظهر الرابع</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-5');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(139, 195, 74)">format_color_fill</i>
+                                <span>تطبيق المظهر الخامس</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-6');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(205, 220, 57)">format_color_fill</i>
+                                <span>تطبيق المظهر السادس</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-7');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(156, 39, 176)">format_color_fill</i>
+                                <span>تطبيق المظهر السابع</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="setStyle('mdl-style-8');">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon" style="color: rgb(244, 67, 54)">format_color_fill</i>
+                                <span>تطبيق المظهر الثامن</span>
+                            </span>
+                        </li>
+
+                    </ul>
+
+                    <button id="toggle-help-menu-lower-right"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                        <i class="material-icons">help</i>
+                        <span>مساعدة</span>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                        for="toggle-help-menu-lower-right">
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="openStateHelp()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">help</i>
+                                <span>المساعدة</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="openStateAbout();">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">info</i>
+                                <span>عن البرنامج</span>
+                            </span>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
 
             <div class="mdl-layout-spacer"></div>
 
@@ -74,21 +544,21 @@
                         <span class="mdl-list__item-sub-title">{{me.qualification}}</span>
                     </span>
                 </li>
-                <li class="mdl-menu__item mdl-list__item" ui-sref="help">
+                <li class="mdl-menu__item mdl-list__item" ng-click="openStateHelp();">
                     <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon">help</i>
                         <span ng-if="lang==='AR'">المساعدة</span>
                         <span ng-if="lang==='EN'">HELP</span>
                     </span>
                 </li>
-                <li class="mdl-menu__item mdl-list__item" ui-sref="about">
+                <li class="mdl-menu__item mdl-list__item" ng-click="openStateAbout();">
                     <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon">info</i>
                         <span ng-if="lang==='AR'">عن البرنامج</span>
                         <span ng-if="lang==='EN'">ABOUT</span>
                     </span>
                 </li>
-                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider" ui-sref="profile">
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider" ng-click="openStateProfile();">
                     <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon">account_box</i>
                         <span ng-if="lang==='AR'">الملف الشخصي</span>
@@ -106,594 +576,134 @@
 
         </div>
 
-        <div class="mdl-layout__header-row mdl-layout--large-screen-only">
-
-            <div class="row">
-                <div class="btn-toolbar">
-                    <div class="btn-group" data-toggle="buttons">
-
-                        <button id="toggle1-action-menu-lower"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                            <span ng-if="lang==='AR'">ملف</span>
-                            <span ng-if="lang==='EN'">File</span>
-                        </button>
-                        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                            ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                            for="toggle1-action-menu-lower">
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
-                                ng-click="ModalProvider.openCustomerCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                    <span ng-if="lang==='AR'">عميل جديد...</span>
-                                    <span ng-if="lang==='EN'">New Customer...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE'])"
-                                ng-click="ModalProvider.openFalconCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                    <span ng-if="lang==='AR'">حساب صقر جديد...</span>
-                                    <span ng-if="lang==='EN'">New Falcon...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE'])"
-                                ng-click="ModalProvider.openDoctorCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                   <span ng-if="lang==='AR'">حساب طبيب جديد...</span>
-                                   <span ng-if="lang==='EN'">New Doctor...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE'])"
-                                ng-click="ModalProvider.openDetectionTypeCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                   <span ng-if="lang==='AR'">نوع فحص جديد...</span>
-                                   <span ng-if="lang==='EN'">New Detection Type...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
-                                ng-click="ModalProvider.openOrderCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                   <span ng-if="lang==='AR'">طلب فحص جديد...</span>
-                                   <span ng-if="lang==='EN'">New Order...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE'])"
-                                ng-click="ModalProvider.openDrugCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                   <span ng-if="lang==='AR'">صنف دواء جديد...</span>
-                                   <span ng-if="lang==='EN'">New Drug...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE'])"
-                                ng-click="ModalProvider.openSupplierCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                   <span ng-if="lang==='AR'">مورد جديد...</span>
-                                   <span ng-if="lang==='EN'">New Supplier...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE'])"
-                                ng-click="ModalProvider.openBillBuyCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                   <span ng-if="lang==='AR'">فاتورة شراء...</span>
-                                   <span ng-if="lang==='EN'">New Bill Buy...</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
-                                ng-click="ModalProvider.openBillSellCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">note_add</i>
-                                   <span ng-if="lang==='AR'">فاتورة بيع...</span>
-                                   <span ng-if="lang==='EN'">New Bill Sell...</span>
-                                </span>
-                            </li>
-                        </ul>
-
-                        <button id="toggle2-action-menu-lower"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                            <span ng-if="lang==='AR'">عرض</span>
-                            <span ng-if="lang==='EN'">View</span>
-                        </button>
-                        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                            ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                            for="toggle2-action-menu-lower">
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('customer.list')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                    <span ng-if="lang==='AR'">سجل العملاء</span>
-                                    <span ng-if="lang==='EN'">Customers List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('falcon')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                    <span ng-if="lang==='AR'">سجل الصقور</span>
-                                    <span ng-if="lang==='EN'">Falcons List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('doctor')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل الأطباء</span>
-                                   <span ng-if="lang==='EN'">Doctors List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('detectionType')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل أنواع الفحوصات</span>
-                                   <span ng-if="lang==='EN'">Detection Types List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('order')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل الطلبات</span>
-                                   <span ng-if="lang==='EN'">Orders List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('drug')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل الأدوية والأصناف</span>
-                                   <span ng-if="lang==='EN'">Drugs List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('supplier')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل الموردين</span>
-                                   <span ng-if="lang==='EN'">Suppliers List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('billBuy')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل فواتير الشراء</span>
-                                   <span ng-if="lang==='EN'">Purchases List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('billSell.insideSales')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل المبيعات الداخلية</span>
-                                   <span ng-if="lang==='EN'">Inside Sales List</span>
-                                </span>
-                            </li>
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('billSell.outsideSales')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">view_list</i>
-                                   <span ng-if="lang==='AR'">سجل المبيعات الخارجية</span>
-                                   <span ng-if="lang==='EN'">Outside Sales List</span>
-                                </span>
-                            </li>
-                        </ul>
-
-                        <button id="toggle3-action-menu-lower"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                            <span ng-if="lang==='AR'">الصندوق</span>
-                            <span ng-if="lang==='EN'">Fund</span>
-                        </button>
-                        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                            ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                            for="toggle3-action-menu-lower">
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('fund')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">info</i>
-                                    <span ng-if="lang==='AR'">بيانات الصندوق</span>
-                                    <span ng-if="lang==='EN'">Fund Details</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_IN_CREATE'])"
-                                ng-click="ModalProvider.openFundReceiptInCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon"></i>
-                                    <span ng-if="lang==='AR'">توريد للصندوق</span>
-                                    <span ng-if="lang==='EN'">New Fund Receipt In</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_OUT_CREATE'])"
-                                ng-click="ModalProvider.openFundReceiptOutCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon"></i>
-                                    <span ng-if="lang==='AR'">صرف من للصندوق</span>
-                                    <span ng-if="lang==='EN'">New Fund Receipt Out</span>
-                                </span>
-                            </li>
-
-                        </ul>
-
-                        <button id="toggle4-action-menu-lower"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                            <span ng-if="lang==='AR'">البنك</span>
-                            <span ng-if="lang==='EN'">Bank</span>
-                        </button>
-                        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                            ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                            for="toggle4-action-menu-lower">
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="state.go('bank')">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">info</i>
-                                    <span ng-if="lang==='AR'">بيانات البنك</span>
-                                    <span ng-if="lang==='EN'">Bank Details</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_BANK_RECEIPT_IN_CREATE'])"
-                                ng-click="ModalProvider.openFundReceiptInCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon"></i>
-                                    <span ng-if="lang==='AR'">توريد للبنك</span>
-                                    <span ng-if="lang==='EN'">New Bank Receipt In</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-if="contains(me.team.authorities, ['ROLE_BANK_RECEIPT_OUT_CREATE'])"
-                                ng-click="ModalProvider.openFundReceiptOutCreateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon"></i>
-                                    <span ng-if="lang==='AR'">صرف من البنك</span>
-                                    <span ng-if="lang==='EN'">New Bank Receipt Out</span>
-                                </span>
-                            </li>
-
-                        </ul>
-
-                        <button id="toggle5-action-menu-lower"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                            <span ng-if="lang==='AR'">تقرير</span>
-                            <span ng-if="lang==='EN'">Report</span>
-                        </button>
-                        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                            ng-class="{'mdl-menu--bottom-right' : lang==='AR', 'mdl-menu--bottom-left' : lang==='EN'}"
-                            for="toggle5-action-menu-lower">
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="printDrugsList()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                                    <span ng-if="lang==='AR'">سجل الأدوية</span>
-                                    <span ng-if="lang==='EN'">Drugs List</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="ModalProvider.openReportOrderDetectionModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                                    <span ng-if="lang==='AR'">طلب فحص</span>
-                                    <span ng-if="lang==='EN'">Detection Order</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="ModalProvider.openReportOrderResultModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                                    <span ng-if="lang==='AR'">نتيجة فحص</span>
-                                    <span ng-if="lang==='EN'">Detection Result</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="ModalProvider.openReportOrderByDateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                                    <span ng-if="lang==='AR'">طلبات الفحص بالتاريخ - مختصر</span>
-                                    <span ng-if="lang==='EN'">Orders Summery By Date - Summery</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="ModalProvider.openReportOrderDetailsByDateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                                    <span ng-if="lang==='AR'">طلبات الفحص بالتاريخ - مفصل</span>
-                                    <span ng-if="lang==='EN'">Orders Summery By Date - Details</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="ModalProvider.openReportBillSellByDateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                                    <span ng-if="lang==='AR'">المبيعات بالتاريخ - مختصر</span>
-                                    <span ng-if="lang==='EN'">Sales Summery By Date - Summery</span>
-                                </span>
-                            </li>
-
-                            <li class="mdl-menu__item mdl-list__item"
-                                ng-click="ModalProvider.openReportBillSellDetailsByDateModel()">
-                                <span class="mdl-list__item-primary-content">
-                                    <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                                    <span ng-if="lang==='AR'">المبيعات بالتاريخ - مفصل</span>
-                                    <span ng-if="lang==='EN'">Sales Summery By Date - Details</span>
-                                </span>
-                            </li>
-
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
     </header>
 
     <main class="mdl-layout__content">
 
-        <div class="row" style="margin-top: 10px">
+        <div ng-if="toggleState==='menu'" class="row" style="margin-top: 10px">
 
-            <div class="container">
+            <div ng-include="'ui/partials/menu/state_menu.html'"></div>
 
-                <div class="form-group row">
+        </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center" ui-sref="company" ng-if="contains(me.team.authorities, ['ROLE_COMPANY_UPDATE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Companies.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الشركة</span>
-                                <span ng-if="lang==='EN'">COMPANY</span>
-                            </a>
-                        </div>
-                    </div>
+        <div ng-if="toggleState==='company'" class="row" style="margin-top: 10px">
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="customer.list"
-                         ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE', 'ROLE_CUSTOMER_UPDATE', 'ROLE_CUSTOMER_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Customers.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">العملاء</span>
-                                <span ng-if="lang==='EN'">CUSTOMERS</span>
-                            </a>
-                        </div>
-                    </div>
+            <div ng-include="'ui/partials/menu/state_company.html'"></div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="falcon"
-                         ng-if="contains(me.team.authorities, ['ROLE_FALCON_CREATE', 'ROLE_FALCON_UPDATE', 'ROLE_FALCON_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Falcons.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">حسابات الصقور</span>
-                                <span ng-if="lang==='EN'">FALCONS</span>
-                            </a>
-                        </div>
-                    </div>
+        </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="doctor"
-                         ng-if="contains(me.team.authorities, ['ROLE_DOCTOR_CREATE', 'ROLE_DOCTOR_UPDATE', 'ROLE_DOCTOR_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Doctors.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الاطباء</span>
-                                <span ng-if="lang==='EN'">DOCTORS</span>
-                            </a>
-                        </div>
-                    </div>
+        <div ng-if="toggleState==='customer'" class="row" style="margin-top: 10px">
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="employee.list"
-                         ng-if="contains(me.team.authorities, ['ROLE_EMPLOYEE_CREATE', 'ROLE_EMPLOYEE_UPDATE', 'ROLE_EMPLOYEE_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Employees.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الموظفون</span>
-                                <span ng-if="lang==='EN'">EMPLOYEES</span>
-                            </a>
-                        </div>
-                    </div>
+            <div ng-include="'ui/partials/menu/state_customer.html'"></div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="detectionType"
-                         ng-if="contains(me.team.authorities, ['ROLE_DETECTION_TYPE_CREATE', 'ROLE_DETECTION_TYPE_UPDATE', 'ROLE_DETECTION_TYPE_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/DetectionTypes.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">أنواع الفحص</span>
-                                <span ng-if="lang==='EN'">DETECTION TYPES</span>
-                            </a>
-                        </div>
-                    </div>
+        </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="order"
-                         ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE', 'ROLE_ORDER_UPDATE', 'ROLE_ORDER_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/DetectionOrders.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">طلبات الفحص</span>
-                                <span ng-if="lang==='EN'">DETECTION ORDERS</span>
-                            </a>
-                        </div>
-                    </div>
+        <div ng-if="toggleState==='falcon'" class="row" style="margin-top: 10px">
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="diagnosis"
-                         ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE', 'ROLE_DIAGNOSIS_UPDATE', 'ROLE_DIAGNOSIS_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/DetectionResults.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">نتائج الفحص</span>
-                                <span ng-if="lang==='EN'">DETECTION RESULTS</span>
-                            </a>
-                        </div>
-                    </div>
+            <div ng-include="'ui/partials/menu/state_falcon.html'"></div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="drug"
-                         ng-if="contains(me.team.authorities, ['ROLE_DRUG_CREATE', 'ROLE_DRUG_UPDATE', 'ROLE_DRUG_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Drugs.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الدواء</span>
-                                <span ng-if="lang==='EN'">DRUGS</span>
-                            </a>
-                        </div>
-                    </div>
+        </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="supplier"
-                         ng-if="contains(me.team.authorities, ['ROLE_SUPPLIER_CREATE', 'ROLE_SUPPLIER_UPDATE', 'ROLE_SUPPLIER_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Suppliers.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الموردين</span>
-                                <span ng-if="lang==='EN'">SUPPLIER</span>
-                            </a>
-                        </div>
-                    </div>
+        <div ng-show="toggleState==='doctor'" class="row" style="margin-top: 10px">
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="billBuy"
-                         ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_CREATE', 'ROLE_BILL_BUY_UPDATE', 'ROLE_BILL_BUY_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Bills.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">فواتير الشراء</span>
-                                <span ng-if="lang==='EN'">BILL BUYS</span>
-                            </a>
-                        </div>
-                    </div>
+            <div ng-include="'ui/partials/menu/state_doctor.html'"></div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="billSell.insideSales"
-                         ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE', 'ROLE_BILL_SELL_UPDATE', 'ROLE_BILL_SELL_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Bills.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">فواتير البيع</span>
-                                <span ng-if="lang==='EN'">BILL SELL</span>
-                            </a>
-                        </div>
-                    </div>
+        </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="fund"
-                         ng-if="contains(me.team.authorities, ['ROLE_FUND_UPDATE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Fund.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الصندوق</span>
-                                <span ng-if="lang==='EN'">Cash</span>
-                            </a>
-                        </div>
-                    </div>
+        <div ng-show="toggleState==='detectionType'" class="row" style="margin-top: 10px">
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="bank"
-                         ng-if="contains(me.team.authorities, ['ROLE_BANK_UPDATE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Banks.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">البنك</span>
-                                <span ng-if="lang==='EN'">BANK</span>
-                            </a>
-                        </div>
-                    </div>
+            <div ng-include="'ui/partials/menu/state_detection_type.html'"></div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="team"
-                         ng-if="contains(me.team.authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE'])">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Teams.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">الصلاحيات</span>
-                                <span ng-if="lang==='EN'">PRIVILEGES</span>
-                            </a>
-                        </div>
-                    </div>
+        </div>
 
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
-                         ui-sref="report">
-                        <div class="card-image mdl-card" style="background-image: url('/ui/img/Reports.png')">
-                            <div class="mdl-card__title mdl-card--expand"></div>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <a class="card-image__filename">
-                                <span ng-if="lang==='AR'">التقارير</span>
-                                <span ng-if="lang==='EN'">REPORTS</span>
-                            </a>
-                        </div>
-                    </div>
+        <div ng-show="toggleState==='order'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_order.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='diagnosis'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_diagnosis.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='drug'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_drug.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='supplier'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_supplier.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='billBuy'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_bill_buy.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='insideSales'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_inside_sales.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='outsideSales'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_outside_sales.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='team'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_team.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='fund'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_fund.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='bank'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_bank.html'"></div>
+
+        </div>
 
 
-                </div>
+        <div ng-show="toggleState==='profile'" class="row" style="margin-top: 10px">
 
-            </div>
+            <div ng-include="'ui/partials/menu/state_profile.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='help'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_help.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='about'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_about.html'"></div>
+
+        </div>
+
+        <div ng-show="toggleState==='report'" class="row" style="margin-top: 10px">
+
+            <div ng-include="'ui/partials/menu/state_report.html'"></div>
 
         </div>
 
     </main>
 
-    <footer class="mdl-mini-footer">
+    <footer class="mdl-mini-footer mdl-color--primary mdl-color-text--white">
         <div class="row" style="margin: auto">
             <span ng-if="lang==='AR'" dir="rtl">جميع الحقوق محفوظة لمؤسسة صرخة لتقنية المعلومات - الصيدلية الذكية (نسخة غير مرخصة)</span>
             <span ng-if="lang==='EN'" dir="ltr">© 2017  Privacy Policy - Smart Pharmacy (Trail Version)</span>

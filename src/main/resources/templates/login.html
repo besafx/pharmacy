@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en" class="body-full-height" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!-- META SECTION -->
-    <title>مركز السلطان للصقور | شاشة الدخول</title>
+    <title>SULTAN | LOGIN</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -10,99 +10,141 @@
     <link rel="icon" th:href="@{~/ui/img/favicon.ico}" type="image/x-icon"/>
     <!-- END META SECTION -->
 
-    <!-- Material Design fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Changa" rel="stylesheet"/>
-
-    <link rel="stylesheet" type="text/css" th:href="@{~/ui/css/theme-black.css}"/>
-
     <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-
-    <!-- EOF CSS INCLUDE -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 
     <style>
+
+        @import url('https://fonts.googleapis.com/css?family=Jomhuria');
+
         html * {
-            font-family: 'Changa', sans-serif;
-            font-weight: 400;
+            font-size: 24px;
         }
 
-        input[type=checkbox] {
-            transform: scale(2) !important;
-            -ms-transform: scale(2) !important;
-            -webkit-transform: scale(2) !important;
-            padding: 10px !important;
-            margin-left: 10px;
+        .login-page {
+            padding: 8% 0 0;
+            margin: auto;
+        }
+        .form {
+            position: relative;
+            z-index: 1;
+            background: #FFFFFF;
+            width: 100%;
+            margin: auto;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+        .form input {
+            font-family: "Jomhuria", cursive;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 24px;
+        }
+        .form button {
+            font-family: "Jomhuria", cursive;
+            text-transform: uppercase;
+            outline: 0;
+            background: #424242;
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            color: #FFFFFF;
+            font-size: 24px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+        }
+        .form button:hover,.form button:active,.form button:focus {
+            background: #212121;
+        }
+        .form .message {
+            margin: 15px 0 0;
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+        .form .message a {
+            color: #424242;
+            text-decoration: none;
+        }
+        .form .register-form {
+            display: none;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .container:before, .container:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .container .info {
+            margin: 50px auto;
+            text-align: center;
+        }
+        .container .info h1 {
+            margin: 0 0 15px;
+            padding: 0;
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+        }
+        .container .info span {
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+        .container .info span a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .container .info span .fa {
+            color: #EF3B3A;
+        }
+        body {
+            background: #76b852; /* fallback for old browsers */
+            background: -webkit-linear-gradient(right, #212121, #424242);
+            background: -moz-linear-gradient(right, #212121, #424242);
+            background: -o-linear-gradient(right, #212121, #424242);
+            background: linear-gradient(to left, #212121, #424242);
+            font-family: "Jomhuria", cursive;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
     </style>
 
 </head>
 <body>
 
-<div dir="rtl" class="login-container">
-    <div class="login-box animated fadeInDown">
-        <div class="login-logo" hidden="hidden"></div>
-        <div class="login-body">
-            <div class="login-title text-center">مركز السلطان للصقور | الصيدلية الذكية</div>
-            <div th:if="${param.error}">
-                <div class="alert alert-danger" role="alert">
-                    <strong>هناك خطأ فى الدخول: </strong>
-                    <ul>
-                        <li>تأكد من البريد الإلكتروني أو كلمة المرور</li>
-                        <li>يجب أن يكون المستخدم يشغل منصب داخل النظام</li>
-                        <li>مصرح للدعم الفني الدخول مباشرة</li>
-                    </ul>
-                </div>
-            </div>
-            <div th:if="${param.logout}">
-                <div class="alert alert-success" role="alert">تم تسجيل بيانات الخروج بنجاح</div>
-            </div>
-            <form class="form-horizontal text-right" th:action="@{/login}" method="post">
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input dir="ltr" id="email" class="form-control" type="email"
-                               name="email" placeholder="ادخل بريدك الإلكتروني"
-                               required="required"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div dir="ltr" class="col-md-12">
-                        <input id="password" class="form-control" type="password"
-                               name="password" placeholder="ادخل الرقم السري"
-                               required="required"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <label class="help-block">
-                            <input style="height: 10px !important;" type="checkbox" checked="checked"
-                                   name="remember-me"/>
-                            <span>قم باختيار هذا الحقل فى حال اردت تذكر بيانات الدخول</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-6">
-                        <button class="btn btn-info btn-block" type="submit">دخول</button>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="" class="btn btn-link btn-block">هل نسيت كلمة المرور؟</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="login-footer">
-            <div class="pull-left">
-                <a href="http://www.ararhni.com/" target="_blank">عن الشركة</a> |
-                <a href="http://www.ararhni.com/" target="_blank">الخصوصية</a> |
-                <a href="http://www.ararhni.com/" target="_blank">اتصل بنا</a>
-            </div>
-            <div dir="ltr" class="pull-right lobster">
-                &copy; SPH version 0.1 2016
+<div dir="rtl" class="login-page col-xs-12 col-sm-12 col-md-4 col-md-4 col-md-push-4 col-lg-push-4">
+    <div class="form">
+        <h1>مركز السلطان للصقور | SULTAN CENTER</h1>
+        <div th:if="${param.error}" class="text-right">
+            <div class="alert alert-danger" role="alert">
+                <strong>هناك خطأ فى الدخول: </strong>
+                <ul>
+                    <li>تأكد من البريد الإلكتروني أو كلمة المرور</li>
+                    <li>يجب أن يكون المستخدم يشغل منصب داخل النظام</li>
+                    <li>مصرح للدعم الفني الدخول مباشرة</li>
+                </ul>
             </div>
         </div>
+        <div th:if="${param.logout}">
+            <div class="alert alert-success" role="alert">تم تسجيل بيانات الخروج بنجاح</div>
+        </div>
+        <form class="login-form" th:action="@{/login}" method="post">
+            <input id="email" type="text" name="email" placeholder="البريد الإلكتروني"/>
+            <input id="password" type="password" name="password" placeholder="كلمة المرور"/>
+            <button type="submit">دخول</button>
+        </form>
     </div>
-
 </div>
 
 </body>

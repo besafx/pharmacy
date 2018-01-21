@@ -40,20 +40,27 @@ public class Diagnosis implements Serializable {
     @Id
     @GeneratedValue(generator = "diagnosisSequenceGenerator")
     private Long id;
+
     private Integer code;
+
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String usage;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
     private Double quantity;
+
     @JoinColumn(name = "drug")
     @ManyToOne
     @OrderBy(value = "code")
     private Drug drug;
+
     @JoinColumn(name = "drugUnit")
     @ManyToOne
     private DrugUnit drugUnit;
+
     @JoinColumn(name = "[order]")
     @ManyToOne
     private Order order;
