@@ -71,7 +71,7 @@ public class BillBuy implements Serializable {
                     .flatMap(transactionBuy -> transactionBuy.getTransactionSells().stream())
                     .collect(Collectors.toList());
         } catch (Exception ex) {
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -82,7 +82,7 @@ public class BillBuy implements Serializable {
                     .map(billBuyReceipt -> billBuyReceipt.getReceipt())
                     .collect(Collectors.toList());
         } catch (Exception ex) {
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -93,7 +93,7 @@ public class BillBuy implements Serializable {
                     .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitBuyCost())
                     .sum();
         } catch (Exception ex) {
-            return null;
+            return 0.0;
         }
     }
 
@@ -104,7 +104,7 @@ public class BillBuy implements Serializable {
                     .mapToDouble(transactionBuy -> transactionBuy.getQuantity() * transactionBuy.getUnitSellCost())
                     .sum();
         } catch (Exception ex) {
-            return null;
+            return 0.0;
         }
     }
 
@@ -113,7 +113,7 @@ public class BillBuy implements Serializable {
             Double totalCost = this.getUnitBuyCostSum();
             return totalCost - ((totalCost * this.discount) / 100);
         } catch (Exception ex) {
-            return null;
+            return 0.0;
         }
     }
 
@@ -121,7 +121,7 @@ public class BillBuy implements Serializable {
         try {
             return this.billBuyReceipts.stream().mapToDouble(billBuyReceipt -> billBuyReceipt.getReceipt().getAmountNumber()).sum();
         } catch (Exception ex) {
-            return null;
+            return 0.0;
         }
     }
 
@@ -129,7 +129,7 @@ public class BillBuy implements Serializable {
         try {
             return this.getNet() - this.getPaid();
         } catch (Exception ex) {
-            return null;
+            return 0.0;
         }
     }
 }

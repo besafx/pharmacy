@@ -112,9 +112,7 @@ public class Fund implements Serializable {
 
     public Double getBalance() {
         try {
-            this.tempBalance = this.getCashIn() - this.getCashOut();
-            fundService.save(this);
-            return this.tempBalance;
+            return this.getCashIn() - this.getCashOut();
         } catch (Exception ex) {
             return 0.0;
         }
