@@ -230,11 +230,11 @@
                             </td>
                             <td st-select-row-multi="billBuy">{{billBuy.supplier.name}}</td>
                             <td st-select-row-multi="billBuy">{{billBuy.transactionBuys.length}}</td>
-                            <td st-select-row-multi="billBuy" ng-class="{'info' : billBuy.isSelected===false}">{{billBuy.unitBuyCostSum | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'info' : billBuy.isSelected===false}">{{billBuy.unitBuyCostSum | currency:' SAR ':2}}</td>
                             <td st-select-row-multi="billBuy">{{billBuy.discount | currency:'%':2}}</td>
-                            <td st-select-row-multi="billBuy" ng-class="{'warning' : billBuy.isSelected===false}">{{billBuy.net | currency:'SAR':2}}</td>
-                            <td st-select-row-multi="billBuy" ng-class="{'success' : billBuy.isSelected===false}">{{billBuy.paid | currency:'SAR':2}}</td>
-                            <td st-select-row-multi="billBuy" ng-class="{'danger' : billBuy.isSelected===false}">{{billBuy.remain | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'warning' : billBuy.isSelected===false}">{{billBuy.net | currency:' SAR ':2}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'success' : billBuy.isSelected===false}">{{billBuy.paid | currency:' SAR ':2}}</td>
+                            <td st-select-row-multi="billBuy" ng-class="{'danger' : billBuy.isSelected===false}">{{billBuy.remain | currency:' SAR ':2}}</td>
                         </tr>
                         <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                             ng-show="!collection1 || collection1.length ==0">

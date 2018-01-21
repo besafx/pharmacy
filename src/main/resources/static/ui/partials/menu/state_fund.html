@@ -16,7 +16,7 @@
                 <h3>
                     <span ng-if="lang==='AR'">الرصيد الحالي = </span>
                     <span ng-if="lang==='EN'">Current Balance = </span>
-                    {{selectedFund.balance | currency:'SAR':2}}
+                    {{selectedFund.balance | currency:' SAR ':2}}
                 </h3>
 
             </div>
@@ -335,7 +335,7 @@
                                         <span ng-show="dateType==='G'">{{fundReceipt.receipt.date | date: 'yyyy-MM-dd'}}</span>
                                         {{fundReceipt.receipt.date | date:'h:m a'}}
                                     </td>
-                                    <td st-select-row-multi="fundReceipt" class="danger">{{fundReceipt.receipt.amountNumber | currency:'SAR':2}}</td>
+                                    <td st-select-row-multi="fundReceipt" class="danger">{{fundReceipt.receipt.amountNumber | currency:' SAR ':2}}</td>
                                     <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.sender}}</td>
                                     <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.receiver}}</td>
                                     <td st-select-row-multi="fundReceipt">{{fundReceipt.receipt.note}}</td>

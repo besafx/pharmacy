@@ -33,6 +33,7 @@ public class OrderRest {
     public static final String FILTER_TABLE = "**,orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,nickname,name],falcon[id,code,type,weight,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish],drugUnit[id,name]],orderDetectionTypes[id,done,detectionType[id,code,nameArabic,nameEnglish,cost]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
     public static final String FILTER_TABLE_DEBT = "**,-orderReceipts,lastPerson[id,nickname,name],falcon[id,code,type,weight,customer[id,code,name]],-doctor,-diagnoses,-orderDetectionTypes,-orderAttaches";
     public static final String FILTER_ORDER_COMBO = "id,code";
+    public static final String FILTER_ORDER_PRICES = "netCost,paid,remain";
     public static final String FILTER_ORDER_COMBO_DIAGNOSIS = "id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,code,name]]";
 
     private final Logger log = LoggerFactory.getLogger(OrderRest.class);
@@ -200,6 +201,12 @@ public class OrderRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderService.findOne(id));
+    }
+
+    @RequestMapping(value = "findPrices/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findPrices(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_PRICES), orderService.findOne(id));
     }
 
     @RequestMapping(value = "findByCustomer/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

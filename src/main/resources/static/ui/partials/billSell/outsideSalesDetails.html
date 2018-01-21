@@ -88,7 +88,7 @@
                                         <span ng-if="lang==='AR'">السعر المطلوب</span>
                                         <span ng-if="lang==='EN'">Total Cost</span>
                                     </td>
-                                    <td>{{billSell.unitSellCostSum | currency:'SAR':2}}</td>
+                                    <td>{{billSell.unitSellCostSum | currency:' SAR ':2}}</td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -102,21 +102,21 @@
                                         <span ng-if="lang==='AR'">الصافي</span>
                                         <span ng-if="lang==='EN'">Net</span>
                                     </td>
-                                    <td>{{billSell.net | currency:'SAR':2}}</td>
+                                    <td>{{billSell.net | currency:' SAR ':2}}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span ng-if="lang==='AR'">المدفوع</span>
                                         <span ng-if="lang==='EN'">Paid</span>
                                     </td>
-                                    <td>{{billSell.paid | currency:'SAR':2}}</td>
+                                    <td>{{billSell.paid | currency:' SAR ':2}}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span ng-if="lang==='AR'">الباقي</span>
                                         <span ng-if="lang==='EN'">Debt</span>
                                     </td>
-                                    <td>{{billSell.remain | currency:'SAR':2}}</td>
+                                    <td>{{billSell.remain | currency:' SAR ':2}}</td>
                                 </tr>
                                 <tr>
                                     <td class="fit">
@@ -323,7 +323,7 @@
                                         <span ng-show="dateType==='G'">{{billSellReceipt.receipt.date | date: 'yyyy-MM-dd'}}</span>
                                         {{billSellReceipt.receipt.date | date:'h:m a'}}
                                     </td>
-                                    <td class="warning">{{billSellReceipt.receipt.amountNumber | currency:'SAR':2}}</td>
+                                    <td class="warning">{{billSellReceipt.receipt.amountNumber | currency:' SAR ':2}}</td>
                                     <td>{{billSellReceipt.receipt.paymentMethodInArabic}}</td>
                                     <td>{{billSellReceipt.receipt.note}}</td>
                                     <td>

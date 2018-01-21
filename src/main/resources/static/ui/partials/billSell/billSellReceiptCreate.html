@@ -19,77 +19,6 @@
 
         <div class="row">
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">بيانات الفاتورة</h3>
-                            <h3 ng-if="lang==='EN'">Bill Information</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">رقم الفاتورة</span>
-                                        <span ng-if="lang==='EN'">Code</span>
-                                    </td>
-                                    <td>{{billSellReceipt.billSell.code}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">تاريخ الفاتورة</span>
-                                        <span ng-if="lang==='EN'">BillSell Date</span>
-                                    </td>
-                                    <td>
-                                        {{billSellReceipt.billSell.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
-                                        <span class="label label-success">{{billSellReceipt.billSell.date | date:'h:m a'}}</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الإجمالي</span>
-                                        <span ng-if="lang==='EN'">Cost</span>
-                                    </td>
-                                    <td>{{billSellReceipt.billSell.unitSellCostSum}} SAR</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الخصم</span>
-                                        <span ng-if="lang==='EN'">Discount</span>
-                                    </td>
-                                    <td>{{billSellReceipt.billSell.discount}} SAR</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الصافي</span>
-                                        <span ng-if="lang==='EN'">Net</span>
-                                    </td>
-                                    <td>{{billSellReceipt.billSell.net}} SAR</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">المدفوع</span>
-                                        <span ng-if="lang==='EN'">Paid</span>
-                                    </td>
-                                    <td>{{billSellReceipt.billSell.paid}} SAR</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الباقي</span>
-                                        <span ng-if="lang==='EN'">Remain</span>
-                                    </td>
-                                    <td>{{billSellReceipt.billSell.remain}} SAR</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
                  ng-show="form.$invalid && form.$submitted">
                 <div class="alert alert-danger" role="alert">
@@ -98,83 +27,76 @@
                 </div>
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">البيانات المطلوبة</h3>
-                            <h3 ng-if="lang==='EN'">Required Information</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
+            <div class="form-group row">
 
-                            <div class="row">
+                <h3>
+                    <span>الباقي من اجمالي سعر الفاتورة = </span>
+                    {{billSellReceipt.billSell.remain | currency:' SAR ':2}}
+                </h3>
 
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="paymentMethod" class="control-label">
-                                        <span ng-if="lang==='AR'">طريقة الدفع</span>
-                                        <span ng-if="lang==='EN'">Payment Method</span>
-                                    </label>
-                                    <select id="paymentMethod"
-                                            class="form-control"
-                                            required="required"
-                                            disable-validation-message=""
-                                            ng-model="billSellReceipt.receipt.paymentMethod">
-                                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
-                                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
-                                        <option ng-if="lang==='AR'" value="Check">شيك</option>
-                                        <option ng-if="lang==='EN'" value="Check">Check</option>
-                                    </select>
-                                </div>
+            </div>
 
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="amountNumber" class="control-label">
-                                        <span ng-if="lang==='AR'">المبلغ المدفوع</span>
-                                        <span ng-if="lang==='EN'">Payment</span>
-                                    </label>
-                                    <input id="amountNumber"
-                                           type="number"
-                                           ng-min="0"
-                                           ng-max="billSellReceipt.billSell.remain"
-                                           required=""
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           ng-model="billSellReceipt.receipt.amountNumber">
-                                </div>
+            <div class="form-group row">
 
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                    <label for="checkCode" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم الشيك</span>
-                                        <span ng-if="lang==='EN'">Check Code</span>
-                                    </label>
-                                    <input id="checkCode"
-                                           type="number"
-                                           ng-required="billSellReceipt.receipt.paymentMethod==='Check'"
-                                           ng-disabled="billSellReceipt.receipt.paymentMethod!=='Check'"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           ng-model="billSellReceipt.receipt.checkCode">
-                                </div>
-
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="description" class="control-label">
-                                    <span ng-if="lang==='AR'">ملاحظات الدفع</span>
-                                    <span ng-if="lang==='EN'">Payment Notes</span>
-                                </label>
-                                <textarea id="description"
-                                          type="text"
-                                          msd-elastic="\n"
-                                          class="form-control"
-                                          ng-model="billSellReceipt.receipt.note">
-                                </textarea>
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="paymentMethod" class="control-label">
+                        <span ng-if="lang==='AR'">طريقة الدفع</span>
+                        <span ng-if="lang==='EN'">Payment Method</span>
+                    </label>
+                    <select id="paymentMethod"
+                            class="form-control"
+                            required="required"
+                            disable-validation-message=""
+                            ng-model="billSellReceipt.receipt.paymentMethod">
+                        <option ng-if="lang==='AR'" value="Cash">نقدي</option>
+                        <option ng-if="lang==='EN'" value="Cash">Cash</option>
+                        <option ng-if="lang==='AR'" value="Check">شيك</option>
+                        <option ng-if="lang==='EN'" value="Check">Check</option>
+                    </select>
                 </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="amountNumber" class="control-label">
+                        <span ng-if="lang==='AR'">المبلغ المدفوع</span>
+                        <span ng-if="lang==='EN'">Payment</span>
+                    </label>
+                    <input id="amountNumber"
+                           type="number"
+                           ng-min="1"
+                           ng-max="billSellReceipt.billSell.remain"
+                           required=""
+                           disable-validation-message=""
+                           class="form-control"
+                           ng-model="billSellReceipt.receipt.amountNumber">
+                </div>
+
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="checkCode" class="control-label">
+                    <span ng-if="lang==='AR'">رقم الشيك</span>
+                    <span ng-if="lang==='EN'">Check Code</span>
+                </label>
+                <input id="checkCode"
+                       type="number"
+                       ng-required="billSellReceipt.receipt.paymentMethod==='Check'"
+                       ng-disabled="billSellReceipt.receipt.paymentMethod!=='Check'"
+                       disable-validation-message=""
+                       class="form-control"
+                       ng-model="billSellReceipt.receipt.checkCode">
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="description" class="control-label">
+                    <span ng-if="lang==='AR'">ملاحظات الدفع</span>
+                    <span ng-if="lang==='EN'">Payment Notes</span>
+                </label>
+                <textarea id="description"
+                          type="text"
+                          msd-elastic="\n"
+                          class="form-control"
+                          ng-model="billSellReceipt.receipt.note">
+                                </textarea>
             </div>
 
         </div>

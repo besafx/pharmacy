@@ -208,11 +208,11 @@
                             <td st-select-row-multi="billSell">{{billSell.order.code}}</td>
                             <td st-select-row-multi="billSell">{{billSell.order.falcon.customer.name}}</td>
                             <td st-select-row-multi="billSell">{{billSell.order.falcon.code}}</td>
-                            <td st-select-row-multi="billSell" ng-class="{'info' : billSell.isSelected===false}">{{billSell.unitSellCostSum | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'info' : billSell.isSelected===false}">{{billSell.unitSellCostSum | currency:' SAR ':2}}</td>
                             <td st-select-row-multi="billSell">{{billSell.discount | currency:'%':2}}</td>
-                            <td st-select-row-multi="billSell" ng-class="{'warning' : billSell.isSelected===false}">{{billSell.net | currency:'SAR':2}}</td>
-                            <td st-select-row-multi="billSell" ng-class="{'success' : billSell.isSelected===false}">{{billSell.paid | currency:'SAR':2}}</td>
-                            <td st-select-row-multi="billSell" ng-class="{'danger' : billSell.isSelected===false}">{{billSell.remain | currency:'SAR':2}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'warning' : billSell.isSelected===false}">{{billSell.net | currency:' SAR ':2}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'success' : billSell.isSelected===false}">{{billSell.paid | currency:' SAR ':2}}</td>
+                            <td st-select-row-multi="billSell" ng-class="{'danger' : billSell.isSelected===false}">{{billSell.remain | currency:' SAR ':2}}</td>
                         </tr>
                         <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                             ng-show="!collection || collection.length ==0">

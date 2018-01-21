@@ -234,7 +234,6 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
         $scope.submit = function () {
             $scope.order.orderDetectionTypes = $scope.orderDetectionTypeList;
             //Ignore Creating Receipt In case Of Selecting Later Options For Payment Method
-            console.info($scope.receipt.paymentMethod);
             if ($scope.receipt.paymentMethod !== 'Later') {
                 var orderReceipts = [];
                 var orderReceipt = {};
@@ -246,7 +245,6 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             OrderService.create($scope.order).then(function (data) {
                 //رفع الملفات
                 angular.forEach($scope.wrappers, function (wrapper) {
-                    console.info($scope.wrappers);
                     OrderAttachService.upload(data, wrapper.name, wrapper.mimeType, wrapper.description, wrapper.src).then(function (data) {
 
                     });

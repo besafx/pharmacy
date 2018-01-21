@@ -16,6 +16,11 @@ app.factory("BillSellService",
                     return response.data;
                 });
             },
+            findPrices: function (id) {
+                return $http.get("/api/billSell/findPrices/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (billSell) {
                 return $http.post("/api/billSell/create", billSell).then(function (response) {
                     return response.data;

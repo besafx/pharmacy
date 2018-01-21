@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping(value = "/api/detectionType/")
 public class DetectionTypeRest {
 
-    public static final String FILTER_TABLE = "**,-orderDetectionTypes,-orders";
+    public static final String FILTER_TABLE = "id,code,nameArabic,nameEnglish,cost";
     public static final String FILTER_DETECTION_TYPE_COMBO = "id,code,nameArabic,nameEnglish,cost";
 
     @Autowired

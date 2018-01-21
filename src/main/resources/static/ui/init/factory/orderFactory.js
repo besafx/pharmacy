@@ -16,6 +16,11 @@ app.factory("OrderService",
                     return response.data;
                 });
             },
+            findPrices: function (id) {
+                return $http.get("/api/order/findPrices/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             findByCustomer: function (customerId) {
                 return $http.get("/api/order/findByCustomer/" + customerId).then(function (response) {
                     return response.data;

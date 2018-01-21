@@ -34,9 +34,10 @@ import java.util.ListIterator;
 public class BillSellRest {
 
     public static final String FILTER_TABLE = "**,billSellReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,name],order[id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionSells,-transactionBuys],-billBuy,-transactionSells]]";
-    public static final String FILTER_Inside_Debt = "id,code,remain,date,-lastPerson,order[id,code,date,falcon[id,code,customer[id,name]]],-transactionSells,-billSellReceipts";
-    public static final String FILTER_Outside_Debt = "id,code,customerName,falconCode,remain,-lastPerson,-transactionSells,-billSellReceipts";
+    public static final String FILTER_Inside_Debt = "id,code,date,discount,order[id,code,date,falcon[id,code,customer[id,name]]],unitSellCostSum,net,paid,remain,-lastPerson,-transactionSells,-billSellReceipts";
+    public static final String FILTER_Outside_Debt = "id,code,date,discount,customerName,falconCode,unitSellCostSum,net,paid,remain,-lastPerson,-transactionSells,-billSellReceipts";
     public static final String FILTER_BILL_SELL_COMBO = "id,code";
+    public static final String FILTER_BILL_SELL_PRICES = "net,paid,remain";
     private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
     @Autowired
     private BillSellService billSellService;
@@ -177,6 +178,12 @@ public class BillSellRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellService.findOne(id));
     }
 
+    @RequestMapping(value = "findPrices/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findPrices(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_BILL_SELL_PRICES), billSellService.findOne(id));
+    }
+
     @RequestMapping(value = "filterInside", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String filterInside(
@@ -189,7 +196,7 @@ public class BillSellRest {
             @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
             @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
         List<BillSell> list = billSellSearch.filterInside(codeFrom, codeTo, dateFrom, dateTo, orderCodeFrom, orderCodeTo, orderFalconCode, orderCustomerName);
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Inside_Debt), list);
     }
 
     @RequestMapping(value = "filterOutside", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -202,54 +209,54 @@ public class BillSellRest {
             @RequestParam(value = "orderFalconCode", required = false) final String orderFalconCode,
             @RequestParam(value = "orderCustomerName", required = false) final String orderCustomerName) {
         List<BillSell> list = billSellSearch.filterOutside(codeFrom, codeTo, dateFrom, dateTo, orderFalconCode, orderCustomerName);
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Outside_Debt), list);
     }
 
     @RequestMapping(value = "findInsideSalesByToday", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findInsideSalesByToday() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findInsideSalesByToday());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Inside_Debt), billSellSearch.findInsideSalesByToday());
     }
 
     @RequestMapping(value = "findInsideSalesByWeek", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findInsideSalesByWeek() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findInsideSalesByWeek());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Inside_Debt), billSellSearch.findInsideSalesByWeek());
     }
 
     @RequestMapping(value = "findInsideSalesByMonth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findInsideSalesByMonth() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findInsideSalesByMonth());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Inside_Debt), billSellSearch.findInsideSalesByMonth());
     }
 
     @RequestMapping(value = "findInsideSalesByYear", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findInsideSalesByYear() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findInsideSalesByYear());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Inside_Debt), billSellSearch.findInsideSalesByYear());
     }
 
     @RequestMapping(value = "findOutsideSalesByToday", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOutsideSalesByToday() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findOutsideSalesByToday());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Outside_Debt), billSellSearch.findOutsideSalesByToday());
     }
 
     @RequestMapping(value = "findOutsideSalesByWeek", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOutsideSalesByWeek() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findOutsideSalesByWeek());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Outside_Debt), billSellSearch.findOutsideSalesByWeek());
     }
 
     @RequestMapping(value = "findOutsideSalesByMonth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOutsideSalesByMonth() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findOutsideSalesByMonth());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Outside_Debt), billSellSearch.findOutsideSalesByMonth());
     }
 
     @RequestMapping(value = "findOutsideSalesByYear", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOutsideSalesByYear() {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellSearch.findOutsideSalesByYear());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_Outside_Debt), billSellSearch.findOutsideSalesByYear());
     }
 }

@@ -878,6 +878,11 @@ function menuCtrl($scope,
     };
     $scope.newOrderReceipt = function (order) {
         ModalProvider.openOrderReceiptCreateModel(order).result.then(function (data) {
+            OrderService.findPrices(order.id).then(function (newOrder) {
+                order.netCost = newOrder.netCost;
+                order.paid = newOrder.paid;
+                order.remain = newOrder.remain;
+            });
             return order.orderReceipts.splice(0, 0, data);
         }, function () {
         });
@@ -1488,9 +1493,15 @@ function menuCtrl($scope,
     };
     $scope.newBillSellReceipt = function (billSell) {
         ModalProvider.openBillSellReceiptCreateModel(billSell).result.then(function (data) {
+            BillSellService.findPrices(billSell.id).then(function (newBillSell) {
+                billSell.net = newBillSell.net;
+                billSell.paid = newBillSell.paid;
+                billSell.remain = newBillSell.remain;
+            });
             if (billSell.billSellReceipts) {
                 return billSell.billSellReceipts.splice(0, 0, data);
             }
+
         }, function () {
         });
     };

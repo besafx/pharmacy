@@ -78,6 +78,7 @@ public class BillSellReceiptRest {
         notificationService.notifyOne(Notification
                 .builder()
                 .message(lang.equals("AR") ? "تم انشاء السند بنجاح" : "Create Receipt Successfully")
+                .type("success")
                 .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellReceipt);
     }
@@ -88,13 +89,14 @@ public class BillSellReceiptRest {
     public void delete(@PathVariable Long id, Principal principal) {
         BillSellReceipt billSellBillSellReceipt = billSellReceiptService.findOne(id);
         if (billSellBillSellReceipt != null) {
-            receiptService.delete(billSellBillSellReceipt.getReceipt());
             billSellReceiptService.delete(billSellBillSellReceipt);
+            receiptService.delete(billSellBillSellReceipt.getReceipt());
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
                     .message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات بنجاح" : "Delete Receipt With All Related Successfully")
+                    .type("error")
                     .build(), principal.getName());
         }
     }
