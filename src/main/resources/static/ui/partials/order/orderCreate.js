@@ -10,6 +10,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
         $scope.orderDetectionTypeList = [];
         $scope.wrappers = [];
         $scope.receipt = {};
+        $scope.receipt.paymentMethod = 'Cash';
         $scope.title = title;
 
         $timeout(function () {
@@ -213,6 +214,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             }
             $scope.initFiles(files);
         }
+
         //////////////////////////Scan Manager///////////////////////////////////
 
         $scope.addDetectionTypeToList = function () {
@@ -231,8 +233,9 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
 
         $scope.submit = function () {
             $scope.order.orderDetectionTypes = $scope.orderDetectionTypeList;
-            //
-            if($scope.receipt.paymentMethod!=='Later'){
+            //Ignore Creating Receipt In case Of Selecting Later Options For Payment Method
+            console.info($scope.receipt.paymentMethod);
+            if ($scope.receipt.paymentMethod !== 'Later') {
                 var orderReceipts = [];
                 var orderReceipt = {};
                 orderReceipt.receipt = $scope.receipt;

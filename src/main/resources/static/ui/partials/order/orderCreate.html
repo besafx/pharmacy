@@ -360,10 +360,12 @@
                                         <option ng-if="lang==='EN'" value="Cash">Cash</option>
                                         <option ng-if="lang==='AR'" value="Check">شيك</option>
                                         <option ng-if="lang==='EN'" value="Check">Check</option>
+                                        <option ng-if="lang==='AR'" value="Later">آجل</option>
+                                        <option ng-if="lang==='EN'" value="Later">Later</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-if="receipt.paymentMethod!=='Later'">
                                     <label for="amountNumber" class="control-label">
                                         <span ng-if="lang==='AR'">المبلغ المدفوع</span>
                                         <span ng-if="lang==='EN'">Payment</span>
@@ -372,14 +374,13 @@
                                            type="number"
                                            ng-min="0"
                                            ng-max="totalCostAfterDiscount"
-                                           ng-required="receipt.paymentMethod!=='Later'"
-                                           ng-disabled="receipt.paymentMethod==='Later'"
+                                           ng-required="receipt.paymentMethod==='Cash'"
                                            disable-validation-message=""
                                            class="form-control"
                                            ng-model="receipt.amountNumber">
                                 </div>
 
-                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-if="receipt.paymentMethod!=='Later'">
                                     <label for="checkCode" class="control-label">
                                         <span ng-if="lang==='AR'">رقم الشيك</span>
                                         <span ng-if="lang==='EN'">Check Code</span>
@@ -387,7 +388,6 @@
                                     <input id="checkCode"
                                            type="number"
                                            ng-required="receipt.paymentMethod==='Check'"
-                                           ng-disabled="receipt.paymentMethod!=='Check'"
                                            disable-validation-message=""
                                            class="form-control"
                                            ng-model="receipt.checkCode">
