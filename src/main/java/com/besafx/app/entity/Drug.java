@@ -59,6 +59,17 @@ public class Drug implements Serializable {
         return drug;
     }
 
+    public double getRealQuantitySum() {
+        try {
+            return this.transactionBuys
+                    .stream()
+                    .mapToDouble(transactionBuy -> transactionBuy.getRealQuantity())
+                    .sum();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
     public double getTransactionBuysSum() {
         try {
             return this.transactionBuys

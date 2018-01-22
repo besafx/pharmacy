@@ -66,7 +66,7 @@ public class DropboxManager {
             client.files().uploadBuilder(path).uploadAndFinish(new FileInputStream(file));
             return new AsyncResult<>(true);
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
+            ex.printStackTrace();
             return new AsyncResult<>(false);
         }
     }

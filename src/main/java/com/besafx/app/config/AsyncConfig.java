@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 
 import java.util.concurrent.Executor;
 
@@ -18,13 +19,31 @@ public class AsyncConfig {
     @Bean(name = "threadSinglePool")
     public Executor threadSinglePool() {
         log.info("Prepare threadSinglePool...");
-        return initThreadPool(1, 1, 500, "Single-");
+        CustomThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(1);
+        executor.setQueueCapacity(500);
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setThreadNamePrefix("Single-");
+        executor.setThreadGroupName("SingleGroup");
+        executor.setBeanName("asyncExecutor-Single");
+        executor.initialize();
+        return new DelegatingSecurityContextAsyncTaskExecutor(executor);
     }
 
     @Bean(name = "threadMultiplePool")
     public Executor threadMultiplePool() {
         log.info("Prepare threadMultiplePool...");
-        return initThreadPool(10, 10, 500, "Multiple-");
+        CustomThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(500);
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setThreadNamePrefix("Multiple-");
+        executor.setThreadGroupName("MultipleGroup");
+        executor.setBeanName("asyncExecutor-Multiple");
+        executor.initialize();
+        return new DelegatingSecurityContextAsyncTaskExecutor(executor);
     }
 
     private ThreadPoolTaskExecutor initThreadPool(int corePoolSize, int maxPoolSize, int queueCapacity, String prefix) {

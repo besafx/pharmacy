@@ -41,13 +41,10 @@ public class ReportDrugController {
         Map<String, Object> map = new HashMap<>();
         map.put("drugs", drugService.findByIdIn(ids));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
-        StringBuilder title = new StringBuilder();
-        title.append("تقرير مختصر بالأدوية والأصناف");
-        map.put("title", title.toString());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/ReportDrugs.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/DrugsSummary.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-        reportExporter.export("Report" ,exportType, response, jasperPrint);
+        reportExporter.export("DRUGS_SUMMARY" ,exportType, response, jasperPrint);
     }
 
     @RequestMapping(value = "/report/drugs/details", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
