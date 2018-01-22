@@ -994,4 +994,44 @@
 			</componentElement>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="14">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="14" uuid="9364b126-d89e-4bbf-a20e-be3e98dda323">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+				</reportElement>
+				<textField>
+					<reportElement mode="Transparent" x="0" y="0" width="185" height="14" backcolor="#754C29" uuid="699a4970-a973-46f6-80af-6b5b00e59b1b">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Ubuntu" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Printing Date: " + DateConverter.getHijriStringFromDateLTRWithTime(new java.util.Date())]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement x="231" y="0" width="92" height="14" uuid="5dd6a033-bb55-4eb4-88af-aaecf92bf28a"/>
+					<textField>
+						<reportElement x="0" y="0" width="46" height="14" uuid="497ce8fc-4378-44d3-a8f5-52abf67fdb8f">
+							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						</reportElement>
+						<textElement textAlignment="Right">
+							<font fontName="Ubuntu" size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+					</textField>
+					<textField evaluationTime="Report">
+						<reportElement x="46" y="0" width="46" height="14" uuid="d7e543f3-1e97-4972-bf3b-abdc506b7aa2">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						</reportElement>
+						<textElement textAlignment="Left">
+							<font fontName="Ubuntu" size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+		</band>
+	</pageFooter>
 </jasperReport>

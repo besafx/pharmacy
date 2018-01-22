@@ -1140,7 +1140,9 @@ function menuCtrl($scope,
         });
     };
     $scope.printDrug = function (drug) {
-        window.open('/report/drug/' + drug.id + '/PDF');
+        var ids = [];
+        ids.push(drug.id);
+        window.open('/report/drugs/details?ids=' + ids + "&exportType=PDF");
     };
     $scope.printDrugList = function () {
         var ids = [];
@@ -1148,6 +1150,13 @@ function menuCtrl($scope,
             ids.push(drug.id);
         });
         window.open('/report/drugs?ids=' + ids + "&exportType=PDF");
+    };
+    $scope.printDrugDetailsList = function () {
+        var ids = [];
+        angular.forEach($scope.drugs, function (drug) {
+            ids.push(drug.id);
+        });
+        window.open('/report/drugs/details?ids=' + ids + "&exportType=PDF");
     };
     $scope.rowMenuDrug = [
         {

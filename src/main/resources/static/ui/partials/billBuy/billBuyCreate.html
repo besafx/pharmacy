@@ -140,8 +140,8 @@
                                         </table>
                                     </td>
                                     <td>{{transactionBuy.drugUnit.name}}</td>
-                                    <td>{{transactionBuy.unitBuyCost | currency:'SAR':0}}</td>
-                                    <td>{{transactionBuy.unitSellCost | currency:'SAR':0}}</td>
+                                    <td>{{transactionBuy.unitBuyCost | currency:' SAR ':2}}</td>
+                                    <td>{{transactionBuy.unitSellCost | currency:' SAR ':2}}</td>
                                     <td class="success">{{transactionBuy.quantity}}</td>
                                     <td>
                                         <a href="" ng-click="removeTransactionBuyFromList($index)">
@@ -172,19 +172,19 @@
                             <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-info">
                                 <span ng-if="lang==='AR'">الاجمالي قبل الخصم: </span>
                                 <span ng-if="lang==='EN'">Price Without Discount: </span>
-                                <span>{{totalCost | currency:'SAR':0}}</span>
+                                <span>{{totalCost | currency:' SAR ':2}}</span>
                             </h3>
 
                             <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-warning">
                                 <span ng-if="lang==='AR'">قيمة الخصم: </span>
                                 <span ng-if="lang==='EN'">Discount: </span>
-                                <span>{{(totalCost * billBuy.discount) / 100 | currency:'SAR':0}}</span>
+                                <span>{{(totalCost * billBuy.discount) / 100 | currency:' SAR ':2}}</span>
                             </h3>
 
                             <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-danger">
                                 <span ng-if="lang==='AR'">الاجمالي بعد الخصم: </span>
                                 <span ng-if="lang==='EN'">Price After Discount: </span>
-                                <span>{{totalCost - ((totalCost * billBuy.discount) / 100) | currency:'SAR':0}}</span>
+                                <span>{{totalCost - ((totalCost * billBuy.discount) / 100) | currency:' SAR ':2}}</span>
                             </h3>
 
                         </div>

@@ -193,8 +193,8 @@
                                         {{transactionBuy.date | date:'h:m a'}}
                                     </td>
                                     <td>{{transactionBuy.drugUnit.name}}</td>
-                                    <td>{{transactionBuy.unitBuyCost | currency:'SAR':0}}</td>
-                                    <td>{{transactionBuy.unitSellCost | currency:'SAR':0}}</td>
+                                    <td>{{transactionBuy.unitBuyCost | currency:' SAR ':2}}</td>
+                                    <td>{{transactionBuy.unitSellCost | currency:' SAR ':2}}</td>
                                     <td class="warning">{{transactionBuy.quantity}}</td>
                                     <td class="success">{{transactionBuy.salesQuantity}}</td>
                                     <td class="danger">{{transactionBuy.realQuantity}}</td>
@@ -300,7 +300,7 @@
                                         {{transactionSell.date | date:'h:m a'}}
                                     </td>
                                     <td>{{transactionSell.drugUnit.name}}</td>
-                                    <td class="danger">{{transactionSell.unitSellCost | currency:'SAR':0}} </td>
+                                    <td class="danger">{{transactionSell.unitSellCost | currency:' SAR ':2}} </td>
                                     <td>{{transactionSell.quantity}}</td>
                                     <td>
                                         <a href=""

@@ -264,19 +264,19 @@
                 <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-warning">
                     <span ng-if="lang==='AR'">إجمالي الصافي: </span>
                     <span ng-if="lang==='EN'">Total Net Prices: </span>
-                    <span>{{billBuys | sumByKey:'net' | currency:'SAR':0}}</span>
+                    <span>{{billBuys | sumByKey:'net' | currency:' SAR ':2}}</span>
                 </h3>
 
                 <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-success">
                     <span ng-if="lang==='AR'">إجمالي المسدد: </span>
                     <span ng-if="lang==='EN'">Total Orders Payments: </span>
-                    <span>{{billBuys | sumByKey:'paid' | currency:'SAR':0}}</span>
+                    <span>{{billBuys | sumByKey:'paid' | currency:' SAR ':2}}</span>
                 </h3>
 
                 <h3 class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 box-danger">
                     <span ng-if="lang==='AR'">إجمالي الباقي: </span>
                     <span ng-if="lang==='EN'">Total Orders Remain: </span>
-                    <span>{{billBuys | sumByKey:'remain' | currency:'SAR':0}}</span>
+                    <span>{{billBuys | sumByKey:'remain' | currency:' SAR ':2}}</span>
                 </h3>
 
             </div>

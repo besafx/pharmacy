@@ -35,7 +35,7 @@ public class ReportDrugController {
     @RequestMapping(value = "/report/drugs", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
     public void ReportDrugs(
-            @RequestParam("ids") List<Long> ids,
+            @RequestParam(value = "ids") List<Long> ids,
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
@@ -50,19 +50,18 @@ public class ReportDrugController {
         reportExporter.export("Report" ,exportType, response, jasperPrint);
     }
 
-    @RequestMapping(value = "/report/drug/{id}/{exportType}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @RequestMapping(value = "/report/drugs/details", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
     public void printDrugDetails(
-            @PathVariable("id") Long id,
-            @PathVariable(value = "exportType") ExportType exportType,
+            @RequestParam(value = "ids") List<Long> ids,
+            @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        Drug drug = drugService.findOne(id);
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/DrugDetails.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(Lists.newArrayList(drug)));
-        reportExporter.export("DRUG_" + drug.getCode(), exportType, response, jasperPrint);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(drugService.findByIdIn(ids)));
+        reportExporter.export("DRUG_DETAILS", exportType, response, jasperPrint);
     }
 
 }

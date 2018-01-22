@@ -303,19 +303,19 @@
                 <h3 class="text-center col-xs-12 col-sm-12 col-md-3 col-lg-3 box-info">
                     <span ng-if="lang==='AR'">إجمالي السعر المطلوب: </span>
                     <span ng-if="lang==='EN'">Total Orders Prices: </span>
-                    <span>{{orders | sumByKey:'netCost' | currency:'SAR':0}}</span>
+                    <span>{{orders | sumByKey:'netCost' | currency:' SAR ':2}}</span>
                 </h3>
 
                 <h3 class="text-center col-xs-12 col-sm-12 col-md-3 col-lg-3 box-warning">
                     <span ng-if="lang==='AR'">إجمالي المسدد: </span>
                     <span ng-if="lang==='EN'">Total Orders Payments: </span>
-                    <span>{{orders | sumByKey:'paid' | currency:'SAR':0}}</span>
+                    <span>{{orders | sumByKey:'paid' | currency:' SAR ':2}}</span>
                 </h3>
 
                 <h3 class="text-center col-xs-12 col-sm-12 col-md-3 col-lg-3 box-danger">
                     <span ng-if="lang==='AR'">إجمالي الباقي: </span>
                     <span ng-if="lang==='EN'">Total Orders Remain: </span>
-                    <span>{{orders | sumByKey:'remain' | currency:'SAR':0}}</span>
+                    <span>{{orders | sumByKey:'remain' | currency:' SAR ':2}}</span>
                 </h3>
 
             </div>

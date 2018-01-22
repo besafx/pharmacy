@@ -34,14 +34,15 @@
                         <span ng-if="lang==='EN'">Drug</span>
                     </label>
                     <ui-select id="drug"
-                               ng-model="buffer.drug"
+                               ng-model="buffer.drugList"
+                               multiple="multiple"
                                required=""
                                disable-validation-message=""
                                theme="bootstrap">
                         <ui-select-match placeholder="اختر الدواء المطلوب">
-                            <span ng-if="buffer.drug.id">
-                                <span ng-if="lang==='AR'">[{{$select.selected.code}}] {{$select.selected.nameArabic}} / {{$select.selected.medicalNameArabic}}</span>
-                                <span ng-if="lang==='EN'">[{{$select.selected.code}}] {{$select.selected.nameEnglish}} / {{$select.selected.medicalNameEnglish}}</span>
+                            <span>
+                                <span ng-if="lang==='AR'">[{{$item.code}}] {{$item.nameArabic}} / {{$item.medicalNameArabic}}</span>
+                                <span ng-if="lang==='EN'">[{{$item.code}}] {{$item.nameEnglish}} / {{$item.medicalNameEnglish}}</span>
                             </span>
                         </ui-select-match>
                         <ui-select-choices
