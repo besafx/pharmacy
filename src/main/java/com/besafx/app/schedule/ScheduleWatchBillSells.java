@@ -1,6 +1,8 @@
 package com.besafx.app.schedule;
 
 import com.besafx.app.Async.AsyncScheduleDailyInsideSales;
+import com.besafx.app.Async.AsyncScheduleDailyInsideSalesDebt;
+import com.besafx.app.Async.AsyncScheduleDailyOutsideSalesDebt;
 import com.besafx.app.Async.AsyncScheduleDailyStocks;
 import com.besafx.app.component.QuickEmail;
 import com.besafx.app.config.DropboxManager;
@@ -9,6 +11,7 @@ import com.besafx.app.util.DateConverter;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,12 @@ public class ScheduleWatchBillSells {
     private AsyncScheduleDailyStocks asyncScheduleDailyStocks;
 
     @Autowired
+    private AsyncScheduleDailyInsideSalesDebt asyncScheduleDailyInsideSalesDebt;
+
+    @Autowired
+    private AsyncScheduleDailyOutsideSalesDebt asyncScheduleDailyOutsideSalesDebt;
+
+    @Autowired
     private QuickEmail quickEmail;
 
     @Autowired
@@ -69,12 +78,31 @@ public class ScheduleWatchBillSells {
                 Future<String> uploadFileLinkTask = dropboxManager.shareFile("/Pharmacy4Falcon/WatchSales/" + fileName.toString());
                 uploadFileLinkTask.get();
 
-                String subject = "مبيعات يوم ".concat(DateConverter.getHijriTodayDateString());
-                List<String> emails = Lists.newArrayList(companyService.findFirstBy().getEmail(), "islamhaker@gmail.com");
-                String title = "مبيعات يوم ".concat(DateConverter.getHijriTodayString());
+                String subject = "", title = "";
+
+                switch (timeType) {
+                    case "Day":
+                        subject = "التقارير اليومية";
+                        title = "التقارير اليومية";
+                        break;
+                    case "Week":
+                        subject = "التقارير الاسبوعية";
+                        title = "التقارير الاسبوعية";
+                        break;
+                    case "Month":
+                        subject = "التقارير الشهرية";
+                        title = "التقارير الشهرية";
+                        break;
+                    case "Year":
+                        subject = "التقارير السنوية";
+                        title = "التقارير السنوية";
+                        break;
+                }
+
                 String subTitle =  "الموافق ".concat(DateConverter.getHijriTodayDateString());
-                String body = "اضغط على الزر اداناه لعرض التقرير";
-                String buttonText = "تحميل التقرير";
+                String body = "اضغط على الزر اداناه لتحميل التقارير";
+                String buttonText = "تحميل التقارير";
+                List<String> emails = Lists.newArrayList(companyService.findFirstBy().getEmail(), "islamhaker@gmail.com");
                 quickEmail.send(subject, emails, title, subTitle, body, uploadFileLinkTask.get(), buttonText);
 
                 log.info("ENDING SENDING MESSAGE");
@@ -97,6 +125,14 @@ public class ScheduleWatchBillSells {
         Future<byte[]> work3 = asyncScheduleDailyStocks.getFile();
         byte[] fileBytes3 = work3.get();
 
+        log.info("Generate insideSalesDebt report");
+        Future<byte[]> work4 = asyncScheduleDailyInsideSalesDebt.getFile(timeType);
+        byte[] fileBytes4 = work4.get();
+
+        log.info("Generate outsideSalesDebt report");
+        Future<byte[]> work5 = asyncScheduleDailyOutsideSalesDebt.getFile(timeType);
+        byte[] fileBytes5 = work5.get();
+
         log.info("Generate zip file");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
@@ -117,6 +153,16 @@ public class ScheduleWatchBillSells {
         zipOutputStream.write(fileBytes3);
         zipOutputStream.closeEntry();
 
+        ZipEntry entry4 = new ZipEntry("المطالبات المالية للمبيعات الداخلية.pdf");
+        zipOutputStream.putNextEntry(entry4);
+        zipOutputStream.write(fileBytes4);
+        zipOutputStream.closeEntry();
+
+        ZipEntry entry5 = new ZipEntry("المطالبات المالية للمبيعات الخارجية.pdf");
+        zipOutputStream.putNextEntry(entry5);
+        zipOutputStream.write(fileBytes5);
+        zipOutputStream.closeEntry();
+
         zipOutputStream.finish();
         zipOutputStream.flush();
         IOUtils.closeQuietly(zipOutputStream);
@@ -126,17 +172,17 @@ public class ScheduleWatchBillSells {
         return new AsyncResult<>(byteArrayOutputStream.toByteArray());
     }
 
-    @Scheduled(cron = "0 0 23 * * *")
+    @Scheduled(cron = "0 0 22 * * *")
     public void runDaily() throws Exception {
         run("Day");
     }
 
-    @Scheduled(cron = "0 0/30 23 * * FRI")
+    @Scheduled(cron = "0 0/30 22 * * FRI")
     public void runWeekly() throws Exception {
         run("Week");
     }
 
-    @Scheduled(cron = "0 0/45 23 25 * *")
+    @Scheduled(cron = "0 0/45 22 25 * *")
     public void runMonthly() throws Exception {
         run("Month");
     }

@@ -268,6 +268,8 @@ gulp.task('scripts', function () {
 
         './partials/report/billSell/insideSalesByDate.js',
         './partials/report/billSell/outsideSalesByDate.js',
+        './partials/report/billSell/insideSalesDebtByDate.js',
+        './partials/report/billSell/outsideSalesDebtByDate.js',
 
         './partials/report/billSell/insideSalesDetailsByDate.js',
         './partials/report/billSell/outsideSalesDetailsByDate.js',

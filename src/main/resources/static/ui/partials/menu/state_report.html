@@ -220,6 +220,32 @@
                 </div>
             </div>
 
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
+                 ng-click="ModalProvider.openReportInsideSalesDebtByDateModel()">
+                <div class="card-image mdl-card" style="background-image: url('/ui/img/document.png')">
+                    <div class="mdl-card__title mdl-card--expand"></div>
+                </div>
+                <div class="mdl-card__actions">
+                    <a class="card-image__filename">
+                        <span ng-if="lang==='AR'">المطالبات المالية للمبيعات الداخلية</span>
+                        <span ng-if="lang==='EN'">Inside Sales Debt Report</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 parent text-center"
+                 ng-click="ModalProvider.openReportOutsideSalesDebtByDateModel()">
+                <div class="card-image mdl-card" style="background-image: url('/ui/img/document.png')">
+                    <div class="mdl-card__title mdl-card--expand"></div>
+                </div>
+                <div class="mdl-card__actions">
+                    <a class="card-image__filename">
+                        <span ng-if="lang==='AR'">المطالبات المالية للمبيعات الخارجية</span>
+                        <span ng-if="lang==='EN'">Outside Sales Debt Report</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
 
     </div>

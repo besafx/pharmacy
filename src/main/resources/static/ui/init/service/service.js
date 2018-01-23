@@ -1246,6 +1246,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
         });
     };
 
+    this.openReportInsideSalesDebtByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/insideSalesDebtByDate.html",
+            controller: "insideSalesDebtByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * OutsideSales Models                                        *
@@ -1309,6 +1321,18 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             ariaDescribedBy: 'modal-body',
             templateUrl: "/ui/partials/report/billSell/outsideSalesDetailsByDate.html",
             controller: "outsideSalesDetailsByDateCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    this.openReportOutsideSalesDebtByDateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: "/ui/partials/report/billSell/outsideSalesDebtByDate.html",
+            controller: "outsideSalesDebtByDateCtrl",
             backdrop: 'static',
             keyboard: false
         });

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class ReportBillSellController {
@@ -61,7 +62,6 @@ public class ReportBillSellController {
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         reportExporter.export("OUTSIDE_BILL_PURCHASE_" + billSell.getCode() ,exportType, response, jasperPrint);
     }
-
 
     @RequestMapping(value = "/report/insideSales/list", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
@@ -229,6 +229,70 @@ public class ReportBillSellController {
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(billSellService.findByDateBetweenAndOrderIsNull(new DateTime(dateFrom).withTimeAtStartOfDay().toDate(), new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())));
         reportExporter.export("OUTSIDE_SALES_DETAILS_DATE" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/insideSales/debt", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printInsideSalesDebt(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("bills", billSellService
+                .findByDateBetweenAndOrderIsNotNull(
+                        new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
+                        new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+                .stream()
+                .filter(order -> order.getRemain() > 0)
+                .collect(Collectors.toList())
+        );
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("المطالبات المالية للمبيعات الداخلية حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
+        title.append(" ");
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/InsideSalesDebt.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export("INSIDE_SALES_DEBT" ,exportType, response, jasperPrint);
+    }
+
+    @RequestMapping(value = "/report/outsideSales/debt", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void printOutsideSalesDebt(
+            @RequestParam(value = "dateFrom") Long dateFrom,
+            @RequestParam(value = "dateTo") Long dateTo,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("bills", billSellService
+                .findByDateBetweenAndOrderIsNull(
+                        new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
+                        new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+                .stream()
+                .filter(order -> order.getRemain() > 0)
+                .collect(Collectors.toList())
+        );
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        StringBuilder title = new StringBuilder();
+        title.append("المطالبات المالية للمبيعات الخارجية حسب الفترة من");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateFrom));
+        title.append(" ");
+        title.append("إلى الفترة");
+        title.append(" ");
+        title.append(DateConverter.getHijriStringFromDateLTR(dateTo));
+        map.put("title", title.toString());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideSalesDebt.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export("OUTSIDE_SALES_DEBT" ,exportType, response, jasperPrint);
     }
 
 }
