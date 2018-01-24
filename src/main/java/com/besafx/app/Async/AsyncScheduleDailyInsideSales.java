@@ -33,25 +33,25 @@ public class AsyncScheduleDailyInsideSales {
             case "Day":
                 startDate = new DateTime().withTimeAtStartOfDay();
                 endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
-                title.append("تقرير يومي للمبيعات الداخلية حسب الفترة من");
+                title.append("تقرير يومي للمبيعات الداخلية من");
                 title.append(" ");
                 break;
             case "Week":
                 startDate = new DateTime(DateConverter.getCurrentWeekStart()).withTimeAtStartOfDay();
                 endDate = new DateTime(DateConverter.getCurrentWeekEnd()).plusDays(1).withTimeAtStartOfDay();
-                title.append("تقرير اسبوعي للمبيعات الداخلية حسب الفترة من");
+                title.append("تقرير اسبوعي للمبيعات الداخلية من");
                 title.append(" ");
                 break;
             case "Month":
                 startDate = new DateTime().withDayOfMonth(1).withTimeAtStartOfDay();
                 endDate = startDate.plusMonths(1).minusDays(1);
-                title.append("تقرير شهري للمبيعات الداخلية حسب الفترة من");
+                title.append("تقرير شهري للمبيعات الداخلية من");
                 title.append(" ");
                 break;
             case "Year":
                 startDate = new DateTime().withDayOfYear(1).withTimeAtStartOfDay();
                 endDate = startDate.plusYears(1).minusDays(1);
-                title.append("تقرير سنوي للمبيعات الداخلية حسب الفترة من");
+                title.append("تقرير سنوي للمبيعات الداخلية من");
                 title.append(" ");
                 break;
         }
@@ -63,7 +63,7 @@ public class AsyncScheduleDailyInsideSales {
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));
         title.append(" ");
-        title.append("إلى الفترة");
+        title.append("إلى");
         title.append(" ");
         title.append(DateConverter.getHijriStringFromDateLTR(endDate.toDate()));
 

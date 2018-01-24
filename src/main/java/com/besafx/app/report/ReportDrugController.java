@@ -17,9 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class ReportDrugController {
@@ -39,7 +41,8 @@ public class ReportDrugController {
             @RequestParam(value = "exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        map.put("drugs", drugService.findByIdIn(ids));
+        map.put("drugs", drugService.findByIdIn(ids).stream().sorted(Comparator.comparing(Drug::getRealQuantitySum)).collect(Collectors.toList()));
+        map.put("title", "تقرير مختصر للأدوية");
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/DrugsSummary.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());

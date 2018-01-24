@@ -1,6 +1,5 @@
 package com.besafx.app.Async;
 
-import com.besafx.app.service.BillSellService;
 import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.*;
 import org.joda.time.DateTime;
@@ -17,14 +16,14 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 @Service
-public class AsyncScheduleDailyOutsideSales {
+public class AsyncScheduleDailyOrdersDebt {
 
-    private final Logger log = LoggerFactory.getLogger(AsyncScheduleDailyOutsideSales.class);
+    private final Logger log = LoggerFactory.getLogger(AsyncScheduleDailyOrdersDebt.class);
 
     private DateTime startDate, endDate;
 
     @Autowired
-    private BillSellService billSellService;
+    private TransactionalService transactionalService;
 
     @Async("threadMultiplePool")
     public Future<byte[]> getFile(String timeType) throws Exception {
@@ -33,32 +32,30 @@ public class AsyncScheduleDailyOutsideSales {
             case "Day":
                 startDate = new DateTime().withTimeAtStartOfDay();
                 endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
-                title.append("تقرير يومي للمبيعات الخارجية من");
+                title.append("تقرير يومي للمطالبات المالية لطلبات الفحص من");
                 title.append(" ");
                 break;
             case "Week":
                 startDate = new DateTime(DateConverter.getCurrentWeekStart()).withTimeAtStartOfDay();
                 endDate = new DateTime(DateConverter.getCurrentWeekEnd()).plusDays(1).withTimeAtStartOfDay();
-                title.append("تقرير اسبوعي للمبيعات الخارجية من");
+                title.append("تقرير اسبوعي للمطالبات المالية لطلبات الفحص من");
                 title.append(" ");
                 break;
             case "Month":
                 startDate = new DateTime().withDayOfMonth(1).withTimeAtStartOfDay();
                 endDate = startDate.plusMonths(1).minusDays(1);
-                title.append("تقرير شهري للمبيعات الخارجية من");
+                title.append("تقرير شهري للمطالبات المالية لطلبات الفحص من");
                 title.append(" ");
                 break;
             case "Year":
                 startDate = new DateTime().withDayOfYear(1).withTimeAtStartOfDay();
                 endDate = startDate.plusYears(1).minusDays(1);
-                title.append("تقرير سنوي للمبيعات الخارجية من");
+                title.append("تقرير سنوي للمطالبات المالية لطلبات الفحص من");
                 title.append(" ");
                 break;
         }
-        DateTime startDate = new DateTime().withTimeAtStartOfDay();
-        DateTime endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
         Map<String, Object> map = new HashMap<>();
-        map.put("billSells", billSellService.findByDateBetween(startDate.toDate(), endDate.toDate()));
+        map.put("orders", transactionalService.getOrdersDebt(startDate.toDate(), endDate.toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));
@@ -68,7 +65,7 @@ public class AsyncScheduleDailyOutsideSales {
         title.append(DateConverter.getHijriStringFromDateLTR(endDate.toDate()));
 
         map.put("title", title.toString());
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideSalesSummary.jrxml");
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/order/OrdersDebt.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));

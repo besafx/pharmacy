@@ -1,6 +1,5 @@
 package com.besafx.app.Async;
 
-import com.besafx.app.service.OrderService;
 import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.*;
 import org.joda.time.DateTime;
@@ -24,7 +23,7 @@ public class AsyncScheduleDailyOrders {
     private DateTime startDate, endDate;
 
     @Autowired
-    private OrderService orderService;
+    private TransactionalService transactionalService;
 
     @Async("threadMultiplePool")
     public Future<byte[]> getFile(String timeType) throws Exception {
@@ -33,35 +32,35 @@ public class AsyncScheduleDailyOrders {
             case "Day":
                 startDate = new DateTime().withTimeAtStartOfDay();
                 endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
-                title.append("تقرير يومي لطلبات الفحص حسب الفترة من");
+                title.append("تقرير يومي لطلبات الفحص من");
                 title.append(" ");
                 break;
             case "Week":
                 startDate = new DateTime(DateConverter.getCurrentWeekStart()).withTimeAtStartOfDay();
                 endDate = new DateTime(DateConverter.getCurrentWeekEnd()).plusDays(1).withTimeAtStartOfDay();
-                title.append("تقرير اسبوعي لطلبات الفحص حسب الفترة من");
+                title.append("تقرير اسبوعي لطلبات الفحص من");
                 title.append(" ");
                 break;
             case "Month":
                 startDate = new DateTime().withDayOfMonth(1).withTimeAtStartOfDay();
                 endDate = startDate.plusMonths(1).minusDays(1);
-                title.append("تقرير شهري لطلبات الفحص حسب الفترة من");
+                title.append("تقرير شهري لطلبات الفحص من");
                 title.append(" ");
                 break;
             case "Year":
                 startDate = new DateTime().withDayOfYear(1).withTimeAtStartOfDay();
                 endDate = startDate.plusYears(1).minusDays(1);
-                title.append("تقرير سنوي لطلبات الفحص حسب الفترة من");
+                title.append("تقرير سنوي لطلبات الفحص من");
                 title.append(" ");
                 break;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("orders", orderService.findByDateBetween(startDate.toDate(), endDate.toDate()));
+        map.put("orders", transactionalService.getOrders(startDate.toDate(), endDate.toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));
         title.append(" ");
-        title.append("إلى الفترة");
+        title.append("إلى");
         title.append(" ");
         title.append(DateConverter.getHijriStringFromDateLTR(endDate.toDate()));
 

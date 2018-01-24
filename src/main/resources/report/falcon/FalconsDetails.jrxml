@@ -881,11 +881,11 @@
 	<pageFooter>
 		<band height="14">
 			<frame>
-				<reportElement x="0" y="0" width="555" height="14" uuid="cbebc514-6f0d-4d53-aa4b-760ac13e212f">
+				<reportElement x="0" y="0" width="555" height="14" uuid="28cf222a-c0a8-47bd-be41-1491635d8370">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 				</reportElement>
 				<textField>
-					<reportElement mode="Transparent" x="0" y="0" width="185" height="14" backcolor="#754C29" uuid="67656b32-218a-4821-80df-bb35df2eb56e">
+					<reportElement mode="Transparent" x="0" y="0" width="185" height="14" backcolor="#754C29" uuid="b9e65210-f282-487d-ba19-c6df6caac161">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -894,27 +894,36 @@
 					<textFieldExpression><![CDATA["Printing Date: " + DateConverter.getHijriStringFromDateLTRWithTime(new java.util.Date())]]></textFieldExpression>
 				</textField>
 				<frame>
-					<reportElement x="231" y="0" width="92" height="14" uuid="a0f15809-a6f1-4e08-8fe4-a46195f0c6e7"/>
+					<reportElement x="231" y="0" width="92" height="14" uuid="7006ae34-0a70-4c4b-bf83-51271b4289fe"/>
 					<textField>
-						<reportElement x="0" y="0" width="46" height="14" uuid="c2b121c5-5b1c-4316-8f91-73e1d3df569c">
+						<reportElement x="0" y="0" width="46" height="14" uuid="5bcca67b-7fb6-4819-a878-2be367359b6f">
 							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						</reportElement>
-						<textElement textAlignment="Right">
+						<textElement textAlignment="Right" verticalAlignment="Middle">
 							<font fontName="Ubuntu" size="8"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
 					</textField>
 					<textField evaluationTime="Report">
-						<reportElement x="46" y="0" width="46" height="14" uuid="f401210e-50e2-4a18-b4a9-02cfb73e1033">
+						<reportElement x="46" y="0" width="46" height="14" uuid="0cd2fb19-8985-4635-8693-462791d8493c">
 							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						</reportElement>
-						<textElement textAlignment="Left">
+						<textElement textAlignment="Left" verticalAlignment="Middle">
 							<font fontName="Ubuntu" size="8"/>
 						</textElement>
 						<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
 					</textField>
 				</frame>
+				<staticText>
+					<reportElement x="420" y="0" width="135" height="14" uuid="d8ac5cc0-38b1-4a28-bff5-57f2d7ddbfbf">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Ubuntu" size="6"/>
+					</textElement>
+					<text><![CDATA[Property Right Reserved @ 2018 ararhni.com]]></text>
+				</staticText>
 			</frame>
 		</band>
 	</pageFooter>
