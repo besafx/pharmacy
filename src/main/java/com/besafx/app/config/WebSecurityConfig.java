@@ -1,5 +1,6 @@
 package com.besafx.app.config;
 
+import com.besafx.app.auditing.PersonAwareUserDetails;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.DoctorService;
 import com.besafx.app.service.EmployeeService;
@@ -59,36 +60,6 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/ui/**").permitAll()
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/company").access("hasRole('ROLE_COMPANY_UPDATE')")
-
-                .antMatchers("/employee").denyAll()
-                .antMatchers("/customer").denyAll()
-                .antMatchers("/billSell").denyAll()
-                .antMatchers("/receipt").denyAll()
-
-                .antMatchers("/employee/list")
-                .access("hasRole('ROLE_EMPLOYEE_READ') or hasRole('ROLE_EMPLOYEE_CREATE') or hasRole('ROLE_EMPLOYEE_UPDATE') or hasRole('ROLE_EMPLOYEE_DELETE')")
-
-                .antMatchers("/customer/list", "/customer/details")
-                .access("hasRole('ROLE_CUSTOMER_READ') or hasRole('ROLE_CUSTOMER_CREATE') or hasRole('ROLE_CUSTOMER_UPDATE') or hasRole('ROLE_CUSTOMER_DELETE')")
-
-                .antMatchers("/billSell/insideSales", "/billSell/outsideSales")
-                .access("hasRole('ROLE_BILL_SELL_READ') or hasRole('ROLE_BILL_SELL_CREATE') or hasRole('ROLE_BILL_SELL_UPDATE') or hasRole('ROLE_BILL_SELL_DELETE')")
-
-                .antMatchers("/receipt/term")
-                .access("hasRole('ROLE_RECEIPT_TERM_CREATE') or hasRole('ROLE_RECEIPT_TERM_UPDATE') or hasRole('ROLE_RECEIPT_TERM_DELETE')")
-
-                .antMatchers("/supplier").access("hasRole('ROLE_SUPPLIER_READ') or hasRole('ROLE_SUPPLIER_CREATE') or hasRole('ROLE_SUPPLIER_UPDATE') or hasRole('ROLE_SUPPLIER_DELETE')")
-                .antMatchers("/bank").access("hasRole('ROLE_BANK_READ') or hasRole('ROLE_BANK_CREATE') or hasRole('ROLE_BANK_UPDATE') or hasRole('ROLE_BANK_DELETE')")
-                .antMatchers("/deposit").access("hasRole('ROLE_DEPOSIT_READ') or hasRole('ROLE_DEPOSIT_CREATE') or hasRole('ROLE_DEPOSIT_UPDATE') or hasRole('ROLE_DEPOSIT_DELETE')")
-                .antMatchers("/withdraw").access("hasRole('ROLE_WITHDRAW_READ') or hasRole('ROLE_WITHDRAW_CREATE') or hasRole('ROLE_WITHDRAW_UPDATE') or hasRole('ROLE_WITHDRAW_DELETE')")
-                .antMatchers("/doctor").access("hasRole('ROLE_DOCTOR_READ') or hasRole('ROLE_DOCTOR_CREATE') or hasRole('ROLE_DOCTOR_UPDATE') or hasRole('ROLE_DOCTOR_DELETE')")
-                .antMatchers("/detectionType").access("hasRole('ROLE_DETECTION_TYPE_READ') or hasRole('ROLE_DETECTION_TYPE_CREATE') or hasRole('ROLE_DETECTION_TYPE_UPDATE') or hasRole('ROLE_DETECTION_TYPE_DELETE')")
-                .antMatchers("/diagnosis").access("hasRole('ROLE_DIAGNOSIS_READ') or hasRole('ROLE_DIAGNOSIS_CREATE') or hasRole('ROLE_DIAGNOSIS_UPDATE') or hasRole('ROLE_DIAGNOSIS_DELETE')")
-                .antMatchers("/drug").access("hasRole('ROLE_DRUG_READ') or hasRole('ROLE_DRUG_CREATE') or hasRole('ROLE_DRUG_UPDATE') or hasRole('ROLE_DRUG_DELETE')")
-                .antMatchers("/billBuy").access("hasRole('ROLE_BILL_BUY_READ') or hasRole('ROLE_BILL_BUY_CREATE') or hasRole('ROLE_BILL_BUY_UPDATE') or hasRole('ROLE_BILL_BUY_DELETE')")
-                .antMatchers("/drugCategory").access("hasRole('ROLE_DRUG_CATEGORY_READ') or hasRole('ROLE_DRUG_CATEGORY_CREATE') or hasRole('ROLE_DRUG_CATEGORY_UPDATE') or hasRole('ROLE_DRUG_CATEGORY_DELETE')")
-                .antMatchers("/team").access("hasRole('ROLE_TEAM_READ') or hasRole('ROLE_TEAM_CREATE') or hasRole('ROLE_TEAM_UPDATE') or hasRole('ROLE_TEAM_DELETE')")
                 .anyRequest().authenticated();
         http.formLogin()
                 .loginPage("/login")
@@ -164,7 +135,8 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             log.info(person.getTeam().getAuthorities());
                             Optional.ofNullable(person.getTeam().getAuthorities()).ifPresent(value -> Arrays.asList(value.split(",")).stream().forEach(s -> authorities.add(new SimpleGrantedAuthority(s))));
                         }
-                        return new User(person.getEmail(), person.getPassword(), person.getEnabled(), true, true, true, authorities);
+//                        return new User(person.getEmail(), person.getPassword(), person.getEnabled(), true, true, true, authorities);
+                            return new PersonAwareUserDetails(person, authorities);
                     }
             ).passwordEncoder(passwordEncoder);
         } catch (Exception e) {

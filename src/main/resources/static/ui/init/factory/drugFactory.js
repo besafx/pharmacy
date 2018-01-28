@@ -11,8 +11,18 @@ app.factory("DrugService",
                     return response.data;
                 });
             },
+            findAllDrugUnitsCombo: function () {
+                return $http.get("/api/drug/findAllDrugUnitsCombo").then(function (response) {
+                    return response.data;
+                });
+            },
             findOne: function (id) {
                 return $http.get("/api/drug/findOne/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
+            getRealQuantitySumByDrugUnit: function (drugUnitId) {
+                return $http.get("/api/drug/getRealQuantitySumByDrugUnit/" + drugUnitId).then(function (response) {
                     return response.data;
                 });
             },

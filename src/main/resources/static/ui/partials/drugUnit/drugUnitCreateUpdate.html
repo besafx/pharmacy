@@ -1,0 +1,142 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header mdl-color--primary mdl-navigation__link-active">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong>{{title}}</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4>
+                    <span ng-if="lang==='AR'">رقم الدواء: </span>
+                    <span ng-if="lang==='EN'">Drug Code: </span>
+                    {{drugUnit.drug.code}}
+                </h4>
+                <h4 ng-if="drugUnit.drug.defaultDrugUnit">
+                    <span ng-if="lang==='AR'">وحدة القياس الافتراضية: </span>
+                    <span ng-if="lang==='EN'">Default Drug Unit: </span>
+                    {{drugUnit.drug.defaultDrugUnit.name}}
+                </h4>
+                <h4 ng-if="!drugUnit.drug.defaultDrugUnit" class="box-info">
+                    <span ng-if="lang==='AR'">يجب انشاء وحدة قياس واحدة على الاقل للتعامل بها فى المشتريات والمبيعات حيث سيكون هناك وحدة افتراضية واحدة بمعامل = 1 ، وبناءا عليها سيتم التحويل من وإلى باقي الوحدات التى يمكن اضافتها لاحقا.</span>
+                    <span ng-if="lang==='EN'">Please Add Default Mesure Unit For This Drug.</span>
+                </h4>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <label for="name" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم</span>
+                        <span ng-if="lang==='EN'">Name</span>
+                    </label>
+                    <input id="name"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control arabic-control"
+                           placeholder="اذكر الاسم..."
+                           ng-model="drugUnit.name">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <label for="factor" class="control-label">
+                        <span ng-if="lang==='AR'">المُعامل</span>
+                        <span ng-if="lang==='EN'">Factor</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="factor">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">{{drugUnit.drug.defaultDrugUnit.name}}</span>
+                            <span ng-if="lang==='EN'">{{drugUnit.drug.defaultDrugUnit.name}}</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               min="0"
+                               required=""
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="drugUnit.factor">
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <label for="reorderAmount" class="control-label">
+                        <span ng-if="lang==='AR'">حد الطلب</span>
+                        <span ng-if="lang==='EN'">Order Limit</span>
+                    </label>
+                    <div dir="ltr" class="input-group" id="reorderAmount">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">{{drugUnit.name}}</span>
+                            <span ng-if="lang==='EN'">{{drugUnit.name}}</span>
+                        </span>
+                        <input dir="rtl"
+                               type="number"
+                               min="0"
+                               required=""
+                               disable-validation-message=""
+                               class="form-control"
+                               ng-model="drugUnit.reorderAmount">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button ng-if="action=='create'"
+                    uib-tooltip="{{lang==='AR' ? 'اضافة' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button ng-if="action=='update'"
+                    uib-tooltip="{{lang==='AR' ? 'تعديل' : 'Edit'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

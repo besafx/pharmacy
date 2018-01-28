@@ -160,89 +160,34 @@
                                 <thead>
                                 <tr>
 
-                                    <th>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <td>
-                                                    <span ng-if="lang==='AR'">رقم الحركة</span>
-                                                    <span ng-if="lang==='EN'">Code</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="success">
-                                                    <span ng-if="lang==='AR'">تاريخ الحركة</span>
-                                                    <span ng-if="lang==='EN'">Transaction Date</span>
-                                                </td>
-                                            </tr>
-                                            </thead>
-                                        </table>
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم الحركة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="date" class="success">
+                                        <span ng-if="lang==='AR'">تاريخ الحركة</span>
+                                        <span ng-if="lang==='EN'">Transaction Date</span>
                                     </th>
 
                                     <th>
-                                        <span>الدواء</span>
+                                        <span ng-if="lang==='AR'">الاسم التجاري</span>
+                                        <span ng-if="lang==='EN'">Trade Name</span>
                                     </th>
 
                                     <th>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <td class="warning">
-                                                    <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
-                                                    <span ng-if="lang==='EN'">Unit Purchase Cost</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span ng-if="lang==='AR'">وحدة القياس</span>
-                                                    <span ng-if="lang==='EN'">Unit</span>
-                                                </td>
-                                            </tr>
-                                            </thead>
-                                        </table>
+                                        <span ng-if="lang==='AR'">الاسم العلمي</span>
+                                        <span ng-if="lang==='EN'">Medical Name</span>
                                     </th>
 
-                                    <th>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <td class="danger">
-                                                    <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
-                                                    <span ng-if="lang==='EN'">Unit Sell Cost</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span ng-if="lang==='AR'">وحدة القياس</span>
-                                                    <span ng-if="lang==='EN'">Unit</span>
-                                                </td>
-                                            </tr>
-                                            </thead>
-                                        </table>
+                                    <th st-sort="unitBuyCost" class="warning">
+                                        <span ng-if="lang==='AR'">سعر الشراء للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Purchase Cost</span>
                                     </th>
 
-                                    <th>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <td>
-                                                    <span ng-if="lang==='AR'">كمية المشتريات</span>
-                                                    <span ng-if="lang==='EN'">Purchase Quantity</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span ng-if="lang==='AR'">كمية المبيعات</span>
-                                                    <span ng-if="lang==='EN'">Sales Quantity</span>
-                                                </td>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </th>
-
-                                    <th class="info">
-                                        <span ng-if="lang==='AR'">الرصيد الحالي</span>
-                                        <span ng-if="lang==='EN'">Real Quantity</span>
+                                    <th st-sort="unitSellCost" class="danger">
+                                        <span ng-if="lang==='AR'">سعر البيع للوحدة</span>
+                                        <span ng-if="lang==='EN'">Unit Sell Cost</span>
                                     </th>
 
                                 </tr>
@@ -250,96 +195,29 @@
                                 <tbody>
                                 <tr ng-repeat="transactionBuy in collection" context-menu="transactionBuyRowMenu">
                                     <td>
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span>{{transactionBuy.code}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="success">
-                                                    <span>
-                                                        <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                                        <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
-                                                        {{transactionBuy.date | date:'h:m a'}}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                        <span>{{transactionBuy.code}}</span>
+                                    </td>
+                                    <td class="success">
+                                        <span>
+                                            <span ng-show="dateType==='H'">{{transactionBuy.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                            <span ng-show="dateType==='G'">{{transactionBuy.date | date: 'yyyy-MM-dd'}}</span>
+                                            {{transactionBuy.date | date:'h:m a'}}
+                                        </span>
                                     </td>
                                     <td>
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span>{{transactionBuy.drug.nameArabic}}</span>
-                                                </td>
-                                                <td>
-                                                    <span>{{transactionBuy.drug.nameEnglish}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span>{{transactionBuy.drug.medicalNameArabic}}</span>
-                                                </td>
-                                                <td>
-                                                    <span>{{transactionBuy.drug.medicalNameEnglish}}</span>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                        <span ng-if="lang==='AR'">{{transactionBuy.drug.nameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{transactionBuy.drug.nameEnglish}}</span>
                                     </td>
                                     <td>
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td class="warning">
-                                                    <span>{{transactionBuy.unitBuyCost | currency:' SAR ':2}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span>{{transactionBuy.drugUnit.name}}</span>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                        <span ng-if="lang==='AR'">{{transactionBuy.drug.medicalNameArabic}}</span>
+                                        <span ng-if="lang==='EN'">{{transactionBuy.drug.medicalNameEnglish}}</span>
                                     </td>
-                                    <td>
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td class="danger">
-                                                    <span>{{transactionBuy.unitSellCost | currency:' SAR ':2}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span>{{transactionBuy.drugUnit.name}}</span>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                    <td class="warning">
+                                        <span>{{transactionBuy.unitBuyCost | currency:' SAR ':2}} / {{transactionBuy.drugUnit.name}}</span>
                                     </td>
-                                    <td>
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span>{{transactionBuy.quantity}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span>{{transactionBuy.salesQuantity}}</span>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                    <td class="danger">
+                                        <span>{{transactionBuy.unitSellCost | currency:' SAR ':2}}  / {{transactionBuy.drugUnit.name}}</span>
                                     </td>
-                                    <td class="info">{{transactionBuy.realQuantity}}</td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collection || collection.length ==0">
@@ -440,6 +318,11 @@
                                         <a href="" ng-click="deleteBillBuyReceipt(billBuyReceipt)">
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                        <a href=""
+                                           ng-click="printReceipt(billBuyReceipt.receipt)">
+                                            <strong ng-if="lang==='AR'">طباعة</strong>
+                                            <strong ng-if="lang==='EN'">Print</strong>
                                         </a>
                                     </td>
                                 </tr>

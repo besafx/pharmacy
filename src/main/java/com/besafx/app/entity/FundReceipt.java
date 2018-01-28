@@ -1,6 +1,9 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.auditing.MyEntityListener;
+import com.besafx.app.entity.listener.FundReceiptListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,7 +17,11 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table
+@EntityListeners(FundReceiptListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FundReceipt implements Serializable {
+
+    public static final String SCREEN_NAME = "سندات النقدية";
 
     private static final Logger log = LoggerFactory.getLogger(FundReceipt.class);
 

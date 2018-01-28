@@ -1,6 +1,7 @@
 package com.besafx.app.service;
 
 import com.besafx.app.entity.Drug;
+import com.besafx.app.entity.DrugUnit;
 import com.besafx.app.entity.Order;
 import com.besafx.app.entity.TransactionSell;
 import com.besafx.app.entity.enums.PaymentMethod;
@@ -24,4 +25,6 @@ public interface TransactionSellService extends PagingAndSortingRepository<Trans
     Long countByBillSellOrderAndTransactionBuyDrug(Order order, Drug drug);
 
     List<TransactionSell> findByTransactionBuyDrug(Drug drug);
+
+    List<TransactionSell> findByDrugUnit(DrugUnit drugUnit);
 }

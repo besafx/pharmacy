@@ -6,6 +6,24 @@ app.factory("DrugUnitService",
                     return response.data;
                 });
             },
+            findByDrug: function (id) {
+                return $http.get("/api/drugUnit/findByDrug/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
+            create: function (drugUnit) {
+                return $http.post("/api/drugUnit/create", drugUnit).then(function (response) {
+                    return response.data;
+                });
+            },
+            remove: function (id) {
+                return $http.delete("/api/drugUnit/delete/" + id);
+            },
+            update: function (drugUnit) {
+                return $http.put("/api/drugUnit/update", drugUnit).then(function (response) {
+                    return response.data;
+                });
+            },
             getRelated: function (id) {
                 return $http.get("/api/drugUnit/getRelated/" + id).then(function (response) {
                     return response.data;

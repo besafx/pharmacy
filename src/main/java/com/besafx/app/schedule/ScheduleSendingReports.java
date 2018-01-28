@@ -224,7 +224,7 @@ public class ScheduleSendingReports {
         byte[] fileBytes6 = work6.get();
 
         log.info("Generate ordersDebt report");
-        Future<byte[]> work7 = asyncScheduleDailyOrders.getFile(timeType);
+        Future<byte[]> work7 = asyncScheduleDailyOrdersDebt.getFile(timeType);
         byte[] fileBytes7 = work7.get();
 
         log.info("Generate zip file");

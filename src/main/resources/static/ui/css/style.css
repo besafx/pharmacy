@@ -25,6 +25,7 @@ html * {
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Changa', sans-serif !important;
     font-weight: 500 !important;
+    margin-bottom: 0px !important;
 }
 
 html,
@@ -599,6 +600,7 @@ WebKit inertia scrolling is being added here for any present/future devices that
 
 .dropdown-menu {
     text-align: right !important;
+    font-size: 15px!important;
 }
 
 /*********************************/
@@ -682,4 +684,13 @@ WebKit inertia scrolling is being added here for any present/future devices that
 .mdl-checkbox__label span {
     font-weight: 600 !important;
     font-size: 13px !important;
+}
+
+.mdl-tabs__tab span{
+    font-size: 14px!important;
+    font-weight: 500!important;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match-item{
+    font-size: 14px!important;
 }

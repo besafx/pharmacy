@@ -2,10 +2,10 @@ app.controller('updatePricesCtrl', ['DrugUnitService', 'TransactionBuyService', 
     function (DrugUnitService, TransactionBuyService,$scope, $rootScope, $timeout, $log, $uibModalInstance, transactionBuy) {
 
         $timeout(function () {
-            DrugUnitService.findAll().then(function (data) {
+            DrugUnitService.findByDrug(transactionBuy.drug.id).then(function (data) {
                 $scope.drugUnits = data;
             })
-        }, 1000);
+        }, 600);
 
         $scope.transactionBuy = transactionBuy;
 

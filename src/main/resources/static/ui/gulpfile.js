@@ -172,6 +172,8 @@ gulp.task('scripts', function () {
         './partials/supplier/supplier.js',
         './partials/supplier/supplierCreateUpdate.js',
 
+        './partials/receipt/receiptOutCreate.js',
+
         './partials/fund/fund.js',
         './partials/fund/fundReceiptFilter.js',
         './partials/fund/fundReceiptCreate.js',
@@ -204,8 +206,7 @@ gulp.task('scripts', function () {
         './partials/drug/drugCategoryHeavyWork.js',
         './partials/drug/drugTransactionBuyCreate.js',
 
-        './partials/receipt/receipt.js',
-        './partials/receipt/receiptCreateUpdate.js',
+        './partials/drugUnit/drugUnitCreateUpdate.js',
 
         './partials/billBuy/billBuy.js',
         './partials/billBuy/billBuyFilter.js',
@@ -273,6 +274,8 @@ gulp.task('scripts', function () {
 
         './partials/report/billSell/insideSalesDetailsByDate.js',
         './partials/report/billSell/outsideSalesDetailsByDate.js',
+
+        './partials/report/history/historyByDate.js',
 
         './partials/help/help.js',
         './partials/profile/profile.js',

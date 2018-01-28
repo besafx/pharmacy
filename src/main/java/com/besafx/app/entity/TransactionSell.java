@@ -1,6 +1,9 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.auditing.MyEntityListener;
+import com.besafx.app.entity.listener.TransactionSellListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.decimal4j.util.DoubleRounder;
@@ -14,7 +17,11 @@ import java.util.Date;
 
 @Data
 @Entity
+@EntityListeners(TransactionSellListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionSell implements Serializable {
+
+    public static final String SCREEN_NAME = "حركات البيع";
 
     private static final long serialVersionUID = 1L;
 
@@ -65,7 +72,8 @@ public class TransactionSell implements Serializable {
 
     public Double getUnitSellCost() {
         try {
-            return DoubleRounder.round((this.transactionBuy.getUnitSellCost() / this.transactionBuy.getDrugUnit().getFactor()) * this.drugUnit.getFactor(), 3);
+            return DoubleRounder.round(
+                    (this.transactionBuy.getUnitSellCost() / this.transactionBuy.getDrugUnit().getFactor()) * this.drugUnit.getFactor(), 3);
         } catch (Exception ex) {
             return 0.0;
         }
@@ -84,10 +92,10 @@ public class TransactionSell implements Serializable {
 
     public Double getUnitQuantityByDrugUnit(DrugUnit drugUnit) {
         try {
-            if (this.transactionBuy.getDrugUnit().equals(drugUnit)) {
+            if (this.transactionBuy.getDrugUnit().equals(this.drugUnit)) {
                 return this.quantity;
             }
-            return DoubleRounder.round((this.quantity / drugUnit.getFactor()), 3);
+            return DoubleRounder.round(((this.quantity / this.drugUnit.getFactor()) / drugUnit.getFactor()), 3);
         } catch (Exception ex) {
             return 0.0;
         }

@@ -96,7 +96,7 @@
                        ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_CREATE'])"
                        ng-click="newInsideSales()"
                        tooltip-append-to-body="true"
-                       uib-tooltip="{{lang==='AR' ? 'انشاء فاتورة بيع' : 'New Bill...'}}">
+                       uib-tooltip="{{lang==='AR' ? 'صرف علاج طلب فحص' : 'New By Order...'}}">
                         <span class="fa fa-plus-square"></span>
                     </a>
                 </li>
@@ -107,7 +107,7 @@
                 <span>{{subTitle_insideSales}}</span>
             </div>
         </div>
-        <div class="panel-body panel-body-table">
+        <div class="panel-body">
 
             <div class="form-group row" ng-show="insideBillSells.length > 0">
 

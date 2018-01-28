@@ -32,18 +32,14 @@
                        class="mdl-tabs__tab col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <span ng-if="lang==='AR'">الاصناف</span>
                         <span ng-if="lang==='EN'">Items</span>
-                        <span ng-if="billSell.transactionSells.length > 0"
-                              class="mdl-badge"
-                              data-badge="{{billSell.transactionSells.length}}"></span>
+                        <span ng-if="billSell.transactionSells.length > 0" class="mdl-badge" data-badge="{{billSell.transactionSells.length}}"></span>
                     </a>
 
                     <a href="#panel-3-bill-inside-sales"
                        class="mdl-tabs__tab col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <span ng-if="lang==='AR'">دفعات السداد</span>
                         <span ng-if="lang==='EN'">Payments</span>
-                        <span ng-if="billSell.billSellReceipts.length > 0"
-                              class="mdl-badge"
-                              data-badge="{{billSell.billSellReceipts.length}}"></span>
+                        <span ng-if="billSell.billSellReceipts.length > 0" class="mdl-badge" data-badge="{{billSell.billSellReceipts.length}}"></span>
                     </a>
 
                 </div>
@@ -330,6 +326,11 @@
                                         <a href="" ng-click="deleteBillSellReceipt(billSellReceipt)">
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                        <a href=""
+                                           ng-click="printReceipt(billSellReceipt.receipt)">
+                                            <strong ng-if="lang==='AR'">طباعة</strong>
+                                            <strong ng-if="lang==='EN'">Print</strong>
                                         </a>
                                     </td>
                                 </tr>

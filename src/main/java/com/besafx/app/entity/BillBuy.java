@@ -1,5 +1,7 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.auditing.MyEntityListener;
+import com.besafx.app.entity.listener.BillBuyListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,8 +20,11 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
+@EntityListeners(BillBuyListener.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BillBuy implements Serializable {
+
+    public static final String SCREEN_NAME = "فواتير الشراء";
 
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,7 @@
 package com.besafx.app.service;
 
 import com.besafx.app.entity.BillBuy;
+import com.besafx.app.entity.DrugUnit;
 import com.besafx.app.entity.TransactionBuy;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -17,6 +18,8 @@ public interface TransactionBuyService extends PagingAndSortingRepository<Transa
     TransactionBuy findByCodeAndIdIsNot(Integer code, Long id);
 
     List<TransactionBuy> findByDrugId(Long drugId);
+
+    List<TransactionBuy> findByDrugUnit(DrugUnit drugUnit);
 
     List<TransactionBuy> findByBillBuy(BillBuy billBuy);
 }

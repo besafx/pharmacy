@@ -26,7 +26,6 @@ import java.util.List;
 @RequestMapping(value = "/api/team/")
 public class TeamRest {
 
-    public static final String FILTER_ALL = "**";
     public static final String FILTER_TABLE = "**,persons[id]";
     public static final String FILTER_TEAM_COMBO = "**,-persons";
 

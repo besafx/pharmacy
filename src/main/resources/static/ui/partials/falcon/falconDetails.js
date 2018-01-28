@@ -1,10 +1,10 @@
-app.controller('falconDetailsCtrl', ['FalconService', 'FalconService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', '$uibModal', 'falcon',
-    function (FalconService, FalconService, OrderService, ModalProvider, $scope, $rootScope, $timeout, $log, $uibModalInstance, $uibModal, falcon) {
+app.controller('falconDetailsCtrl', ['FalconService', 'OrderService', 'ModalProvider', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', '$uibModal', 'falcon',
+    function (FalconService, OrderService, ModalProvider, $scope, $rootScope, $timeout, $log, $uibModalInstance, $uibModal, falcon) {
 
         $scope.falcon = falcon;
 
         $scope.refreshFalcon = function () {
-            FalconService.findOne($scope.falcon.id).then(function (data) {
+            FalconService.findOneDetails($scope.falcon.id).then(function (data) {
                 $scope.falcon = data;
             })
         };
@@ -20,11 +20,8 @@ app.controller('falconDetailsCtrl', ['FalconService', 'FalconService', 'OrderSer
         };
 
         $timeout(function () {
+            $scope.refreshFalcon();
             window.componentHandler.upgradeAllRegistered();
-            FalconService.findOne($scope.falcon.id).then(function (data) {
-                $scope.falcon = data;
-                $scope.refreshOrders();
-            });
-        }, 1500);
+        }, 600);
 
     }]);

@@ -1,10 +1,12 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.auditing.MyEntityListener;
 import com.besafx.app.component.BeanUtil;
 import com.besafx.app.entity.enums.ReceiptType;
 import com.besafx.app.service.BankService;
 import com.besafx.app.service.FundService;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,7 +23,11 @@ import java.util.List;
 @Data
 @Entity
 @Component
+@EntityListeners(MyEntityListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Bank implements Serializable {
+
+    public static final String SCREEN_NAME = "البنك";
 
     private static final long serialVersionUID = 1L;
 

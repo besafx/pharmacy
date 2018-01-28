@@ -28,7 +28,12 @@ import java.security.Principal;
 @RequestMapping(value = "/api/transactionBuy/")
 public class TransactionBuyRest {
 
-    public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionSells,-transactionBuys],billBuy[id,code],-transactionSells";
+    public static final String FILTER_TABLE = "" +
+            "**," +
+            "drugUnit[**,-drug,-drugUnit]," +
+            "drug[**,-defaultDrugUnit,-drugUnits,-drugCategory,-transactionSells,-transactionBuys]," +
+            "billBuy[id,code]," +
+            "-transactionSells";
     private final Logger log = LoggerFactory.getLogger(TransactionBuyRest.class);
     @Autowired
     private TransactionBuyService transactionBuyService;
@@ -55,7 +60,7 @@ public class TransactionBuyRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BILL_BUY_CREATE')")
     @Transactional
-    public String create(@RequestBody TransactionBuy transactionBuy) {
+    public String create(@RequestBody TransactionBuy transactionBuy, Principal principal) {
         TransactionBuy topTransactionBuy = transactionBuyService.findTopByOrderByCodeDesc();
         if (topTransactionBuy == null) {
             transactionBuy.setCode(1);
@@ -64,6 +69,13 @@ public class TransactionBuyRest {
         }
         transactionBuy.setDate(new DateTime().toDate());
         transactionBuy = transactionBuyService.save(transactionBuy);
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        notificationService.notifyOne(Notification
+                .builder()
+                .message(lang.equals("AR") ? "تم حذف الصنف بنجاح" : "Deleting Item Successfully")
+                .type("success")
+                .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionBuy);
     }
 
@@ -80,11 +92,8 @@ public class TransactionBuyRest {
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "المشتريات" : "The Sales")
-                    .message(lang.equals("AR") ? "تم حذف الطلبية وكل ما يتعلق بها من مبيعات بنجاح" : "Delete Purchace Order With All Related Successfully")
+                    .message(lang.equals("AR") ? "تم حذف الصنف بنجاح" : "Deleting Item Successfully")
                     .type("error")
-                    .icon("fa-trash")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
         }
     }

@@ -71,6 +71,10 @@ app.controller('billBuyDetailsCtrl', ['BillBuyService', 'BillBuyReceiptService',
             }
         };
 
+        $scope.printReceipt = function (receipt) {
+            window.open('/report/receipt/out/' + receipt.id + '/PDF');
+        };
+
         $scope.transactionBuyRowMenu = [
             {
                 html: '<div class="drop-menu">حذف<span class="fa fa-trash fa-lg"></span></div>',

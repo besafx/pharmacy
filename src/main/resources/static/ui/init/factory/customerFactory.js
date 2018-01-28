@@ -21,6 +21,11 @@ app.factory("CustomerService",
                     return response.data;
                 });
             },
+            findOneDetails: function (id) {
+                return $http.get("/api/customer/findOneDetails/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             create: function (customer) {
                 return $http.post("/api/customer/create", customer).then(function (response) {
                     return response.data;

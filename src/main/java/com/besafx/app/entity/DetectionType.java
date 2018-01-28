@@ -1,6 +1,8 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.listener.DetectionTypeListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,7 +16,11 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
+@EntityListeners(DetectionTypeListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DetectionType implements Serializable {
+
+    public static final String SCREEN_NAME = "خدمات الفحص";
 
     private static final long serialVersionUID = 1L;
 

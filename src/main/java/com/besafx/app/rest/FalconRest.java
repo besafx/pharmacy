@@ -31,6 +31,10 @@ import java.util.List;
 public class FalconRest {
 
     public static final String FILTER_TABLE = "id,code,type,weight,registerDate,enabled,customer[id,code,nickname,name,mobile],-orders";
+    public static final String FILTER_FALCON_DETAILS = "" +
+            "id,code,type,weight,registerDate,enabled," +
+            "customer[**,-orders,-falcons]," +
+            "orders[id,code,date,netCost,paid,remain]";
     public static final String FILTER_FALCON_COMBO = "id,code,type,customer[id,code,nickname,name,mobile]";
     public static final String FILTER_FALCON_CODE_COMBO = "id,code,customer[id]";
 
@@ -58,6 +62,7 @@ public class FalconRest {
             throw new CustomException("هذا الكود مسجل بالفعل");
         }
         falcon.setRegisterDate(new Date());
+        falcon.setEnabled(true);
         falcon = falconService.save(falcon);
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -82,6 +87,7 @@ public class FalconRest {
         }
         Falcon object = falconService.findOne(falcon.getId());
         if (object != null) {
+            falcon.setEnabled(true);
             falcon = falconService.save(falcon);
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -152,6 +158,12 @@ public class FalconRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), falconService.findOne(id));
+    }
+
+    @RequestMapping(value = "findOneDetails/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findOneDetails(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_FALCON_DETAILS), falconService.findOne(id));
     }
 
     @RequestMapping(value = "findByCustomer/{customerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

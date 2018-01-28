@@ -88,34 +88,40 @@
                         <span ng-if="lang==='EN'">Details</span>
                     </a>
 
-                    <a href="#panel-2-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-click="refreshOrderDetectionTypeByOrder(order)" >
+                    <a href="#panel-2-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4"
+                       ng-click="refreshOrderDetectionTypeByOrder(order)" >
                         <span ng-if="lang==='AR'">الفحوصات المطلوبة</span>
                         <span ng-if="lang==='EN'">Requires Detections</span>
                         <span ng-if="order.orderDetectionTypes.length > 0" class="mdl-badge" data-badge="{{order.orderDetectionTypes.length}}"></span>
                     </a>
 
-                    <a href="#panel-3-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href="#panel-3-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4"
+                       ng-click="refreshDiagnosesByOrder(order)" >
                         <span ng-if="lang==='AR'">قائمة العلاج المطلوب</span>
                         <span ng-if="lang==='EN'">Prescriptions</span>
+                        <span ng-if="order.diagnoses.length > 0" class="mdl-badge" data-badge="{{order.diagnoses.length}}"></span>
                     </a>
 
                 </div>
 
                 <div class="mdl-tabs__tab-bar">
 
-                    <a href="#panel-4-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-click="findOrdersByFalcon(order.falcon, order.code)">
+                    <a href="#panel-4-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4"
+                       ng-click="findOrdersByFalcon(order.falcon, order.code)">
                         <span ng-if="lang==='AR'">الزيارات السابقة للصقر</span>
                         <span ng-if="lang==='EN'">Falcon Visits</span>
                         <span ng-if="order.falcon.orders.length > 0" class="mdl-badge" data-badge="{{order.falcon.orders.length}}"></span>
                     </a>
 
-                    <a href="#panel-5-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-click="findOrdersByCustomer(order.falcon.customer, order.code)">
+                    <a href="#panel-5-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4"
+                       ng-click="findOrdersByCustomer(order.falcon.customer, order.code)">
                         <span ng-if="lang==='AR'">الزيارات السابقة للعميل</span>
                         <span ng-if="lang==='EN'">Customer Visits</span>
                         <span ng-if="order.falcon.customer.orders.length > 0" class="mdl-badge" data-badge="{{order.falcon.customer.orders.length}}"></span>
                     </a>
 
-                    <a href="#panel-6-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href="#panel-6-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4"
+                       ng-click="refreshOrderReceipts(order)">
                         <span ng-if="lang==='AR'">سندات القبض</span>
                         <span ng-if="lang==='EN'">Receipts</span>
                         <span ng-if="order.orderReceipts.length > 0" class="mdl-badge" data-badge="{{order.orderReceipts.length}}"></span>
@@ -661,6 +667,11 @@
                                            ng-click="deleteOrderReceipt(orderReceipt, order)">
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                        <a href=""
+                                           ng-click="printReceipt(orderReceipt.receipt)">
+                                            <strong ng-if="lang==='AR'">طباعة</strong>
+                                            <strong ng-if="lang==='EN'">Print</strong>
                                         </a>
                                     </td>
                                 </tr>

@@ -1,0 +1,200 @@
+<form name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header mdl-color--primary mdl-navigation__link-active">
+        <a ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x mdl-color-text--white"></span>
+        </a>
+        <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon mdl-color-text--white">add</i>
+                <strong ng-if="lang==='AR'">إنشاء سند صرف جديد</strong>
+                <strong ng-if="lang==='EN'">Create Receipt Out</strong>
+            </span>
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="receiver" class="control-label">
+                        <span ng-if="lang==='AR'">صُرف لأمر</span>
+                        <span ng-if="lang==='EN'">Payment To</span>
+                    </label>
+                    <input id="receiver"
+                           type="text"
+                           class="form-control"
+                           required="required"
+                           disable-validation-message=""
+                           ng-model="receipt.receiver">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <label for="paymentFrom" class="control-label">
+                        <span ng-if="lang==='AR'">من</span>
+                        <span ng-if="lang==='EN'">From</span>
+                    </label>
+                    <select id="paymentFrom"
+                            class="form-control"
+                            ng-change="onChangePaymentFrom()"
+                            required="required"
+                            disable-validation-message=""
+                            ng-model="receipt.paymentFrom">
+                        <option ng-if="lang==='AR'" value="Fund">الصندوق</option>
+                        <option ng-if="lang==='EN'" value="Fund">Fund</option>
+                        <option ng-if="lang==='AR'" value="Bank">البنك</option>
+                        <option ng-if="lang==='EN'" value="Bank">Bank</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="receipt.paymentFrom==='Fund'">
+                <h4 ng-if="lang==='AR'">رصيد الصندوق الفعلي حالياً = {{fundReceipt.fund.balance}}</h4>
+                <h4 ng-if="lang==='EN'"> Real Balance Now = {{fundReceipt.fund.balance}}</h4>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="receipt.paymentFrom==='Bank'">
+                <h4 ng-if="lang==='AR'">رصيد البنك الفعلي حالياً = {{bankReceipt.bank.balance}}</h4>
+                <h4 ng-if="lang==='EN'"> Real Balance Now = {{bankReceipt.bank.balance}}</h4>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="form-group row">
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <label for="amountNumber" class="control-label">
+                            <span ng-if="lang==='AR'">المبلغ</span>
+                            <span ng-if="lang==='EN'">Payment</span>
+                        </label>
+                        <div dir="ltr" class="input-group" id="amountNumber">
+                        <span class="input-group-addon">
+                            <span ng-if="lang==='AR'">ريال سعودي</span>
+                            <span ng-if="lang==='EN'">SAR</span>
+                        </span>
+                            <input dir="rtl"
+                                   type="number"
+                                   focus-autofocus="1"
+                                   min="1"
+                                   max="{{receiptType==='Out'?fundReceipt.fund.balance:99999999}}"
+                                   required="required"
+                                   disable-validation-message=""
+                                   class="form-control"
+                                   ng-model="receipt.amountNumber">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="dateType==='H'">
+                        <label for="receiptDate" class="control-label">
+                            <span ng-if="lang==='AR'">تاريخ السند</span>
+                            <span ng-if="lang==='EN'">Contract Date</span>
+                        </label>
+                        <div dir="ltr" class="input-group">
+                            <input dir="rtl"
+                                   id="receiptDate"
+                                   type="text"
+                                   class="form-control is-calendarPicker"
+                                   ng-model="receipt.date"
+                                   calendarType="ummalqura"
+                                   language="en"
+                                   dateFormat="yyyy/mm/dd"
+                                   showOnFocus="false"
+                                   readonly="readonly"
+                                   required="required"
+                                   disable-validation-message=""
+                                   kdatepicker>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="dateType==='G'">
+                        <label for="G-receiptDate" class="control-label">
+                            <span ng-if="lang==='AR'">تاريخ السند</span>
+                            <span ng-if="lang==='EN'">Contract Date</span>
+                        </label>
+                        <input id="G-receiptDate"
+                               class="form-control "
+                               type="date"
+                               name="input"
+                               ng-model="receipt.date"
+                               placeholder="yyyy-MM-dd"
+                               required="required"
+                               disable-validation-message=""
+                               min="2017-01-01"
+                               max="2030-12-31"/>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="sender" class="control-label">
+                        <span ng-if="lang==='AR'">محرر السند</span>
+                        <span ng-if="lang==='EN'">Receipt Writer</span>
+                    </label>
+                    <input id="sender"
+                           type="text"
+                           class="form-control"
+                           required="required"
+                           disable-validation-message=""
+                           ng-model="receipt.sender">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label for="description" class="control-label">
+                        <span ng-if="lang==='AR'">لغرض</span>
+                        <span ng-if="lang==='EN'">For Reason</span>
+                    </label>
+                    <textarea id="description"
+                              type="text"
+                              msd-elastic="\n"
+                              class="form-control"
+                              ng-model="receipt.note">
+                    </textarea>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="{{lang==='AR' ? 'حفظ' : 'Save'}}"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">save</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'مسح الحقول' : 'Clear'}}"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="{{lang==='AR' ? 'خروج' : 'Exit'}}"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

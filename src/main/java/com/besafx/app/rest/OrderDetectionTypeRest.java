@@ -26,8 +26,11 @@ import java.util.List;
 @RequestMapping(value = "/api/orderDetectionType/")
 public class OrderDetectionTypeRest {
 
-    public static final String FILTER_TABLE = "id,done,detectionType[id,code,nameArabic,nameEnglish,cost],orderDetectionTypeAttaches[id],diagnoses[**,diagnosisAttaches[id],-orderDetectionType,drug[id,code],drugUnit[**,-drugUnit]],order[**,falcon[id,code,customer[id,name]],doctor[id,person[id,code,nickname,name]],-orderDetectionTypes,-orderAttaches]";
-    public static final String FILTER_ORDER_DETECTION_TYPE_COMBO = "id,done,detectionType[id,code,nameArabic,nameEnglish,cost],orderDetectionTypeAttaches[id],diagnoses[id],order[id,code,orderCondition]";
+    public static final String FILTER_TABLE = "" +
+            "id," +
+            "done," +
+            "detectionType[id,code,nameArabic,nameEnglish,cost]," +
+            "orderDetectionTypeAttaches[id],diagnoses[id],order[id,code,orderCondition]";
 
     @Autowired
     private OrderDetectionTypeService orderDetectionTypeService;
@@ -107,7 +110,7 @@ public class OrderDetectionTypeRest {
     public String findByOrder(@PathVariable(value = "orderId") Long orderId, Principal principal) {
         List<OrderDetectionType> list = orderDetectionTypeService.findByOrderId(orderId);
         list.sort(Comparator.comparing(orderDetectionType -> orderDetectionType.getDetectionType().getCode()));
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_DETECTION_TYPE_COMBO), list);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -145,6 +148,6 @@ public class OrderDetectionTypeRest {
                 .icon("fa-plus-square")
                 .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_ORDER_DETECTION_TYPE_COMBO), list);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

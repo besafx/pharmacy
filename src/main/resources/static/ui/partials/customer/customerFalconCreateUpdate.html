@@ -8,7 +8,9 @@
         <h3 ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}" class="panel-title mdl-list__item mdl-color-text--white">
             <span class="mdl-list__item-primary-content">
                 <i class="material-icons mdl-list__item-icon mdl-color-text--white">{{action==='create' ? 'add' : 'edit'}}</i>
-                <strong>{{title}}</strong>
+                <strong ng-if="lang==='AR'">انشاء حساب صقر جديد للعميل رقم / </strong>
+                <strong ng-if="lang==='EN'">Add New Falcon Account To Customer Code / </strong>
+                {{falcon.customer.code}}
             </span>
         </h3>
     </div>
@@ -17,152 +19,63 @@
 
         <div class="row">
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_UPDATE'])"
-                                   ng-click="ModalProvider.openCustomerUpdateModel(falcon.customer)"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'تعديل بيانات العميل' : 'Edit Customer Data'}}">
-                                    <span class="fa fa-edit"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
-                            <h3 ng-if="lang==='EN'">Basic Information</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">اسم العميل</span>
-                                        <span ng-if="lang==='EN'">Name</span>
-                                    </td>
-                                    <td>{{falcon.customer.nickname}} {{falcon.customer.name}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">تاريخ التسجيل</span>
-                                        <span ng-if="lang==='EN'">Register Date</span>
-                                    </td>
-                                    <td>
-                                        {{falcon.customer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
-                                        <span class="label label-success">{{falcon.customer.registerDate | date:'h:m a'}}</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الجوال</span>
-                                        <span ng-if="lang==='EN'">Mobile</span>
-                                    </td>
-                                    <td>{{falcon.customer.mobile}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">رقم الهوية</span>
-                                        <span ng-if="lang==='EN'">Identity Card Number</span>
-                                    </td>
-                                    <td>{{falcon.customer.identityNumber}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">الجنسية</span>
-                                        <span ng-if="lang==='EN'">Nationality</span>
-                                    </td>
-                                    <td>{{falcon.customer.nationality}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span ng-if="lang==='AR'">المهنة</span>
-                                        <span ng-if="lang==='EN'">Job</span>
-                                    </td>
-                                    <td>{{falcon.customer.job}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
                 </div>
             </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <span ng-if="lang==='AR'">البيانات المطلوبة</span>
-                        <span ng-if="lang==='EN'">Required Data</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
+            <div class="form-group row">
 
-                            <div class="form-group col-xs-12 col-sm-6 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
-                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
-                                </div>
-                            </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="code" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                        <span ng-if="lang==='EN'">Falcon Code</span>
+                    </label>
+                    <input id="code"
+                           type="text"
+                           focus-autofocus="1"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر رقم الصقر...' : 'Type Falcon Code...'}}"
+                           ng-model="falcon.code">
+                </div>
 
-                            <div class="form-group row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="type" class="control-label">
+                        <span ng-if="lang==='AR'">النوع</span>
+                        <span ng-if="lang==='EN'">Type</span>
+                    </label>
+                    <input id="type"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر النوع...' : 'Type Falcon Type...'}}"
+                           ng-model="falcon.type">
+                </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="code" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم الصقر</span>
-                                        <span ng-if="lang==='EN'">Falcon Code</span>
-                                    </label>
-                                    <input id="code"
-                                           type="text"
-                                           focus-autofocus="1"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر رقم الصقر...' : 'Type Falcon Code...'}}"
-                                           ng-model="falcon.code">
-                                </div>
+            </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="type" class="control-label">
-                                        <span ng-if="lang==='AR'">النوع</span>
-                                        <span ng-if="lang==='EN'">Type</span>
-                                    </label>
-                                    <input id="type"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر النوع...' : 'Type Falcon Type...'}}"
-                                           ng-model="falcon.type">
-                                </div>
-
-                            </div>
-
-                            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="weight" class="control-label">
-                                    <span ng-if="lang==='AR'">الوزن</span>
-                                    <span ng-if="lang==='EN'">Weight</span>
-                                </label>
-                                <div dir="ltr" class="input-group" id="weight">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="weight" class="control-label">
+                    <span ng-if="lang==='AR'">الوزن</span>
+                    <span ng-if="lang==='EN'">Weight</span>
+                </label>
+                <div dir="ltr" class="input-group" id="weight">
                                     <span class="input-group-addon">
                                         <span ng-if="lang==='AR'">جرام</span>
                                         <span ng-if="lang==='EN'">G</span>
                                     </span>
-                                    <input dir="rtl"
-                                           type="number"
-                                           min="0"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control text-right "
-                                           ng-model="falcon.weight">
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                    <input dir="rtl"
+                           type="number"
+                           min="0"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control text-right "
+                           ng-model="falcon.weight">
                 </div>
             </div>
 

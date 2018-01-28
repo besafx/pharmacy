@@ -1,9 +1,7 @@
-app.controller('customerFalconCreateUpdateCtrl', ['CustomerService', 'FalconService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'falcon',
-        function (CustomerService, FalconService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, falcon) {
+app.controller('customerFalconCreateUpdateCtrl', ['CustomerService', 'FalconService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'action', 'falcon',
+        function (CustomerService, FalconService, $scope, $rootScope, $timeout, $log, $uibModalInstance, action, falcon) {
 
             $scope.falcon = falcon;
-
-            $scope.title = title;
 
             $scope.action = action;
 

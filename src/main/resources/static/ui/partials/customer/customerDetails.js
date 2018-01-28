@@ -4,9 +4,8 @@ app.controller('customerDetailsCtrl', ['CustomerService', 'FalconService', 'Orde
         $scope.customer = customer;
 
         $scope.refreshCustomer = function () {
-            CustomerService.findOne($scope.customer.id).then(function (data) {
+            CustomerService.findOneDetails($scope.customer.id).then(function (data) {
                 $scope.customer = data;
-                $scope.refreshOrders();
             })
         };
 

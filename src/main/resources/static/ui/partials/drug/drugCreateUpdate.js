@@ -5,19 +5,9 @@ app.controller('drugCreateUpdateCtrl', ['DrugService', 'DrugCategoryService', '$
             DrugCategoryService.findAllCombo().then(function (data) {
                 $scope.drugCategories = data;
             });
-        }, 2000);
+        }, 600);
 
         $scope.drug = drug;
-
-        $scope.buffer = {};
-
-        if (drug.productionDate) {
-            $scope.buffer.productionDate = new Date(drug.productionDate);
-        }
-
-        if (drug.expireDate) {
-            $scope.buffer.expireDate = new Date(drug.expireDate);
-        }
 
         $scope.title = title;
 

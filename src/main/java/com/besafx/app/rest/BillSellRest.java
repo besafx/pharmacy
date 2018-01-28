@@ -33,7 +33,7 @@ import java.util.ListIterator;
 @RequestMapping(value = "/api/billSell/")
 public class BillSellRest {
 
-    public static final String FILTER_TABLE = "**,billSellReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,name],order[id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionSells,-transactionBuys],-billBuy,-transactionSells]]";
+    public static final String FILTER_TABLE = "**,billSellReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,name],order[id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drug,-drugUnit],transactionBuy[**,drugUnit[**,-drug,-drugUnit],drug[**,-defaultDrugUnit,-drugUnits,-drugCategory,-transactionSells,-transactionBuys],-billBuy,-transactionSells]]";
     public static final String FILTER_Inside_Debt = "id,code,date,discount,order[id,code,date,falcon[id,code,customer[id,name]]],unitSellCostSum,net,paid,remain,-lastPerson,-transactionSells,-billSellReceipts";
     public static final String FILTER_Outside_Debt = "id,code,date,discount,customerName,falconCode,unitSellCostSum,net,paid,remain,-lastPerson,-transactionSells,-billSellReceipts";
     public static final String FILTER_BILL_SELL_COMBO = "id,code";

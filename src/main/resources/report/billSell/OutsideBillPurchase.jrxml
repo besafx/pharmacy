@@ -522,8 +522,8 @@
 									</frame>
 								</jr:columnHeader>
 								<jr:detailCell style="Table_TD" height="30">
-									<textField>
-										<reportElement x="0" y="0" width="106" height="30" uuid="ba4be9d7-e77c-4950-9d95-27ca3111752c"/>
+									<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+										<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="106" height="30" uuid="ba4be9d7-e77c-4950-9d95-27ca3111752c"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
@@ -565,8 +565,8 @@
 										<reportElement x="0" y="0" width="107" height="30" uuid="52848a8c-cf99-4c0e-9994-30b73d5ebbf1">
 											<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 										</reportElement>
-										<textField>
-											<reportElement x="0" y="0" width="107" height="15" uuid="1fc5331b-2c2d-4c23-82c8-260a575c3666"/>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="107" height="15" uuid="1fc5331b-2c2d-4c23-82c8-260a575c3666"/>
 											<box>
 												<pen lineWidth="0.5"/>
 											</box>
@@ -575,8 +575,8 @@
 											</textElement>
 											<textFieldExpression><![CDATA[$F{transactionBuy}.getDrug().getNameArabic()]]></textFieldExpression>
 										</textField>
-										<textField>
-											<reportElement x="0" y="15" width="107" height="15" uuid="a29c83d4-c248-4e41-a717-3f7c4502e5a2"/>
+										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+											<reportElement stretchType="RelativeToTallestObject" x="0" y="15" width="107" height="15" uuid="a29c83d4-c248-4e41-a717-3f7c4502e5a2"/>
 											<box>
 												<pen lineWidth="0.5"/>
 											</box>
@@ -612,8 +612,8 @@
 									</frame>
 								</jr:columnHeader>
 								<jr:detailCell style="Table_TD" height="30">
-									<textField pattern="#,##0.## SAR;#,##0.##-  SAR">
-										<reportElement x="0" y="0" width="107" height="30" uuid="24079b16-9298-4d7e-9f1f-cef821acdb48"/>
+									<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+										<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="107" height="30" uuid="24079b16-9298-4d7e-9f1f-cef821acdb48"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
@@ -645,8 +645,8 @@
 									</frame>
 								</jr:columnHeader>
 								<jr:detailCell style="Table_TD" height="30">
-									<textField pattern="">
-										<reportElement x="0" y="0" width="107" height="30" uuid="8c578658-64e1-42fb-9441-77ad0877a643"/>
+									<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+										<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="107" height="30" uuid="8c578658-64e1-42fb-9441-77ad0877a643"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
@@ -676,8 +676,8 @@
 									</frame>
 								</jr:columnHeader>
 								<jr:detailCell style="Table_TD" height="30">
-									<textField pattern="#,##0.## SAR;#,##0.##-  SAR">
-										<reportElement x="0" y="0" width="108" height="30" uuid="6647f0e0-2082-4a89-b8c1-0672d23c7a09"/>
+									<textField isStretchWithOverflow="true" pattern="#,##0.## SAR;#,##0.##-  SAR" isBlankWhenNull="true">
+										<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="108" height="30" uuid="6647f0e0-2082-4a89-b8c1-0672d23c7a09"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>

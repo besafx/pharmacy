@@ -1,6 +1,8 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.listener.CustomerListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,7 +18,11 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
+@EntityListeners(CustomerListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer implements Serializable {
+
+    public static final String SCREEN_NAME = "العملاء";
 
     private static final long serialVersionUID = 1L;
 
@@ -61,7 +67,7 @@ public class Customer implements Serializable {
     @Column(columnDefinition = "boolean default true")
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Falcon> falcons = new ArrayList<>();
 
     @JsonCreator
@@ -102,6 +108,4 @@ public class Customer implements Serializable {
             return 0.0;
         }
     }
-
-
 }

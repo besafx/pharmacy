@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label for="drug" class="control-label">
                     <span ng-if="lang==='AR'">الدواء</span>
                     <span ng-if="lang==='EN'">Drug</span>
@@ -73,7 +73,7 @@
                             ng-model="transactionBuy.drugUnit"
                             required=""
                             disable-validation-message=""
-                            ng-options="unit.name for unit in drugUnits | orderBy:'code' track by unit.id">
+                            ng-options="unit.name for unit in transactionBuy.drug.drugUnits | orderBy:'code' track by unit.id">
                     </select>
                 </div>
 
@@ -96,6 +96,19 @@
                                ng-model="transactionBuy.quantity">
                     </div>
                 </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <h6 ng-if="transactionBuy.drugUnit.id">
+                    <span>المخزون الحالي = </span>
+                    {{transactionBuy.drugUnit.realQuantitySum}} / {{transactionBuy.drugUnit.name}}
+                </h6>
+                <h6 ng-if="transactionBuy.drugUnit.id">
+                    <span>القيمة الحرجة = </span>
+                    {{transactionBuy.drugUnit.reorderAmount}} / {{transactionBuy.drugUnit.name}}
+                </h6>
 
             </div>
 

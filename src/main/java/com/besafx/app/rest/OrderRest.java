@@ -30,8 +30,23 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/order/")
 public class OrderRest {
 
-    public static final String FILTER_TABLE = "**,orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,nickname,name],falcon[id,code,type,weight,customer[id,code,name]],doctor[**,person[id,code,name,mobile,identityNumber]],diagnoses[**,-order,drug[id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish],drugUnit[id,name]],orderDetectionTypes[id,done,detectionType[id,code,nameArabic,nameEnglish,cost]],orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
-    public static final String FILTER_TABLE_DEBT = "**,-orderReceipts,lastPerson[id,nickname,name],falcon[id,code,type,weight,customer[id,code,name]],-doctor,-diagnoses,-orderDetectionTypes,-orderAttaches";
+    public static final String FILTER_TABLE = "" +
+            "**," +
+            "orderReceipts[id,receipt[**,lastPerson[id,nickname,name]]]," +
+            "lastPerson[id,nickname,name]," +
+            "falcon[id,code,type,weight,customer[id,code,name]]," +
+            "doctor[**,person[id,code,name,mobile,identityNumber]]," +
+            "diagnoses[**,-order,drug[id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish],drugUnit[id,name]]," +
+            "orderDetectionTypes[id,done,detectionType[id,code,nameArabic,nameEnglish,cost]]," +
+            "orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
+    public static final String FILTER_TABLE_INFO = "" +
+            "**,-orderReceipts," +
+            "lastPerson[id,nickname,name]," +
+            "falcon[id,code,type,weight,customer[id,code,name]]," +
+            "-doctor," +
+            "-diagnoses," +
+            "-orderDetectionTypes," +
+            "-orderAttaches";
     public static final String FILTER_ORDER_COMBO = "id,code";
     public static final String FILTER_ORDER_PRICES = "netCost,paid,remain";
     public static final String FILTER_ORDER_COMBO_DIAGNOSIS = "id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,code,name]]";
@@ -276,50 +291,30 @@ public class OrderRest {
             @RequestParam(value = "weightTo", required = false) final Double weightTo,
             @RequestParam(value = "doctorName", required = false) final String doctorName) {
         List<Order> list = orderSearch.filter(codeFrom, codeTo, paymentMethods, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
-    }
-
-    @RequestMapping(value = "filterDebt", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String filterDebt(
-            @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
-            @RequestParam(value = "codeTo", required = false) final Long codeTo,
-            @RequestParam(value = "paymentMethods", required = false) final List<PaymentMethod> paymentMethods,
-            @RequestParam(value = "dateFrom", required = false) final Long dateFrom,
-            @RequestParam(value = "dateTo", required = false) final Long dateTo,
-            @RequestParam(value = "customerName", required = false) final String customerName,
-            @RequestParam(value = "customerMobile", required = false) final String customerMobile,
-            @RequestParam(value = "customerIdentityNumber", required = false) final String customerIdentityNumber,
-            @RequestParam(value = "falconCode", required = false) final Long falconCode,
-            @RequestParam(value = "falconType", required = false) final String falconType,
-            @RequestParam(value = "weightFrom", required = false) final Double weightFrom,
-            @RequestParam(value = "weightTo", required = false) final Double weightTo,
-            @RequestParam(value = "doctorName", required = false) final String doctorName) {
-        List<Order> list = orderSearch.filter(codeFrom, codeTo, paymentMethods, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE_DEBT), list);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE_INFO), list);
     }
 
     @RequestMapping(value = "findByToday", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findByToday(@RequestParam(value = "filter", required = false) final String filter) throws Exception {
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByToday());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE_INFO : (String) this.getClass().getField(filter).get(this)), orderSearch.findByToday());
     }
 
     @RequestMapping(value = "findByWeek", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findByWeek(@RequestParam(value = "filter", required = false) final String filter) throws Exception{
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByWeek());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE_INFO : (String) this.getClass().getField(filter).get(this)), orderSearch.findByWeek());
     }
 
     @RequestMapping(value = "findByMonth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findByMonth(@RequestParam(value = "filter", required = false) final String filter) throws Exception{
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByMonth());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE_INFO : (String) this.getClass().getField(filter).get(this)), orderSearch.findByMonth());
     }
 
     @RequestMapping(value = "findByYear", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findByYear(@RequestParam(value = "filter", required = false) final String filter) throws Exception{
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE : (String) this.getClass().getField(filter).get(this)), orderSearch.findByYear());
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), filter == null ? FILTER_TABLE_INFO : (String) this.getClass().getField(filter).get(this)), orderSearch.findByYear());
     }
 }

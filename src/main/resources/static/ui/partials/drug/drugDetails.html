@@ -21,32 +21,32 @@
 
                 <div class="mdl-tabs__tab-bar">
 
-                    <a href="#panel-1-order" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4 is-active">
+                    <a href="#panel-1-drug" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4 is-active">
                         <span ng-if="lang==='AR'">التفاصيل</span>
                         <span ng-if="lang==='EN'">Details</span>
                     </a>
 
-                    <a href="#panel-2-order"
-                       class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                        <span ng-if="lang==='AR'">المشتريات</span>
-                        <span ng-if="lang==='EN'">Purchases</span>
-                        <span ng-if="drug.transactionBuys.length > 0"
-                              class="mdl-badge"
-                              data-badge="{{drug.transactionBuys.length}}"></span>
+                    <a href="#panel-2-drug" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        <span ng-if="lang==='AR'">وحدات القياس</span>
+                        <span ng-if="lang==='EN'">Units</span>
+                        <span ng-if="drug.drugUnits.length > 0" class="mdl-badge" data-badge="{{drug.drugUnits.length}}"></span>
                     </a>
 
-                    <a href="#panel-3-order"
-                       class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <a href="#panel-3-drug" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        <span ng-if="lang==='AR'">المشتريات</span>
+                        <span ng-if="lang==='EN'">Purchases</span>
+                        <span ng-if="drug.transactionBuys.length > 0" class="mdl-badge" data-badge="{{drug.transactionBuys.length}}"></span>
+                    </a>
+
+                    <a href="#panel-4-drug" class="mdl-tabs__tab col-xs-12 col-sm-6 col-md-4 col-lg-4">
                         <span ng-if="lang==='AR'">المبيعات</span>
                         <span ng-if="lang==='EN'">Sales</span>
-                        <span ng-if="drug.transactionSells.length > 0"
-                              class="mdl-badge"
-                              data-badge="{{drug.transactionSells.length}}"></span>
+                        <span ng-if="drug.transactionSells.length > 0" class="mdl-badge" data-badge="{{drug.transactionSells.length}}"></span>
                     </a>
 
                 </div>
 
-                <div class="mdl-tabs__panel is-active" id="panel-1-order">
+                <div class="mdl-tabs__panel is-active" id="panel-1-drug">
 
                     <div class="form-group row">
                         <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
@@ -106,7 +106,102 @@
 
                 </div>
 
-                <div class="mdl-tabs__panel" id="panel-2-order">
+                <div class="mdl-tabs__panel" id="panel-2-drug">
+
+                    <div class="form-group row">
+                        <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-click="refreshDrugUnitsByDrug()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">cached</i>
+                        </button>
+                        <button uib-tooltip="{{lang==='AR' ? 'انشاء وحدة قياس' : 'New Unit...'}}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                ng-if="contains(me.team.authorities, ['ROLE_DRUG_UNIT_CREATE'])"
+                                ng-click="newDrugUnit()"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="table-responsive">
+                            <table st-table="collection2" st-safe-src="drug.drugUnits"
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <span>#</span>
+                                    </th>
+
+                                    <th st-sort="code">
+                                        <span ng-if="lang==='AR'">رقم الوحدة</span>
+                                        <span ng-if="lang==='EN'">Code</span>
+                                    </th>
+
+                                    <th st-sort="name">
+                                        <span ng-if="lang==='AR'">الاسم</span>
+                                        <span ng-if="lang==='EN'">Name</span>
+                                    </th>
+
+                                    <th st-sort="factor">
+                                        <span ng-if="lang==='AR'">المُعامل</span>
+                                        <span ng-if="lang==='EN'">Factor</span>
+                                    </th>
+
+                                    <th st-sort="reorderAmount">
+                                        <span ng-if="lang==='AR'">حد الطلب</span>
+                                        <span ng-if="lang==='EN'">Order Limit</span>
+                                    </th>
+
+                                    <th st-sort="realQuantitySum">
+                                        <span ng-if="lang==='AR'">الرصيد الحالي</span>
+                                        <span ng-if="lang==='EN'">Stock</span>
+                                    </th>
+
+                                    <th>
+                                        <span ng-if="lang==='AR'">العمليات</span>
+                                        <span ng-if="lang==='EN'">Action</span>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="drugUnit in collection2">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{drugUnit.code}}</td>
+                                    <td>{{drugUnit.name}}</td>
+                                    <td>{{drugUnit.factor}}</td>
+                                    <td>{{drugUnit.reorderAmount}}</td>
+                                    <td>{{drugUnit.realQuantitySum}}</td>
+                                    <td>
+                                        <a href=""
+                                           ng-if="contains(me.team.authorities, ['ROLE_DRUG_UNIT_DELETE'])"
+                                           ng-click="deleteDrugUnit(drugUnit)">
+                                            <strong ng-if="lang==='AR'">حذف</strong>
+                                            <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection2 || collection2.length ==0">
+                                    <td colspan="7">
+                                        <span ng-if="lang==='AR'">لا توجد بيانات</span>
+                                        <span ng-if="lang==='EN'">No Data Found.</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mdl-tabs__panel" id="panel-3-drug">
 
                     <div class="form-group row">
                         <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
@@ -128,7 +223,7 @@
                     <div class="form-group row">
 
                         <div class="table-responsive">
-                            <table st-table="collection2" st-safe-src="drug.transactionBuys"
+                            <table st-table="collection3" st-safe-src="drug.transactionBuys"
                                    class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -184,7 +279,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="transactionBuy in collection2">
+                                <tr ng-repeat="transactionBuy in collection3">
                                     <td>{{$index+1}}</td>
                                     <td class="info">{{transactionBuy.code}}</td>
                                     <td>
@@ -195,9 +290,9 @@
                                     <td>{{transactionBuy.drugUnit.name}}</td>
                                     <td>{{transactionBuy.unitBuyCost | currency:' SAR ':2}}</td>
                                     <td>{{transactionBuy.unitSellCost | currency:' SAR ':2}}</td>
-                                    <td class="warning">{{transactionBuy.quantity}}</td>
-                                    <td class="success">{{transactionBuy.salesQuantity}}</td>
-                                    <td class="danger">{{transactionBuy.realQuantity}}</td>
+                                    <td class="warning">{{transactionBuy.quantity | currency:'':2}} {{transactionBuy.drugUnit.name}} </td>
+                                    <td class="success">{{transactionBuy.salesQuantity | currency:'':2}} {{transactionBuy.drugUnit.name}}</td>
+                                    <td class="danger">{{transactionBuy.realQuantity | currency:'':2}} {{transactionBuy.drugUnit.name}}</td>
                                     <td>
                                         <a href=""
                                            ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_DELETE'])"
@@ -208,7 +303,7 @@
                                     </td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collection2 || collection2.length ==0">
+                                    ng-show="!collection3 || collection3.length ==0">
                                     <td colspan="10">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
@@ -229,7 +324,7 @@
 
                 </div>
 
-                <div class="mdl-tabs__panel" id="panel-3-order">
+                <div class="mdl-tabs__panel" id="panel-4-drug">
 
                     <div class="form-group row">
                         <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
@@ -244,7 +339,7 @@
                     <div class="form-group row">
 
                         <div class="table-responsive">
-                            <table st-table="collection3" st-safe-src="drug.transactionSells"
+                            <table st-table="collection4" st-safe-src="drug.transactionSells"
                                    class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -265,6 +360,11 @@
                                     <th st-sort="productionDate">
                                         <span ng-if="lang==='AR'">تاريخ الحركة</span>
                                         <span ng-if="lang==='EN'">Transaction Date</span>
+                                    </th>
+
+                                    <th st-sort="transactionBuy.code" class="warning">
+                                        <span ng-if="lang==='AR'">رقم المخزون</span>
+                                        <span ng-if="lang==='EN'">Stock Code</span>
                                     </th>
 
                                     <th st-sort="drugUnit">
@@ -290,7 +390,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="transactionSell in collection3">
+                                <tr ng-repeat="transactionSell in collection4">
                                     <td>{{$index+1}}</td>
                                     <td>{{transactionSell.billSell.code}}</td>
                                     <td class="info">{{transactionSell.code}}</td>
@@ -299,9 +399,10 @@
                                         <span ng-show="dateType==='G'">{{transactionSell.date | date: 'yyyy-MM-dd'}}</span>
                                         {{transactionSell.date | date:'h:m a'}}
                                     </td>
+                                    <td class="warning">{{transactionSell.transactionBuy.code}}</td>
                                     <td>{{transactionSell.drugUnit.name}}</td>
                                     <td class="danger">{{transactionSell.unitSellCost | currency:' SAR ':2}} </td>
-                                    <td>{{transactionSell.quantity}}</td>
+                                    <td>{{transactionSell.quantity | currency:'':2}} {{transactionSell.drugUnit.name}}</td>
                                     <td>
                                         <a href=""
                                            ng-if="contains(me.team.authorities, ['ROLE_BILL_SELL_DELETE'])"
@@ -312,8 +413,8 @@
                                     </td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collection3 || collection3.length ==0">
-                                    <td colspan="8">
+                                    ng-show="!collection4 || collection4.length ==0">
+                                    <td colspan="9">
                                         <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                         <span ng-if="lang==='EN'">No Data Found.</span>
                                     </td>
@@ -321,7 +422,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="8">
+                                    <td colspan="9">
                                         <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                     </td>
                                 </tr>

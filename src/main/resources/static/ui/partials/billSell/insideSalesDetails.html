@@ -38,18 +38,14 @@
                        class="mdl-tabs__tab col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <span ng-if="lang==='AR'">الاصناف</span>
                         <span ng-if="lang==='EN'">Items</span>
-                        <span ng-if="billSell.transactionSells.length > 0"
-                              class="mdl-badge"
-                              data-badge="{{billSell.transactionSells.length}}"></span>
+                        <span ng-if="billSell.transactionSells.length > 0" class="mdl-badge" data-badge="{{billSell.transactionSells.length}}"></span>
                     </a>
 
                     <a href="#panel-4-bill-inside-sales"
                        class="mdl-tabs__tab col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <span ng-if="lang==='AR'">دفعات السداد</span>
                         <span ng-if="lang==='EN'">Payments</span>
-                        <span ng-if="billSell.billSellReceipts.length > 0"
-                              class="mdl-badge"
-                              data-badge="{{billSell.billSellReceipts.length}}"></span>
+                        <span ng-if="billSell.billSellReceipts.length > 0" class="mdl-badge" data-badge="{{billSell.billSellReceipts.length}}"></span>
                     </a>
 
                 </div>
@@ -244,17 +240,9 @@
                         <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
                                 tooltip-append-to-body="true"
                                 type="button"
-                                ng-click="refreshTransactionSellByBill()"
+                                ng-click="refreshTransactionSells()"
                                 class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
                             <i class="material-icons">cached</i>
-                        </button>
-                        <button uib-tooltip="{{lang==='AR' ? 'اضافة اصناف' : 'Add Items...'}}"
-                                tooltip-append-to-body="true"
-                                type="button"
-                                ng-if="contains(me.team.authorities, ['ROLE_BILL_BUY_ADD_ITEM'])"
-                                ng-click="newTransactionSell()"
-                                class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                            <i class="material-icons">add</i>
                         </button>
                     </div>
 
@@ -315,7 +303,7 @@
                                     <td>
                                         <span ng-show="dateType==='H'">{{transactionSell.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                         <span ng-show="dateType==='G'">{{transactionSell.date | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{transactionSell.date | date:'h:m a'}}</span>
+                                        {{transactionSell.date | date:'h:m a'}}
                                     </td>
                                     <td>
                                         [{{transactionSell.transactionBuy.drug.code}}]
@@ -329,7 +317,7 @@
                                     </td>
                                     <td>{{transactionSell.drugUnit.name}}</td>
                                     <td>
-                                        <span class="label label-danger">{{transactionSell.unitSellCost}} SAR</span>
+                                        <span>{{transactionSell.unitSellCost | currency : ' SAR ': 2}}</span>
                                     </td>
                                     <td>{{transactionSell.quantity}}</td>
                                     <td>
@@ -433,6 +421,11 @@
                                         <a href="" ng-click="deleteBillSellReceipt(billSellReceipt)">
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                        <a href=""
+                                           ng-click="printReceipt(billSellReceipt.receipt)">
+                                            <strong ng-if="lang==='AR'">طباعة</strong>
+                                            <strong ng-if="lang==='EN'">Print</strong>
                                         </a>
                                     </td>
                                 </tr>

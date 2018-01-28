@@ -27,7 +27,7 @@
 
             <div class="form-group row">
 
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <label for="drug" class="control-label">
                         <span ng-if="lang==='AR'">الدواء</span>
                         <span ng-if="lang==='EN'">Drug</span>
@@ -35,6 +35,7 @@
                     <ui-select id="drug"
                                ng-model="transactionSell.drug"
                                ng-change="refreshTransactionBuys();"
+                               required=""
                                disable-validation-message=""
                                theme="bootstrap">
                         <ui-select-match placeholder="اختر الدواء المطلوب">
@@ -61,7 +62,7 @@
                     </ui-select>
                 </div>
 
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <label for="transactionBuy" class="control-label">
                         <span ng-if="lang==='AR'">مخزون الدواء</span>
                         <span ng-if="lang==='EN'">Drug Stock</span>
@@ -105,17 +106,60 @@
 
             <div class="form-group row">
 
+                <h5 class="box-warning" ng-if="transactionSell.transactionBuy.id">
+                    <span>وحدة قياس حركة الشراء = </span>
+                    {{transactionSell.transactionBuy.drugUnit.name}}
+                    <br/>
+                    <br/>
+                    <span>سعر البيع للوحدة = </span>
+                    {{transactionSell.transactionBuy.unitSellCost}} / {{transactionSell.transactionBuy.drugUnit.name}}
+                    <br/>
+                    <br/>
+                    <span>الرصيد الحالي من حركة الشراء = </span>
+                    {{transactionSell.transactionBuy.realQuantity}} {{transactionSell.transactionBuy.drugUnit.name}}
+                </h5>
+
+            </div>
+
+            <div class="form-group row">
+
                 <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <label for="drugUnit" class="control-label">
                         <span ng-if="lang==='AR'">وحدة القياس</span>
                         <span ng-if="lang==='EN'">Drug Unit</span>
                     </label>
-                    <select id="drugUnit"
-                            class="form-control"
-                            ng-model="buffer.related"
-                            disable-validation-message=""
-                            ng-options="related.obj1.name for related in relatedPrices | orderBy:'related.obj1.name' track by related.obj1.id">
-                    </select>
+                    <ui-select id="drugUnit"
+                               ng-model="buffer.related"
+                               required=""
+                               disable-validation-message=""
+                               theme="bootstrap">
+                        <ui-select-match style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" placeholder="اختر الوحدة المراد الصرف بها من هذا المخزون">
+                            <span>
+                                {{$select.selected.obj1.name}}
+                            </span>
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="related in relatedPrices | filter: $select.search | orderBy:'related.obj1.name' track by related.obj1.id">
+                            <div ng-if="lang==='AR'" ng-bind-html="transactionBuy.code | highlight: $select.search"></div>
+                            <small>
+                                <span ng-if="lang==='AR'">اسم الوحدة : </span>
+                                <span ng-if="lang==='EN'">Unit: </span>
+                                <span ng-bind-html="''+related.obj1.name | highlight: $select.search"></span>
+                                <br/>
+                                <span ng-if="lang==='AR'">سعر الشراء للوحدة : </span>
+                                <span ng-if="lang==='EN'">Unit Sell Cost: </span>
+                                <span ng-bind-html="''+related.obj2 | highlight: $select.search"></span>
+                                <br/>
+                                <span ng-if="lang==='AR'">سعر البيع للوحدة : </span>
+                                <span ng-if="lang==='EN'">Unit Sell Cost: </span>
+                                <span ng-bind-html="''+related.obj3 | highlight: $select.search"></span>
+                                <br/>
+                                <span ng-if="lang==='AR'">الرصيد بالوحدة من المخزون : </span>
+                                <span ng-if="lang==='EN'">Real Quantity In Unit: </span>
+                                <span ng-bind-html="''+related.obj6 | highlight: $select.search"></span>
+                            </small>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -132,11 +176,29 @@
                                type="number"
                                ng-max="buffer.related.obj6"
                                min="1"
+                               required="required"
                                disable-validation-message=""
                                class="form-control"
                                ng-model="transactionSell.quantity">
                     </div>
                 </div>
+
+            </div>
+
+            <div class="form-group row">
+
+                <h5 class="box-info" ng-if="buffer.related">
+                    <span>سعر الشراء = </span>
+                    {{buffer.related.obj2}} / {{buffer.related.obj1.name}}
+                    <br/>
+                    <br/>
+                    <span>سعر البيع = </span>
+                    {{buffer.related.obj3}} / {{buffer.related.obj1.name}}
+                    <br/>
+                    <br/>
+                    <span>الرصيد الحالي من المخزون المحدد بالوحدة = </span>
+                    {{buffer.related.obj6}} {{buffer.related.obj1.name}}
+                </h5>
 
             </div>
 

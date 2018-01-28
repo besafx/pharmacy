@@ -36,8 +36,24 @@ import java.util.List;
 @RequestMapping(value = "/api/customer/")
 public class CustomerRest {
 
-    public static final String FILTER_TABLE = "**,-orders,falcons[**,-orders,customer[id,code,name,mobile,identityNumber]]";
-    public static final String FILTER_CUSTOMER_INFO = "id,code,nickname,name,registerDate,mobile,identityNumber,nationality,job,enabled";
+    public static final String FILTER_TABLE = "**," +
+            "-orders," +
+            "falcons[**,-orders,customer[id,code,name,mobile,identityNumber]]";
+    public static final String FILTER_CUSTOMER_DETAILS = "" +
+            "**," +
+            "orders[id,code,date,falcon[id,code],netCost,paid,remain]," +
+            "falcons[id,code,registerDate,type,weight]";
+    public static final String FILTER_CUSTOMER_INFO = "" +
+            "id," +
+            "code," +
+            "nickname," +
+            "name," +
+            "registerDate," +
+            "mobile," +
+            "identityNumber," +
+            "nationality," +
+            "job," +
+            "enabled";
     public static final String FILTER_CUSTOMER_COMBO = "id,code,nickname,name,mobile,identityNumber";
 
     private final static Logger log = LoggerFactory.getLogger(CustomerRest.class);
@@ -100,11 +116,8 @@ public class CustomerRest {
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "العمليات على حسابات العملاء" : "Data Processing")
                     .message(lang.equals("AR") ? "تم تعديل بيانات حساب العميل بنجاح" : "Update Customer Account Information Successfully")
                     .type("warning")
-                    .icon("fa-edit")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
             return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), customer);
         } else {
@@ -195,6 +208,12 @@ public class CustomerRest {
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), customerService.findOne(id));
+    }
+
+    @RequestMapping(value = "findOneDetails/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findOneDetails(@PathVariable Long id) {
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_CUSTOMER_DETAILS), customerService.findOne(id));
     }
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

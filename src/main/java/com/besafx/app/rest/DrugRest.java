@@ -2,9 +2,11 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Drug;
+import com.besafx.app.entity.DrugUnit;
 import com.besafx.app.entity.Person;
 import com.besafx.app.search.DrugSearch;
 import com.besafx.app.service.DrugService;
+import com.besafx.app.service.DrugUnitService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -32,11 +34,34 @@ public class DrugRest {
 
     private final static Logger log = LoggerFactory.getLogger(DrugRest.class);
 
-    public static final String FILTER_TABLE = "**,-transactionSells,-transactionBuys,drugCategory[id,code,nameArabic,nameEnglish]";
-    public static final String FILTER_DRUG_COMBO = "id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish";
+    public static final String FILTER_TABLE = "" +
+            "**," +
+            "defaultDrugUnit[id,name]," +
+            "-drugUnits," +
+            "-transactionSells," +
+            "-transactionBuys," +
+            "drugCategory[id,code,nameArabic,nameEnglish]";
+    public static final String FILTER_DRUG_COMBO = "" +
+            "id," +
+            "code," +
+            "nameArabic," +
+            "nameEnglish," +
+            "medicalNameArabic," +
+            "medicalNameEnglish";
+    public static final String FILTER_DRUG_UNITS_COMBO = "" +
+            "id," +
+            "code," +
+            "nameArabic," +
+            "nameEnglish," +
+            "medicalNameArabic," +
+            "medicalNameEnglish," +
+            "drugUnits[id,code,name,reorderAmount,realQuantitySum]";
 
     @Autowired
     private DrugService drugService;
+
+    @Autowired
+    private DrugUnitService drugUnitService;
 
     @Autowired
     private PersonService personService;
@@ -136,10 +161,24 @@ public class DrugRest {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_DRUG_COMBO), list);
     }
 
+    @RequestMapping(value = "findAllDrugUnitsCombo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String findAllDrugUnitsCombo() {
+        List<Drug> list = Lists.newArrayList(drugService.findAll());
+        list.sort(Comparator.comparing(Drug::getCode));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_DRUG_UNITS_COMBO), list);
+    }
+
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String findOne(@PathVariable Long id) {
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drugService.findOne(id));
+    }
+
+    @RequestMapping(value = "getRealQuantitySumByDrugUnit/{drugUnitId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Double getRealQuantitySumByDrugUnit(@PathVariable Long drugUnitId) {
+        return drugUnitService.findOne(drugUnitId).getRealQuantitySum();
     }
 
     @RequestMapping(value = "getTransactionBuysSum/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

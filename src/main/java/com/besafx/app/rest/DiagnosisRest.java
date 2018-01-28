@@ -31,7 +31,11 @@ import java.util.List;
 @RequestMapping(value = "/api/diagnosis/")
 public class DiagnosisRest {
 
-    public static final String FILTER_TABLE = "**,drug[**,-drugCategory,-transactionSells,-transactionBuys],drugUnit[id,name],order[id,code]";
+    public static final String FILTER_TABLE = "" +
+            "**," +
+            "drug[**,-defaultDrugUnit,-drugUnits,-drugCategory,-transactionSells,-transactionBuys]," +
+            "drugUnit[id,name]," +
+            "order[id,code]";
 
     @Autowired
     private DiagnosisService diagnosisService;

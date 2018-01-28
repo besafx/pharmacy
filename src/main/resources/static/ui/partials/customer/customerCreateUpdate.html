@@ -17,127 +17,113 @@
 
         <div class="row">
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <span ng-if="lang==='AR'">البيانات الاساسية</span>
-                        <span ng-if="lang==='EN'">Basic Information</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
-                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
-                                </div>
-                            </div>
-
-                            <div class="row">
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="nickname" class="control-label">
-                                        <span ng-if="lang==='AR'">اللقب</span>
-                                        <span ng-if="lang==='EN'">Nickname</span>
-                                    </label>
-                                    <input id="nickname"
-                                           type="text"
-                                           focus-autofocus="1"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر اللقب...' : 'Type Person Nickname...'}}"
-                                           ng-model="customer.nickname">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="name" class="control-label">
-                                        <span ng-if="lang==='AR'">الاسم كاملاً</span>
-                                        <span ng-if="lang==='EN'">Name</span>
-                                    </label>
-                                    <input id="name"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر الاسم رباعي...' : 'Type Person Name...'}}"
-                                           ng-model="customer.name">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="nationality" class="control-label">
-                                        <span ng-if="lang==='AR'">الجنسية</span>
-                                        <span ng-if="lang==='EN'">Nationality</span>
-                                    </label>
-                                    <input id="nationality"
-                                           type="text"
-                                           class="form-control"
-                                           required="required"
-                                           disable-validation-message=""
-                                           placeholder="{{lang==='AR' ? 'اذكر الجنسية...' : 'Type Person Nationality...'}}"
-                                           ng-model="customer.nationality">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="identityNumber" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم البطاقة</span>
-                                        <span ng-if="lang==='EN'">Identity Card Number</span>
-                                    </label>
-                                    <input id="identityNumber"
-                                           type="text"
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر رقم البطاقة...' : 'Type Person ID...'}}"
-                                           ng-model="customer.identityNumber">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="mobile" class="control-label">
-                                        <span ng-if="lang==='AR'">الجوال</span>
-                                        <span ng-if="lang==='EN'">Mobile</span>
-                                    </label>
-                                    <input id="mobile"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر رقم الجوال...' : 'Type Person Mobile...'}}"
-                                           ng-model="customer.mobile">
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-
-                                    <label for="qualification" class="control-label">
-                                        <span ng-if="lang==='AR'">المهنة</span>
-                                        <span ng-if="lang==='EN'">Job</span>
-                                    </label>
-                                    <input id="qualification"
-                                           type="text"
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر المهنة...' : 'Type Person Job...'}}"
-                                           ng-model="customer.job">
-                                </div>
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="address" class="control-label">
-                                    <span ng-if="lang==='AR'">العنوان الحالي</span>
-                                    <span ng-if="lang==='EN'">Address</span>
-                                </label>
-                                <input id="address"
-                                       type="text"
-                                       class="form-control"
-                                       placeholder="{{lang==='AR' ? 'اذكر العنوان الحالي...' : 'Type Person Address...'}}"
-                                       ng-model="customer.address">
-                            </div>
-
-                        </div>
-                    </div>
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
                 </div>
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="nickname" class="control-label">
+                        <span ng-if="lang==='AR'">اللقب</span>
+                        <span ng-if="lang==='EN'">Nickname</span>
+                    </label>
+                    <input id="nickname"
+                           type="text"
+                           focus-autofocus="1"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر اللقب...' : 'Type Person Nickname...'}}"
+                           ng-model="customer.nickname">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="name" class="control-label">
+                        <span ng-if="lang==='AR'">الاسم كاملاً</span>
+                        <span ng-if="lang==='EN'">Name</span>
+                    </label>
+                    <input id="name"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر الاسم رباعي...' : 'Type Person Name...'}}"
+                           ng-model="customer.name">
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="nationality" class="control-label">
+                        <span ng-if="lang==='AR'">الجنسية</span>
+                        <span ng-if="lang==='EN'">Nationality</span>
+                    </label>
+                    <input id="nationality"
+                           type="text"
+                           class="form-control"
+                           required="required"
+                           disable-validation-message=""
+                           placeholder="{{lang==='AR' ? 'اذكر الجنسية...' : 'Type Person Nationality...'}}"
+                           ng-model="customer.nationality">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="identityNumber" class="control-label">
+                        <span ng-if="lang==='AR'">رقم البطاقة</span>
+                        <span ng-if="lang==='EN'">Identity Card Number</span>
+                    </label>
+                    <input id="identityNumber"
+                           type="text"
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر رقم البطاقة...' : 'Type Person ID...'}}"
+                           ng-model="customer.identityNumber">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="mobile" class="control-label">
+                        <span ng-if="lang==='AR'">الجوال</span>
+                        <span ng-if="lang==='EN'">Mobile</span>
+                    </label>
+                    <input id="mobile"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر رقم الجوال...' : 'Type Person Mobile...'}}"
+                           ng-model="customer.mobile">
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                    <label for="qualification" class="control-label">
+                        <span ng-if="lang==='AR'">المهنة</span>
+                        <span ng-if="lang==='EN'">Job</span>
+                    </label>
+                    <input id="qualification"
+                           type="text"
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر المهنة...' : 'Type Person Job...'}}"
+                           ng-model="customer.job">
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="address" class="control-label">
+                    <span ng-if="lang==='AR'">العنوان الحالي</span>
+                    <span ng-if="lang==='EN'">Address</span>
+                </label>
+                <input id="address"
+                       type="text"
+                       class="form-control"
+                       placeholder="{{lang==='AR' ? 'اذكر العنوان الحالي...' : 'Type Person Address...'}}"
+                       ng-model="customer.address">
             </div>
 
         </div>

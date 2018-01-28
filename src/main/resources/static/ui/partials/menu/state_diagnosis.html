@@ -102,13 +102,6 @@
                        uib-tooltip="{{lang==='AR' ? 'تصفية البيانات' : 'Filter'}}">
                         <span class="fa fa-filter"></span>
                     </a>
-                    <a href=""
-                       ng-click="newDiagnosis(order)"
-                       ng-show="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
-                       tooltip-append-to-body="true"
-                       uib-tooltip="{{lang==='AR' ? 'اضافة علاج' : 'Add Diagnosis'}}">
-                        <span class="fa fa-plus-square"></span>
-                    </a>
                 </li>
             </ul>
             <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
@@ -160,17 +153,17 @@
                     <tr ng-repeat="order in collection1"
                         st-select-mode="multiple"
                         context-menu="rowMenuOrder"
-                        ng-dblclick="ModalProvider.openOrderDetailsModel(order)">
+                        ng-dblclick="ModalProvider.openOrderDetailsModel(order)" ng-init="order.isSelected=false">
                         <td st-select-row-multi="order">{{$index+1}}</td>
-                        <td st-select-row-multi="order" class="info">{{order.code}}</td>
-                        <td st-select-row-multi="order" class="success">
+                        <td st-select-row-multi="order" ng-class="{'info' : order.isSelected===false}">{{order.code}}</td>
+                        <td st-select-row-multi="order" ng-class="{'success' : order.isSelected===false}">
                             <span ng-show="dateType==='H'">{{order.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                             <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
                             {{order.date | date:'h:m a'}}
                         </td>
                         <td st-select-row-multi="order">{{order.falcon.code}}</td>
                         <td st-select-row-multi="order">{{order.falcon.customer.name}}</td>
-                        <td st-select-row-multi="order" class="warning">{{order.note}}</td>
+                        <td st-select-row-multi="order" ng-class="{'warning' : order.isSelected===false}">{{order.note}}</td>
                     </tr>
                     <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                         ng-show="!collection1 || collection1.length ==0">
@@ -180,6 +173,13 @@
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="11">
+                            <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                        </td>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

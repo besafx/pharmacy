@@ -1,8 +1,10 @@
 package com.besafx.app.entity;
 
 import com.besafx.app.component.BeanUtil;
+import com.besafx.app.entity.listener.DiagnosisListener;
 import com.besafx.app.service.TransactionSellService;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,7 +22,11 @@ import java.util.Date;
 @Data
 @Entity
 @Component
+@EntityListeners(DiagnosisListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Diagnosis implements Serializable {
+
+    public static final String SCREEN_NAME = "الفحوصات";
 
     private static final Logger log = LoggerFactory.getLogger(Diagnosis.class);
 

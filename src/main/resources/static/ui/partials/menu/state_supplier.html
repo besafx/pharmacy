@@ -127,13 +127,13 @@
                     <tr ng-repeat="supplier in collection1"
                         st-select-mode="multiple"
                         context-menu="rowMenuSupplier"
-                        ng-class="{'danger': !supplier.enabled}">
+                        ng-class="{'danger': !supplier.enabled}" ng-init="supplier.isSelected=false">
                         <td st-select-row-multi="supplier">{{$index+1}}</td>
-                        <td st-select-row-multi="supplier" class="info">{{supplier.code}}</td>
+                        <td st-select-row-multi="supplier" ng-class="{'info' : supplier.isSelected===false}">{{supplier.code}}</td>
                         <td st-select-row-multi="supplier">
                             {{supplier.name}}
                         </td>
-                        <td st-select-row-multi="supplier" class="success">
+                        <td st-select-row-multi="supplier" ng-class="{'success' : supplier.isSelected===false}">
                             <span ng-show="dateType==='H'">{{supplier.registerDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                             <span ng-show="dateType==='G'">{{supplier.registerDate | date: 'yyyy-MM-dd'}}</span>
                             {{supplier.registerDate | date:'h:m a'}}

@@ -17,108 +17,99 @@
 
         <div class="row">
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <ul class="panel-controls" ng-class="{'pull-left' : lang==='AR', 'pull-right' : lang==='EN'}" style="margin-top: 2px;">
-                            <li>
-                                <a href=""
-                                   ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_CREATE'])"
-                                   ng-click="newCustomer()"
-                                   tooltip-append-to-body="true"
-                                   uib-tooltip="{{lang==='AR' ? 'عميل جديد' : 'New Customer...'}}">
-                                    <span class="fa fa-plus-square"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box" ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}">
-                            <h3 ng-if="lang==='AR'">البيانات الاساسية</h3>
-                            <h3 ng-if="lang==='EN'">Basic Information</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
+                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
+                </div>
+            </div>
 
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong ng-if="lang==='AR'">فضلاً اكمل الحقول المطلوبة</strong>
-                                    <strong ng-if="lang==='EN'">Please Complete Required Fields</strong>
-                                </div>
-                            </div>
+            <div class="form-group row">
 
-                            <div class="form-group row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="code" class="control-label">
+                        <span ng-if="lang==='AR'">رقم الصقر</span>
+                        <span ng-if="lang==='EN'">Falcon Code</span>
+                    </label>
+                    <input id="code"
+                           type="text"
+                           focus-autofocus="1"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر رقم الصقر...' : 'Type Falcon Code...'}}"
+                           ng-model="falcon.code">
+                </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="code" class="control-label">
-                                        <span ng-if="lang==='AR'">رقم الصقر</span>
-                                        <span ng-if="lang==='EN'">Falcon Code</span>
-                                    </label>
-                                    <input id="code"
-                                           type="text"
-                                           focus-autofocus="1"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر رقم الصقر...' : 'Type Falcon Code...'}}"
-                                           ng-model="falcon.code">
-                                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="type" class="control-label">
+                        <span ng-if="lang==='AR'">النوع</span>
+                        <span ng-if="lang==='EN'">Type</span>
+                    </label>
+                    <input id="type"
+                           type="text"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control"
+                           placeholder="{{lang==='AR' ? 'اذكر النوع...' : 'Type Falcon Type...'}}"
+                           ng-model="falcon.type">
+                </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    <label for="type" class="control-label">
-                                        <span ng-if="lang==='AR'">النوع</span>
-                                        <span ng-if="lang==='EN'">Type</span>
-                                    </label>
-                                    <input id="type"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control"
-                                           placeholder="{{lang==='AR' ? 'اذكر النوع...' : 'Type Falcon Type...'}}"
-                                           ng-model="falcon.type">
-                                </div>
+            </div>
 
-                            </div>
-
-                            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="weight" class="control-label">
-                                    <span ng-if="lang==='AR'">الوزن</span>
-                                    <span ng-if="lang==='EN'">Weight</span>
-                                </label>
-                                <div dir="ltr" class="input-group" id="weight">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="weight" class="control-label">
+                    <span ng-if="lang==='AR'">الوزن</span>
+                    <span ng-if="lang==='EN'">Weight</span>
+                </label>
+                <div dir="ltr" class="input-group" id="weight">
                                     <span class="input-group-addon">
                                         <span ng-if="lang==='AR'">جرام</span>
                                         <span ng-if="lang==='EN'">G</span>
                                     </span>
-                                    <input dir="rtl"
-                                           type="number"
-                                           min="0"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control text-right "
-                                           ng-model="falcon.weight">
-                                </div>
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label for="customer" class="control-label">
-                                    <span ng-if="lang==='AR'">العميل</span>
-                                    <span ng-if="lang==='EN'">Customer</span>
-                                </label>
-                                <select id="customer" data-placeholder="{{lang==='AR' ? 'ابحث عن العميل' : 'Search For Customer...'}}"
-                                        no-results-text="'{{lang==='AR' ? 'لا توجد بيانات توافق بحثك' : 'No Results.'}}'"
-                                        placeholder-text-single="'{{lang==='AR' ? 'اختر العميل' : 'Please Select Customer...'}}'"
-                                        class="form-control"
-                                        chosen=""
-                                        ng-model="falcon.customer"
-                                        required="required"
-                                        disable-validation-message=""
-                                        ng-options="customer.name for customer in customers track by customer.id">
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
+                    <input dir="rtl"
+                           type="number"
+                           min="0"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control text-right "
+                           ng-model="falcon.weight">
                 </div>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="customer" class="control-label">
+                    <span ng-if="lang==='AR'">العميل</span>
+                    <span ng-if="lang==='EN'">Customer</span>
+                    <a href="" ng-click="newCustomer()">
+                        <span ng-if="lang==='AR'">عميل جديد...</span>
+                        <span ng-if="lang==='EN'">New Customer...</span>
+                    </a>
+                </label>
+                <ui-select id="customer"
+                           ng-model="falcon.customer"
+                           required="required"
+                           disable-validation-message=""
+                           theme="bootstrap">
+                    <ui-select-match placeholder="اختر العميل المطلوب">
+                            <span ng-if="falcon.customer.id">
+                                {{$select.selected.name}}
+                            </span>
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="customer in customers | filter: $select.search | orderBy:'code' track by customer.id">
+                        <div ng-bind-html="customer.name | highlight: $select.search"></div>
+                        <small>
+                            <span ng-if="lang==='AR'">رقم العميل : </span>
+                            <span ng-if="lang==='EN'">Customer Code: </span>
+                            <span ng-bind-html="''+customer.code | highlight: $select.search"></span>
+                            <br/>
+                            <span ng-if="lang==='AR'">رقم الجوال : </span>
+                            <span ng-if="lang==='EN'">Mobile: </span>
+                            <span ng-bind-html="''+customer.mobile | highlight: $select.search"></span>
+                        </small>
+                    </ui-select-choices>
+                </ui-select>
             </div>
 
         </div>

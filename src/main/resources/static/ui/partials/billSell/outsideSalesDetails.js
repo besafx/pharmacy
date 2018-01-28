@@ -73,6 +73,10 @@ app.controller('outsideSalesDetailsCtrl', ['BillSellService', 'BillSellReceiptSe
             }
         };
 
+        $scope.printReceipt = function (receipt) {
+            window.open('/report/receipt/in/' + receipt.id + '/PDF');
+        };
+
         $scope.transactionSellRowMenu = [
             {
                 html: '<div class="drop-menu">حذف<span class="fa fa-trash fa-lg"></span></div>',

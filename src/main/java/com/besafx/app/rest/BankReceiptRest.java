@@ -74,7 +74,7 @@ public class BankReceiptRest {
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
-                .message(lang.equals("AR") ? "تم انشاء السند بنجاح" : "Create Receipt Successfully")
+                .message(lang.equals("AR") ? "تم انشاء السند للبنك بنجاح" : "Create Receipt Successfully")
                 .type("warning").build(), byEmail);
         return bankReceipt;
     }

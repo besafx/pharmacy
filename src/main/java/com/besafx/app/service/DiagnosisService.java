@@ -1,6 +1,7 @@
 package com.besafx.app.service;
 
 import com.besafx.app.entity.Diagnosis;
+import com.besafx.app.entity.DrugUnit;
 import com.besafx.app.entity.Order;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -21,4 +22,6 @@ public interface DiagnosisService extends PagingAndSortingRepository<Diagnosis, 
     List<Diagnosis> findByOrder(Order order);
 
     List<Diagnosis> findByOrderId(Long order);
+
+    List<Diagnosis> findByDrugUnit(DrugUnit drugUnit);
 }

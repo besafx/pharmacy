@@ -19,24 +19,28 @@
 
         <div class="row">
 
-            <h3 class="text-center col-xs-12 col-sm-12 col-md-12 col-lg-12 box-danger">
-                <span ng-if="lang==='AR'">إجمالي السعر المطلوب</span>
-                <span ng-if="lang==='EN'">Total Orders Prices: </span>
-                <span>{{orderReceipt.order.netCost}} SAR</span>
-            </h3>
+            <div class="form-group row">
 
-            <div class="row">
-
-                <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-info">
-                    <span ng-if="lang==='AR'">إجمالي المسدد</span>
-                    <span ng-if="lang==='EN'">Total Orders Payments: </span>
-                    <span>{{orderReceipt.order.paid}} SAR</span>
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-12 col-lg-12 box-warning">
+                    <span ng-if="lang==='AR'">إجمالي السعر المطلوب = </span>
+                    <span ng-if="lang==='EN'">Total Orders Prices = </span>
+                    {{orderReceipt.order.netCost | currency:' SAR ':2}}
                 </h3>
 
-                <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-warning">
-                    <span ng-if="lang==='AR'">إجمالي الباقي</span>
-                    <span ng-if="lang==='EN'">Total Orders Remain: </span>
-                    <span>{{orderReceipt.order.remain}} SAR</span>
+            </div>
+
+            <div class="form-group row">
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-success">
+                    <span ng-if="lang==='AR'">إجمالي المسدد = </span>
+                    <span ng-if="lang==='EN'">Total Orders Payments = </span>
+                    {{orderReceipt.order.paid | currency:' SAR ':2}}
+                </h3>
+
+                <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-danger">
+                    <span ng-if="lang==='AR'">إجمالي الباقي = </span>
+                    <span ng-if="lang==='EN'">Total Orders Remain = </span>
+                    {{orderReceipt.order.remain | currency:' SAR ':2}}
                 </h3>
 
             </div>
@@ -109,7 +113,7 @@
                           msd-elastic="\n"
                           class="form-control"
                           ng-model="orderReceipt.receipt.note">
-                                </textarea>
+                </textarea>
             </div>
 
         </div>
@@ -122,6 +126,7 @@
             <button uib-tooltip="{{lang==='AR' ? 'حفظ' : 'Save'}}"
                     tooltip-append-to-body="true"
                     type="submit"
+                    ng-disabled="orderReceipt.order.remain === 0"
                     class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">save</i>
             </button>

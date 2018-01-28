@@ -1,8 +1,13 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.auditing.MyEntityListener;
+import com.besafx.app.entity.listener.DrugListener;
+import com.besafx.app.entity.listener.DrugUnitListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.decimal4j.util.DoubleRounder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,7 +16,11 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@EntityListeners(DrugUnitListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DrugUnit implements Serializable {
+
+    public static final String SCREEN_NAME = "وحدات القياس";
 
     private static final long serialVersionUID = 1L;
 
@@ -28,10 +37,19 @@ public class DrugUnit implements Serializable {
     @GeneratedValue(generator = "drugUnitSequenceGenerator")
     private Long id;
 
+    private Integer code;
+
     private String name;
 
     private Integer factor;
 
+    private Integer reorderAmount;
+
+    @JoinColumn(name = "drug")
+    @ManyToOne
+    private Drug drug;
+
+    //Will be removed soon
     @JoinColumn(name = "drugUnit")
     @ManyToOne
     private DrugUnit drugUnit;
@@ -41,5 +59,21 @@ public class DrugUnit implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         DrugUnit drugUnit = mapper.readValue(jsonString, DrugUnit.class);
         return drugUnit;
+    }
+
+    public Double getRealQuantitySum() {
+        try {
+            return DoubleRounder.round((this.drug.getRealQuantitySumByDrugUnit(this) / factor), 3);
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getRealQuantitySumByDrugUnit(DrugUnit drugUnit) {
+        try {
+            return DoubleRounder.round((this.drug.getRealQuantitySumByDrugUnit(drugUnit) / factor), 3);
+        } catch (Exception ex) {
+            return 0.0;
+        }
     }
 }

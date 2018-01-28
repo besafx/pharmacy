@@ -35,9 +35,13 @@ public class BillBuyRest {
 
     private final Logger log = LoggerFactory.getLogger(BillBuyRest.class);
 
-    public static final String FILTER_TABLE = "**,supplier[id,code,name],transactionBuys[id],-billBuyReceipts";
+    public static final String FILTER_TABLE = "" +
+            "**," +
+            "supplier[id,code,name]," +
+            "transactionBuys[id]," +
+            "-billBuyReceipts";
     public static final String FILTER_TABLE_DETAILS = "**,supplier[id,code,name],transactionBuys[**,drugUnit[id,code,name],drug[id,code,nameArabic,nameEnglish],-billBuy,-transactionSells],billBuyReceipts[**,-billBuy,receipt[**,lastPerson[id,name]]]";
-    public static final String FILTER_BILL_BUY_COMBO = "id,code";
+    public static final String FILTER_BILL_BUY_COMBO = "id,code,supplier[id,code,name]";
 
     @Autowired
     private BillBuyService billBuyService;

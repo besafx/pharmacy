@@ -77,7 +77,7 @@ app.controller('outsideSalesCreateCtrl', [
 
             modalInstance.result.then(function (transactionSell) {
                 transactionSell.drugUnit = $scope.buffer.related.obj1;
-                transactionSell.unitSellCost = $scope.buffer.related.obj3;
+                transactionSell.unitCost = $scope.buffer.related.obj3;
                 $scope.transactionSellList.push(transactionSell);
                 $scope.buffer = {};
                 $scope.relatedPrices = {};

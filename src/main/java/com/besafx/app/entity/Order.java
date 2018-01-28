@@ -1,6 +1,8 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.listener.OrderListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -21,7 +23,11 @@ import java.util.stream.Collectors;
 @Data
 @Entity
 @Table(name = "[Order]")
+@EntityListeners(OrderListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Order implements Serializable {
+
+    public static final String SCREEN_NAME = "طلبات الفحص";
 
     private static final Logger log = LoggerFactory.getLogger(Order.class);
 

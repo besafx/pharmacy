@@ -21,6 +21,11 @@ app.factory("FalconService",
                     return response.data;
                 });
             },
+            findOneDetails: function (id) {
+                return $http.get("/api/falcon/findOneDetails/" + id).then(function (response) {
+                    return response.data;
+                });
+            },
             findByCustomer: function (customer) {
                 return $http.get("/api/falcon/findByCustomer/" + customer.id).then(function (response) {
                     return response.data;

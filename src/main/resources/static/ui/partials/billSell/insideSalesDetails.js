@@ -38,12 +38,6 @@ app.controller('insideSalesDetailsCtrl', ['BillSellService', 'BillSellReceiptSer
             }, function () {});
         };
 
-        $scope.newTransactionSell = function () {
-            ModalProvider.openTransactionSellCreateModel($scope.billSell).result.then(function (data) {
-                return $scope.billSell.transactionSells.splice(0, 0, data);
-            }, function () {});
-        };
-
         $scope.deleteTransactionSell = function (transactionSell) {
             $rootScope.showConfirmNotify("المبيعات", "هل تود حذف الطلبية فعلاً؟", "error", "fa-trash", function () {
                 TransactionSellService.remove(transactionSell.id).then(function () {
@@ -78,6 +72,10 @@ app.controller('insideSalesDetailsCtrl', ['BillSellService', 'BillSellReceiptSer
                     });
                 });
             }
+        };
+
+        $scope.printReceipt = function (receipt) {
+            window.open('/report/receipt/in/' + receipt.id + '/PDF');
         };
 
         $scope.transactionSellRowMenu = [

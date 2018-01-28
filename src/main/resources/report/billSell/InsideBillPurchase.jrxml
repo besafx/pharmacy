@@ -1067,7 +1067,7 @@
 									</frame>
 								</jr:columnHeader>
 								<jr:detailCell style="Table_TD" height="30">
-									<textField pattern="#,##0.## SAR;#,##0.##-  SAR">
+									<textField pattern="">
 										<reportElement x="0" y="0" width="107" height="30" uuid="24079b16-9298-4d7e-9f1f-cef821acdb48"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>

@@ -25,6 +25,11 @@
                 </a>
 
                 <a href="#panel-2-{{$index}}" class="mdl-tabs__tab">
+                    <span ng-if="lang==='AR'">تفاصيل العميل</span>
+                    <span ng-if="lang==='EN'">Customer Details</span>
+                </a>
+
+                <a href="#panel-3-{{$index}}" class="mdl-tabs__tab">
                     <span ng-if="lang==='AR'">طلبات الفحص</span>
                     <span ng-if="lang==='EN'">Orders</span>
                     <span ng-if="falcon.orders.length > 0" class="mdl-badge" data-badge="{{falcon.orders.length}}"></span>
@@ -78,13 +83,6 @@
                                 </td>
                                 <td>{{falcon.weight}} جرام</td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <span ng-if="lang==='AR'">العميل</span>
-                                    <span ng-if="lang==='EN'">Customer</span>
-                                </td>
-                                <td>{{falcon.customer.nickname}} / {{falcon.customer.name}}</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -94,6 +92,91 @@
             </div>
 
             <div class="mdl-tabs__panel" id="panel-2-{{$index}}">
+
+                <div class="form-group row">
+                    <button uib-tooltip="{{lang==='AR' ? 'تعديل البيانات' : 'Edit Information'}}"
+                            tooltip-append-to-body="true"
+                            type="button"
+                            ng-if="contains(me.team.authorities, ['ROLE_CUSTOMER_UPDATE'])"
+                            ng-click="ModalProvider.openCustomerUpdateModel(customer)"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                        <i class="material-icons">edit</i>
+                    </button>
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">اسم العميل</span>
+                                    <span ng-if="lang==='EN'">Name</span>
+                                </td>
+                                <td>{{falcon.customer.nickname}} {{falcon.customer.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">تاريخ التسجيل</span>
+                                    <span ng-if="lang==='EN'">Register Date</span>
+                                </td>
+                                <td>
+                                    {{falcon.customer.registerDate | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                    <span class="label label-success">{{falcon.customer.registerDate | date:'h:m a'}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">الجوال</span>
+                                    <span ng-if="lang==='EN'">Mobile</span>
+                                </td>
+                                <td>{{falcon.customer.mobile}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">رقم الهوية</span>
+                                    <span ng-if="lang==='EN'">Identity Card Number</span>
+                                </td>
+                                <td>{{falcon.customer.identityNumber}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">الجنسية</span>
+                                    <span ng-if="lang==='EN'">Nationality</span>
+                                </td>
+                                <td>{{falcon.customer.nationality}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">المهنة</span>
+                                    <span ng-if="lang==='EN'">Job</span>
+                                </td>
+                                <td>{{falcon.customer.job}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">إجمالي المسدد</span>
+                                    <span ng-if="lang==='EN'">Total Income: </span>
+                                </td>
+                                <td>{{falcon.customer.paidSum | currency:' SAR ':2}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span ng-if="lang==='AR'">إجمالي الدين</span>
+                                    <span ng-if="lang==='EN'">Total Debt: </span>
+                                </td>
+                                <td>{{falcon.customer.remainSum | currency:' SAR ':2}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mdl-tabs__panel" id="panel-3-{{$index}}">
 
                 <div class="form-group row">
                     <button uib-tooltip="{{lang==='AR' ? 'تحديث' : 'Refresh'}}"
@@ -117,7 +200,7 @@
                                     <span ng-if="lang==='EN'">#</span>
                                 </th>
 
-                                <th st-sort="code">
+                                <th st-sort="code" class="success">
                                     <span ng-if="lang==='AR'">رقم الطلب</span>
                                     <span ng-if="lang==='EN'">Code</span>
                                 </th>
@@ -127,29 +210,19 @@
                                     <span ng-if="lang==='EN'">Date</span>
                                 </th>
 
-                                <th st-sort="orderAttaches.length">
-                                    <span ng-if="lang==='AR'">المرفقات والمستندات</span>
-                                    <span ng-if="lang==='EN'">Attachments</span>
-                                </th>
-
-                                <th st-sort="doctor.person.name">
-                                    <span ng-if="lang==='AR'">الطبيب المعالج</span>
-                                    <span ng-if="lang==='EN'">Doctor</span>
-                                </th>
-
-                                <th st-sort="detectionTypeCostSum">
-                                    <span ng-if="lang==='AR'">التكلفة</span>
-                                    <span ng-if="lang==='EN'">Cost</span>
-                                </th>
-
-                                <th st-sort="discount">
-                                    <span ng-if="lang==='AR'">الخصم</span>
-                                    <span ng-if="lang==='EN'">Discount</span>
-                                </th>
-
-                                <th st-sort="net">
-                                    <span ng-if="lang==='AR'">الصافي</span>
+                                <th st-sort="net" class="info">
+                                    <span ng-if="lang==='AR'">المبلغ المطلوب</span>
                                     <span ng-if="lang==='EN'">Net</span>
+                                </th>
+
+                                <th st-sort="paid" class="warning">
+                                    <span ng-if="lang==='AR'">المدفوع</span>
+                                    <span ng-if="lang==='EN'">Paid</span>
+                                </th>
+
+                                <th st-sort="remain" class="danger">
+                                    <span ng-if="lang==='AR'">الباقي</span>
+                                    <span ng-if="lang==='EN'">Remain</span>
                                 </th>
 
                             </tr>
@@ -157,32 +230,19 @@
                             <tbody>
                             <tr ng-repeat="order in collection1">
                                 <td>{{$index+1}}</td>
-                                <td>{{order.code}}</td>
+                                <td class="success">{{order.code}}</td>
                                 <td>
                                     <span ng-show="dateType==='H'">{{order.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                     <span ng-show="dateType==='G'">{{order.date | date: 'yyyy-MM-dd'}}</span>
-                                    <span class="label label-success">{{order.date | date:'h:m a'}}</span>
+                                    {{order.date | date:'h:m a'}}
                                 </td>
-                                <td>
-                                        <span ng-repeat="orderAttach in order.orderAttaches">
-                                            <a uib-tooltip="{{orderAttach.attach.name}}" tooltip-append-to-body="true"
-                                               href="" ng-href="{{orderAttach.attach.link}}" target="_blank">
-                                                <i class="fa fa-link fa-lg"></i>
-                                            </a>
-                                        </span>
-                                    <span ng-if="order.orderAttaches.length === 0" class="label label-danger">
-                                            <span ng-if="lang==='AR'">لا توجد ملفات حتى الآن</span>
-                                            <span ng-if="lang==='EN'">No Attachments Yet</span>
-                                        </span>
-                                </td>
-                                <td>{{order.doctor.person.name}}</td>
-                                <td>{{order.detectionTypeCostSum}} SAR</td>
-                                <td>{{order.discount}} %</td>
-                                <td>{{order.netCost}} SAR</td>
+                                <td class="info">{{order.netCost}} SAR</td>
+                                <td class="warning">{{order.paid}} SAR</td>
+                                <td class="danger">{{order.remain}} SAR</td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection1 || collection1.length ==0">
-                                <td colspan="8">
+                                <td colspan="6">
                                     <span ng-if="lang==='AR'">لا توجد بيانات</span>
                                     <span ng-if="lang==='EN'">No Data Found.</span>
                                 </td>
@@ -190,13 +250,41 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="8">
+                                <td colspan="6">
                                     <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
                                 </td>
                             </tr>
                             </tfoot>
                         </table>
                     </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-success">
+                        <span ng-if="lang==='AR'">عدد الطلبات =  </span>
+                        <span ng-if="lang==='EN'">Orders Count =  </span>
+                        <span>{{falcon.orders.length}}</span>
+                    </h3>
+
+                    <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-info">
+                        <span ng-if="lang==='AR'">إجمالي السعر المطلوب =  </span>
+                        <span ng-if="lang==='EN'">Total Orders Prices =  </span>
+                        <span>{{falcon.orders | sumByKey:'netCost' | currency:' SAR ':2}}</span>
+                    </h3>
+
+                    <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-warning">
+                        <span ng-if="lang==='AR'">إجمالي المسدد =  </span>
+                        <span ng-if="lang==='EN'">Total Orders Payments =  </span>
+                        <span>{{falcon.orders | sumByKey:'paid' | currency:' SAR ':2}}</span>
+                    </h3>
+
+                    <h3 class="text-center col-xs-12 col-sm-12 col-md-6 col-lg-6 box-danger">
+                        <span ng-if="lang==='AR'">إجمالي الباقي =  </span>
+                        <span ng-if="lang==='EN'">Total Orders Remain =  </span>
+                        <span>{{falcon.orders | sumByKey:'remain' | currency:' SAR ':2}}</span>
+                    </h3>
 
                 </div>
 

@@ -1,6 +1,9 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.auditing.MyEntityListener;
+import com.besafx.app.entity.listener.BillSellListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -18,7 +21,11 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
+@EntityListeners(BillSellListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BillSell implements Serializable {
+
+    public static final String SCREEN_NAME = "فواتير البيع";
 
     private static final long serialVersionUID = 1L;
 
@@ -92,7 +99,7 @@ public class BillSell implements Serializable {
         try {
             return this.transactionSells
                     .stream()
-                    .mapToDouble(transactionSell -> transactionSell.getQuantity() * transactionSell.getTransactionBuy().getUnitSellCost())
+                    .mapToDouble(transactionSell -> transactionSell.getQuantity() * transactionSell.getUnitSellCost())
                     .sum();
         } catch (Exception ex) {
             return null;

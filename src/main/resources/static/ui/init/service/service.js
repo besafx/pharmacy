@@ -81,9 +81,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             backdrop: 'static',
             keyboard: false,
             resolve: {
-                title: function () {
-                    return $rootScope.lang === 'AR' ? 'انشاء حساب صقر جديد للعميل' : 'New Falcon Account By Account';
-                },
                 action: function () {
                     return 'create';
                 },
@@ -376,7 +373,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: 'supplierCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            size: 'lg',
             resolve: {
                 title: function () {
                     return $rootScope.lang === 'AR' ? 'انشاء حساب مورد جديد' : 'New Supplier';
@@ -400,7 +396,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: 'supplierCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            size: 'lg',
             resolve: {
                 title: function () {
                     return $rootScope.lang === 'AR' ? 'تعديل حساب مورد' : 'Update Supplier Information';
@@ -422,6 +417,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             ariaDescribedBy: 'modal-body',
             templateUrl: "/ui/partials/report/supplier/supplierDetailsReport.html",
             controller: "supplierDetailsReportCtrl",
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * Receipt Model                                              *
+     *                                                            *
+     *************************************************************/
+    this.openReceiptOutCreateModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/receipt/receiptOutCreate.html',
+            controller: 'receiptOutCreateCtrl',
             backdrop: 'static',
             keyboard: false
         });
@@ -888,7 +900,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: 'diagnosisCreateCtrl',
             backdrop: 'static',
             keyboard: false,
-            size: 'lg',
             resolve: {
                 order: function () {
                     return order;
@@ -1047,6 +1058,61 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
 
     /**************************************************************
      *                                                            *
+     * DrugUnit Model                                             *
+     *                                                            *
+     *************************************************************/
+    this.openDrugUnitCreateModel = function (drug) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drugUnit/drugUnitCreateUpdate.html',
+            controller: 'drugUnitCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'انشاء وحدة قياس جديدة' : 'New Drug Unit';
+                },
+                action: function () {
+                    return 'create';
+                },
+                drugUnit: function () {
+                    var drugUnit = {};
+                    drugUnit.drug = drug;
+                    return drugUnit;
+                }
+            }
+        });
+    };
+
+    this.openDrugUnitUpdateModel = function (drugUnit) {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/drugUnit/drugUnitCreateUpdate.html',
+            controller: 'drugUnitCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                title: function () {
+                    return $rootScope.lang === 'AR' ? 'تعديل وحدة قياس' : 'Update Drug Unit Information';
+                },
+                action: function () {
+                    return 'update';
+                },
+                drugUnit: function () {
+                    return drugUnit;
+                }
+            }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
      * BillBuy Model                                              *
      *                                                            *
      *************************************************************/
@@ -1097,7 +1163,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: 'transactionBuyCreateCtrl',
             backdrop: 'static',
             keyboard: false,
-            size: 'lg',
             resolve: {
                 billBuy: function () {
                     return billBuy;
@@ -1196,6 +1261,7 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             controller: 'insideSalesCreateCtrl',
             backdrop: 'static',
             keyboard: false,
+            size: 'lg',
             resolve: {
                 title: function () {
                     return $rootScope.lang === 'AR' ? 'صرف علاج طلب فحص' : 'New Bill Sell For Order';
@@ -1371,9 +1437,6 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
             keyboard: false,
             size: 'lg',
             resolve: {
-                title: function () {
-                    return $rootScope.lang === 'AR' ? 'حركة بيع جديدة' : 'New Transaction Sell';
-                },
                 billSell: function () {
                     return billSell;
                 }
@@ -1529,6 +1592,23 @@ app.service('ModalProvider', ['$uibModal', '$log', '$rootScope', function ($uibM
                     return persons;
                 }
             }
+        });
+    };
+
+    /**************************************************************
+     *                                                            *
+     * History Model                                              *
+     *                                                            *
+     *************************************************************/
+    this.openHistoryByDateReportModel = function () {
+        return $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/report/history/historyByDate.html',
+            controller: 'historyByDateCtrl',
+            backdrop: 'static',
+            keyboard: false
         });
     };
 

@@ -30,10 +30,7 @@ app.controller('billBuyCreateCtrl', [
         $timeout(function () {
             $scope.refreshDrugs();
             $scope.refreshSuppliers();
-            DrugUnitService.findAll().then(function (data) {
-                $scope.drugUnits = data;
-            })
-        }, 2000);
+        }, 600);
 
         $scope.billBuy = billBuy;
 
@@ -46,7 +43,7 @@ app.controller('billBuyCreateCtrl', [
         $scope.totalCost = 0;
 
         $scope.refreshDrugs = function () {
-            DrugService.findAllCombo().then(function (data) {
+            DrugService.findAllDrugUnitsCombo().then(function (data) {
                 $scope.drugs = data;
             });
         };

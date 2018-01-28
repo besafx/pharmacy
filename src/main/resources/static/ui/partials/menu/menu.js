@@ -1028,10 +1028,9 @@ function menuCtrl($scope,
     $scope.newDiagnosis = function (order) {
         ModalProvider.openDiagnosisCreateModel(order).result.then(function (data) {
             if (order.diagnoses) {
-                Array.prototype.splice.apply(order.diagnoses, [1, 0].concat(data));
+                return order.diagnoses.splice(0, 0, data);
             }
-        }, function () {
-        });
+        }, function () {});
     };
 
     /**************************************************************************************************************
@@ -1116,10 +1115,12 @@ function menuCtrl($scope,
         });
     };
     $scope.newDrug = function () {
-        ModalProvider.openDrugCreateModel().result.then(function (data) {
-            $scope.drugs.splice(0, 0, data);
-        }, function () {
-        });
+        ModalProvider.openDrugCreateModel().result.then(function (newDrug) {
+            $scope.drugs.splice(0, 0, newDrug);
+            ModalProvider.openDrugUnitCreateModel(newDrug).result.then(function (newDrugUnit) {
+                return newDrug.drugUnits.splice(0, 0, newDrugUnit);
+            }, function () {});
+        }, function () {});
     };
     $scope.deleteDrug = function (drug) {
         $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف الدواء فعلاً؟", "error", "fa-trash", function () {
@@ -1496,9 +1497,10 @@ function menuCtrl($scope,
      *************************************************************/
     $scope.newTransactionSell = function (billSell) {
         ModalProvider.openTransactionSellCreateModel(billSell).result.then(function (data) {
-            return billSell.transactionSells.splice(0, 0, data);
-        }, function () {
-        });
+            if(billSell.transactionSells){
+                return billSell.transactionSells.splice(0, 0, data);
+            }
+        }, function () {});
     };
     $scope.newBillSellReceipt = function (billSell) {
         ModalProvider.openBillSellReceiptCreateModel(billSell).result.then(function (data) {
@@ -1695,15 +1697,6 @@ function menuCtrl($scope,
             },
             click: function ($itemScope, $event, value) {
                 $scope.newBillSellReceipt($itemScope.billSell);
-            }
-        },
-        {
-            html: '<div class="drop-menu">اضافة صنف<span class="fa fa-plus-square fa-lg"></span></div>',
-            enabled: function () {
-                return $rootScope.contains($rootScope.me.team.authorities, ['ROLE_BILL_SELL_ADD_ITEM']);
-            },
-            click: function ($itemScope, $event, value) {
-                $scope.newTransactionSell($itemScope.billSell);
             }
         },
         {
@@ -1969,6 +1962,23 @@ function menuCtrl($scope,
             }
         }
     ];
+
+    /**************************************************************************************************************
+     *                                                                                                            *
+     * Receipt                                                                                                    *
+     *                                                                                                            *
+     **************************************************************************************************************/
+    $scope.newReceiptOut = function () {
+        ModalProvider.openReceiptOutCreateModel().result.then(function (data) {
+
+        }, function () {});
+    };
+    $scope.printReceiptIn = function (receipt) {
+        window.open('/report/receipt/in/' + receipt.id + '/PDF');
+    };
+    $scope.printReceiptOut = function (receipt) {
+        window.open('/report/receipt/out/' + receipt.id + '/PDF');
+    };
 
     /**************************************************************************************************************
      *                                                                                                            *
@@ -2575,7 +2585,7 @@ function menuCtrl($scope,
      * Bank Receipt Out                                           *
      *                                                            *
      *************************************************************/
-    $scope.banakReceiptsOut = [];
+    $scope.bankReceiptsOut = [];
     $scope.bankReceiptItemsOut = [];
     $scope.bankReceiptItemsOut.push(
         {'id': 1, 'type': 'title', 'name': $rootScope.lang === 'AR' ? 'البنك' : 'Bank'},
@@ -2615,7 +2625,7 @@ function menuCtrl($scope,
         //
 
         BankReceiptService.filter(search.join("")).then(function (data) {
-            $scope.banakReceiptsOut = data;
+            $scope.bankReceiptsOut = data;
             $scope.bankTotalAmountOut = 0;
             angular.forEach(data, function (bankReceipt) {
                 $scope.bankTotalAmountOut+=bankReceipt.receipt.amountNumber;
@@ -2652,7 +2662,7 @@ function menuCtrl($scope,
     };
     $scope.findBankReceiptsOutByToday = function () {
         BankReceiptService.findByTodayOut().then(function (data) {
-            $scope.banakReceiptsOut = data;
+            $scope.bankReceiptsOut = data;
             $scope.bankTotalAmountOut = 0;
             angular.forEach(data, function (bankReceipt) {
                 $scope.bankTotalAmountOut+=bankReceipt.receipt.amountNumber;
@@ -2670,7 +2680,7 @@ function menuCtrl($scope,
     };
     $scope.findBankReceiptsOutByWeek = function () {
         BankReceiptService.findByWeekOut().then(function (data) {
-            $scope.banakReceiptsOut = data;
+            $scope.bankReceiptsOut = data;
             $scope.bankTotalAmountOut = 0;
             angular.forEach(data, function (bankReceipt) {
                 $scope.bankTotalAmountOut+=bankReceipt.receipt.amountNumber;
@@ -2688,7 +2698,7 @@ function menuCtrl($scope,
     };
     $scope.findBankReceiptsOutByMonth = function () {
         BankReceiptService.findByMonthOut().then(function (data) {
-            $scope.banakReceiptsOut = data;
+            $scope.bankReceiptsOut = data;
             $scope.bankTotalAmountOut = 0;
             angular.forEach(data, function (bankReceipt) {
                 $scope.bankTotalAmountOut+=bankReceipt.receipt.amountNumber;
@@ -2706,7 +2716,7 @@ function menuCtrl($scope,
     };
     $scope.findBankReceiptsOutByYear = function () {
         BankReceiptService.findByYearOut().then(function (data) {
-            $scope.banakReceiptsOut = data;
+            $scope.bankReceiptsOut = data;
             $scope.bankTotalAmountOut = 0;
             angular.forEach(data, function (bankReceipt) {
                 $scope.bankTotalAmountOut+=bankReceipt.receipt.amountNumber;
@@ -2725,10 +2735,10 @@ function menuCtrl($scope,
     $scope.deleteBankReceiptOut = function (bankReceipt) {
         $rootScope.showConfirmNotify("حذف البيانات", "هل تود حذف السند وكل ما يتعلق به من حسابات فعلاً؟", "error", "fa-trash", function () {
             BankReceiptService.remove(bankReceipt.id).then(function () {
-                var index = $scope.banakReceiptsOut.indexOf(bankReceipt);
-                $scope.banakReceiptsOut.splice(index, 1);
+                var index = $scope.bankReceiptsOut.indexOf(bankReceipt);
+                $scope.bankReceiptsOut.splice(index, 1);
                 $scope.bankTotalAmountOut = 0;
-                angular.forEach($scope.banakReceiptsOut, function (bankReceipt) {
+                angular.forEach($scope.bankReceiptsOut, function (bankReceipt) {
                     $scope.bankTotalAmountOut+=bankReceipt.receipt.amountNumber;
                 });
             });
@@ -2736,10 +2746,10 @@ function menuCtrl($scope,
     };
     $scope.newBankReceiptOut = function () {
         ModalProvider.openBankReceiptOutCreateModel().result.then(function (data) {
-            $scope.banakReceiptsOut.splice(0, 0, data);
+            $scope.bankReceiptsOut.splice(0, 0, data);
             $scope.selectedBank.balance-=data.receipt.amountNumber;
             $scope.bankTotalAmountOut = 0;
-            angular.forEach($scope.banakReceiptsOut, function (bankReceipt) {
+            angular.forEach($scope.bankReceiptsOut, function (bankReceipt) {
                 $scope.bankTotalAmountOut+=bankReceipt.receipt.amountNumber;
             });
         }, function () {

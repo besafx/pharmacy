@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/transactionSell/")
 public class TransactionSellRest {
 
-    public static final String FILTER_TABLE = "**,drugUnit[**,-drugUnit],transactionBuy[**,drugUnit[**,-drugUnit],drug[**,-drugCategory,-transactionSells,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]";
+    public static final String FILTER_TABLE = "**,drugUnit[**,-drug,-drugUnit],transactionBuy[**,drugUnit[**,-drug,-drugUnit],drug[**,-defaultDrugUnit,-drugUnits,-drugCategory,-transactionSells,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]";
     private final Logger log = LoggerFactory.getLogger(TransactionSellRest.class);
     @Autowired
     private TransactionSellService transactionSellService;
@@ -50,7 +50,7 @@ public class TransactionSellRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
     @Transactional
-    public String create(@RequestBody TransactionSell transactionSell) {
+    public String create(@RequestBody TransactionSell transactionSell, Principal principal) {
         if (transactionSell.getBillSell().getOrder() != null) {
             throw new CustomException("لا يمكنك اضافة حركات بيع الى فاتورة صرف علاج طلب فحص");
         }
@@ -62,6 +62,13 @@ public class TransactionSellRest {
         }
         transactionSell.setDate(new DateTime().toDate());
         transactionSell = transactionSellService.save(transactionSell);
+        Person caller = personService.findByEmail(principal.getName());
+        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+        notificationService.notifyOne(Notification
+                .builder()
+                .message(lang.equals("AR") ? "تم اضافة الصنف بنجاح" : "Adding Item Successfully")
+                .type("success")
+                .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionSell);
     }
 
@@ -77,11 +84,8 @@ public class TransactionSellRest {
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "المشتريات" : "The Sales")
-                    .message(lang.equals("AR") ? "تم حذف الطلبية بنجاح" : "Delete Sales Order With All Related Successfully")
+                    .message(lang.equals("AR") ? "تم حذف الصنف بنجاح" : "Deleting Item Successfully")
                     .type("error")
-                    .icon("fa-trash")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
         }
     }

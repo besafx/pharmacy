@@ -28,20 +28,67 @@ app.controller('orderDetailsCtrl', [
 
         $scope.wrappers = [];
         $scope.order = order;
+        $scope.order.orderReceipts = [];
+        $scope.order.orderDetectionTypes = [];
+        $scope.order.orderAttaches = [];
+        $scope.order.diagnoses = [];
+
         $scope.refreshOrder = function (order) {
             OrderService.findOne(order.id).then(function (data) {
                 return order = data;
             });
         };
+
+        $scope.refreshOrderDetectionTypeByOrder = function (order) {
+            OrderDetectionTypeService.findByOrder(order).then(function (data) {
+                return order.orderDetectionTypes = data;
+            });
+        };
+
+        $scope.refreshOrderAttachByOrder = function (order) {
+            OrderAttachService.findByOrder(order).then(function (data) {
+                return order.orderAttaches = data;
+            });
+        };
+
+        $scope.refreshDiagnosesByOrder = function (order) {
+            DiagnosisService.findByOrderId(order.id).then(function (data) {
+                return order.diagnoses = data;
+            });
+        };
+
+        $scope.refreshOrderReceipts = function (order) {
+            OrderReceiptService.findByOrder(order.id).then(function (data) {
+                return order.orderReceipts = data;
+            });
+        };
+
+        $scope.findOrdersByFalcon = function (falcon, code) {
+            OrderService.findByFalconAndCodeNot(falcon.id, code).then(function (data) {
+                return falcon.orders = data;
+            });
+        };
+
+        $scope.findOrdersByCustomer = function (customer, code) {
+            OrderService.findByFalconCustomerAndCodeNot(customer.id, code).then(function (data) {
+                return customer.orders = data;
+            });
+        };
+
         $scope.printPending = function (order) {
             window.open('/report/order/pending/' + order.id + '/PDF');
         };
+
+        $scope.printReceipt = function (receipt) {
+            window.open('/report/receipt/in/' + receipt.id + '/PDF');
+        };
+
         $scope.newOrderReceipt = function (order) {
             ModalProvider.openOrderReceiptCreateModel(order).result.then(function (data) {
                 return order.orderReceipts.splice(0, 0, data);
-            }, function () {
-            });
+            }, function () {});
         };
+
         $scope.deleteOrderAttach = function (orderAttach, order) {
             $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف المستند فعلاً؟", "error", "fa-trash", function () {
                 OrderAttachService.remove(orderAttach).then(function (data) {
@@ -53,6 +100,7 @@ app.controller('orderDetailsCtrl', [
                 });
             });
         };
+
         $scope.deleteOrderDetectionType = function (orderDetectionType, order) {
             $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف خدمة الفحص فعلاً؟", "error", "fa-trash", function () {
                 OrderDetectionTypeService.remove(orderDetectionType.id).then(function () {
@@ -61,6 +109,7 @@ app.controller('orderDetailsCtrl', [
                 });
             });
         };
+
         $scope.deleteOrderReceipt = function (orderReceipt, order) {
             $rootScope.showConfirmNotify("الإستقبال", "هل تود حذف سند القبض فعلاً؟", "error", "fa-trash", function () {
                 OrderReceiptService.remove(orderReceipt.id).then(function () {
@@ -69,66 +118,40 @@ app.controller('orderDetailsCtrl', [
                 });
             });
         };
+
         $scope.newOrderDetectionType = function (order) {
             ModalProvider.openOrderDetectionTypeCreateModel(order).result.then(function (data) {
                 if (order.orderDetectionTypes) {
                     return order.orderDetectionTypes.splice(0, 0, data);
                 }
-            }, function () {
-            });
+            }, function () {});
         };
-        $scope.refreshOrderDetectionTypeByOrder = function (order) {
-            OrderDetectionTypeService.findByOrder(order).then(function (data) {
-                return order.orderDetectionTypes = data;
-            });
-        };
-        $scope.refreshOrderAttachByOrder = function (order) {
-            OrderAttachService.findByOrder(order).then(function (data) {
-                return order.orderAttaches = data;
-            });
-        };
-        $scope.findOrdersByFalcon = function (falcon, code) {
-            OrderService.findByFalconAndCodeNot(falcon.id, code).then(function (data) {
-                return falcon.orders = data;
-            });
-        };
-        $scope.findOrdersByCustomer = function (customer, code) {
-            OrderService.findByFalconCustomerAndCodeNot(customer.id, code).then(function (data) {
-                return customer.orders = data;
-            });
-        };
-        $scope.deleteDiagnosis = function (diagnosis, order) {
-            if (diagnosis) {
-                $rootScope.showConfirmNotify("العيادة الطبية", "هل تود حذف العلاج فعلاً؟", "error", "fa-trash", function () {
-                    DiagnosisService.remove(diagnosis.id).then(function () {
-                        var index = order.diagnoses.indexOf(diagnosis);
-                        return order.diagnoses.splice(index, 1);
-                    });
-                });
 
-            }
+        $scope.deleteDiagnosis = function (diagnosis, order) {
+            $rootScope.showConfirmNotify("العيادة الطبية", "هل تود حذف العلاج فعلاً؟", "error", "fa-trash", function () {
+                DiagnosisService.remove(diagnosis.id).then(function () {
+                    var index = order.diagnoses.indexOf(diagnosis);
+                    return order.diagnoses.splice(index, 1);
+                });
+            });
         };
+
         $scope.newDiagnosis = function (order) {
             ModalProvider.openDiagnosisCreateModel(order).result.then(function (data) {
-                Array.prototype.splice.apply(order.diagnoses, [1, 0].concat(data));
-            }, function () {
-                console.info('DiagnosisCreateModel Closed.');
-            });
+                return order.diagnoses.splice(0, 0, data);
+            }, function () {});
         };
+
         $scope.saveOrderNote = function (order) {
             if ($rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_SAVE_NOTE'])) {
                 OrderService.saveNote(order, order.note);
             }
         };
+
         $scope.saveOrderDetectionTypeCase = function (orderDetectionType) {
             if ($rootScope.contains($rootScope.me.team.authorities, ['ROLE_ORDER_DETECTION_TYPE_SAVE_CASE'])) {
                 OrderDetectionTypeService.saveOrderDetectionTypeCase(orderDetectionType, orderDetectionType.done);
             }
-        };
-        $scope.refreshDiagnosesByOrder = function (order) {
-            DiagnosisService.findByOrderId(order.id).then(function (data) {
-                order.diagnosis = data;
-            });
         };
 
         /***********************************
@@ -239,6 +262,7 @@ app.controller('orderDetailsCtrl', [
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
         $timeout(function () {
             $scope.refreshOrder($scope.order);
             window.componentHandler.upgradeAllRegistered();

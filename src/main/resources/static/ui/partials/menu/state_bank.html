@@ -280,6 +280,11 @@
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
                                         </a>
+                                        <a href=""
+                                           ng-click="printReceiptIn(bankReceipt.receipt)">
+                                            <strong ng-if="lang==='AR'">طباعة</strong>
+                                            <strong ng-if="lang==='EN'">Print</strong>
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
@@ -319,7 +324,7 @@
                             <i class="material-icons">search</i>
                         </button>
 
-                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات اليوم' : 'Today Cash Out'}}"
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات اليوم' : 'Today Cash Out'}}"
                                 tooltip-append-to-body="true"
                                 type="button"
                                 ng-click="findBankReceiptsOutByToday()"
@@ -327,7 +332,7 @@
                             <i class="material-icons">filter_list</i>
                         </button>
 
-                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات الاسبوع' : 'Week Cash Out'}}"
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات الاسبوع' : 'Week Cash Out'}}"
                                 tooltip-append-to-body="true"
                                 type="button"
                                 ng-click="findBankReceiptsOutByWeek()"
@@ -335,7 +340,7 @@
                             <i class="material-icons">filter_list</i>
                         </button>
 
-                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات الشهر' : 'Month Cash Out'}}"
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات الشهر' : 'Month Cash Out'}}"
                                 tooltip-append-to-body="true"
                                 type="button"
                                 ng-click="findBankReceiptsOutByMonth()"
@@ -343,7 +348,7 @@
                             <i class="material-icons">filter_list</i>
                         </button>
 
-                        <button uib-tooltip="{{lang==='AR' ? 'ايرادات العام' : 'Year Cash Out'}}"
+                        <button uib-tooltip="{{lang==='AR' ? 'مصروفات العام' : 'Year Cash Out'}}"
                                 tooltip-append-to-body="true"
                                 type="button"
                                 ng-click="findBankReceiptsOutByYear()"
@@ -434,10 +439,15 @@
                                     <td st-select-row-multi="bankReceipt">{{bankReceipt.receipt.note}}</td>
                                     <td>
                                         <a href=""
-                                           ng-if="contains(me.team.authorities, ['ROLE_BANK_RECEIPT_IN_DELETE'])"
+                                           ng-if="contains(me.team.authorities, ['ROLE_BANK_RECEIPT_OUT_DELETE'])"
                                            ng-click="deleteBankReceiptOut(bankReceipt)">
                                             <strong ng-if="lang==='AR'">حذف</strong>
                                             <strong ng-if="lang==='EN'">Remove</strong>
+                                        </a>
+                                        <a href=""
+                                           ng-click="printReceiptOut(bankReceipt.receipt)">
+                                            <strong ng-if="lang==='AR'">طباعة</strong>
+                                            <strong ng-if="lang==='EN'">Print</strong>
                                         </a>
                                     </td>
                                 </tr>

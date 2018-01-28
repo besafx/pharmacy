@@ -1,6 +1,8 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.entity.listener.PersonListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,7 +15,11 @@ import java.util.Date;
 
 @Data
 @Entity
+@EntityListeners(PersonListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Person implements Serializable {
+
+    public static final String SCREEN_NAME = "حسابات المستخدمين";
 
     private static final long serialVersionUID = 1L;
 

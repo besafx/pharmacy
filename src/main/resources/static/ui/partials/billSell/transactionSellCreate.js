@@ -1,68 +1,45 @@
-app.controller('transactionSellCreateCtrl', ['DrugService', 'DrugUnitService', 'BillSellService', 'TransactionSellService', 'TransactionBuyService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'billSell',
-    function (DrugService, DrugUnitService, BillSellService, TransactionSellService, TransactionBuyService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, billSell) {
+app.controller('transactionSellCreateCtrl', ['DrugService', 'DrugUnitService', 'BillSellService', 'TransactionSellService', 'TransactionBuyService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'billSell',
+    function (DrugService, DrugUnitService, BillSellService, TransactionSellService, TransactionBuyService, $scope, $rootScope, $timeout, $log, $uibModalInstance, billSell) {
 
         $timeout(function () {
             $scope.refreshDrugs();
-        }, 2000);
+        }, 600);
 
         $scope.transactionSell = {};
 
         $scope.transactionSell.billSell = billSell;
 
+        $scope.transactionSell.transactionBuy = {};
+
         $scope.buffer = {};
 
-        $scope.title = title;
-
-        $scope.selectedTransactionBuy = {};
-
         $scope.transactionBuyCalculation = function () {
-            DrugUnitService.getRelatedPrices($scope.selectedTransactionBuy.id).then(function (data) {
+            DrugUnitService.getRelatedPrices($scope.transactionSell.transactionBuy.id).then(function (data) {
                 $scope.relatedPrices = data;
             });
         };
 
-        $scope.setSelectedTransactionBuy = function (object) {
-            if (object) {
-                angular.forEach($scope.transactionSell.drug.transactionBuys, function (transactionBuy) {
-                    if (object.id == transactionBuy.id) {
-                        $scope.selectedTransactionBuy = transactionBuy;
-                        $scope.transactionBuyCalculation();
-                        return transactionBuy.isSelected = true;
-                    } else {
-                        return transactionBuy.isSelected = false;
-                    }
-                });
-            }
-        };
-
         $scope.transactionBuyCalculation = function () {
-            DrugUnitService.getRelatedPrices($scope.selectedTransactionBuy.id).then(function (data) {
+            DrugUnitService.getRelatedPrices($scope.transactionSell.transactionBuy.id).then(function (data) {
                 $scope.relatedPrices = data;
             });
         };
 
-        $scope.refreshTransactionBuyByDrug = function () {
+        $scope.refreshTransactionBuy = function () {
             TransactionBuyService.findByDrug($scope.transactionSell.drug.id).then(function (data) {
                 $scope.transactionSell.drug.transactionBuys = data
             });
         };
 
-        $scope.refreshBillSell = function () {
-            BillSellService.findOne(billSell.id).then(function (data) {
-                $scope.transactionSell.billSell = data;
-            });
-        };
-
         $scope.refreshDrugs = function () {
-            DrugService.findAllCombo().then(function (data) {
-                $scope.drugs = data;
+            DrugService.findAllDrugUnitsCombo().then(function (drugs) {
+                $scope.drugs = drugs;
             });
         };
 
         $scope.submit = function () {
-            $scope.transactionSell.transactionBuy = $scope.selectedTransactionBuy;
             $scope.transactionSell.drugUnit = $scope.buffer.related.obj1;
-            $scope.transactionSell.unitSellCost = $scope.buffer.related.obj3;
+            $scope.transactionSell.unitCost = $scope.buffer.related.obj3;
             TransactionSellService.create($scope.transactionSell).then(function (data) {
                 $uibModalInstance.close(data);
             });

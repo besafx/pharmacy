@@ -1,6 +1,9 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.auditing.MyEntityListener;
+import com.besafx.app.entity.listener.TransactionBuyListener;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -15,7 +18,11 @@ import java.util.List;
 
 @Data
 @Entity
+@EntityListeners(TransactionBuyListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionBuy implements Serializable {
+
+    public static final String SCREEN_NAME = "حركات الشراء";
 
     private static final long serialVersionUID = 1L;
 
@@ -76,7 +83,10 @@ public class TransactionBuy implements Serializable {
 
     public Double getSalesQuantity() {
         try {
-            return this.transactionSells.stream().mapToDouble(TransactionSell::getUnitQuantity).sum();
+            return this.transactionSells
+                    .stream()
+                    .mapToDouble(transactionSell -> transactionSell.getUnitQuantityByDrugUnit(this.drugUnit))
+                    .sum();
         } catch (Exception ex) {
             return 0.0;
         }
@@ -101,6 +111,14 @@ public class TransactionBuy implements Serializable {
     public Double getRealQuantity() {
         try {
             return this.getQuantity() - this.getSalesQuantity();
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
+
+    public Double getRealQuantityByDrugUnit(DrugUnit drugUnit) {
+        try {
+            return (this.getQuantity() * this.drugUnit.getFactor()) - this.getSalesQuantityByDrugUnit(drugUnit);
         } catch (Exception ex) {
             return 0.0;
         }

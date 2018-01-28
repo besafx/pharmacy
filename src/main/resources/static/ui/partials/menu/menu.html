@@ -112,16 +112,6 @@
                             </span>
                         </li>
 
-                        <li class="mdl-menu__item mdl-list__item"
-                            ng-if="contains(me.team.authorities, ['ROLE_DIAGNOSIS_CREATE'])"
-                            ng-click="newDiagnosis()">
-                            <span class="mdl-list__item-primary-content">
-                                <i class="material-icons mdl-list__item-icon">note_add</i>
-                               <span ng-if="lang==='AR'">وصفة طبية جديدة</span>
-                               <span ng-if="lang==='EN'">New Prescription...</span>
-                            </span>
-                        </li>
-
                     </ul>
 
                     <button id="toggle-pharmacy-action-menu-lower"
@@ -349,6 +339,16 @@
                                 <i class="material-icons mdl-list__item-icon">account_balance</i>
                                 <span ng-if="lang==='AR'">البنك</span>
                                 <span ng-if="lang==='EN'">Bank</span>
+                            </span>
+                        </li>
+
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_OUT_CREATE', 'ROLE_BANK_RECEIPT_OUT_CREATE'])"
+                            ng-click="newReceiptOut()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">money_off</i>
+                                <span ng-if="lang==='AR'">سند صرف</span>
+                                <span ng-if="lang==='EN'">Receipt Out</span>
                             </span>
                         </li>
 
