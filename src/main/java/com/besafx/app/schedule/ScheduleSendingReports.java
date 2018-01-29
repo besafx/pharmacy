@@ -57,6 +57,9 @@ public class ScheduleSendingReports {
     private AsyncScheduleDailyOutsideSalesDebt asyncScheduleDailyOutsideSalesDebt;
 
     @Autowired
+    private AsyncScheduleDailyHistory asyncScheduleDailyHistory;
+
+    @Autowired
     private QuickEmail quickEmail;
 
     @Autowired
@@ -148,6 +151,10 @@ public class ScheduleSendingReports {
         Future<byte[]> work7 = asyncScheduleDailyOrdersDebt.getFile(timeType);
         byte[] fileBytes7 = work7.get();
 
+        log.info("Generate history report");
+        Future<byte[]> work8 = asyncScheduleDailyHistory.getFile(timeType);
+        byte[] fileBytes8 = work8.get();
+
         log.info("Generate zip file");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
@@ -188,6 +195,11 @@ public class ScheduleSendingReports {
         zipOutputStream.write(fileBytes7);
         zipOutputStream.closeEntry();
 
+        ZipEntry entry8 = new ZipEntry("عمليات البرنامج.pdf");
+        zipOutputStream.putNextEntry(entry8);
+        zipOutputStream.write(fileBytes8);
+        zipOutputStream.closeEntry();
+
         zipOutputStream.finish();
         zipOutputStream.flush();
         IOUtils.closeQuietly(zipOutputStream);
@@ -226,6 +238,10 @@ public class ScheduleSendingReports {
         log.info("Generate ordersDebt report");
         Future<byte[]> work7 = asyncScheduleDailyOrdersDebt.getFile(timeType);
         byte[] fileBytes7 = work7.get();
+
+        log.info("Generate history report");
+        Future<byte[]> work8 = asyncScheduleDailyOrdersDebt.getFile(timeType);
+        byte[] fileBytes8 = work8.get();
 
         log.info("Generate zip file");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -276,6 +292,12 @@ public class ScheduleSendingReports {
         parameters.setSourceExternalStream(true);
         zos.putNextEntry(null, parameters);
         zos.write(fileBytes7);
+        zos.closeEntry();
+
+        parameters.setFileNameInZip("عمليات البرنامج.pdf");
+        parameters.setSourceExternalStream(true);
+        zos.putNextEntry(null, parameters);
+        zos.write(fileBytes8);
         zos.closeEntry();
 
         zos.finish();
