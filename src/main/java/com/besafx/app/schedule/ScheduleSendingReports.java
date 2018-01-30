@@ -240,7 +240,7 @@ public class ScheduleSendingReports {
         byte[] fileBytes7 = work7.get();
 
         log.info("Generate history report");
-        Future<byte[]> work8 = asyncScheduleDailyOrdersDebt.getFile(timeType);
+        Future<byte[]> work8 = asyncScheduleDailyHistory.getFile(timeType);
         byte[] fileBytes8 = work8.get();
 
         log.info("Generate zip file");

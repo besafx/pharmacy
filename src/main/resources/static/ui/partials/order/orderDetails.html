@@ -376,7 +376,7 @@
                                     <td>
                                         <span ng-show="dateType==='H'">{{diagnosis.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
                                         <span ng-show="dateType==='G'">{{diagnosis.date | date: 'yyyy-MM-dd'}}</span>
-                                        <span class="label label-success">{{diagnosis.date | date:'h:m a'}}</span>
+                                       {{diagnosis.date | date:'h:m a'}}
                                     </td>
                                     <td>
                                         [{{diagnosis.drug.code}}]
