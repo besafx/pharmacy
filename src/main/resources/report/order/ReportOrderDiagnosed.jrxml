@@ -77,6 +77,7 @@
 		<field name="detectionType" class="com.besafx.app.entity.DetectionType"/>
 		<field name="done" class="java.lang.Boolean"/>
 		<field name="conditionInArabic" class="java.lang.String"/>
+		<field name="count" class="java.lang.Integer"/>
 		<sortField name="CODE_VAR" type="Variable"/>
 		<variable name="CODE_VAR" class="java.lang.Integer">
 			<variableExpression><![CDATA[$F{detectionType}.getCode()]]></variableExpression>
@@ -577,13 +578,13 @@
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{order}.getOrderDetectionTypes())]]></dataSourceExpression>
 					</datasetRun>
 					<jr:columnGroup width="535" uuid="42e6914c-d2f7-431c-bb48-8f6060ca40cf">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [3]"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [4]"/>
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<jr:tableHeader style="Table 1_TH" height="30" rowSpan="1">
 							<frame>
 								<reportElement x="0" y="0" width="535" height="30" uuid="99ead6f0-1ac2-4691-8cfb-51c1f5ad87cc"/>
 								<staticText>
-									<reportElement x="0" y="0" width="179" height="30" uuid="2afaa14f-2f1c-43a9-9a86-9fd44cef946a"/>
+									<reportElement x="0" y="0" width="268" height="30" uuid="2afaa14f-2f1c-43a9-9a86-9fd44cef946a"/>
 									<box padding="5"/>
 									<textElement textAlignment="Left" verticalAlignment="Middle">
 										<font fontName="Arial" size="10" isBold="true" isUnderline="true"/>
@@ -591,7 +592,7 @@
 									<text><![CDATA[Required Detections:]]></text>
 								</staticText>
 								<staticText>
-									<reportElement x="358" y="0" width="177" height="30" uuid="1061ee7a-596b-42e2-bcea-c09ba6de0813">
+									<reportElement x="268" y="0" width="267" height="30" uuid="1061ee7a-596b-42e2-bcea-c09ba6de0813">
 										<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 									</reportElement>
 									<box padding="5"/>
@@ -646,23 +647,23 @@
 							</frame>
 						</jr:tableFooter>
 						<jr:columnGroup width="535" uuid="0b1fbb9e-a2b0-4f46-a4fa-31d46e6d2970">
-							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [3]"/>
-							<jr:column width="179" uuid="e2c9ad52-ceee-4117-a603-cf613abdaba0">
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [4]"/>
+							<jr:column width="134" uuid="e2c9ad52-ceee-4117-a603-cf613abdaba0">
 								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 								<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
 									<frame>
-										<reportElement x="0" y="0" width="179" height="30" uuid="fb4730ad-9073-49a2-afc8-25406c6af5d0">
+										<reportElement x="0" y="0" width="134" height="30" uuid="fb4730ad-9073-49a2-afc8-25406c6af5d0">
 											<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 										</reportElement>
 										<staticText>
-											<reportElement x="0" y="0" width="179" height="15" uuid="5a58a823-8ead-4f62-b653-947b745aedfb"/>
+											<reportElement x="0" y="0" width="134" height="15" uuid="5a58a823-8ead-4f62-b653-947b745aedfb"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle">
 												<font fontName="Arial"/>
 											</textElement>
 											<text><![CDATA[رقم نوع الفحص]]></text>
 										</staticText>
 										<staticText>
-											<reportElement x="0" y="15" width="179" height="15" uuid="b7cfa7e5-055a-4d81-8602-4ee54042cb20"/>
+											<reportElement x="0" y="15" width="134" height="15" uuid="b7cfa7e5-055a-4d81-8602-4ee54042cb20"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle">
 												<font fontName="Arial"/>
 											</textElement>
@@ -672,7 +673,7 @@
 								</jr:columnHeader>
 								<jr:detailCell style="Table 1_TD" height="30">
 									<textField>
-										<reportElement x="0" y="0" width="179" height="30" uuid="d3a81a8e-ac6c-4c5b-947d-223b57fac611"/>
+										<reportElement x="0" y="0" width="134" height="30" uuid="d3a81a8e-ac6c-4c5b-947d-223b57fac611"/>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
 											<font fontName="Arial"/>
 										</textElement>
@@ -680,23 +681,23 @@
 									</textField>
 								</jr:detailCell>
 							</jr:column>
-							<jr:column width="179" uuid="7ada19d9-d28f-4fec-892f-011ba8b893b9">
+							<jr:column width="134" uuid="7ada19d9-d28f-4fec-892f-011ba8b893b9">
 								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 								<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
 									<frame>
-										<reportElement x="0" y="0" width="179" height="30" uuid="37217cdf-2d79-4f6e-bf81-713d07c16016">
+										<reportElement x="0" y="0" width="134" height="30" uuid="37217cdf-2d79-4f6e-bf81-713d07c16016">
 											<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 											<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 										</reportElement>
 										<staticText>
-											<reportElement x="0" y="0" width="179" height="15" uuid="3e3df4f4-0d18-4094-b866-0626acf12e0c"/>
+											<reportElement x="0" y="0" width="134" height="15" uuid="3e3df4f4-0d18-4094-b866-0626acf12e0c"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle">
 												<font fontName="Arial"/>
 											</textElement>
 											<text><![CDATA[نوع الفحص المطلوب]]></text>
 										</staticText>
 										<staticText>
-											<reportElement x="0" y="15" width="179" height="15" uuid="aecf333a-5165-4042-bed8-85b69f9e12a4"/>
+											<reportElement x="0" y="15" width="134" height="15" uuid="aecf333a-5165-4042-bed8-85b69f9e12a4"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle">
 												<font fontName="Arial"/>
 											</textElement>
@@ -706,7 +707,7 @@
 								</jr:columnHeader>
 								<jr:detailCell style="Table 1_TD" height="30">
 									<textField>
-										<reportElement x="0" y="0" width="179" height="30" uuid="1985b72b-a564-40b2-bfcb-5346bcf1d5c1">
+										<reportElement x="0" y="0" width="134" height="30" uuid="1985b72b-a564-40b2-bfcb-5346bcf1d5c1">
 											<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 										</reportElement>
 										<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -717,23 +718,59 @@
 									</textField>
 								</jr:detailCell>
 							</jr:column>
-							<jr:column width="177" uuid="f6f1b648-4630-4013-9884-88b56400950e">
+							<jr:column width="134" uuid="0796b163-e129-4a93-8a43-c3868c45d048">
 								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-								<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+								<jr:columnHeader style="Table 1_CH" height="30">
 									<frame>
-										<reportElement x="0" y="0" width="177" height="30" uuid="361c30d2-1aff-4583-b303-01030e008f2b">
+										<reportElement x="0" y="0" width="134" height="30" uuid="6f7ddaf9-fa9e-4e7c-b1b8-53eede137be4">
 											<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 											<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 										</reportElement>
 										<staticText>
-											<reportElement x="0" y="0" width="177" height="15" uuid="610379cd-481e-4e96-9bb8-c797643e441e"/>
+											<reportElement x="0" y="0" width="134" height="15" uuid="6e680643-09cf-40f7-b35a-d744aaabc6a4"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[عدد الفحوصات]]></text>
+										</staticText>
+										<staticText>
+											<reportElement x="0" y="15" width="134" height="15" uuid="2185ba45-182f-4f05-b31d-8a434e67ea57"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Arial"/>
+											</textElement>
+											<text><![CDATA[Service Count]]></text>
+										</staticText>
+									</frame>
+								</jr:columnHeader>
+								<jr:detailCell style="Table 1_TD" height="30">
+									<textField>
+										<reportElement style="DONE_STYLE" x="0" y="0" width="134" height="30" uuid="de82fea6-0f17-48bf-ae9a-4bc70d5db3d1">
+											<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+										</reportElement>
+										<textElement textAlignment="Center" verticalAlignment="Middle">
+											<font fontName="Arial"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{count}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="133" uuid="f6f1b648-4630-4013-9884-88b56400950e">
+								<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+								<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+									<frame>
+										<reportElement x="0" y="0" width="133" height="30" uuid="361c30d2-1aff-4583-b303-01030e008f2b">
+											<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+											<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+										</reportElement>
+										<staticText>
+											<reportElement x="0" y="0" width="133" height="15" uuid="610379cd-481e-4e96-9bb8-c797643e441e"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle">
 												<font fontName="Arial"/>
 											</textElement>
 											<text><![CDATA[حالة الفحص]]></text>
 										</staticText>
 										<staticText>
-											<reportElement x="0" y="15" width="177" height="15" uuid="5e416ccb-286c-45aa-b669-cc3dd11f64a3"/>
+											<reportElement x="0" y="15" width="133" height="15" uuid="5e416ccb-286c-45aa-b669-cc3dd11f64a3"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle">
 												<font fontName="Arial"/>
 											</textElement>
@@ -743,7 +780,7 @@
 								</jr:columnHeader>
 								<jr:detailCell style="Table 1_TD" height="30">
 									<textField>
-										<reportElement style="DONE_STYLE" x="0" y="0" width="177" height="30" uuid="edefffe7-7380-4444-9bac-91abf0499923">
+										<reportElement style="DONE_STYLE" x="0" y="0" width="133" height="30" uuid="edefffe7-7380-4444-9bac-91abf0499923">
 											<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 										</reportElement>
 										<textElement textAlignment="Center" verticalAlignment="Middle">

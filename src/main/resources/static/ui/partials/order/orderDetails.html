@@ -263,7 +263,12 @@
                                         <span ng-if="lang==='EN'">Cost</span>
                                     </th>
 
-                                    <th st-sort="detectionType.done">
+                                    <th st-sort="count">
+                                        <span ng-if="lang==='AR'">عدد الفحوصات</span>
+                                        <span ng-if="lang==='EN'">Detection Count</span>
+                                    </th>
+
+                                    <th st-sort="done">
                                         <span ng-if="lang==='AR'">حالة الفحص</span>
                                         <span ng-if="lang==='EN'">Done</span>
                                     </th>
@@ -281,7 +286,8 @@
                                     <td class="info">{{orderDetectionType.detectionType.code}}</td>
                                     <td>{{orderDetectionType.detectionType.nameArabic}}</td>
                                     <td>{{orderDetectionType.detectionType.nameEnglish}}</td>
-                                    <td class="warning">{{orderDetectionType.detectionType.cost}} SAR</td>
+                                    <td class="warning">{{orderDetectionType.detectionType.cost | currency:' SAR ':2}}</td>
+                                    <td>{{orderDetectionType.count}}</td>
                                     <td>
                                         <span ng-if="lang==='AR'">{{orderDetectionType.conditionInArabic}}</span>
                                         <span ng-if="lang==='EN'">{{orderDetectionType.conditionInEnglish}}</span>
@@ -297,7 +303,7 @@
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collectionOrderDetectionTypes || collectionOrderDetectionTypes.length ==0">
-                                    <td colspan="7">
+                                    <td colspan="8">
                                         <strong>
                                             <a href=""
                                                ng-if="contains(me.team.authorities, ['ROLE_ORDER_CREATE'])"
@@ -318,7 +324,7 @@
                         <h3 class="text-center col-xs-4 col-sm-4 col-md-4 col-lg-4 box-warning">
                             <span ng-if="lang==='AR'">إجمالي تكلفة الفحوصات</span>
                             <span ng-if="lang==='EN'">Total Detection Services Cost: </span>
-                            <span>{{order.orderDetectionTypes | sumByKey:'detectionType.cost'}} SAR</span>
+                            <span>{{order.orderDetectionTypes | sumByKey:'totalCost'}} SAR</span>
                         </h3>
 
                     </div>

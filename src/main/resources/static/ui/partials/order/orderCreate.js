@@ -110,7 +110,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             if ($scope.orderDetectionTypeList) {
                 for (var i = 0; i < $scope.orderDetectionTypeList.length; i++) {
                     var orderDetectionType = $scope.orderDetectionTypeList[i];
-                    $scope.totalCost = $scope.totalCost + orderDetectionType.detectionType.cost;
+                    $scope.totalCost = $scope.totalCost + (orderDetectionType.detectionType.cost * orderDetectionType.count);
                 }
                 $scope.totalCostAfterDiscount = $scope.totalCost - (($scope.totalCost * $scope.order.discount) / 100);
             }
@@ -127,9 +127,7 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             ModalProvider.openDoctorCreateModel().result.then(function (data) {
                 $scope.doctors.splice(0, 0, data);
                 $scope.order.doctor = data;
-            }, function () {
-                console.info('DoctorCreateModel Closed.');
-            });
+            }, function () {});
         };
 
         //////////////////////////File Manager///////////////////////////////////
@@ -221,8 +219,10 @@ app.controller('orderCreateCtrl', ['OrderService', 'OrderDetectionTypeService', 
             //Add To Table
             var orderDetectionType = {};
             orderDetectionType.detectionType = $scope.buffer.selectedDetectionType;
+            orderDetectionType.count = $scope.buffer.count;
             $scope.orderDetectionTypeList.push(orderDetectionType);
             $scope.buffer.selectedDetectionType = {};
+            $scope.buffer.count = 1;
             $scope.calculateCostSum();
         };
 

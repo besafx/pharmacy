@@ -27,8 +27,8 @@ import java.util.List;
 public class OrderDetectionTypeRest {
 
     public static final String FILTER_TABLE = "" +
-            "id," +
-            "done," +
+            "**," +
+            "-order," +
             "detectionType[id,code,nameArabic,nameEnglish,cost]," +
             "orderDetectionTypeAttaches[id],diagnoses[id],order[id,code,orderCondition]";
 

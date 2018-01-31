@@ -99,8 +99,7 @@ public class Order implements Serializable {
         try {
             return this.orderDetectionTypes
                     .stream()
-                    .map(OrderDetectionType::getDetectionType)
-                    .mapToDouble(DetectionType::getCost)
+                    .mapToDouble(OrderDetectionType::getTotalCost)
                     .sum();
         } catch (Exception ex) {
             return 0.0;

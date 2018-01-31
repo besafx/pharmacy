@@ -37,7 +37,7 @@ public class OrderRest {
             "falcon[id,code,type,weight,customer[id,code,name]]," +
             "doctor[**,person[id,code,name,mobile,identityNumber]]," +
             "diagnoses[**,-order,drug[id,code,nameArabic,nameEnglish,medicalNameArabic,medicalNameEnglish],drugUnit[id,name]]," +
-            "orderDetectionTypes[id,done,detectionType[id,code,nameArabic,nameEnglish,cost]]," +
+            "orderDetectionTypes[**,-order,-orderDetectionTypeAttaches,detectionType[id,code,nameArabic,nameEnglish,cost]]," +
             "orderAttaches[**,attach[**,person[id,nickname,name]],-order]";
     public static final String FILTER_TABLE_INFO = "" +
             "**,-orderReceipts," +
@@ -108,7 +108,7 @@ public class OrderRest {
                 OrderDetectionType orderDetectionType = listIterator.next();
                 orderDetectionType.setOrder(order);
                 if (orderDetectionType.getDone() == null) {
-                    orderDetectionType.setDone(true);
+                    orderDetectionType.setDone(false);
                 }
                 listIterator.set(orderDetectionTypeService.save(orderDetectionType));
             }

@@ -38,8 +38,11 @@ public class OrderDetectionType implements Serializable {
     @GeneratedValue(generator = "orderDetectionTypeSequenceGenerator")
     private Long id;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean done;
+
+    @Column(nullable = false, columnDefinition = "int default 1")
+    private Integer count;
 
     @ManyToOne
     @JoinColumn(name = "[order]")
@@ -75,6 +78,14 @@ public class OrderDetectionType implements Serializable {
         } catch (Exception ex) {
             this.done = false;
             return getConditionInEnglish();
+        }
+    }
+
+    public Double getTotalCost() {
+        try {
+            return this.detectionType.getCost() * this.count;
+        } catch (Exception ex) {
+            return 0.0;
         }
     }
 }
