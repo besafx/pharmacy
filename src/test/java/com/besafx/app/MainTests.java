@@ -5,6 +5,7 @@ import com.besafx.app.service.DiagnosisService;
 import com.besafx.app.service.DrugUnitService;
 import com.besafx.app.service.TransactionBuyService;
 import com.besafx.app.service.TransactionSellService;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,6 +36,16 @@ public class MainTests {
 
     @Test
     public void contextLoads() throws Exception {
+
+        DateTime startDate = new DateTime().withTimeAtStartOfDay();
+        DateTime endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
+
+        log.info(startDate.toString());
+        log.info(endDate.toString());
+
+    }
+
+    private void fix1(){
 
         for (Diagnosis diagnosis : diagnosisService.findAll()) {
 

@@ -55,10 +55,8 @@ public class AsyncScheduleDailyInsideSales {
                 title.append(" ");
                 break;
         }
-        DateTime startDate = new DateTime().withTimeAtStartOfDay();
-        DateTime endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
         Map<String, Object> map = new HashMap<>();
-        map.put("billSells", billSellService.findByDateBetween(startDate.toDate(), endDate.toDate()));
+        map.put("billSells", billSellService.findByDateBetweenAndOrderIsNotNull(startDate.toDate(), endDate.toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));
