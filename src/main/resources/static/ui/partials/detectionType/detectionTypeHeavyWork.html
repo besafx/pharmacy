@@ -18,7 +18,7 @@
 
         <div class="row">
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="alert alert-info" role="alert">
                     <strong ng-if="lang==='AR'">يمكنك القيام بأكثر من عملية انشاء فى ذات الوقت دفعة واحدة وذلك عن طريق تحميل ملف الجداول
                         الإلكترونية الخاص بأنواع الفحوصات ومن ثم ملء كل الحقول وفى النهاية إعادة رفع الملف إلى الموقع مرة
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label for="rowCount">
                     <span ng-if="lang==='AR'">عدد الصفوف</span>
                     <span ng-if="lang==='EN'">Rows</span>
@@ -52,7 +52,7 @@
             <input id="input" type="file" style="display: none;" class="mdl-textfield__input" nv-file-select=""
                    uploader="uploader" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12"
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
                  ng-show="uploader.queue.length > 0"
                  ng-hide="uploader.queue[0].isSuccess">
                 <div class="progress" style="margin-bottom: 0;">

@@ -19,9 +19,7 @@ app.controller('orderDetectionTypeCreateCtrl', ['OrderDetectionTypeService', 'De
             ModalProvider.openDetectionTypeCreateModel().result.then(function (data) {
                 $scope.detectionTypes.splice(0, 0, data);
                 $scope.buffer.selectedDetectionType = data;
-            }, function () {
-                console.info('DetectionTypeCreateModel Closed.');
-            });
+            }, function () {});
         };
 
         $scope.submit = function () {
