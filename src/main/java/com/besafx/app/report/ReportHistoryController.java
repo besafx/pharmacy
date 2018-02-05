@@ -1,5 +1,6 @@
 package com.besafx.app.report;
 
+import com.besafx.app.auditing.Action;
 import com.besafx.app.entity.Customer;
 import com.besafx.app.entity.History;
 import com.besafx.app.service.CustomerService;
@@ -43,9 +44,10 @@ public class ReportHistoryController {
             @PathVariable("exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        List<History> histories = historyService.findByModifiedDateBetween(
+        List<History> histories = historyService.findByModifiedDateBetweenAndActionIn(
                 new DateTime(startDate).withTimeAtStartOfDay().toDate(),
-                new DateTime(endDate).plusDays(1).withTimeAtStartOfDay().toDate());
+                new DateTime(endDate).plusDays(1).withTimeAtStartOfDay().toDate(),
+                Lists.newArrayList(Action.UPDATED, Action.DELETED));
         map.put("histories", histories);
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();
