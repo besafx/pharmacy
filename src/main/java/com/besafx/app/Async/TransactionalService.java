@@ -62,7 +62,6 @@ public class TransactionalService {
         List<Drug> list = new ArrayList<>();
         Lists.newArrayList(drugService.findAll()).
                 stream()
-                .filter(drug -> drug.getRealQuantitySum() < 50)
                 .sorted(Comparator.comparing(Drug::getRealQuantitySum))
                 .forEach(drug -> {
             drug.getTransactionBuysSum();
@@ -74,6 +73,22 @@ public class TransactionalService {
     }
 
     @Transactional
+    public List<BillSell> getInsideSales(Long dateFrom, Long dateTo) {
+        List<BillSell> list = new ArrayList<>();
+        billSellService.findByDateBetweenAndOrderIsNotNull(
+                new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
+                new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+                .stream()
+                .forEach(billSell -> {
+                    billSell.getNet();
+                    billSell.getPaid();
+                    billSell.getRemain();
+                    list.add(billSell);
+                });
+        return list;
+    }
+
+    @Transactional
     public List<BillSell> getInsideSalesDebt(Long dateFrom, Long dateTo) {
         List<BillSell> list = new ArrayList<>();
         billSellService.findByDateBetweenAndOrderIsNotNull(
@@ -81,6 +96,22 @@ public class TransactionalService {
                 new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
                 .stream()
                 .filter(billSell -> billSell.getRemain() > 0)
+                .forEach(billSell -> {
+                    billSell.getNet();
+                    billSell.getPaid();
+                    billSell.getRemain();
+                    list.add(billSell);
+                });
+        return list;
+    }
+
+    @Transactional
+    public List<BillSell> getOutsideSales(Long dateFrom, Long dateTo) {
+        List<BillSell> list = new ArrayList<>();
+        billSellService.findByDateBetweenAndOrderIsNull(
+                new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
+                new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+                .stream()
                 .forEach(billSell -> {
                     billSell.getNet();
                     billSell.getPaid();

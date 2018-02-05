@@ -1,7 +1,9 @@
 package com.besafx.app.Async;
 
+import com.besafx.app.auditing.Action;
 import com.besafx.app.service.HistoryService;
 import com.besafx.app.util.DateConverter;
+import com.google.common.collect.Lists;
 import net.sf.jasperreports.engine.*;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -56,7 +58,7 @@ public class AsyncScheduleDailyHistory {
                 break;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("histories", historyService.findByModifiedDateBetween(startDate.toDate(), endDate.toDate()));
+        map.put("histories", historyService.findByModifiedDateBetweenAndActionIn(startDate.toDate(), endDate.toDate(), Lists.newArrayList(Action.UPDATED, Action.DELETED)));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));

@@ -25,7 +25,7 @@ public class AsyncScheduleDailyStocks {
     public Future<byte[]> getFile() throws Exception {
         Map<String, Object> map = new HashMap<>();
         map.put("drugs", transactionalService.getAllDrugs());
-        map.put("title", "مراقبة المخزون - كشف بأرصدة الأدوية أقل من 50 وحدة قياس");
+        map.put("title", "مراقبة المخزون - كشف بأرصدة الأدوية");
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/DrugsSummary.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());

@@ -1,6 +1,5 @@
 package com.besafx.app.Async;
 
-import com.besafx.app.service.BillSellService;
 import com.besafx.app.util.DateConverter;
 import net.sf.jasperreports.engine.*;
 import org.joda.time.DateTime;
@@ -24,7 +23,7 @@ public class AsyncScheduleDailyInsideSales {
     private DateTime startDate, endDate;
 
     @Autowired
-    private BillSellService billSellService;
+    private TransactionalService transactionalService;
 
     @Async("threadMultiplePool")
     public Future<byte[]> getFile(String timeType) throws Exception {
@@ -56,7 +55,7 @@ public class AsyncScheduleDailyInsideSales {
                 break;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("billSells", billSellService.findByDateBetweenAndOrderIsNotNull(startDate.toDate(), endDate.toDate()));
+        map.put("billSells", transactionalService.getInsideSales(startDate.getMillis(), endDate.getMillis()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));
