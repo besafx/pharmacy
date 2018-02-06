@@ -50,7 +50,7 @@ public class OrderDetectionTypeRest {
     @Transactional
     public String create(@RequestBody OrderDetectionType orderDetectionType, Principal principal) {
         if (orderDetectionType.getDone() == null) {
-            orderDetectionType.setDone(true);
+            orderDetectionType.setDone(false);
         }
         orderDetectionType = orderDetectionTypeService.save(orderDetectionType);
         Person caller = personService.findByEmail(principal.getName());

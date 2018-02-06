@@ -1,14 +1,14 @@
 package com.besafx.app.entity;
 
-import com.besafx.app.auditing.MyEntityListener;
 import com.besafx.app.component.BeanUtil;
 import com.besafx.app.entity.listener.DrugListener;
-import com.besafx.app.service.BankService;
 import com.besafx.app.service.DrugUnitService;
+import com.besafx.app.util.WrapperUtil;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +38,8 @@ public class Drug implements Serializable {
     public void init() {
         try {
             drugUnitService = BeanUtil.getBean(DrugUnitService.class);
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
     }
 
     @GenericGenerator(
@@ -83,6 +84,31 @@ public class Drug implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         Drug drug = mapper.readValue(jsonString, Drug.class);
         return drug;
+    }
+
+    public List<WrapperUtil> findPrices() {
+        try {
+            return this.transactionBuys
+                    .stream()
+                    .flatMap(transactionBuy -> transactionBuy.findRelatedPrices().stream())
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            return new ArrayList<>();
+        }
+    }
+
+    public String getPricesAsString() {
+        try {
+            List<String> prices =  this.transactionBuys
+                    .stream()
+                    .flatMap(transactionBuy -> transactionBuy.findRelatedPricesAsString().stream())
+                    .distinct()
+                    .collect(Collectors.toList());
+            return StringUtils.join(prices, ",");
+        } catch (Exception ex) {
+            org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(ex);
+            return "هناك خطأ ما";
+        }
     }
 
     public DrugUnit getDefaultDrugUnit() {

@@ -1152,6 +1152,13 @@ function menuCtrl($scope,
         });
         window.open('/report/drugs?ids=' + ids + "&exportType=PDF");
     };
+    $scope.printDrugsPrices = function () {
+        var ids = [];
+        angular.forEach($scope.drugs, function (drug) {
+            ids.push(drug.id);
+        });
+        window.open('/report/drugsPrices?ids=' + ids + "&exportType=PDF");
+    };
     $scope.printDrugDetailsList = function () {
         var ids = [];
         angular.forEach($scope.drugs, function (drug) {

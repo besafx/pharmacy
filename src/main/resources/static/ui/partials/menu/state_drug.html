@@ -123,6 +123,14 @@
 
             <div class="form-group row"  ng-show="drugs.length > 0">
 
+                <button uib-tooltip="{{lang==='AR' ? 'تقرير باسعار البيع' : 'Drugs Prices Report'}}"
+                        tooltip-append-to-body="true"
+                        type="button"
+                        ng-click="printDrugsPrices()"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <i class="material-icons">picture_as_pdf</i>
+                </button>
+
                 <button uib-tooltip="{{lang==='AR' ? 'تقرير مختصر بأصناف القائمة' : 'Drugs Summary Report'}}"
                         tooltip-append-to-body="true"
                         type="button"

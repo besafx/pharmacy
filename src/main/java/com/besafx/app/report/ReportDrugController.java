@@ -50,6 +50,22 @@ public class ReportDrugController {
         reportExporter.export("DRUGS_SUMMARY" ,exportType, response, jasperPrint);
     }
 
+    @RequestMapping(value = "/report/drugsPrices", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
+    @ResponseBody
+    public void ReportDrugsPrices(
+            @RequestParam(value = "ids") List<Long> ids,
+            @RequestParam(value = "exportType") ExportType exportType,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("drugs", drugService.findByIdIn(ids).stream().sorted(Comparator.comparing(Drug::getCode)).collect(Collectors.toList()));
+        map.put("title", "كشف بالأدوية وأسعار البيع لكل صنف");
+        map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/drug/DrugsPrices.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        reportExporter.export("DRUGS_PRICES" ,exportType, response, jasperPrint);
+    }
+
     @RequestMapping(value = "/report/drugs/details", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     @ResponseBody
     public void printDrugDetails(

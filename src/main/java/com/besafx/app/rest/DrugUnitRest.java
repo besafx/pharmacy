@@ -155,66 +155,25 @@ public class DrugUnitRest {
     @RequestMapping(value = "getRelated/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRelated(@PathVariable(value = "id") Long id) {
-//        List<DrugUnit> drugUnits = new ArrayList<>();
         DrugUnit drugUnit = drugUnitService.findOne(id);
-//        if (drugUnit.getDrugUnit() == null) {
-//            log.info("هذا النوع يُعتمد عليه");
-//            log.info("قراءة كل الأنواع التى تعتمد عليه");
-//            drugUnits = drugUnitService.findByDrugUnitId(id);
-//            drugUnits.add(drugUnit);
-//        } else {
-//            log.info("هذا النوع لا يُعتمد عليه");
-//            drugUnits.add(drugUnit.getDrugUnit());
-//            drugUnits.addAll(drugUnitService.findByDrugUnitId(drugUnit.getDrugUnit().getId()));
-//
-//        }
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), drugUnitService.findByDrugId(drugUnit.getDrug().getId()));
     }
 
     @RequestMapping(value = "getRelatedPrices/{transactionBuyId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRelatedPrices(@PathVariable(value = "transactionBuyId") Long transactionBuyId) {
-        TransactionBuy transactionBuy = transactionBuyService.findOne(transactionBuyId);
-        Gson gson = new Gson();
-        List<DrugUnit> drugUnits = gson.fromJson(getRelated(transactionBuy.getDrugUnit().getId()), new TypeToken<List<DrugUnit>>() {
-        }.getType());
-        List<WrapperUtil> wrapperUtils = new ArrayList<>();
-        drugUnits.stream().forEach(unit -> {
-            WrapperUtil util = new WrapperUtil();
-            //Unit Name
-            util.setObj1(unit);
-            //Unit Buy Cost
-            util.setObj2(DoubleRounder.round((transactionBuy.getUnitBuyCost() / transactionBuy.getDrugUnit().getFactor()) * unit.getFactor(), 3));
-            //Unit Sell Cost
-            util.setObj3(DoubleRounder.round((transactionBuy.getUnitSellCost() / transactionBuy.getDrugUnit().getFactor()) * unit.getFactor(), 3));
-            if (unit.getId().equals(transactionBuy.getDrugUnit().getId())) {
-                //Default Unit
-                util.setObj4(true);
-            } else {
-                //Another Unit
-                util.setObj4(false);
-            }
-            //Calculate Stock
-            Double stock = DoubleRounder.round(((transactionBuy.getQuantity() * transactionBuy.getDrugUnit().getFactor()) / unit.getFactor()), 3);
-            util.setObj5(stock);
-            //Calculate Real Stock
-            util.setObj6(stock - transactionBuy.getSalesQuantityByDrugUnit(unit));
-            wrapperUtils.add(util);
-        });
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5,obj6"), wrapperUtils);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5,obj6"),
+                transactionBuyService.findOne(transactionBuyId).findRelatedPrices());
     }
 
     @RequestMapping(value = "getRelatedPricesByDrug/{drugId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRelatedPricesByDrug(@PathVariable(value = "drugId") Long drugId) {
-        List<WrapperUtil> wrapperUtils = new ArrayList<>();
-        Gson gson = new Gson();
-        ListIterator<TransactionBuy> listIterator = transactionBuyService.findByDrugId(drugId).listIterator();
-        while (listIterator.hasNext()) {
-            TransactionBuy transactionBuy = listIterator.next();
-            wrapperUtils.addAll(gson.fromJson(getRelatedPrices(transactionBuy.getId()), new TypeToken<List<WrapperUtil>>() {
-            }.getType()));
-        }
-        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5"), wrapperUtils.stream().distinct().collect(Collectors.toList()));
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1,obj2,obj3,obj4,obj5"),
+                transactionBuyService.findByDrugId(drugId)
+                        .stream()
+                        .flatMap(transactionBuy -> transactionBuy.findRelatedPrices().stream())
+                        .distinct()
+                        .collect(Collectors.toList()));
     }
 }

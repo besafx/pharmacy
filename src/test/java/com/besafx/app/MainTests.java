@@ -1,15 +1,16 @@
 package com.besafx.app;
 
 import com.besafx.app.entity.*;
-import com.besafx.app.service.DiagnosisService;
-import com.besafx.app.service.DrugUnitService;
-import com.besafx.app.service.TransactionBuyService;
-import com.besafx.app.service.TransactionSellService;
+import com.besafx.app.service.*;
+import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+import org.slf4j.helpers.BasicMarker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,14 +35,13 @@ public class MainTests {
     @Autowired
     private DrugUnitService drugUnitService;
 
+    @Autowired
+    private DrugService drugService;
+
     @Test
-    public void contextLoads() throws Exception {
+    public void contextLoads() {
 
-        DateTime startDate = new DateTime().withTimeAtStartOfDay();
-        DateTime endDate = new DateTime().plusDays(1).withTimeAtStartOfDay();
-
-        log.info(startDate.toString());
-        log.info(endDate.toString());
+        Lists.newArrayList(drugService.findAll()).stream().forEach(drug -> log.info("SIZE " + drug.findPrices().size()));
 
     }
 
