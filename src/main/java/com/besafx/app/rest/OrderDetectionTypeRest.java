@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/orderDetectionType/")
@@ -52,6 +53,7 @@ public class OrderDetectionTypeRest {
         if (orderDetectionType.getDone() == null) {
             orderDetectionType.setDone(false);
         }
+        orderDetectionType.setCount(Optional.ofNullable(orderDetectionType.getCount()).isPresent() ? orderDetectionType.getCount() : 1);
         orderDetectionType = orderDetectionTypeService.save(orderDetectionType);
         Person caller = personService.findByEmail(principal.getName());
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
