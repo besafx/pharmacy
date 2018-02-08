@@ -106,6 +106,7 @@ public class OrderRest {
             ListIterator<OrderDetectionType> listIterator = order.getOrderDetectionTypes().listIterator();
             while (listIterator.hasNext()) {
                 OrderDetectionType orderDetectionType = listIterator.next();
+                orderDetectionType.setCount(Optional.ofNullable(orderDetectionType.getCount()).isPresent() ? orderDetectionType.getCount() : 1);
                 orderDetectionType.setOrder(order);
                 if (orderDetectionType.getDone() == null) {
                     orderDetectionType.setDone(false);
