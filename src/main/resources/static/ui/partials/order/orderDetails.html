@@ -186,12 +186,23 @@
                                         <span ng-if="lang==='EN'">Diagnosis</span>
                                     </td>
                                     <td>
-                                        <textarea type="text"
-                                                  msd-elastic=""
-                                                  ng-blur="saveOrderNote(order);"
-                                                  class="form-control"
-                                                  ng-model="order.note">
-                                        </textarea>
+                                        <div class="row">
+                                            <textarea type="text"
+                                                      msd-elastic=""
+                                                      class="form-control"
+                                                      ng-model="order.note">
+                                            </textarea>
+                                        </div>
+                                        <div class="row">
+                                            <button uib-tooltip="{{lang==='AR' ? 'حفظ' : 'Save'}}"
+                                                    tooltip-append-to-body="true"
+                                                    type="button"
+                                                    ng-click="saveOrderNote(order);"
+                                                    ng-class="{'pull-right' : lang==='AR', 'pull-left' : lang==='EN'}"
+                                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                                                <i class="material-icons">save</i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

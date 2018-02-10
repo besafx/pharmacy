@@ -37,7 +37,7 @@ public class TransactionSellListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(TransactionSell transactionSell, Action action) {
+    public void perform(TransactionSell transactionSell, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

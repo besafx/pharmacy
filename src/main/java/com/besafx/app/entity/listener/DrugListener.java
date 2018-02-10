@@ -37,7 +37,7 @@ public class DrugListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(Drug drug, Action action) {
+    public void perform(Drug drug, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

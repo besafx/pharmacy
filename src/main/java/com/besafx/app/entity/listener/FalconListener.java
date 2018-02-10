@@ -37,7 +37,7 @@ public class FalconListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(Falcon falcon, Action action) {
+    public void perform(Falcon falcon, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

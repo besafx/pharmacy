@@ -38,7 +38,7 @@ public class BillBuyListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(BillBuy billBuy, Action action) {
+    public void perform(BillBuy billBuy, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

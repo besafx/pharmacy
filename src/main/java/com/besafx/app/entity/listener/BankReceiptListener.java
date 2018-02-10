@@ -37,7 +37,7 @@ public class BankReceiptListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(BankReceipt bankReceipt, Action action) {
+    public void perform(BankReceipt bankReceipt, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

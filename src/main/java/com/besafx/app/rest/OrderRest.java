@@ -1,9 +1,12 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.auditing.Action;
+import com.besafx.app.auditing.MyEntityListener;
 import com.besafx.app.config.DropboxManager;
 import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.entity.listener.OrderListener;
 import com.besafx.app.search.OrderSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.*;
@@ -85,6 +88,9 @@ public class OrderRest {
 
     @Autowired
     private DropboxManager dropboxManager;
+
+    @Autowired
+    private OrderListener orderListener;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -189,11 +195,11 @@ public class OrderRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_SAVE_NOTE')")
     @Transactional
-    public void saveNote(@PathVariable(value = "id") Long id, @PathVariable(value = "note") String note, Principal principal) {
+    public void saveNote(@PathVariable(value = "id") Long id, @PathVariable(value = "note") String note) {
         Order order = orderService.findOne(id);
         if (order != null) {
-            order.setNote(note);
-            orderService.save(order);
+            orderService.updateNote(id, note);
+            orderListener.perform(order, Action.UPDATED);
         }
     }
 

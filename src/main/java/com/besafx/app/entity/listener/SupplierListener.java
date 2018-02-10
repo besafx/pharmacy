@@ -37,7 +37,7 @@ public class SupplierListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(Supplier supplier, Action action) {
+    public void perform(Supplier supplier, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

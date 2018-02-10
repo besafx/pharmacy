@@ -38,6 +38,8 @@ function menuCtrl($scope,
         CompanyService.get().then(function (data) {
             $scope.selectedCompany = data;
         });
+        $scope.refreshFund();
+        $scope.refreshBank();
         window.componentHandler.upgradeAllRegistered();
     }, 600);
     $scope.$watch('toggleState', function (newValue, oldValue) {

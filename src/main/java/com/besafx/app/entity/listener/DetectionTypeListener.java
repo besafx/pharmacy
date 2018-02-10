@@ -37,7 +37,7 @@ public class DetectionTypeListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(DetectionType detectionType, Action action) {
+    public void perform(DetectionType detectionType, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

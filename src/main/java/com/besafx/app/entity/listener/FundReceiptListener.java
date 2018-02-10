@@ -37,7 +37,7 @@ public class FundReceiptListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(FundReceipt fundReceipt, Action action) {
+    public void perform(FundReceipt fundReceipt, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();

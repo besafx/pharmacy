@@ -3,8 +3,11 @@ package com.besafx.app.service;
 import com.besafx.app.entity.Falcon;
 import com.besafx.app.entity.Order;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,4 +41,8 @@ public interface OrderService extends PagingAndSortingRepository<Order, Long>, J
     List<Order> findByFalconCustomerIdAndCodeNot(Long customerId, Integer code);
 
     Long countByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+
+    @Modifying
+    @Query("UPDATE Order o SET o.note = :note WHERE o.id = :id")
+    void updateNote(@Param("id") Long id, @Param("note") String note);
 }

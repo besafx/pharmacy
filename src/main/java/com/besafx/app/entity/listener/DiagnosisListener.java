@@ -37,7 +37,7 @@ public class DiagnosisListener {
     }
 
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    private void perform(Diagnosis diagnosis, Action action) {
+    public void perform(Diagnosis diagnosis, Action action) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();
