@@ -55,7 +55,7 @@ public class AsyncScheduleDailyInsideSales {
                 break;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("billSells", transactionalService.getInsideSales(startDate.getMillis(), endDate.getMillis()));
+        map.put("insideBills", transactionalService.getInsideSales(startDate.toDate(), endDate.toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));

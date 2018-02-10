@@ -56,7 +56,7 @@ public class AsyncScheduleDailyOutsideSales {
         }
 
         Map<String, Object> map = new HashMap<>();
-        map.put("billSells", transactionalService.getOutsideSales(startDate.getMillis(), endDate.getMillis()));
+        map.put("outsideBills", transactionalService.getOutsideSales(startDate.toDate(), endDate.toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
 
         title.append(DateConverter.getHijriStringFromDateLTR(startDate.toDate()));

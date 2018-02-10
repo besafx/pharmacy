@@ -50,7 +50,7 @@ public class AsyncScheduleDailyOutsideSalesDebt {
                 map.put("title", "المطالبات المالية السنوية للمبيعات الخارجية");
                 break;
         }
-        map.put("bills", transactionalService.getOutsideSalesDebt(startDate.getMillis(), endDate.getMillis()));
+        map.put("bills", transactionalService.getOutsideSalesDebt(startDate.toDate(), endDate.toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/OutsideSalesDebt.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());

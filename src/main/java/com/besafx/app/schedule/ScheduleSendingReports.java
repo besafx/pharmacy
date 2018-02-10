@@ -122,7 +122,7 @@ public class ScheduleSendingReports {
     }
 
     @Async("threadMultiplePool")
-    private Future<byte[]> getZipFile(String timeType) throws Exception{
+    public Future<byte[]> getZipFile(String timeType) throws Exception{
         log.info("Generate inside sales report");
         Future<byte[]> work1 = asyncScheduleDailyInsideSales.getFile(timeType);
         byte[] fileBytes1 = work1.get();
@@ -210,7 +210,7 @@ public class ScheduleSendingReports {
     }
 
     @Async("threadMultiplePool")
-    private Future<byte[]> getZip4jFile(String timeType) throws Exception{
+    public Future<byte[]> getZip4jFile(String timeType) throws Exception{
         log.info("Generate inside sales report");
         Future<byte[]> work1 = asyncScheduleDailyInsideSales.getFile(timeType);
         byte[] fileBytes1 = work1.get();

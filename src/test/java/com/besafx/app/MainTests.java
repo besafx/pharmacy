@@ -1,7 +1,11 @@
 package com.besafx.app;
 
+import com.besafx.app.config.DropboxManager;
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.*;
+import com.besafx.app.schedule.ScheduleSendingReports;
 import com.besafx.app.service.*;
+import com.besafx.app.util.JSONConverter;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -13,6 +17,7 @@ import org.slf4j.MarkerFactory;
 import org.slf4j.helpers.BasicMarker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
@@ -38,10 +43,14 @@ public class MainTests {
     @Autowired
     private DrugService drugService;
 
+    @Autowired
+    private ScheduleSendingReports scheduleSendingReports;
+
+    @Autowired
+    private ApplicationContext context;
+
     @Test
     public void contextLoads() {
-
-        Lists.newArrayList(drugService.findAll()).stream().forEach(drug -> log.info("SIZE " + drug.findPrices().size()));
 
     }
 

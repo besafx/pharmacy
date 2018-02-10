@@ -44,9 +44,7 @@ public class TransactionalService {
     @Transactional
     public List<Order> getOrdersDebt(Date dateFrom, Date dateTo) {
         List<Order> list = new ArrayList<>();
-        orderService.findByDateBetween(
-                new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
-                new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+        orderService.findByDateBetween(dateFrom, dateTo)
                 .stream()
                 .filter(order -> order.getRemain() > 0).forEach(order -> {
             order.getNetCost();
@@ -73,11 +71,9 @@ public class TransactionalService {
     }
 
     @Transactional
-    public List<BillSell> getInsideSales(Long dateFrom, Long dateTo) {
+    public List<BillSell> getInsideSales(Date dateFrom, Date dateTo) {
         List<BillSell> list = new ArrayList<>();
-        billSellService.findByDateBetweenAndOrderIsNotNull(
-                new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
-                new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+        billSellService.findByDateBetweenAndOrderIsNotNull(dateFrom, dateTo)
                 .stream()
                 .forEach(billSell -> {
                     billSell.getNet();
@@ -89,11 +85,9 @@ public class TransactionalService {
     }
 
     @Transactional
-    public List<BillSell> getInsideSalesDebt(Long dateFrom, Long dateTo) {
+    public List<BillSell> getInsideSalesDebt(Date dateFrom, Date dateTo) {
         List<BillSell> list = new ArrayList<>();
-        billSellService.findByDateBetweenAndOrderIsNotNull(
-                new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
-                new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+        billSellService.findByDateBetweenAndOrderIsNotNull(dateFrom, dateTo)
                 .stream()
                 .filter(billSell -> billSell.getRemain() > 0)
                 .forEach(billSell -> {
@@ -106,11 +100,9 @@ public class TransactionalService {
     }
 
     @Transactional
-    public List<BillSell> getOutsideSales(Long dateFrom, Long dateTo) {
+    public List<BillSell> getOutsideSales(Date dateFrom, Date dateTo) {
         List<BillSell> list = new ArrayList<>();
-        billSellService.findByDateBetweenAndOrderIsNull(
-                new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
-                new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+        billSellService.findByDateBetweenAndOrderIsNull(dateFrom, dateTo)
                 .stream()
                 .forEach(billSell -> {
                     billSell.getNet();
@@ -122,11 +114,9 @@ public class TransactionalService {
     }
 
     @Transactional
-    public List<BillSell> getOutsideSalesDebt(Long dateFrom, Long dateTo) {
+    public List<BillSell> getOutsideSalesDebt(Date dateFrom, Date dateTo) {
         List<BillSell> list = new ArrayList<>();
-        billSellService.findByDateBetweenAndOrderIsNull(
-                new DateTime(dateFrom).withTimeAtStartOfDay().toDate(),
-                new DateTime(dateTo).plusDays(1).withTimeAtStartOfDay().toDate())
+        billSellService.findByDateBetweenAndOrderIsNull(dateFrom, dateTo)
                 .stream()
                 .filter(billSell -> billSell.getRemain() > 0)
                 .forEach(billSell -> {

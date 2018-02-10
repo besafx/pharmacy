@@ -50,7 +50,7 @@ public class AsyncScheduleDailyInsideSalesDebt {
                 map.put("title", "المطالبات المالية السنوية للمبيعات الداخلية");
                 break;
         }
-        map.put("bills", transactionalService.getInsideSalesDebt(startDate.getMillis(), endDate.getMillis()));
+        map.put("bills", transactionalService.getInsideSalesDebt(startDate.toDate(), endDate.toDate()));
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/billSell/InsideSalesDebt.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
