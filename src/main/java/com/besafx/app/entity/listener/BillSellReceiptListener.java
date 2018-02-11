@@ -11,33 +11,20 @@ import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
+@Component
 public class BillSellReceiptListener {
 
     private static final Logger log = LoggerFactory.getLogger(BillSellReceiptListener.class);
 
-    @PrePersist
-    public void prePersist(BillSellReceipt billSellReceipt) {
-        perform(billSellReceipt, Action.INSERTED);
-    }
-
-    @PreUpdate
-    public void preUpdate(BillSellReceipt billSellReceipt) {
-        perform(billSellReceipt, Action.UPDATED);
-    }
-
-    @PreRemove
-    public void preRemove(BillSellReceipt billSellReceipt) {
-        perform(billSellReceipt, Action.DELETED);
-    }
-
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    public void perform(BillSellReceipt billSellReceipt, Action action) {
+    public void perform(BillSellReceipt billSellReceipt, Action action, String note) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();
@@ -45,7 +32,7 @@ public class BillSellReceiptListener {
             history.setScreenName(BillSellReceipt.SCREEN_NAME);
             history.setAction(action);
             history.setObjectJson(SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), BillSellReceiptRest.FILTER_TABLE), billSellReceipt));
-            history.setNote("رقم السند / " + billSellReceipt.getReceipt().getCode());
+            history.setNote(note);
             entityManager.persist(history);
         } catch (Exception ex) {
             log.error(ex.getMessage());

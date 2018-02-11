@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 @Transactional
 public interface HistoryService extends PagingAndSortingRepository<History, Long>, JpaSpecificationExecutor<History> {
+    List<History> findByModifiedDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
     List<History> findByModifiedDateBetweenAndActionIn(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate, List<Action> actions);
 }
 

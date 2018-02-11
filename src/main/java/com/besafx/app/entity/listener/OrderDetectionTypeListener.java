@@ -11,6 +11,7 @@ import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -18,27 +19,13 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
+@Component
 public class OrderDetectionTypeListener {
 
     private static final Logger log = LoggerFactory.getLogger(OrderDetectionTypeListener.class);
 
-    @PrePersist
-    public void prePersist(OrderDetectionType orderDetectionType) {
-        perform(orderDetectionType, Action.INSERTED);
-    }
-
-    @PreUpdate
-    public void preUpdate(OrderDetectionType orderDetectionType) {
-        perform(orderDetectionType, Action.UPDATED);
-    }
-
-    @PreRemove
-    public void preRemove(OrderDetectionType orderDetectionType) {
-        perform(orderDetectionType, Action.DELETED);
-    }
-
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    public void perform(OrderDetectionType orderDetectionType, Action action) {
+    public void perform(OrderDetectionType orderDetectionType, Action action, String note) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();
@@ -46,7 +33,7 @@ public class OrderDetectionTypeListener {
             history.setScreenName(OrderDetectionType.SCREEN_NAME);
             history.setAction(action);
             history.setObjectJson(SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), OrderDetectionTypeRest.FILTER_TABLE), orderDetectionType));
-            history.setNote("رقم خدمة الفحص / " + orderDetectionType.getDetectionType().getCode());
+            history.setNote(note);
             entityManager.persist(history);
         } catch (Exception ex) {
             log.error(ex.getMessage());

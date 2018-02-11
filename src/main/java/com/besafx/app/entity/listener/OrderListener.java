@@ -12,35 +12,16 @@ import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
 
 @Component
 public class OrderListener {
 
     private static final Logger log = LoggerFactory.getLogger(OrderListener.class);
 
-    @PrePersist
-    public void prePersist(Order order) {
-        perform(order, Action.INSERTED);
-    }
-
-    @PreUpdate
-    public void preUpdate(Order order) {
-        perform(order, Action.UPDATED);
-    }
-
-    @PreRemove
-    public void preRemove(Order order) {
-        perform(order, Action.DELETED);
-    }
-
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    public void perform(Order order, Action action) {
+    public void perform(Order order, Action action, String note) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();
@@ -48,7 +29,7 @@ public class OrderListener {
             history.setScreenName(Order.SCREEN_NAME);
             history.setAction(action);
             history.setObjectJson(SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), OrderRest.FILTER_TABLE_INFO), order));
-            history.setNote("رقم الطلب / " + order.getCode());
+            history.setNote(note);
             entityManager.persist(history);
         } catch (Exception ex) {
             log.error(ex.getMessage());

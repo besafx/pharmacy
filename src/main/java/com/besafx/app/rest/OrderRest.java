@@ -6,7 +6,9 @@ import com.besafx.app.config.DropboxManager;
 import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.entity.listener.OrderDetectionTypeListener;
 import com.besafx.app.entity.listener.OrderListener;
+import com.besafx.app.entity.listener.OrderReceiptListener;
 import com.besafx.app.search.OrderSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.*;
@@ -92,6 +94,12 @@ public class OrderRest {
     @Autowired
     private OrderListener orderListener;
 
+    @Autowired
+    private OrderDetectionTypeListener orderDetectionTypeListener;
+
+    @Autowired
+    private OrderReceiptListener orderReceiptListener;
+
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_CREATE')")
@@ -118,6 +126,16 @@ public class OrderRest {
                     orderDetectionType.setDone(false);
                 }
                 listIterator.set(orderDetectionTypeService.save(orderDetectionType));
+
+                log.info("START CREATE HISTORY LINE");
+                StringBuilder builder = new StringBuilder();
+                builder.append("اضافة خدمة الفحص / ");
+                builder.append(orderDetectionType.getDetectionType().getNameArabic());
+                builder.append(" إلى الطلب رقم / ");
+                builder.append(order.getCode());
+                orderDetectionTypeListener.perform(orderDetectionType, Action.INSERTED, builder.toString());
+                log.info("END CREATE HISTORY LINE");
+
             }
         }
         {
@@ -145,18 +163,35 @@ public class OrderRest {
                 orderReceipt.setOrder(order);
                 orderReceipt.setFund(fundService.findFirstBy());
                 listIterator.set(orderReceiptService.save(orderReceipt));
+
+                log.info("START CREATE HISTORY LINE");
+                StringBuilder builder = new StringBuilder();
+                builder.append("اضافة سند قبض رقم / ");
+                builder.append(orderReceipt.getReceipt().getCode());
+                builder.append(" بقيمة ");
+                builder.append(orderReceipt.getReceipt().getAmountString());
+                builder.append(" ريال سعودي ");
+                builder.append(" إلى الطلب رقم / ");
+                builder.append(order.getCode());
+                orderReceiptListener.perform(orderReceipt, Action.INSERTED, builder.toString());
+                log.info("END CREATE HISTORY LINE");
             }
         }
 
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
                 .message(lang.equals("AR") ? "تم انشاء طلب جديد بنجاح" : "Create Order Successfully")
                 .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
+
+        log.info("START CREATE HISTORY LINE");
+        StringBuilder builder = new StringBuilder();
+        builder.append(" إنشاء الطلب رقم / ");
+        builder.append(order.getCode());
+        orderListener.perform(order, Action.INSERTED, builder.toString());
+        log.info("END CREATE HISTORY LINE");
+
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), order);
     }
 
@@ -182,12 +217,17 @@ public class OrderRest {
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
                     .message(lang.equals("AR") ? "تم حذف الطلب وكل ما يتعلق به من مستندات ونتائج فحص بنجاح" : "Delete Order Successfully")
                     .type("error")
-                    .icon("fa-trash")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append(" حذف الطلب رقم / ");
+            builder.append(order.getCode());
+            orderListener.perform(order, Action.DELETED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
+
         }
     }
 
@@ -199,7 +239,15 @@ public class OrderRest {
         Order order = orderService.findOne(id);
         if (order != null) {
             orderService.updateNote(id, note);
-            orderListener.perform(order, Action.UPDATED);
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append(" تشخيص الطلب رقم / ");
+            builder.append(order.getCode());
+            builder.append(" <<" + note  + ">> ");
+            orderListener.perform(order, Action.UPDATED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
+
         }
     }
 

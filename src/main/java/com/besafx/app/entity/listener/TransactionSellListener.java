@@ -11,33 +11,20 @@ import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
+@Component
 public class TransactionSellListener {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionSellListener.class);
 
-    @PrePersist
-    public void prePersist(TransactionSell transactionSell) {
-        perform(transactionSell, Action.INSERTED);
-    }
-
-    @PreUpdate
-    public void preUpdate(TransactionSell transactionSell) {
-        perform(transactionSell, Action.UPDATED);
-    }
-
-    @PreRemove
-    public void preRemove(TransactionSell transactionSell) {
-        perform(transactionSell, Action.DELETED);
-    }
-
     @javax.transaction.Transactional(javax.transaction.Transactional.TxType.MANDATORY)
-    public void perform(TransactionSell transactionSell, Action action) {
+    public void perform(TransactionSell transactionSell, Action action, String note) {
         try {
             EntityManager entityManager = BeanUtil.getBean(EntityManager.class);
             History history = new History();
@@ -45,7 +32,7 @@ public class TransactionSellListener {
             history.setScreenName(TransactionSell.SCREEN_NAME);
             history.setAction(action);
             history.setObjectJson(SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), TransactionSellRest.FILTER_TABLE), transactionSell));
-            history.setNote("رقم حركة البيع / " + transactionSell.getCode());
+            history.setNote(note);
             entityManager.persist(history);
         } catch (Exception ex) {
             log.error(ex.getMessage());

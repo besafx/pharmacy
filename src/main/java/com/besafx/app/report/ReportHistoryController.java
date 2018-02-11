@@ -44,10 +44,9 @@ public class ReportHistoryController {
             @PathVariable("exportType") ExportType exportType,
             HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        List<History> histories = historyService.findByModifiedDateBetweenAndActionIn(
+        List<History> histories = historyService.findByModifiedDateBetween(
                 new DateTime(startDate).withTimeAtStartOfDay().toDate(),
-                new DateTime(endDate).plusDays(1).withTimeAtStartOfDay().toDate(),
-                Lists.newArrayList(Action.UPDATED, Action.DELETED));
+                new DateTime(endDate).plusDays(1).withTimeAtStartOfDay().toDate());
         map.put("histories", histories);
         map.put("logo", new ClassPathResource("/report/img/logo.png").getInputStream());
         StringBuilder title = new StringBuilder();

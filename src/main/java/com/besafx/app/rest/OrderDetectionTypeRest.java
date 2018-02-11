@@ -1,7 +1,9 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.auditing.Action;
 import com.besafx.app.entity.OrderDetectionType;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.listener.OrderDetectionTypeListener;
 import com.besafx.app.search.OrderDetectionTypeSearch;
 import com.besafx.app.service.OrderDetectionTypeService;
 import com.besafx.app.service.PersonService;
@@ -12,6 +14,8 @@ import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +30,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/api/orderDetectionType/")
 public class OrderDetectionTypeRest {
+
+    private final Logger log = LoggerFactory.getLogger(OrderDetectionTypeRest.class);
 
     public static final String FILTER_TABLE = "" +
             "**," +
@@ -45,6 +51,9 @@ public class OrderDetectionTypeRest {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private OrderDetectionTypeListener orderDetectionTypeListener;
+
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_CREATE')")
@@ -59,12 +68,19 @@ public class OrderDetectionTypeRest {
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
         notificationService.notifyOne(Notification
                 .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
                 .message(lang.equals("AR") ? "تم اضافة الفحص الجديد الي الطلب بنجاح" : "Adding Detection To Order Successfully")
                 .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
                 .build(), principal.getName());
+
+        log.info("START CREATE HISTORY LINE");
+        StringBuilder builder = new StringBuilder();
+        builder.append("اضافة خدمة الفحص / ");
+        builder.append(orderDetectionType.getDetectionType().getNameArabic());
+        builder.append(" إلى الطلب رقم / ");
+        builder.append(orderDetectionType.getOrder().getCode());
+        orderDetectionTypeListener.perform(orderDetectionType, Action.INSERTED, builder.toString());
+        log.info("END CREATE HISTORY LINE");
+
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderDetectionType);
     }
 
@@ -77,6 +93,15 @@ public class OrderDetectionTypeRest {
         if (orderDetectionType != null) {
             orderDetectionType.setDone(done);
             orderDetectionTypeService.save(orderDetectionType);
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append("تشخيص خدمة الفحص / ");
+            builder.append(orderDetectionType.getDetectionType().getNameArabic());
+            builder.append(" من الطلب رقم / ");
+            builder.append(orderDetectionType.getOrder().getCode());
+            orderDetectionTypeListener.perform(orderDetectionType, Action.UPDATED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
         }
     }
 
@@ -92,12 +117,19 @@ public class OrderDetectionTypeRest {
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
                     .builder()
-                    .title(lang.equals("AR") ? "الاستقبال" : "The Sales")
                     .message(lang.equals("AR") ? "تم حذف الفحص وكل ما يتعلق به من وصفات طبية بنجاح" : "Delete Detection With All Related Successfully")
                     .type("error")
-                    .icon("fa-trash")
-                    .layout(lang.equals("AR") ? "topLeft" : "topRight")
                     .build(), principal.getName());
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append("حذف خدمة الفحص / ");
+            builder.append(orderDetectionType.getDetectionType().getNameArabic());
+            builder.append(" من الطلب رقم / ");
+            builder.append(orderDetectionType.getOrder().getCode());
+            orderDetectionTypeListener.perform(orderDetectionType, Action.DELETED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
+
         }
     }
 
@@ -109,7 +141,7 @@ public class OrderDetectionTypeRest {
 
     @RequestMapping(value = "findByOrder/{orderId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByOrder(@PathVariable(value = "orderId") Long orderId, Principal principal) {
+    public String findByOrder(@PathVariable(value = "orderId") Long orderId) {
         List<OrderDetectionType> list = orderDetectionTypeService.findByOrderId(orderId);
         list.sort(Comparator.comparing(orderDetectionType -> orderDetectionType.getDetectionType().getCode()));
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
@@ -129,27 +161,8 @@ public class OrderDetectionTypeRest {
             @RequestParam(value = "falconType", required = false) final String falconType,
             @RequestParam(value = "weightFrom", required = false) final Double weightFrom,
             @RequestParam(value = "weightTo", required = false) final Double weightTo,
-            @RequestParam(value = "doctorName", required = false) final String doctorName,
-            Principal principal) {
-        Person caller = personService.findByEmail(principal.getName());
-        String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-        notificationService.notifyOne(Notification
-                .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "جاري تصفية النتائج، فضلاً انتظر قليلا..." : "Filtering Data")
-                .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
-                .build(), principal.getName());
+            @RequestParam(value = "doctorName", required = false) final String doctorName) {
         List<OrderDetectionType> list = orderDetectionTypeSearch.filter(codeFrom, codeTo, dateFrom, dateTo, customerName, customerMobile, customerIdentityNumber, falconCode, falconType, weightFrom, weightTo, doctorName);
-        notificationService.notifyOne(Notification
-                .builder()
-                .title(lang.equals("AR") ? "العيادة الطبية" : "Clinic")
-                .message(lang.equals("AR") ? "تمت العملية بنجاح" : "job Done")
-                .type("success")
-                .icon("fa-plus-square")
-                .layout(lang.equals("AR") ? "topLeft" : "topRight")
-                .build(), principal.getName());
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), list);
     }
 }

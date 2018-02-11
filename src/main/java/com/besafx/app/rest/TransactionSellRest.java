@@ -1,7 +1,9 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.auditing.Action;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.*;
+import com.besafx.app.entity.listener.TransactionSellListener;
 import com.besafx.app.service.*;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
@@ -27,7 +29,9 @@ import java.util.stream.Collectors;
 public class TransactionSellRest {
 
     public static final String FILTER_TABLE = "**,drugUnit[**,-drug,-drugUnit],transactionBuy[**,drugUnit[**,-drug,-drugUnit],drug[**,-defaultDrugUnit,-drugUnits,-drugCategory,-transactionSells,-transactionBuys],billBuy[id,code],-transactionSells],billSell[id,code]";
+
     private final Logger log = LoggerFactory.getLogger(TransactionSellRest.class);
+
     @Autowired
     private TransactionSellService transactionSellService;
 
@@ -45,6 +49,9 @@ public class TransactionSellRest {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private TransactionSellListener transactionSellListener;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -69,6 +76,18 @@ public class TransactionSellRest {
                 .message(lang.equals("AR") ? "تم اضافة الصنف بنجاح" : "Adding Item Successfully")
                 .type("success")
                 .build(), principal.getName());
+
+        log.info("START CREATE HISTORY LINE");
+        StringBuilder builder = new StringBuilder();
+        builder.append("اضافة حركة بيع رقم / ");
+        builder.append(transactionSell.getCode());
+        builder.append(" بالصنف رقم / ");
+        builder.append(transactionSell.getTransactionBuy().getDrug().getCode());
+        builder.append(" إلى الفاتورة رقم / ");
+        builder.append(transactionSell.getBillSell().getCode());
+        transactionSellListener.perform(transactionSell, Action.INSERTED, builder.toString());
+        log.info("END CREATE HISTORY LINE");
+
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), transactionSell);
     }
 
@@ -87,6 +106,18 @@ public class TransactionSellRest {
                     .message(lang.equals("AR") ? "تم حذف الصنف بنجاح" : "Deleting Item Successfully")
                     .type("error")
                     .build(), principal.getName());
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append("حذف حركة بيع رقم / ");
+            builder.append(transactionSell.getCode());
+            builder.append(" بالصنف رقم / ");
+            builder.append(transactionSell.getTransactionBuy().getDrug().getCode());
+            builder.append(" من الفاتورة رقم / ");
+            builder.append(transactionSell.getBillSell().getCode());
+            transactionSellListener.perform(transactionSell, Action.DELETED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
+
         }
     }
 

@@ -1,11 +1,13 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.auditing.Action;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.OrderReceipt;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.entity.listener.OrderReceiptListener;
 import com.besafx.app.search.OrderReceiptSearch;
 import com.besafx.app.service.FundService;
 import com.besafx.app.service.OrderReceiptService;
@@ -36,8 +38,14 @@ import java.util.List;
 @RequestMapping(value = "/api/orderReceipt/")
 public class OrderReceiptRest {
 
-    public static final String FILTER_TABLE = "**,-fund,order[id,code],receipt[**,lastPerson[id,nickname,name]]";
+    public static final String FILTER_TABLE = "" +
+            "**," +
+            "-fund," +
+            "order[id,code]," +
+            "receipt[**,lastPerson[id,nickname,name]]";
+
     private final static Logger log = LoggerFactory.getLogger(OrderReceiptRest.class);
+
     @Autowired
     private OrderReceiptService orderReceiptService;
 
@@ -55,6 +63,9 @@ public class OrderReceiptRest {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private OrderReceiptListener orderReceiptListener;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -83,6 +94,19 @@ public class OrderReceiptRest {
                 .builder()
                 .message(lang.equals("AR") ? "تم انشاء السند بنجاح" : "Create Receipt Successfully")
                 .build(), principal.getName());
+
+        log.info("START CREATE HISTORY LINE");
+        StringBuilder builder = new StringBuilder();
+        builder.append("اضافة سند قبض رقم / ");
+        builder.append(orderReceipt.getReceipt().getCode());
+        builder.append(" بقيمة ");
+        builder.append(orderReceipt.getReceipt().getAmountString());
+        builder.append(" ريال سعودي ");
+        builder.append(" إلى الطلب رقم / ");
+        builder.append(orderReceipt.getOrder().getCode());
+        orderReceiptListener.perform(orderReceipt, Action.INSERTED, builder.toString());
+        log.info("END CREATE HISTORY LINE");
+
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), orderReceipt);
     }
 
@@ -96,7 +120,23 @@ public class OrderReceiptRest {
             receiptService.delete(orderReceipt.getReceipt());
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
-            notificationService.notifyOne(Notification.builder().message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات بنجاح" : "Delete Receipt With All Related Successfully").build(), principal.getName());
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات بنجاح" : "Delete Receipt With All Related Successfully")
+                    .build(), principal.getName());
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append("حذف سند قبض رقم / ");
+            builder.append(orderReceipt.getReceipt().getCode());
+            builder.append(" بقيمة ");
+            builder.append(orderReceipt.getReceipt().getAmountString());
+            builder.append(" ريال سعودي ");
+            builder.append(" من الطلب رقم / ");
+            builder.append(orderReceipt.getOrder().getCode());
+            orderReceiptListener.perform(orderReceipt, Action.DELETED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
+
         }
     }
 

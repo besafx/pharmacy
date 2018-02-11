@@ -1,10 +1,12 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.auditing.Action;
 import com.besafx.app.entity.BillSellReceipt;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Receipt;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.entity.listener.BillSellReceiptListener;
 import com.besafx.app.search.BillSellReceiptSearch;
 import com.besafx.app.service.BillSellReceiptService;
 import com.besafx.app.service.FundService;
@@ -36,7 +38,9 @@ import java.util.List;
 public class BillSellReceiptRest {
 
     public static final String FILTER_TABLE = "**,-fund,billSell[id,code],receipt[**,lastPerson[id,nickname,name]]";
+
     private final static Logger log = LoggerFactory.getLogger(BillSellReceiptRest.class);
+
     @Autowired
     private BillSellReceiptService billSellReceiptService;
 
@@ -54,6 +58,9 @@ public class BillSellReceiptRest {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private BillSellReceiptListener billSellReceiptListener;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -80,6 +87,19 @@ public class BillSellReceiptRest {
                 .message(lang.equals("AR") ? "تم انشاء السند بنجاح" : "Create Receipt Successfully")
                 .type("success")
                 .build(), principal.getName());
+
+        log.info("START CREATE HISTORY LINE");
+        StringBuilder builder = new StringBuilder();
+        builder.append("اضافة سند قبض رقم / ");
+        builder.append(billSellReceipt.getReceipt().getCode());
+        builder.append(" بقيمة ");
+        builder.append(billSellReceipt.getReceipt().getAmountString());
+        builder.append(" ريال سعودي ");
+        builder.append(" إلى الفاتورة رقم / ");
+        builder.append(billSellReceipt.getReceipt().getCode());
+        billSellReceiptListener.perform(billSellReceipt, Action.INSERTED, builder.toString());
+        log.info("END CREATE HISTORY LINE");
+
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSellReceipt);
     }
 
@@ -87,10 +107,10 @@ public class BillSellReceiptRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BILL_SELL_DELETE')")
     public void delete(@PathVariable Long id, Principal principal) {
-        BillSellReceipt billSellBillSellReceipt = billSellReceiptService.findOne(id);
-        if (billSellBillSellReceipt != null) {
-            billSellReceiptService.delete(billSellBillSellReceipt);
-            receiptService.delete(billSellBillSellReceipt.getReceipt());
+        BillSellReceipt billSellReceipt = billSellReceiptService.findOne(id);
+        if (billSellReceipt != null) {
+            billSellReceiptService.delete(billSellReceipt);
+            receiptService.delete(billSellReceipt.getReceipt());
             Person caller = personService.findByEmail(principal.getName());
             String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
             notificationService.notifyOne(Notification
@@ -98,6 +118,20 @@ public class BillSellReceiptRest {
                     .message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات بنجاح" : "Delete Receipt With All Related Successfully")
                     .type("error")
                     .build(), principal.getName());
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append("حذف سند قبض رقم / ");
+            builder.append(billSellReceipt.getReceipt().getCode());
+            builder.append(" بقيمة ");
+            builder.append(billSellReceipt.getReceipt().getAmountString());
+            builder.append(" ريال سعودي ");
+            builder.append(" من الفاتورة رقم / ");
+            builder.append(billSellReceipt.getReceipt().getCode());
+            billSellReceiptListener.perform(billSellReceipt, Action.DELETED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
+
+
         }
     }
 

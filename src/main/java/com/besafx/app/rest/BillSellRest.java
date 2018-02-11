@@ -1,8 +1,12 @@
 package com.besafx.app.rest;
 
+import com.besafx.app.auditing.Action;
 import com.besafx.app.entity.*;
 import com.besafx.app.entity.enums.PaymentMethod;
 import com.besafx.app.entity.enums.ReceiptType;
+import com.besafx.app.entity.listener.BillSellListener;
+import com.besafx.app.entity.listener.BillSellReceiptListener;
+import com.besafx.app.entity.listener.TransactionSellListener;
 import com.besafx.app.search.BillSellSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.ArabicLiteralNumberParser;
@@ -33,12 +37,49 @@ import java.util.ListIterator;
 @RequestMapping(value = "/api/billSell/")
 public class BillSellRest {
 
-    public static final String FILTER_TABLE = "**,billSellReceipts[id,receipt[**,lastPerson[id,nickname,name]]],lastPerson[id,name],order[id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,name]]],transactionSells[**,-billSell,drugUnit[**,-drug,-drugUnit],transactionBuy[**,drugUnit[**,-drug,-drugUnit],drug[**,-defaultDrugUnit,-drugUnits,-drugCategory,-transactionSells,-transactionBuys],-billBuy,-transactionSells]]";
-    public static final String FILTER_Inside_Debt = "id,code,date,discount,order[id,code,date,falcon[id,code,customer[id,name]]],unitSellCostSum,net,paid,remain,-lastPerson,-transactionSells,-billSellReceipts";
-    public static final String FILTER_Outside_Debt = "id,code,date,discount,customerName,falconCode,unitSellCostSum,net,paid,remain,-lastPerson,-transactionSells,-billSellReceipts";
-    public static final String FILTER_BILL_SELL_COMBO = "id,code";
-    public static final String FILTER_BILL_SELL_PRICES = "net,paid,remain";
+    public static final String FILTER_TABLE = "" +
+            "**," +
+            "billSellReceipts[id,receipt[**,lastPerson[id,nickname,name]]]," +
+            "lastPerson[id,name]," +
+            "order[id,code,treatedCount,unTreatedCount,falcon[id,code,type,weight,-orders,customer[id,name]]]," +
+            "transactionSells[**,-billSell,drugUnit[**,-drug,-drugUnit],transactionBuy[**,drugUnit[**,-drug,-drugUnit],drug[**,-defaultDrugUnit,-drugUnits,-drugCategory,-transactionSells,-transactionBuys],-billBuy,-transactionSells]]";
+    public static final String FILTER_Inside_Debt = "" +
+            "id," +
+            "code," +
+            "date," +
+            "discount," +
+            "order[id,code,date,falcon[id,code,customer[id,name]]]," +
+            "unitSellCostSum," +
+            "net," +
+            "paid," +
+            "remain," +
+            "-lastPerson," +
+            "-transactionSells," +
+            "-billSellReceipts";
+    public static final String FILTER_Outside_Debt = "" +
+            "id," +
+            "code," +
+            "date," +
+            "discount," +
+            "customerName," +
+            "falconCode," +
+            "unitSellCostSum," +
+            "net," +
+            "paid," +
+            "remain," +
+            "-lastPerson," +
+            "-transactionSells," +
+            "-billSellReceipts";
+    public static final String FILTER_BILL_SELL_COMBO = "" +
+            "id," +
+            "code";
+    public static final String FILTER_BILL_SELL_PRICES = "" +
+            "net," +
+            "paid," +
+            "remain";
+
     private final Logger log = LoggerFactory.getLogger(BillSellRest.class);
+
     @Autowired
     private BillSellService billSellService;
 
@@ -62,6 +103,15 @@ public class BillSellRest {
 
     @Autowired
     private BillSellSearch billSellSearch;
+
+    @Autowired
+    private BillSellListener billSellListener;
+
+    @Autowired
+    private TransactionSellListener transactionSellListener;
+
+    @Autowired
+    private BillSellReceiptListener billSellReceiptListener;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -97,6 +147,18 @@ public class BillSellRest {
                 }
                 transactionSell.setDate(new DateTime().toDate());
                 listIterator.set(transactionSellService.save(transactionSell));
+
+                log.info("START CREATE HISTORY LINE");
+                StringBuilder builder = new StringBuilder();
+                builder.append("اضافة حركة بيع رقم / ");
+                builder.append(transactionSell.getCode());
+                builder.append(" بالصنف رقم / ");
+                builder.append(transactionSell.getTransactionBuy().getDrug().getCode());
+                builder.append(" إلى الفاتورة رقم / ");
+                builder.append(billSell.getCode());
+                transactionSellListener.perform(transactionSell, Action.INSERTED, builder.toString());
+                log.info("END CREATE HISTORY LINE");
+
             }
         }
         {
@@ -124,6 +186,19 @@ public class BillSellRest {
                 billSellReceipt.setBillSell(billSell);
                 billSellReceipt.setFund(fundService.findFirstBy());
                 listIterator.set(billSellReceiptService.save(billSellReceipt));
+
+                log.info("START CREATE HISTORY LINE");
+                StringBuilder builder = new StringBuilder();
+                builder.append("اضافة سند قبض رقم / ");
+                builder.append(billSellReceipt.getReceipt().getCode());
+                builder.append(" بقيمة ");
+                builder.append(billSellReceipt.getReceipt().getAmountString());
+                builder.append(" ريال سعودي ");
+                builder.append(" إلى الفاتورة رقم / ");
+                builder.append(billSell.getCode());
+                billSellReceiptListener.perform(billSellReceipt, Action.INSERTED, builder.toString());
+                log.info("END CREATE HISTORY LINE");
+
             }
         }
         String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
@@ -132,6 +207,14 @@ public class BillSellRest {
                 .message(lang.equals("AR") ? "تم انشاء فاتورة بيع بنجاح" : "Create Bill Sell Successfully")
                 .type("success")
                 .build(), principal.getName());
+
+        log.info("START CREATE HISTORY LINE");
+        StringBuilder builder = new StringBuilder();
+        builder.append(" إنشاء فاتورة بيع رقم / ");
+        builder.append(billSell.getCode());
+        billSellListener.perform(billSell, Action.INSERTED, builder.toString());
+        log.info("END CREATE HISTORY LINE");
+
         return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), FILTER_TABLE), billSell);
     }
 
@@ -153,6 +236,14 @@ public class BillSellRest {
                     .message(lang.equals("AR") ? "تم حذف فاتورة بيع بنجاح" : "Delete Bill Sell Successfully")
                     .type("error")
                     .build(), principal.getName());
+
+            log.info("START CREATE HISTORY LINE");
+            StringBuilder builder = new StringBuilder();
+            builder.append(" حذف الفاتورة رقم / ");
+            builder.append(billSell.getCode());
+            billSellListener.perform(billSell, Action.DELETED, builder.toString());
+            log.info("END CREATE HISTORY LINE");
+
         }
     }
 
