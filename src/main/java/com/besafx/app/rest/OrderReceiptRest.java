@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -70,6 +71,7 @@ public class OrderReceiptRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_RECEIPT_CREATE')")
+    @Transactional
     public String create(@RequestBody OrderReceipt orderReceipt, Principal principal) {
         if (orderReceipt.getReceipt().getAmountNumber() == 0) {
             throw new CustomException("لا يمكن إنشاء سند بقيمة صفر");
@@ -93,6 +95,7 @@ public class OrderReceiptRest {
         notificationService.notifyOne(Notification
                 .builder()
                 .message(lang.equals("AR") ? "تم انشاء السند بنجاح" : "Create Receipt Successfully")
+                .type("success")
                 .build(), principal.getName());
 
         log.info("START CREATE HISTORY LINE");
@@ -113,6 +116,7 @@ public class OrderReceiptRest {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_RECEIPT_DELETE')")
+    @Transactional
     public void delete(@PathVariable Long id, Principal principal) {
         OrderReceipt orderReceipt = orderReceiptService.findOne(id);
         if (orderReceipt != null) {
@@ -123,6 +127,7 @@ public class OrderReceiptRest {
             notificationService.notifyOne(Notification
                     .builder()
                     .message(lang.equals("AR") ? "تم حذف السند وكل ما يتعلق به من حسابات بنجاح" : "Delete Receipt With All Related Successfully")
+                    .type("error")
                     .build(), principal.getName());
 
             log.info("START CREATE HISTORY LINE");

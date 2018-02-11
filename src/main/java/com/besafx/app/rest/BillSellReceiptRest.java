@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -65,6 +66,7 @@ public class BillSellReceiptRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BILL_SELL_CREATE')")
+    @Transactional
     public String create(@RequestBody BillSellReceipt billSellReceipt, Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
@@ -106,6 +108,7 @@ public class BillSellReceiptRest {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BILL_SELL_DELETE')")
+    @Transactional
     public void delete(@PathVariable Long id, Principal principal) {
         BillSellReceipt billSellReceipt = billSellReceiptService.findOne(id);
         if (billSellReceipt != null) {
