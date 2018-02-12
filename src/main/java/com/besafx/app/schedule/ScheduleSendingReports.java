@@ -45,7 +45,7 @@ public class ScheduleSendingReports {
     private AsyncScheduleDailyInsideSales asyncScheduleDailyInsideSales;
 
     @Autowired
-    private AsyncScheduleDailyInsideSales asyncScheduleDailyOutsideSales;
+    private AsyncScheduleDailyOutsideSales asyncScheduleDailyOutsideSales;
 
     @Autowired
     private AsyncScheduleDailyStocks asyncScheduleDailyStocks;
@@ -323,6 +323,5 @@ public class ScheduleSendingReports {
     public void runMonthly() throws Exception {
         run("Month");
     }
-
 
 }
