@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
@@ -152,6 +153,7 @@ public class Order implements Serializable {
         try {
             return this.diagnoses.stream().filter(Diagnosis::isTreated).count();
         } catch (Exception ex) {
+            log.error(ExceptionUtils.getStackTrace(ex));
             return new Long(0);
         }
     }
@@ -160,6 +162,7 @@ public class Order implements Serializable {
         try {
             return this.diagnoses.size() - getTreatedCount();
         } catch (Exception ex) {
+            log.error(ExceptionUtils.getStackTrace(ex));
             return new Long(0);
         }
     }
