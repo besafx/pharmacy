@@ -12,6 +12,7 @@ import com.besafx.app.service.*;
 import com.besafx.app.util.ArabicLiteralNumberParser;
 import com.besafx.app.util.JSONConverter;
 import com.besafx.app.util.Options;
+import com.besafx.app.util.WrapperUtil;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -104,7 +105,7 @@ public class FundReceiptRest {
     @RequestMapping(value = "transferToBank", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_FUND_RECEIPT_OUT_CREATE') and hasRole('ROLE_BANK_RECEIPT_IN_CREATE')")
-    public void transferToBank(@RequestBody FundReceipt fundReceipt, Principal principal) {
+    public String transferToBank(@RequestBody FundReceipt fundReceipt, Principal principal) {
         Person caller = personService.findByEmail(principal.getName());
         {
             log.info("إنشاء سند صرف من الصندوق");
@@ -123,9 +124,10 @@ public class FundReceiptRest {
             fundReceipt.setReceipt(receiptService.save(fundReceipt.getReceipt()));
             fundReceipt = fundReceiptService.save(fundReceipt);
         }
+        BankReceipt bankReceipt;
         {
             log.info("إنشاء سند قبض إلى البنك");
-            BankReceipt bankReceipt = new BankReceipt();
+            bankReceipt = new BankReceipt();
             bankReceipt.setBank(bankService.findFirstBy());
             bankReceipt.setReceipt(new Receipt());
             Receipt topReceipt = receiptService.findTopByOrderByCodeDesc();
@@ -136,6 +138,9 @@ public class FundReceiptRest {
             }
             bankReceipt.getReceipt().setAmountString(ArabicLiteralNumberParser.literalValueOf(fundReceipt.getReceipt().getAmountNumber()));
             bankReceipt.getReceipt().setAmountNumber(fundReceipt.getReceipt().getAmountNumber());
+            bankReceipt.getReceipt().setSender(fundReceipt.getReceipt().getSender());
+            bankReceipt.getReceipt().setReceiver(fundReceipt.getReceipt().getReceiver());
+            bankReceipt.getReceipt().setNote(fundReceipt.getReceipt().getNote());
             bankReceipt.getReceipt().setPaymentMethod(PaymentMethod.Cash);
             bankReceipt.getReceipt().setReceiptType(ReceiptType.In);
             bankReceipt.getReceipt().setDate(new DateTime().toDate());
@@ -148,6 +153,11 @@ public class FundReceiptRest {
         notificationService.notifyOne(Notification.builder()
                 .message(lang.equals("AR") ? "تم التحويل بنجاح" : "Money Transefered Successfully")
                 .type("warning").build(), principal.getName());
+
+        WrapperUtil wrapperUtil = new WrapperUtil();
+        wrapperUtil.setObj1(fundReceipt);
+        wrapperUtil.setObj2(bankReceipt);
+        return SquigglyUtils.stringify(Squiggly.init(new ObjectMapper(), "obj1[" + FundReceiptRest.FILTER_TABLE + "],obj2[" + BankReceiptRest.FILTER_TABLE + "]"), wrapperUtil);
 
     }
 

@@ -352,6 +352,16 @@
                             </span>
                         </li>
 
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-show="contains(me.team.authorities, ['ROLE_FUND_RECEIPT_OUT_CREATE', 'ROLE_BANK_RECEIPT_IN_CREATE'])"
+                            ng-click="transferToBank()">
+                            <span class="mdl-list__item-primary-content">
+                                <i class="material-icons mdl-list__item-icon">money_off</i>
+                                <span ng-if="lang==='AR'">تحويل للبنك</span>
+                                <span ng-if="lang==='EN'">Cash To Bank</span>
+                            </span>
+                        </li>
+
                     </ul>
 
                     <button id="toggle-options-menu-lower-right"

@@ -2002,12 +2002,22 @@ function menuCtrl($scope,
         });
     };
     $scope.transferToBank = function () {
-        ModalProvider.openFundReceiptInCreateModel().result.then(function (data) {
-            $scope.receiptsIn.splice(0, 0, data);
-            $scope.selectedFund.balance += data.receipt.amountNumber;
-            $scope.totalAmountIn = 0;
-            angular.forEach($scope.receiptsIn, function (fundReceipt) {
-                $scope.totalAmountIn += fundReceipt.receipt.amountNumber;
+        ModalProvider.openFundTransferToBankModel().result.then(function (data) {
+            var fundReceipt = data.obj1;
+            var bankReceipt = data.obj2;
+            //
+            $scope.receiptsOut.splice(0, 0, fundReceipt);
+            $scope.selectedFund.balance -= fundReceipt.receipt.amountNumber;
+            $scope.totalAmountOut = 0;
+            angular.forEach($scope.receiptsOut, function (fundReceipt) {
+                $scope.totalAmountOut += fundReceipt.receipt.amountNumber;
+            });
+            //
+            $scope.bankReceiptsIn.splice(0, 0, bankReceipt);
+            $scope.selectedBank.balance+=bankReceipt.receipt.amountNumber;
+            $scope.bankTotalAmountIn = 0;
+            angular.forEach($scope.bankReceiptsIn, function (bankReceipt) {
+                $scope.bankTotalAmountIn+=bankReceipt.receipt.amountNumber;
             });
         }, function () {
         });
