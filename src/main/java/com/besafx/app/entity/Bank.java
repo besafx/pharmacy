@@ -22,7 +22,6 @@ import java.util.List;
 
 @Data
 @Entity
-@Component
 @EntityListeners(MyEntityListener.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Bank implements Serializable {
@@ -30,18 +29,6 @@ public class Bank implements Serializable {
     public static final String SCREEN_NAME = "البنك";
 
     private static final long serialVersionUID = 1L;
-
-    @Transient
-    private static BankService bankService;
-
-    @PostConstruct
-    public void init() {
-        try {
-            bankService = BeanUtil.getBean(BankService.class);
-        } catch (Exception ex) {
-
-        }
-    }
 
     @GenericGenerator(
             name = "bankSequenceGenerator",
@@ -57,8 +44,6 @@ public class Bank implements Serializable {
     private Long id;
 
     private Long code;
-
-    private Double tempBalance;
 
     private String name;
 
@@ -105,9 +90,7 @@ public class Bank implements Serializable {
 
     public Double getBalance() {
         try {
-            this.tempBalance = this.getCashIn() - this.getCashOut();
-            bankService.save(this);
-            return this.tempBalance;
+            return this.getCashIn() - this.getCashOut();
         } catch (Exception ex) {
             return 0.0;
         }
