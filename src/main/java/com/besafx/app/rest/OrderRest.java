@@ -235,10 +235,18 @@ public class OrderRest {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ORDER_SAVE_NOTE')")
     @Transactional
-    public void saveNote(@PathVariable(value = "id") Long id, @PathVariable(value = "note") String note) {
+    public void saveNote(@PathVariable(value = "id") Long id, @PathVariable(value = "note") String note, Principal principal) {
         Order order = orderService.findOne(id);
         if (order != null) {
             orderService.updateNote(id, note);
+
+            Person caller = personService.findByEmail(principal.getName());
+            String lang = JSONConverter.toObject(caller.getOptions(), Options.class).getLang();
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .message(lang.equals("AR") ? "تم حفظ التشخيص بنجاح" : "Saving Diagnosis Successfully")
+                    .type("success")
+                    .build(), principal.getName());
 
             log.info("START CREATE HISTORY LINE");
             StringBuilder builder = new StringBuilder();

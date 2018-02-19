@@ -287,6 +287,12 @@
                     {{selectedBank.balance | currency:' SAR ':2}}
                 </h3>
 
+                <h3>
+                    <span ng-if="lang==='AR'">اجمالي المديونيات = </span>
+                    <span ng-if="lang==='EN'">Total Debt = </span>
+                    {{selectedFund.debt | currency:' SAR ':2}}
+                </h3>
+
             </div>
 
         </div>

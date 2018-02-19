@@ -1,5 +1,6 @@
 package com.besafx.app.entity;
 
+import com.besafx.app.Async.TransactionalService;
 import com.besafx.app.auditing.MyEntityListener;
 import com.besafx.app.component.BeanUtil;
 import com.besafx.app.entity.enums.ReceiptType;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
@@ -33,10 +35,14 @@ public class Fund implements Serializable {
     @Transient
     private static FundService fundService;
 
+    @Transient
+    private static TransactionalService transactionalService;
+
     @PostConstruct
     public void init() {
         try {
             fundService = BeanUtil.getBean(FundService.class);
+            transactionalService = BeanUtil.getBean(TransactionalService.class);
         } catch (Exception ex) {
 
         }
@@ -80,6 +86,14 @@ public class Fund implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         Fund fund = mapper.readValue(jsonString, Fund.class);
         return fund;
+    }
+
+    public Double getDebt() {
+        try {
+            return transactionalService.getTotalOrdersDebt() + transactionalService.getTotalBillSellDebt();
+        } catch (Exception ex) {
+            return 0.0;
+        }
     }
 
     public Double getCashIn() {

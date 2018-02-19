@@ -1,6 +1,7 @@
 package com.besafx.app.Async;
 
 import com.besafx.app.entity.BillSell;
+import com.besafx.app.entity.BillSellReceipt;
 import com.besafx.app.entity.Drug;
 import com.besafx.app.entity.Order;
 import com.besafx.app.service.BillSellService;
@@ -127,4 +128,22 @@ public class TransactionalService {
                 });
         return list;
     }
+
+    @Transactional
+    public Double getTotalOrdersDebt() {
+        return Lists.newArrayList(orderService.findAll())
+                .stream()
+                .mapToDouble(Order::getRemain)
+                .sum();
+    }
+
+    @Transactional
+    public Double getTotalBillSellDebt() {
+        return Lists.newArrayList(billSellService.findAll())
+                .stream()
+                .mapToDouble(BillSell::getRemain)
+                .sum();
+    }
+
+
 }
